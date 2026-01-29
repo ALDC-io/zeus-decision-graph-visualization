@@ -13,8 +13,8 @@ COPY src/api_server.py .
 COPY data/clustering_results.json ./data/
 COPY data/layout_results.json ./data/
 
-# Copy static visualization
-COPY output/html/zeus_decision_graph.html ./static/
+# Copy all static visualizations
+COPY output/html/*.html ./static/
 
 # Expose port (Container Apps handles TLS)
 EXPOSE 8080
