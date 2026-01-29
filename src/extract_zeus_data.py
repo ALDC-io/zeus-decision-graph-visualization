@@ -143,6 +143,7 @@ def extract_nodes(cur):
             "tier": 1,
             "group": "decision",
             "size": 25 + (int(confidence * 10) if confidence else 0),
+            "created_at": created_at.isoformat() if created_at else None,
         })
 
         node_metadata[node_id] = {
@@ -205,6 +206,7 @@ def extract_nodes(cur):
             "tier": tier_map.get(source, 3),
             "group": source if source in GROUPS else "cce",
             "size": size_map.get(source, 15),
+            "created_at": created_at.isoformat() if created_at else None,
         })
 
         meta = metadata if isinstance(metadata, dict) else {}

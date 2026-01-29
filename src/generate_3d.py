@@ -57,6 +57,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             "groupLabel": group_info.get("label", group),
             "tier": tier,
             "logo": node.get("logo", ""),
+            "createdAt": node.get("created_at"),
         })
 
     # Prepare links JSON with relationship type labels
@@ -578,6 +579,26 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .mini-btn:hover {{
             background: #f0f0f0;
         }}
+        .date-select {{
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }}
+        .date-input {{
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 110px;
+        }}
+        .date-count {{
+            font-size: 10px;
+            color: #666;
+            margin-left: 4px;
+        }}
     </style>
 </head>
 <body>
@@ -603,6 +624,22 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     <div class="filter-group collapsed" id="edges-filters">
                         {edge_chips_html}
                         <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
+                    </div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label" onclick="toggleFilterSection('dates')">Date <span class="arrow">▼</span></span>
+                    <div class="filter-group" id="dates-filters">
+                        <select id="date-preset" class="date-select" onchange="applyDatePreset()">
+                            <option value="all">All Time</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <input type="date" id="date-from" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <input type="date" id="date-to" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
             </div>
@@ -782,9 +819,91 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }});
         }}
 
+        // Date filter state
+        let dateFilterFrom = null;
+        let dateFilterTo = null;
+
+        function applyDatePreset() {{
+            const preset = document.getElementById('date-preset').value;
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (preset === 'custom') {{
+                fromInput.style.display = 'inline-block';
+                toInput.style.display = 'inline-block';
+                // Set defaults to last 30 days
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                toInput.value = today.toISOString().split('T')[0];
+                fromInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+                applyCustomDateFilter();
+                return;
+            }}
+
+            fromInput.style.display = 'none';
+            toInput.style.display = 'none';
+
+            if (preset === 'all') {{
+                dateFilterFrom = null;
+                dateFilterTo = null;
+            }} else {{
+                const days = parseInt(preset);
+                const today = new Date();
+                const fromDate = new Date(today);
+                fromDate.setDate(fromDate.getDate() - days);
+                dateFilterFrom = fromDate;
+                dateFilterTo = today;
+            }}
+
+            applyFilters();
+        }}
+
+        function applyCustomDateFilter() {{
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (fromInput.value) {{
+                dateFilterFrom = new Date(fromInput.value);
+                dateFilterFrom.setHours(0, 0, 0, 0);
+            }} else {{
+                dateFilterFrom = null;
+            }}
+
+            if (toInput.value) {{
+                dateFilterTo = new Date(toInput.value);
+                dateFilterTo.setHours(23, 59, 59, 999);
+            }} else {{
+                dateFilterTo = null;
+            }}
+
+            applyFilters();
+        }}
+
+        function nodePassesDateFilter(node) {{
+            // Hub node always passes
+            if (node.id === 'zeus-memory-hub' || !node.createdAt) {{
+                return dateFilterFrom === null && dateFilterTo === null ? true : !node.createdAt;
+            }}
+
+            const nodeDate = new Date(node.createdAt);
+
+            if (dateFilterFrom && nodeDate < dateFilterFrom) {{
+                return false;
+            }}
+            if (dateFilterTo && nodeDate > dateFilterTo) {{
+                return false;
+            }}
+            return true;
+        }}
+
         function applyFilters() {{
-            // Filter nodes by group
-            const filteredNodes = nodesData.filter(node => visibleGroups.has(node.group));
+            // Filter nodes by group AND date
+            const filteredNodes = nodesData.filter(node => {{
+                const groupVisible = visibleGroups.has(node.group);
+                const dateVisible = nodePassesDateFilter(node);
+                return groupVisible && dateVisible;
+            }});
             const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
 
             // Filter links by node visibility AND edge type
@@ -795,6 +914,15 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const edgeVisible = visibleEdgeTypes.has(link.edgeType);
                 return nodeVisible && edgeVisible;
             }});
+
+            // Update count display
+            const countEl = document.getElementById('date-count');
+            const nodesWithDates = nodesData.filter(n => n.createdAt).length;
+            if (dateFilterFrom || dateFilterTo) {{
+                countEl.textContent = `(${{filteredNodes.length}} nodes)`;
+            }} else {{
+                countEl.textContent = '';
+            }}
 
             graph.graphData({{
                 nodes: filteredNodes,
