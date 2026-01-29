@@ -1268,8 +1268,31 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}, 100);
         }}
 
+        // Check for embed mode
+        function checkEmbedMode() {{
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEmbed = urlParams.get('embed') === 'true';
+
+            if (isEmbed) {{
+                // Hide sidebar and toggle button in embed mode
+                const sidebar = document.getElementById('sidebar');
+                const toggle = document.getElementById('sidebar-toggle');
+                if (sidebar) sidebar.style.display = 'none';
+                if (toggle) toggle.style.display = 'none';
+
+                // Expand graph to full width
+                setTimeout(() => {{
+                    const wrapper = document.getElementById('graph-wrapper');
+                    if (wrapper && graph) {{
+                        graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+                    }}
+                }}, 100);
+            }}
+        }}
+
         // Initialize
         initGraph();
+        checkEmbedMode();
     </script>
 </body>
 </html>'''
