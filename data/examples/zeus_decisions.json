@@ -826,14 +826,6 @@
       "size": 34
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10
-    },
-    {
       "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
       "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
@@ -861,6 +853,14 @@
       "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "label": "Odin node successfully federated with Zeus Memo...",
       "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
       "tier": 4,
       "group": "cce_system",
       "size": 10

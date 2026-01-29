@@ -112,20 +112,20 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     groups_json = json.dumps(groups)
     edge_styles_json = json.dumps(edge_styles)
 
-    # Generate dynamic legend items from groups (nodes)
-    legend_items_html = ""
+    # Generate node filter chips
+    node_chips_html = ""
     for group_id, group_info in groups.items():
         color = group_info.get("color", "#888888")
         label = group_info.get("label", group_id)
-        legend_items_html += f'''<label class="legend-item"><input type="checkbox" checked data-group="{group_id}"><span class="legend-color" style="background:{color}"></span> {label}</label>\n                    '''
+        node_chips_html += f'''<span class="filter-chip active" data-group="{group_id}"><span class="chip-color" style="background:{color}"></span>{label}</span>\n                        '''
 
-    # Generate edge type legend items
-    edge_legend_html = ""
+    # Generate edge filter chips
+    edge_chips_html = ""
     for edge_type in sorted(edge_types_used):
         style = edge_styles.get(edge_type, {"color": "#888888", "label": edge_type})
         color = style.get("color", "#888888")
         label = style.get("label", edge_type)
-        edge_legend_html += f'''<label class="legend-item"><input type="checkbox" checked data-edge-type="{edge_type}"><span class="legend-color" style="background:{color}"></span> {label}</label>\n                    '''
+        edge_chips_html += f'''<span class="filter-chip active" data-edge-type="{edge_type}"><span class="chip-color" style="background:{color}"></span>{label}</span>\n                        '''
 
     # Get description from metadata
     description = data.get("metadata", {}).get("description", "Click a node to explore")
@@ -341,95 +341,107 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             font-size: 11px;
             color: #666;
         }}
-        #legend {{
+        #toolbar {{
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            top: 10px;
+            left: 10px;
             background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px;
-            border-radius: 10px;
+            padding: 6px 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             z-index: 10000;
             pointer-events: auto;
-        }}
-        .legend-title {{
-            font-size: 12px;
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }}
-        .legend-items {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 20px;
-        }}
-        .legend-item {{
             display: flex;
             align-items: center;
-            font-size: 11px;
+            gap: 8px;
+        }}
+        .toolbar-section {{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }}
+        .toolbar-label {{
+            font-size: 9px;
+            font-weight: 600;
+            color: #1a365d;
+            text-transform: uppercase;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #e8f4fd;
+        }}
+        .toolbar-label:hover {{
+            background: #d0e8fa;
+        }}
+        .toolbar-label .arrow {{
+            font-size: 8px;
+            margin-left: 3px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }}
+        .toolbar-label.collapsed .arrow {{
+            transform: rotate(-90deg);
+        }}
+        .filter-group {{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            transition: max-width 0.3s ease, opacity 0.2s ease;
+            max-width: 2000px;
+            opacity: 1;
+        }}
+        .filter-group.collapsed {{
+            max-width: 0;
+            opacity: 0;
+            gap: 0;
+        }}
+        .toolbar-divider {{
+            width: 1px;
+            height: 20px;
+            background: #ddd;
+        }}
+        .filter-chip {{
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
             color: #333;
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }}
-        .legend-item:hover {{
-            background: rgba(0,0,0,0.05);
-        }}
-        .legend-item.disabled {{
-            opacity: 0.4;
-        }}
-        .legend-item input {{
-            margin-right: 6px;
-            cursor: pointer;
-        }}
-        .legend-color {{
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }}
-        .filter-controls {{
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-        }}
-        .filter-btn {{
-            font-size: 10px;
-            padding: 4px 8px;
-            border: 1px solid #ccc;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }}
-        .filter-btn:hover {{
+            padding: 3px 8px;
+            border-radius: 12px;
             background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
         }}
-        #view-toggle {{
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 10000;
-            pointer-events: auto;
-            display: flex;
-            gap: 10px;
+        .filter-chip:hover {{
+            background: #e0e0e0;
+        }}
+        .filter-chip.active {{
+            background: #1a365d;
+            color: white;
+            border-color: #1a365d;
+        }}
+        .filter-chip .chip-color {{
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }}
+        .filter-chip.active .chip-color {{
+            border: 1px solid rgba(255,255,255,0.5);
         }}
         .view-btn {{
-            padding: 8px 16px;
-            border: 2px solid #1a365d;
+            padding: 5px 12px;
+            border: 1px solid #1a365d;
             background: white;
             color: #1a365d;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
         }}
         .view-btn.active {{
@@ -439,32 +451,44 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .view-btn:hover:not(.active) {{
             background: #e8f4fd;
         }}
+        .mini-btn {{
+            font-size: 9px;
+            padding: 2px 6px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #666;
+        }}
+        .mini-btn:hover {{
+            background: #f0f0f0;
+        }}
     </style>
 </head>
 <body>
     <div class="container">
         <div id="graph-wrapper">
             <div id="graph"></div>
-            <div id="view-toggle">
-                <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
-                <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
-            </div>
-            <div id="legend">
-                <div class="legend-title">Node Types</div>
-                <div class="legend-items">
-                    {legend_items_html}
+            <div id="toolbar">
+                <div class="toolbar-section">
+                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
+                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
                 </div>
-                <div class="filter-controls">
-                    <button class="filter-btn" onclick="showAllNodes()">All Nodes</button>
-                    <button class="filter-btn" onclick="hideAllNodes()">None</button>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('nodes')">Nodes <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="nodes-filters">
+                        {node_chips_html}
+                        <button class="mini-btn" onclick="toggleAllNodes()">Toggle</button>
+                    </div>
                 </div>
-                <div class="legend-title" style="margin-top: 15px;">Edge Types</div>
-                <div class="legend-items" id="edge-legend">
-                    {edge_legend_html}
-                </div>
-                <div class="filter-controls">
-                    <button class="filter-btn" onclick="showAllEdges()">All Edges</button>
-                    <button class="filter-btn" onclick="hideAllEdges()">None</button>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('edges')">Edges <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="edges-filters">
+                        {edge_chips_html}
+                        <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -565,67 +589,69 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         const allEdgeTypes = [...new Set(linksData.map(l => l.edgeType))];
         const visibleEdgeTypes = new Set(allEdgeTypes);
 
-        // Attach event listeners to node type checkboxes
-        document.querySelectorAll('#legend input[data-group]').forEach(cb => {{
-            cb.addEventListener('change', function() {{
+        // Attach event listeners to node filter chips
+        document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {{
+            chip.addEventListener('click', function() {{
                 const group = this.dataset.group;
-                if (this.checked) {{
-                    visibleGroups.add(group);
-                }} else {{
+                if (visibleGroups.has(group)) {{
                     visibleGroups.delete(group);
-                }}
-                applyFilters();
-            }});
-        }});
-
-        // Attach event listeners to edge type checkboxes
-        document.querySelectorAll('#edge-legend input[data-edge-type]').forEach(cb => {{
-            cb.addEventListener('change', function() {{
-                const edgeType = this.dataset.edgeType;
-                if (this.checked) {{
-                    visibleEdgeTypes.add(edgeType);
+                    this.classList.remove('active');
                 }} else {{
-                    visibleEdgeTypes.delete(edgeType);
+                    visibleGroups.add(group);
+                    this.classList.add('active');
                 }}
                 applyFilters();
             }});
         }});
 
-        function showAllNodes() {{
-            allGroups.forEach(g => visibleGroups.add(g));
-            updateNodeCheckboxes();
+        // Attach event listeners to edge filter chips
+        document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {{
+            chip.addEventListener('click', function() {{
+                const edgeType = this.dataset.edgeType;
+                if (visibleEdgeTypes.has(edgeType)) {{
+                    visibleEdgeTypes.delete(edgeType);
+                    this.classList.remove('active');
+                }} else {{
+                    visibleEdgeTypes.add(edgeType);
+                    this.classList.add('active');
+                }}
+                applyFilters();
+            }});
+        }});
+
+        function toggleAllNodes() {{
+            const allVisible = allGroups.every(g => visibleGroups.has(g));
+            if (allVisible) {{
+                visibleGroups.clear();
+            }} else {{
+                allGroups.forEach(g => visibleGroups.add(g));
+            }}
+            updateNodeChips();
             applyFilters();
         }}
 
-        function hideAllNodes() {{
-            visibleGroups.clear();
-            updateNodeCheckboxes();
+        function toggleAllEdges() {{
+            const allVisible = allEdgeTypes.every(e => visibleEdgeTypes.has(e));
+            if (allVisible) {{
+                visibleEdgeTypes.clear();
+            }} else {{
+                allEdgeTypes.forEach(e => visibleEdgeTypes.add(e));
+            }}
+            updateEdgeChips();
             applyFilters();
         }}
 
-        function showAllEdges() {{
-            allEdgeTypes.forEach(e => visibleEdgeTypes.add(e));
-            updateEdgeCheckboxes();
-            applyFilters();
-        }}
-
-        function hideAllEdges() {{
-            visibleEdgeTypes.clear();
-            updateEdgeCheckboxes();
-            applyFilters();
-        }}
-
-        function updateNodeCheckboxes() {{
-            document.querySelectorAll('#legend input[data-group]').forEach(cb => {{
-                const group = cb.dataset.group;
-                cb.checked = visibleGroups.has(group);
+        function updateNodeChips() {{
+            document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {{
+                const group = chip.dataset.group;
+                chip.classList.toggle('active', visibleGroups.has(group));
             }});
         }}
 
-        function updateEdgeCheckboxes() {{
-            document.querySelectorAll('#edge-legend input[data-edge-type]').forEach(cb => {{
-                const edgeType = cb.dataset.edgeType;
-                cb.checked = visibleEdgeTypes.has(edgeType);
+        function updateEdgeChips() {{
+            document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {{
+                const edgeType = chip.dataset.edgeType;
+                chip.classList.toggle('active', visibleEdgeTypes.has(edgeType));
             }});
         }}
 
@@ -663,6 +689,14 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }} else {{
                 graph.numDimensions(3);
             }}
+        }}
+
+        // Toggle filter sections
+        function toggleFilterSection(section) {{
+            const label = document.querySelector(`.toolbar-label[onclick*="${{section}}"]`);
+            const group = document.getElementById(`${{section}}-filters`);
+            label.classList.toggle('collapsed');
+            group.classList.toggle('collapsed');
         }}
 
         // Toggle sidebar visibility
