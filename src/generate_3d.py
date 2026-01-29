@@ -60,24 +60,43 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         })
 
     # Prepare links JSON with relationship type labels
-    # Default edge styles - can be overridden by data
-    edge_styles = {
-        "references": {"color": "#3182ce", "width": 2, "label": "References"},
+    # Default edge styles - can be overridden by data's edge_types
+    default_edge_styles = {
+        # Explicit relationships
+        "references": {"color": "#3182ce", "width": 3, "label": "References"},
         "informs": {"color": "#2f855a", "width": 2, "label": "Informs"},
+        # Semantic similarity
+        "highly_similar": {"color": "#9f7aea", "width": 3, "label": "Highly Similar"},
+        "similar": {"color": "#b794f4", "width": 2, "label": "Similar"},
+        # Metadata-based
+        "same_category": {"color": "#ed8936", "width": 1, "label": "Same Category"},
+        "same_agent": {"color": "#4fd1c5", "width": 1, "label": "Same Agent"},
+        # Temporal
+        "temporal_context": {"color": "#fc8181", "width": 1, "label": "Temporal"},
+        # Generic
         "related": {"color": "#a0aec0", "width": 1, "label": "Related"},
+        # Partner ecosystem types
         "strategic_partner": {"color": "#2f855a", "width": 3, "label": "Strategic Partner"},
         "emerging_partner": {"color": "#3182ce", "width": 2, "label": "Emerging Partner"},
-        "sme_expert": {"color": "#805ad5", "width": 2, "label": "SME Expert"},
         "collaboration": {"color": "#a0aec0", "width": 1, "label": "Collaboration"},
-        "member": {"color": "#718096", "width": 1, "label": "Association Member"},
-        "direct_partner": {"color": "#e53e3e", "width": 2, "label": "Direct Partner"},
-        "supply_chain": {"color": "#dd6b20", "width": 1, "label": "Supply Chain"},
+        "member": {"color": "#718096", "width": 1, "label": "Member"},
     }
+
+    # Use edge_types from data if provided, otherwise use defaults
+    edge_styles = data.get("edge_types", default_edge_styles)
+    # Merge with defaults to ensure all types are covered
+    for k, v in default_edge_styles.items():
+        if k not in edge_styles:
+            edge_styles[k] = v
+
+    # Track unique edge types for filtering
+    edge_types_used = set()
 
     links_list = []
     for edge in data["edges"]:
         edge_type = edge.get("type", "default")
         style = edge_styles.get(edge_type, {"color": "#888888", "width": 1, "label": edge_type})
+        edge_types_used.add(edge_type)
 
         links_list.append({
             "source": edge["source"],
@@ -85,18 +104,28 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             "color": style.get("color", "#888888"),
             "width": style.get("width", 1),
             "relationType": style.get("label", edge_type),
+            "edgeType": edge_type,  # Keep original type for filtering
         })
 
     nodes_json = json.dumps(nodes_list)
     links_json = json.dumps(links_list)
     groups_json = json.dumps(groups)
+    edge_styles_json = json.dumps(edge_styles)
 
-    # Generate dynamic legend items from groups
+    # Generate dynamic legend items from groups (nodes)
     legend_items_html = ""
     for group_id, group_info in groups.items():
         color = group_info.get("color", "#888888")
         label = group_info.get("label", group_id)
         legend_items_html += f'''<label class="legend-item"><input type="checkbox" checked data-group="{group_id}"><span class="legend-color" style="background:{color}"></span> {label}</label>\n                    '''
+
+    # Generate edge type legend items
+    edge_legend_html = ""
+    for edge_type in sorted(edge_types_used):
+        style = edge_styles.get(edge_type, {"color": "#888888", "label": edge_type})
+        color = style.get("color", "#888888")
+        label = style.get("label", edge_type)
+        edge_legend_html += f'''<label class="legend-item"><input type="checkbox" checked data-edge-type="{edge_type}"><span class="legend-color" style="background:{color}"></span> {label}</label>\n                    '''
 
     # Get description from metadata
     description = data.get("metadata", {}).get("description", "Click a node to explore")
@@ -421,13 +450,21 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
             </div>
             <div id="legend">
-                <div class="legend-title">Filter by Type (click to toggle)</div>
+                <div class="legend-title">Node Types</div>
                 <div class="legend-items">
                     {legend_items_html}
                 </div>
                 <div class="filter-controls">
-                    <button class="filter-btn" onclick="showAll()">Show All</button>
-                    <button class="filter-btn" onclick="hideAll()">Hide All</button>
+                    <button class="filter-btn" onclick="showAllNodes()">All Nodes</button>
+                    <button class="filter-btn" onclick="hideAllNodes()">None</button>
+                </div>
+                <div class="legend-title" style="margin-top: 15px;">Edge Types</div>
+                <div class="legend-items" id="edge-legend">
+                    {edge_legend_html}
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-btn" onclick="showAllEdges()">All Edges</button>
+                    <button class="filter-btn" onclick="hideAllEdges()">None</button>
                 </div>
             </div>
         </div>
@@ -520,12 +557,16 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}
         }}
 
-        // Track which groups are visible - initialize from data
+        // Track which groups (nodes) are visible - initialize from data
         const allGroups = Object.keys(groupsData);
         const visibleGroups = new Set(allGroups);
 
-        // Attach event listeners to legend checkboxes
-        document.querySelectorAll('#legend input[type="checkbox"]').forEach(cb => {{
+        // Track which edge types are visible
+        const allEdgeTypes = [...new Set(linksData.map(l => l.edgeType))];
+        const visibleEdgeTypes = new Set(allEdgeTypes);
+
+        // Attach event listeners to node type checkboxes
+        document.querySelectorAll('#legend input[data-group]').forEach(cb => {{
             cb.addEventListener('change', function() {{
                 const group = this.dataset.group;
                 if (this.checked) {{
@@ -537,33 +578,69 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }});
         }});
 
-        function showAll() {{
+        // Attach event listeners to edge type checkboxes
+        document.querySelectorAll('#edge-legend input[data-edge-type]').forEach(cb => {{
+            cb.addEventListener('change', function() {{
+                const edgeType = this.dataset.edgeType;
+                if (this.checked) {{
+                    visibleEdgeTypes.add(edgeType);
+                }} else {{
+                    visibleEdgeTypes.delete(edgeType);
+                }}
+                applyFilters();
+            }});
+        }});
+
+        function showAllNodes() {{
             allGroups.forEach(g => visibleGroups.add(g));
-            updateCheckboxes();
+            updateNodeCheckboxes();
             applyFilters();
         }}
 
-        function hideAll() {{
+        function hideAllNodes() {{
             visibleGroups.clear();
-            updateCheckboxes();
+            updateNodeCheckboxes();
             applyFilters();
         }}
 
-        function updateCheckboxes() {{
-            document.querySelectorAll('#legend input[type="checkbox"]').forEach(cb => {{
+        function showAllEdges() {{
+            allEdgeTypes.forEach(e => visibleEdgeTypes.add(e));
+            updateEdgeCheckboxes();
+            applyFilters();
+        }}
+
+        function hideAllEdges() {{
+            visibleEdgeTypes.clear();
+            updateEdgeCheckboxes();
+            applyFilters();
+        }}
+
+        function updateNodeCheckboxes() {{
+            document.querySelectorAll('#legend input[data-group]').forEach(cb => {{
                 const group = cb.dataset.group;
                 cb.checked = visibleGroups.has(group);
             }});
         }}
 
+        function updateEdgeCheckboxes() {{
+            document.querySelectorAll('#edge-legend input[data-edge-type]').forEach(cb => {{
+                const edgeType = cb.dataset.edgeType;
+                cb.checked = visibleEdgeTypes.has(edgeType);
+            }});
+        }}
+
         function applyFilters() {{
+            // Filter nodes by group
             const filteredNodes = nodesData.filter(node => visibleGroups.has(node.group));
             const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
 
+            // Filter links by node visibility AND edge type
             const filteredLinks = linksData.filter(link => {{
                 const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
                 const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-                return filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId);
+                const nodeVisible = filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId);
+                const edgeVisible = visibleEdgeTypes.has(link.edgeType);
+                return nodeVisible && edgeVisible;
             }});
 
             graph.graphData({{
