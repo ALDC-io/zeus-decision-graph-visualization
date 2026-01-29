@@ -19,7 +19,7 @@ This project visualizes the Zeus Memory decision graph, showing how decisions, r
 - **8 node types** with color-coded filtering
 - **6 edge types** with independent filtering
 - **Collapsible toolbar** - compact UI with expandable filter sections
-- **VR support** - WebXR compatible for VR headsets
+- **3D navigation** - Orbit controls for rotation, zoom, and pan
 - **Security filtering** - Confidential content and secrets redacted
 
 ## Interaction
@@ -29,7 +29,7 @@ This project visualizes the Zeus Memory decision graph, showing how decisions, r
 - **Drag** nodes to reposition
 - **Filter** by node/edge type using toolbar chips
 - **Toggle** between 2D and 3D views
-- **VR Mode** - "Enter VR" button for WebXR headsets
+- **Camera reset** - Return to default view
 
 ## Roadmap: Scaling to 3M+ Memories
 
@@ -45,10 +45,10 @@ The current visualization shows ~200 nodes. To scale to Zeus Memory's 3M+ memori
 - Store (pos_x, pos_y) positions in PostgreSQL
 - Generate cluster labels via LLM summarization
 
-### Phase 3: Progressive Loading API
-- Tile-based endpoints: `/api/graph/tiles/{zoom}/{x}/{y}`
-- Viewport queries with spatial indexing
-- Redis cache for hot clusters
+### Phase 3: Progressive Loading API ✅
+- FastAPI server at `src/api_server.py`
+- Endpoints: `/api/overview`, `/api/l2/{id}`, `/api/l1/{id}`, `/api/memory/{id}`
+- Loads pre-computed positions from Phase 2
 
 ### Phase 4: Semantic Zoom Frontend
 - Switch to Sigma.js (WebGL, handles 50K+ nodes)
@@ -97,10 +97,16 @@ python3 -m http.server 8889 -d output/html
 ├── README.md                       # This file
 ├── RESEARCH_GRAPH_CONNECTIVITY.md  # Edge generation research
 ├── src/
+│   ├── api_server.py               # FastAPI progressive loading API
+│   ├── cluster_memories.py         # Phase 1: Leiden clustering
+│   ├── compute_layout.py           # Phase 2: ForceAtlas2 layout
 │   ├── extract_zeus_data.py        # Zeus data extraction + edge generation
 │   └── generate_3d.py              # 3D visualization generator
-├── data/examples/
-│   └── zeus_decisions.json         # Extracted graph data
+├── data/
+│   ├── clustering_results.json     # 50K memories with L1/L2 clusters
+│   ├── layout_results.json         # Pre-computed x,y positions
+│   └── examples/
+│       └── zeus_decisions.json     # Sample graph data (210 nodes)
 └── output/html/
     └── zeus_decision_graph.html    # Interactive visualization
 ```
