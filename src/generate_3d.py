@@ -642,7 +642,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     node.fx = node.x;
                     node.fy = node.y;
                     node.fz = node.z;
-                }});
+                }})
+                .enableNavigationControls(true)
+                .enableVRMode(true);  // Adds "Enter VR" button for WebXR headsets
 
             // Set initial camera position
             setTimeout(() => {{
