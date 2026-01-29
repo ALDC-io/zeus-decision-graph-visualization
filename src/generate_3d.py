@@ -288,7 +288,52 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .node-description {{
             color: #444;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            max-height: 150px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }}
+        .node-description.expanded {{
+            max-height: none;
+        }}
+        .expand-btn {{
+            color: #3182ce;
+            font-size: 12px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: inline-block;
+        }}
+        .expand-btn:hover {{
+            text-decoration: underline;
+        }}
+        .view-full-link {{
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 6px 12px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+        }}
+        .view-full-link:hover {{
+            background: #2d4a7c;
+        }}
+        .node-meta {{
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }}
+        .node-meta span {{
+            display: block;
+            margin-bottom: 4px;
+        }}
+        .node-meta .label {{
+            color: #666;
+            font-weight: 500;
         }}
         .connections-header {{
             font-size: 14px;
@@ -512,7 +557,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                             <div class="node-tier" id="node-tier"></div>
                         </div>
                     </div>
+                    <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
+                    <span class="expand-btn" id="expand-btn" onclick="toggleDescription()">Show more ▼</span>
+                    <a class="view-full-link" id="view-full-link" href="#" target="_blank">View in Zeus Memory →</a>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                 </div>
@@ -776,6 +824,48 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }});
         }}
 
+        // Toggle description expansion
+        function toggleDescription() {{
+            const desc = document.getElementById('node-description');
+            const btn = document.getElementById('expand-btn');
+            if (desc.classList.contains('expanded')) {{
+                desc.classList.remove('expanded');
+                btn.textContent = 'Show more ▼';
+            }} else {{
+                desc.classList.add('expanded');
+                btn.textContent = 'Show less ▲';
+            }}
+        }}
+
+        // Navigate to a node by ID (works even if filtered out)
+        function navigateToNode(nodeId) {{
+            // First check if node is in current graph view
+            let targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+
+            // If not found in filtered view, get from full node list
+            if (!targetNode) {{
+                targetNode = nodeMap[nodeId];
+                if (targetNode) {{
+                    // Make sure the node's group is visible
+                    visibleGroups.add(targetNode.group);
+                    updateNodeChips();
+                    applyFilters();
+                    // Now get the node from the updated graph
+                    targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                }}
+            }}
+
+            if (targetNode) {{
+                selectNodeOnly(targetNode);
+                // Pan to the node
+                graph.cameraPosition(
+                    {{ x: targetNode.x, y: targetNode.y, z: 300 }},
+                    targetNode,
+                    500
+                );
+            }}
+        }}
+
         // Single click - just select and populate sidebar
         function selectNodeOnly(node) {{
             selectedNode = node;
@@ -791,7 +881,32 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             document.getElementById('placeholder').style.display = 'none';
             document.getElementById('node-info').classList.add('active');
             document.getElementById('node-title').textContent = node.name;
-            document.getElementById('node-description').textContent = node.description || 'No description available.';
+
+            // Set description and reset expansion state
+            const descEl = document.getElementById('node-description');
+            descEl.textContent = node.description || 'No description available.';
+            descEl.classList.remove('expanded');
+            document.getElementById('expand-btn').textContent = 'Show more ▼';
+
+            // Show/hide expand button based on content length
+            const expandBtn = document.getElementById('expand-btn');
+            expandBtn.style.display = (node.description && node.description.length > 200) ? 'inline-block' : 'none';
+
+            // Set Zeus Memory link
+            const linkEl = document.getElementById('view-full-link');
+            if (node.id && node.id.match(/^[0-9a-f]{{8}}-/)) {{
+                linkEl.href = `https://zeus-api.jkode.cloud/api/memory/${{node.id}}`;
+                linkEl.style.display = 'inline-block';
+            }} else {{
+                linkEl.style.display = 'none';
+            }}
+
+            // Show metadata
+            const metaEl = document.getElementById('node-meta');
+            metaEl.innerHTML = `
+                <span><span class="label">ID:</span> ${{node.id.substring(0, 8)}}...</span>
+                <span><span class="label">Type:</span> ${{node.groupLabel || node.group}}</span>
+            `;
 
             // Show logo if available
             const logoEl = document.getElementById('node-logo');
@@ -826,16 +941,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 li.addEventListener('click', function(e) {{
                     e.preventDefault();
                     e.stopPropagation();
-                    const targetNode = graph.graphData().nodes.find(n => n.id === conn.nodeId);
-                    if (targetNode) {{
-                        selectNodeOnly(targetNode);
-                        // Pan to the node
-                        graph.cameraPosition(
-                            {{ x: targetNode.x, y: targetNode.y, z: 300 }},
-                            targetNode,
-                            500
-                        );
-                    }}
+                    navigateToNode(conn.nodeId);
                 }});
                 connectionsList.appendChild(li);
             }});
