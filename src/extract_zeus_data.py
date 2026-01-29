@@ -95,13 +95,13 @@ def sanitize_secrets(text):
     return text
 
 
-def clean_text(text, max_len=80):
-    """Clean text for display."""
+def clean_text(text, max_len=None):
+    """Clean text for display. If max_len is None, returns full text."""
     if not text:
         return "Untitled"
     text = sanitize_secrets(text)
     cleaned = ' '.join(text.split())
-    if len(cleaned) > max_len:
+    if max_len and len(cleaned) > max_len:
         cleaned = cleaned[:max_len-3] + "..."
     return cleaned
 
@@ -129,10 +129,17 @@ def extract_nodes(cur):
         node_id = str(decision_id)
         node_ids.add(node_id)
 
+        # Build full content with action, reasoning, and confidence
+        full_content = clean_text(action)
+        if reasoning:
+            full_content += f"\n\nReasoning: {clean_text(reasoning)}"
+        if confidence:
+            full_content += f"\n\nConfidence: {confidence}"
+
         nodes.append({
             "id": node_id,
             "label": clean_text(action, 50),
-            "title": clean_text(action, 300) + (f"\n\nConfidence: {confidence}" if confidence else ""),
+            "title": full_content,  # Full content for modal display
             "tier": 1,
             "group": "decision",
             "size": 25 + (int(confidence * 10) if confidence else 0),
@@ -194,7 +201,7 @@ def extract_nodes(cur):
         nodes.append({
             "id": node_id,
             "label": clean_text(content, 50),
-            "title": clean_text(content, 400),
+            "title": clean_text(content),  # Full content for modal display
             "tier": tier_map.get(source, 3),
             "group": source if source in GROUPS else "cce",
             "size": size_map.get(source, 15),
