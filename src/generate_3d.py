@@ -416,15 +416,21 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             background: #f8f9fa;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
             border-left: 4px solid #e0e0e0;
             display: flex;
             align-items: center;
             gap: 10px;
+            user-select: none;
         }}
         .connection-item:hover {{
             background: #e8f4fd;
             border-left-color: #3182ce;
+            transform: translateX(3px);
+        }}
+        .connection-item:active {{
+            background: #d0e8fa;
+            transform: translateX(5px);
         }}
         .connection-item .conn-logo {{
             width: 32px;
@@ -879,8 +885,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     node.fy = node.y;
                     node.fz = node.z;
                 }})
-                .enableNavigationControls(true)
-                .enableVRMode(true);  // Adds "Enter VR" button for WebXR headsets
+                .enableNavigationControls(true);
 
             // Set initial camera position
             setTimeout(() => {{
@@ -930,8 +935,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         // Navigate to a node by ID (works even if filtered out)
         function navigateToNode(nodeId) {{
+            console.log('navigateToNode called with:', nodeId);
             // First check if node is in current graph view
             let targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+            console.log('Found in current view:', !!targetNode);
 
             // If not found in filtered view, get from full node list
             if (!targetNode) {{
@@ -1020,11 +1027,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                         <div class="relation">${{conn.relationType}}</div>
                     </div>
                 `;
-                li.addEventListener('click', function(e) {{
+                li.onclick = function(e) {{
+                    console.log('Connection clicked:', conn.nodeId, connNode.name);
                     e.preventDefault();
                     e.stopPropagation();
                     navigateToNode(conn.nodeId);
-                }});
+                }};
                 connectionsList.appendChild(li);
             }});
 
