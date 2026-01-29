@@ -786,14 +786,6 @@
       "size": 10
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10
-    },
-    {
       "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "label": "Prevention systems operational on Odin. Monitor...",
       "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
@@ -810,20 +802,20 @@
       "size": 10
     },
     {
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
       "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "label": "Odin node successfully federated with Zeus Memo...",
       "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
       "tier": 4,
       "group": "cce_system",
       "size": 10
-    },
-    {
-      "id": "1847c602-74bb-4ff9-b31c-37eaeaa9c8b6",
-      "label": "# CCE Decision: Polyrepo Strategy for Project D...",
-      "title": "# CCE Decision: Polyrepo Strategy for Project Deliverables **Decision ID**: CCE-2026-01-28-REPO-STRATEGY **Date**: 2026-01-28 **Status**: Accepted **Decided By**: JK ## Context CCE (Claude Code Enhanced) generates various project deliverables including visualizations, tools, integrations, and standalone applications. We needed to decide how to organize these in GitHub. ## Decision **Use Polyrep...",
-      "tier": 1,
-      "group": "cce_decision_log",
-      "size": 25
     },
     {
       "id": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
@@ -986,596 +978,604 @@
       "size": 15
     },
     {
-      "id": "e67ea1ab-c81f-4e9f-9c25-8fae6e9a9d8a",
-      "label": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classific...",
-      "title": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classification\": \"JK CONFIDENTIAL\", \"last_updated\": \"2026-01-09\", \"description\": \"ZMC Fortress Validation System Configuration - NBC Approved Dec 19, 2025; Updated with Capital Bible constraints (P&I+Tax drag), Fortress Plan v5.6, JK Salary Policy v1.1\", \"authoritative_sources\": [ \"Letter_of_Approval_December_2025.md (NBC - Capital Bible)\", \"ZMC_Fortress_Pl...",
+      "id": "8b2e3d47-e141-4bd3-a563-f3e1acb67b78",
+      "label": "TASK: PRD Review: Atlas \u2014 3-Pane MD-First Works...",
+      "title": "TASK: PRD Review: Atlas \u2014 3-Pane MD-First Workspace with Claude Code Integration Status: In Progress Assigned to: JK Board: the-olds Tenant: ALDC Management (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) PRD SUMMARY: Atlas is a standalone 3-pane markdown-first workspace component for the CCE ecosystem. ## Architecture - Left: Hierarchical tree navigation with search - Middle: Markdown editor with versi...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "15f8316c-b208-4c82-bad1-69dbb9a617e0",
-      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
-      "title": "{ \"simulation_params\": { \"num_simulations\": 10000, \"years\": 10, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69181.96628738304, \"median\": 67931.58151185855, \"std\": 25307.560278457924, \"5th_percentile\": 33186.0, \"95th_percentile\": 113847.18705756754 }, \"aldc_revenue\": { \"mean\": 846408.1191678448, \"median\": 847127.6598355117 }, \"t...",
+      "id": "6c1d5e3d-9535-4488-a678-5ff0b2a89df5",
+      "label": "Atlas: 3-Pane Markdown-First Workspace - PRD Re...",
+      "title": "Atlas: 3-Pane Markdown-First Workspace - PRD Review Atlas is a markdown-first, AI-assisted workspace integrated into Eclipse platform. Features: - 3-pane layout (Tree | Document | Agent) - Markdown rendering with syntax highlighting - Document versioning and diff viewer - Claude Agent integration for document generation and revisions - Search and keyboard navigation - Dark mode support Tech: Ne...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "2e5bdb53-58f1-45f9-8aff-e69614c5a672",
-      "label": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Val...",
-      "title": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Validation System\", \"version\": \"1.0.0\", \"classification\": \"JK CONFIDENTIAL\", \"generated_at\": \"2026-01-11T12:11:55.627247\" }, \"overall_status\": \"pass\", \"summary\": { \"total\": 13, \"passed\": 13, \"failed\": 0, \"warnings\": 0, \"critical\": 0, \"skipped\": 0, \"errors\": 0 }, \"plans_validated\": [ \"zmc_fortress\", \"aldc\", \"lcmf\" ], \"results_by_category\": { \"capital_d...",
+      "id": "f7b14cc5-ce26-4068-91d0-561d638cc7ab",
+      "label": "# Atlas: 3-Pane Markdown-First Workspace with C...",
+      "title": "# Atlas: 3-Pane Markdown-First Workspace with Claude Code Integration **Atlas** is a feature integrated into the Eclipse platform that provides a markdown-first, AI-assisted workspace for managing documents, organizing hierarchies, and collaborating with Claude. ## 3-Pane Layout - Left Pane: Hierarchical tree navigation with search - Middle Pane: Markdown document viewer/editor with revision hi...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "f4d376f3-f1a1-4514-9440-91415511744c",
-      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
-      "title": "{ \"simulation_params\": { \"num_simulations\": 10000, \"years\": 10, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69181.96628738304, \"median\": 67931.58151185855, \"std\": 25307.560278457924, \"5th_percentile\": 33186.0, \"95th_percentile\": 113847.18705756754 }, \"aldc_revenue\": { \"mean\": 846408.1191678448, \"median\": 847127.6598355117 }, \"t...",
+      "id": "eef60f0b-55fe-424a-8615-b03ab603542b",
+      "label": "\ud83d\udccb Test task creation via API",
+      "title": "\ud83d\udccb Test task creation via API",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "d24e0bcf-ce31-4715-b5a6-a22665862650",
-      "label": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Val...",
-      "title": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Validation System\", \"version\": \"1.0.0\", \"classification\": \"JK CONFIDENTIAL\", \"generated_at\": \"2026-01-11T12:11:55.627247\" }, \"overall_status\": \"pass\", \"summary\": { \"total\": 13, \"passed\": 13, \"failed\": 0, \"warnings\": 0, \"critical\": 0, \"skipped\": 0, \"errors\": 0 }, \"plans_validated\": [ \"zmc_fortress\", \"aldc\", \"lcmf\" ], \"results_by_category\": { \"capital_d...",
+      "id": "0ab0cd0f-eda2-4ec0-bdd9-68818af4a6da",
+      "label": "Team task test",
+      "title": "Team task test",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "825d6bb2-a122-43de-8d02-0aadf370a42f",
-      "label": "# LCMF - OpCo Level Index **Classification:** C...",
-      "title": "# LCMF - OpCo Level Index **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 1.0 (Framework - Awaiting Content) --- ## PURPOSE This folder is reserved for **LCMF OpCo documents** - documentation specific to LC Moran Farms LTD (operating company level). These documents will address: - **LCMF capital strategy** (equipment financing, land op...",
+      "id": "c0b1716d-7a1f-4ec1-a4f9-20585556a3af",
+      "label": "# Enterprise Intelligence: Market Research & Co...",
+      "title": "# Enterprise Intelligence: Market Research & Competitive Analysis Research Date: December 20, 2025 | Prepared for: ALDC Strategic Planning ## ALDC Enterprise Intelligence Vision Mission: Make Data Speak Human ## ENTERPRISE INTELLIGENCE ARCHITECTURE ``` ENTERPRISE INTELLIGENCE ARCHITECTURE \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502 \u2502 \u2502 \u250c\u2500\u2500\u2500\u2500...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "ee8d2c5c-0537-41a0-976c-878e0366dbf6",
-      "label": "# ZMC Fortress Validation Report: FY2026 Financ...",
-      "title": "# ZMC Fortress Validation Report: FY2026 Financial Model with Lori Hire **Classification:** JK CONFIDENTIAL **Generated:** 2025-12-16 **Model Version:** FY2026 v4.0 (Lori Hire Update) **Validator:** ZMC Fortress Financial Validation Framework v1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 ZMC FORTRESS VALIDATION DASHBOARD \u2551 \u2551...",
+      "id": "04f4df0a-8580-48d5-8d0d-18a609bba106",
+      "label": "# Enterprise Intelligence Research ## Overview ...",
+      "title": "# Enterprise Intelligence Research ## Overview Enterprise Intelligence (EI) is the systematic collection, analysis, and application of business data to drive strategic decision-making. ## Key Research Areas - AI-Powered Analytics Platforms - Real-time Decision Support Systems - Data Governance Frameworks - Knowledge Management Integration - Predictive Business Intelligence ## Current Findings O...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "c4a170a2-5a7d-480f-92ae-7f311d45d698",
-      "label": "# QBO Parser Parse QuickBooks Online Profit & L...",
-      "title": "# QBO Parser Parse QuickBooks Online Profit & Loss CSV exports into structured financial data for dashboards and analysis. ## When to Use This Skill - Importing QBO/QuickBooks Profit & Loss data into applications - Parsing P&L by Month CSV exports from QuickBooks Online - Converting CSV financial reports to structured JSON/TypeScript - Building financial dashboards that consume QBO exports - Ag...",
+      "id": "c4cdc78e-974a-4dde-b0e9-4f03a46ba414",
+      "label": "TASK: Review AFFiNE Integration Research with L...",
+      "title": "TASK: Review AFFiNE Integration Research with Lori & Marshall Assigned: john.moran@aldc.io Participants: Lori Beck, Marshall Johnston Priority: High Due: 2025-12-23 KEY DISCUSSION POINTS: 1. WebSocket Authentication Fails - Despite valid auth tokens, space:join returns success:false. Server expects Buffer not base64. 2. Direct DB Writes Create Blank Pages - Pages written directly to PostgreSQL ...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "c8762435-ff34-41f0-b0db-75405d123964",
-      "label": "# Financial Validation Framework Validate multi...",
-      "title": "# Financial Validation Framework Validate multi-entity financial structures to prevent capital double-counting, constraint violations, cash flow timing issues, and stress test failures. ## When to Use This Skill - Validating holding company / operating company structures - Checking capital allocations across ZMC entities (ZMC HoldCo, ALDC OpCo, LCMF OpCo) - Preventing double-counting of interco...",
+      "id": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "label": "Failed Approaches - Zeus Threads Migration (202...",
+      "title": "Failed Approaches - Zeus Threads Migration (2025-12-17) Approach 1: Looking for collections in meta.pages parentId - What we tried: Checking parentId property on pages - Why it failed: Collections are saved filter views in setting.collections, not folder hierarchies - Time: 15 min - DAA ID: 699c27d9-4296-4b91-acc4-31d9983f46c1 Approach 2: Looking for collections in db$...$folders - What we trie...",
       "tier": 3,
-      "group": "cce",
+      "group": "cce_failed_approach",
       "size": 15
     },
     {
-      "id": "cfed72d2-c80e-4f06-8ae8-4760088f78a1",
-      "label": "# ZMC Fortress Analysis - Document Index **Last...",
-      "title": "# ZMC Fortress Analysis - Document Index **Last Updated:** January 1, 2026 **Classification:** JK CONFIDENTIAL **Repository:** `/home/aldc/cce-production/projects/zmc_fortress/` --- ## Core Financial Analysis Documents ### 1. JK Paycheck Reconciliation - **File:** `JK_PAYCHECK_RECONCILIATION.md` - **Zeus Memory ID:** 63be4619-add7-49ac-a5ff-83acfe12fcb2 - **Date:** January 1, 2026 - **Scope:** ...",
+      "id": "f6db053f-c8aa-4b92-b86c-b3cd58b75998",
+      "label": "## Zeus Project Hierarchy Convention for AFFiNE...",
+      "title": "## Zeus Project Hierarchy Convention for AFFiNE Sync ### Folder Structure All projects should follow this hierarchy in the zeus-memory repo: ``` zeus-memory/docs/projects/YYYY-MM-DD-project-name/ \u251c\u2500\u2500 PRD.md # Full PRD document (required) \u251c\u2500\u2500 PROJECT_PLAN.md # Project tracking and status (required) \u251c\u2500\u2500 AFFINE_EXPORT.md # AFFiNE-ready formatted markdown (required) \u2514\u2500\u2500 architecture/ # Optional sub...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "f5c26e6a-762d-4cf7-9e94-1eb14cefaea1",
-      "label": "# ALDC FY26 Financial Plan - START HERE **Date:...",
-      "title": "# ALDC FY26 Financial Plan - START HERE **Date:** December 26, 2025 **Status:** COMPLETE & AWAITING DECISIONS **Deadline for Decisions:** January 1, 2026 --- ## \ud83c\udfaf Quick Navigation This package contains **13 documents** totaling **~200KB** of detailed financial analysis. Here's how to navigate: ### For a Quick Understanding (15 minutes) 1. **Read this file** (you are here) 2. Read **`FY26_REALIS...",
+      "id": "468164f2-b6a5-486c-9d5a-6dab8d64a83d",
+      "label": "test",
+      "title": "test",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "38f4785b-31dd-4eee-b674-b37f69130932",
-      "label": "# ALDC FY26 Revised Strategy: $2M Capital Acces...",
-      "title": "# ALDC FY26 Revised Strategy: $2M Capital Access Changes Everything **Date:** December 26, 2025 (Updated) **Status:** GAME CHANGER - Complete Strategy Revision Required **Classification:** JK CONFIDENTIAL --- ## Executive Summary: The New Reality **Previous Constraint:** $350K LOC facility (tight liquidity) **New Reality:** $2M capital access available (abundant liquidity) **Impact:** Transform...",
+      "id": "4ba5f9cf-0167-4ea4-8fc7-109520abc859",
+      "label": "test",
+      "title": "test",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "3fde19f6-7be6-4a8a-883f-1f6f7de1ef34",
-      "label": "# JK Paycheck Analysis - ALDC FY26 v2.5 & ZMC F...",
-      "title": "# JK Paycheck Analysis - ALDC FY26 v2.5 & ZMC Fortress v2.0 Reconciliation **Classification:** JK CONFIDENTIAL **Date:** January 1, 2026 **Analysis Period:** FY26 (Oct 2025 - Sep 2026) **Source Documents:** - ALDC FY26 Financial Plan v2.5 (Dec 28, 2025) - ZMC Fortress Plan v2.0 (Oct 17, 2025) - ALDC FY26 Month-by-Month Cashflow (Dec 26, 2025) --- ## EXECUTIVE SUMMARY Your paycheck structure ope...",
+      "id": "63453e5e-717c-48f0-abf9-3c35c480ce17",
+      "label": "mcp test",
+      "title": "mcp test",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "259f8490-afd4-47a9-8c34-127a94b80df2",
-      "label": "# Car Payment Affordability Analysis ## ZMC For...",
-      "title": "# Car Payment Affordability Analysis ## ZMC Fortress Capital Impact Assessment **Date:** January 1, 2026 **Classification:** JK CONFIDENTIAL **Scope:** Evaluating feasibility of adding two car payments ($850 \u00d7 2) to current ZMC contribution structure --- ## CURRENT STATE (JANUARY 2026) ### Your After-Tax Paycheck - **Gross Monthly:** $24,000 - **After-Tax:** $13,920 - **ZMC Contribution:** $10,...",
+      "id": "690adc27-4984-4da0-aa0d-f087824eb02e",
+      "label": "# CCE Integration: Notion + Zeus Memory How Cla...",
+      "title": "# CCE Integration: Notion + Zeus Memory How Claude Code Enhanced (CCE) connects to Notion and Zeus Memory for persistent documentation and memory. ## Authentication ### Notion API - **Method**: Internal Integration Token - **Token Format**: `ntn_xxx` (starts with ntn_) - **Current Token**: `[REDACTED]` - **API Version**: 2022-06-28 - **Docs**: https://developers.notion.com/ ### Zeus Memory API ...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "bc474507-0992-4c25-8192-fb11c59f5139",
-      "label": "# ALDC FY26 Month-by-Month Cashflow Plan - Docu...",
-      "title": "# ALDC FY26 Month-by-Month Cashflow Plan - Document Guide **Generated:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Version:** 1.0 --- ## \ud83d\udcc4 Documents Included ### 1. **FY26_MOM_CASHFLOW_PLAN.md** (30 KB) - COMPREHENSIVE **Use this for:** Detailed financial planning, executive presentations, board reviews **Contains:** - Executive Summary with key metrics - Detailed revenue assumpti...",
+      "id": "f855e312-adc8-4055-aec7-54bf43e836dd",
+      "label": "Final verification test",
+      "title": "Final verification test",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "4aae439f-d51a-4859-af58-b28fe0592648",
-      "label": "# ALDC FY26 Month-by-Month Cashflow Financial P...",
-      "title": "# ALDC FY26 Month-by-Month Cashflow Financial Plan **Classification:** JK CONFIDENTIAL **Generated:** December 26, 2025 **Planning Period:** November 2025 - October 2026 (FY26) **Version:** 1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 FY26 ALDC CASHFLOW FINANCIAL PLAN \u2551 \u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550...",
+      "id": "6a791cd1-7f6f-42b7-aa8e-15dffbdae484",
+      "label": "Claude Code Template Management System v1.0 - C...",
+      "title": "Claude Code Template Management System v1.0 - Complete implementation. CLI tool (cce) for project management with commands: init, update, list, status, validate, archive, search. Features: Automated template instantiation with variable substitution, Zeus Memory integration with fallback storage, Project lifecycle tracking, Validation and compliance checking, Cross-reference support. Components:...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "a6403734-67df-4fee-823a-ac5d1ed4805c",
-      "label": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## ...",
-      "title": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## Net Position Analysis **Generated:** December 19, 2025 **Classification:** JK CONFIDENTIAL **NBC Facility:** APPROVED Dec 19, 2025 @ 4.0% fixed 12-month --- ## EXECUTIVE SUMMARY | Fiscal Year | Net Position | Status | Cumulative | |-------------|--------------|--------|------------| | **FY26** | +$158,800 | \u2705 BLACK | +$158,800 | | **FY27** | +$147,...",
+      "id": "8f4d98db-cce3-44f3-8f94-d2f5fa1428f0",
+      "label": "Claude Code Project Template v1.0 - Standardize...",
+      "title": "Claude Code Project Template v1.0 - Standardized approach for all projects. Includes: 8 First Principles, External Memory Strategy, Phase-based task tracking (Analysis, Implementation, Testing, Documentation, Monitoring), Zeus Memory integration points, Risk management, Rollback plans, and comprehensive documentation structure. Template ensures context persistence across conversations and preve...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "c1344fd8-b027-43e9-bca4-a28db0cd4109",
-      "label": "# ZMC Fortress Validation System **Classificati...",
-      "title": "# ZMC Fortress Validation System **Classification: JK CONFIDENTIAL** Automated validation system for the three-tier financial planning structure: - **ZMC Fortress Plan** - Master leverage/capital rules (HoldCo) - **ALDC Plan** - Technology company operations (OpCo) - **LCMF Plan** - Farmland operations (OpCo) ## Quick Start ```bash # Run full validation with dashboard python main.py # JSON outp...",
+      "id": "55625e6d-ffc0-48cd-9949-3808480433a6",
+      "label": "Claude Code Project Template v1.0 - Standardize...",
+      "title": "Claude Code Project Template v1.0 - Standardized approach for all projects. Includes: 8 First Principles, External Memory Strategy, Phase-based task tracking (Analysis, Implementation, Testing, Documentation, Monitoring), Zeus Memory integration points, Risk management, Rollback plans, and comprehensive documentation structure. Template ensures context persistence across conversations and preve...",
       "tier": 3,
       "group": "cce",
       "size": 15
     },
     {
-      "id": "d1114272-7ef3-4cd5-a683-869683bfe7a8",
-      "label": "# ZMC Fortress - CCE Instructions **CONFIDENTIA...",
-      "title": "# ZMC Fortress - CCE Instructions **CONFIDENTIAL - JK Personal** This repo contains the ZMC Fortress financial validation framework for managing budgets across ZMC entities (ZMC HoldCo, ALDC OpCo, LCMF OpCo). ## Classification - **Owner**: John Moran (JK) - **Access**: Private - JK only - **NOT for**: ALDC team repo (claude_code_enhanced) ## Repository Structure ``` zmc_fortress/ \u251c\u2500\u2500 config/ # ...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "d48814b2-6f28-4352-85c5-01700cb817d6",
+      "label": "# Avoma Production Service - Architecture Docum...",
+      "title": "# Avoma Production Service - Architecture Documentation Update ## Following First Principles: NO HALLUCINATIONS, ROBUST = TRUST, VIRTUOUS CYCLE ## Executive Summary The Avoma Production Service has been thoroughly tested and validated. The misleading logging issue reported in the previous session has been **ALREADY FIXED** in the production code. The service now correctly distinguishes between ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "15cc1433-4324-4885-ac63-f5afde7fda0d",
-      "label": "# ZMC Fortress Validation System - Quick Start ...",
-      "title": "# ZMC Fortress Validation System - Quick Start **Version:** 2.2.0 **Status:** Ready for deployment with updated parameters (Fortress Plan v5.6, JK Salary v1.1, NBC Capital Bible) --- ## Current System Configuration ``` \ud83d\udcca Validation Status: \u2705 ALL CHECKS PASS (13/13) \ud83d\udcdd Configuration Version: 2.2.0 \ud83d\udcc5 Last Updated: 2026-01-11 \ud83d\udd10 Classification: JK CONFIDENTIAL ``` --- ## Quick Commands ### Run Full ...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "e0cc4570-899f-4746-8fad-4ad5bceb80a8",
+      "label": "# Zeus Memory - Universal Action Items Access *...",
+      "title": "# Zeus Memory - Universal Action Items Access **TEAM ACTION ITEMS UNIVERSAL ACCESS SYSTEM** **Following First Principles: FEDERATION, BIDIRECTIONAL COMMUNICATION** **Created**: August 18, 2025 ## MANAGEMENT TEAM MEMBERS **JK (CEO)**: jk@aldc.io - Private register + team oversight **Sameer Khan**: sameer.khan@aldc.io - Team visible actions **Karen Prete**: karen.prete@aldc.io - Team visible acti...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "23e94365-cd0b-49e4-a6b5-9ffda2c268dc",
-      "label": "# ZMC Fortress Validation System **Project Name...",
-      "title": "# ZMC Fortress Validation System **Project Name:** ZMC Fortress Validation System **Project Start Date:** 2025-12-13 **External Memory Document Version:** 1.0 **Following First Principles:** YES **Project Type:** System Integration **Priority:** High **Classification:** JK CONFIDENTIAL --- ## THE 8 FIRST PRINCIPLES (CANONICAL) 1. **NO HALLUCINATIONS** - Zero tolerance for false/synthetic data 2...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "f22dc2a8-b9a6-445d-8918-69fdecf9f7a6",
+      "label": "## Zeus Memory Search Result Truncation - FFP A...",
+      "title": "## Zeus Memory Search Result Truncation - FFP Analysis & Fix **FIRST PRINCIPLES CONTEXT:** 1. NO HALLUCINATIONS: Must identify actual root cause, not assume 2. VIRTUOUS CYCLE: Fix must improve system performance 3. FEDERATION: Search must work across distributed memory 4. DATA-DRIVEN: Base solution on actual measured limits 5. LEVERAGE COGNITION: Use existing Zeus architecture 6. BIDIRECTIONAL ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "a25abfcc-e701-449b-af75-69eaa31af4a5",
-      "label": "# SR&ED Repays the Debt - Correct Model **Key I...",
-      "title": "# SR&ED Repays the Debt - Correct Model **Key Insight:** The $679,135 SR&ED payment (arriving Oct 2026) repays the entire ALDC draw + interest. ALDC is NOT carrying long-term debt. --- ## THE CORRECT CASH FLOW ### ALDC's Draw & Burn ``` Mar 31, 2026: Draw #1 arrives \u2192 ALDC gets $400-500K Apr-Sep 2026: ALDC burns capital on operations Monthly loss: -$84,634 (flat revenue scenario) Or: -$38,134 (...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "42c8ddd4-23e8-4e1a-bcac-207c4e5b8d5a",
+      "label": "# FIRST PRINCIPLES ANALYSIS - Zeus Simplified S...",
+      "title": "# FIRST PRINCIPLES ANALYSIS - Zeus Simplified System ## 1. NO HALLUCINATIONS \u2705 STRONG COMPLIANCE **Evidence:** - RSS sources: 100% verified external feeds (OpenAI, Anthropic, DeepMind, etc.) - Content deduplication: SHA256 hashing prevents duplicate storage - Source tracking: Every memory tagged with verified origin - **Risk**: \"agent\" source (85 recent records) needs verification - contains ME...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "a334de08-4b07-47da-93ee-7eca3c4f9f3c",
-      "label": "# ZMC Fortress Validation Summary - January 11,...",
-      "title": "# ZMC Fortress Validation Summary - January 11, 2026 **Classification:** JK CONFIDENTIAL **Configuration Version:** 2.2.0 **Authoritative Sources Version:** Fortress Plan v5.6 + JK Salary Policy v1.1 + NBC Capital Bible (Dec 19, 2025 Letter of Approval) **Generated:** 2026-01-11 --- ## Executive Summary **Status:** \u2705 **ALL VALIDATION CHECKS PASSED (13/13)** The ZMC Fortress system is operationa...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "6e7d8476-6ee5-4590-9533-6a7375c1bfa0",
+      "label": "Test from CCE after simplification",
+      "title": "Test from CCE after simplification",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "49338a4d-1a2e-482a-8300-d9e7ba7e2631",
-      "label": "# \ud83c\udf89 ORGANIZATION COMPLETE - Summary Report **Da...",
-      "title": "# \ud83c\udf89 ORGANIZATION COMPLETE - Summary Report **Date Completed:** January 11, 2026 **Status:** \u2705 COMPREHENSIVE RESTRUCTURING COMPLETE **Classification:** JK CONFIDENTIAL --- ## What Was Done ### 1. \u2705 Complete Directory Reorganization **MOVED:** 3 financial tracking documents to dedicated ALDC Finances subfolder - `ALDC_PnL_FY26_ONGOING.md` \u2192 ALDC Finances/ - `ALDC_PnL_Tracking_Template.json` \u2192 ALD...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "1e433ca3-76c5-4935-be91-1770300bc31c",
+      "label": "Snowflake Configuration Search Guide for Code R...",
+      "title": "Snowflake Configuration Search Guide for Code Repositories - Use this prompt to find Snowflake configurations: Search for account names with patterns SNOWFLAKE_ACCOUNT or .snowflakecomputing.com, warehouse names with SNOWFLAKE_WAREHOUSE or WH suffixes, database names with SNOWFLAKE_DATABASE or _DB suffixes, schema names, and role names. Find credentials like SNOWFLAKE_USER and SNOWFLAKE_PASSWOR...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "f0b461e7-793d-4fdd-914f-408c391645a2",
-      "label": "# National Bank of Canada - Transaction Outline...",
-      "title": "# National Bank of Canada - Transaction Outline for AG Financing **Document Type:** Discussion Paper (For Discussion Purposes Only) **Date:** Friday, December 12th, 2025 **Status:** Subject to Credit Approval --- ## Parties | Role | Entity | |------|--------| | **Borrower** | LC Moran Farms LTD. | | **Lender** | National Bank of Canada | | **Contact** | St\u00e9phane Danr\u00e9, PAg - Manager of Commerci...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "7a86e600-138e-4798-8c64-842c619d7b0d",
+      "label": "Zeus Memory Federation and Claude Memory are co...",
+      "title": "Zeus Memory Federation and Claude Memory are complementary systems creating collective intelligence. Claude Memory provides individual agent persistence (personal context across sessions). Zeus Federation provides organizational knowledge base (shared learning across all agents). Together they form a bi-directional learning system where individual discoveries become collective wisdom. Architect...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "465c9c1f-8e10-47f1-9283-28813d305443",
-      "label": "# ZMC Fortress - Farm Capital Takeout (25-12) #...",
-      "title": "# ZMC Fortress - Farm Capital Takeout (25-12) ## Comprehensive Financial Planning & Execution Framework **Last Updated:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** ACTIVE --- ## \ud83d\udcc1 Master Directory Structure ``` \\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\25-12 Farm Capital Takeout\\ \u2502 \u251c\u2500\u2500 \ud83d\udccb ALDC Canonical Plans/ [ALDC Operating Company - Strategic & Financi...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "6820a1d1-3489-4beb-8580-40877847d631",
+      "label": "CCE Integration Test: Verified Zeus iOS solutio...",
+      "title": "CCE Integration Test: Verified Zeus iOS solution running on port 8778",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "24a54b03-e926-424f-9542-499958a0434f",
-      "label": "# ZMC Fortress - Workstation Pickup Guide **Las...",
-      "title": "# ZMC Fortress - Workstation Pickup Guide **Last Updated:** January 11, 2026 **Status:** READY FOR ANOTHER WORKSTATION **Commit ID:** 9ebe450db77cd52afc10744232c9ee1cfdd1fa4c **Repository:** `/home/aldc/zmc_fortress` --- ## WHAT WAS UPDATED ### \ud83c\udfaf CORE DECISION: ALDC Draw Strategy Finalized **Decision:** Draw #1 ONLY ($500-600K) - 100% self-liquidating via SR&ED **Why:** - Borrow $500-600K on Ma...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "0e2efc71-483f-417d-9371-9fc2d6456ac7",
+      "label": "JK Filer Critical Discovery - The system has NE...",
+      "title": "JK Filer Critical Discovery - The system has NEVER actually moved emails. Root cause: (1) Wrong tenant ID in configs (677b5707... does not exist), (2) Graph API move operations silently failing with 0 emails moved despite reporting success, (3) All JK Filer scripts were theatrical - categorizing but not executing moves. Reality: 200 inbox emails, 67% can be auto-filed (134 emails) across Client...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "d4545aff-a6a5-4dc5-91b1-4bca29602bf1",
-      "label": "# \ud83c\udfaf MASTER INDEX - Farm Capital Takeout (25-12)...",
-      "title": "# \ud83c\udfaf MASTER INDEX - Farm Capital Takeout (25-12) ## Complete Navigation & Reference Guide **Date Created:** January 11, 2026 **Last Updated:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** COMPREHENSIVE ORGANIZATION COMPLETE --- ## \ud83d\udccd START HERE If this is your first time accessing this folder: \ud83d\udc49 **Read:** `README_Farm_Capital_Takeout.md` This master README provides: - Quick-st...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "2cc156a4-3e89-40f7-82c2-4b59c4234f5f",
+      "label": "Fusion 92 - Enterprise Customer Profile: Fusion...",
+      "title": "Fusion 92 - Enterprise Customer Profile: Fusion 92 is one of our primary enterprise customers using Zeus Memory for voice assistant integration and knowledge management. They require 100% reliable search functionality for their ChatGPT and Claude voice assistants to access corporate knowledge base. Key requirements: sub-second response times, zero downtime, consistent results across all queries...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "6b263a08-f608-42fe-b56d-23eb0a1b6fed",
-      "label": "# ZMC Fortress Project - Document Index **Locat...",
-      "title": "# ZMC Fortress Project - Document Index **Location:** `\\\\192.168.22.220\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\25-12 Farm Capital Takeout\\ZMC Fortress Project` **Last Updated:** 2026-01-11 **Status:** \u2705 All documents uploaded and organized --- ## Folder Structure ``` ZMC Fortress Project/ \u251c\u2500\u2500 Config/ \u2502 \u2514\u2500\u2500 validation_rules_v2.2.0.json \u251c\u2500\u2500 Source Documents/ \u2502 \u251c\u2500\u2500 ZMC_Fortress_Plan_v5.6_F...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "4641ba43-eb47-49de-aff3-9f2ad62a3627",
+      "label": "JK Filer Recovery Complete - Implemented FFP so...",
+      "title": "JK Filer Recovery Complete - Implemented FFP solution: (1) Created reliable single-threaded service to avoid pickle errors, (2) Added cron monitoring every 5 minutes for auto-restart, (3) Established proper categorization rules for Clients/Finance/Team/Marketing/Support/Newsletters/Personal/Archive, (4) Folders already exist (409 errors), (5) Monitor script checks health via Zeus heartbeats. Sy...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "ad017233-f439-491a-befc-72644cb7ce06",
-      "label": "# ZMC Fortress - Financial Planning & Capital S...",
-      "title": "# ZMC Fortress - Financial Planning & Capital Strategy Repository **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 2.0 (Entity-Based Organization) --- ## REPOSITORY OVERVIEW This repository contains comprehensive financial planning and capital strategy documentation for **ZMC Fortress** - a holding company with two operating companies (...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "83ff5a54-9b67-4193-945a-bfaf0e302245",
+      "label": "JK Filer Service Failure Analysis - August 12, ...",
+      "title": "JK Filer Service Failure Analysis - August 12, 2025: Service was not running, causing 101 emails to accumulate in inbox with 91% miscategorized as General. Root causes: (1) No active daemon process, (2) Pickle error in multiprocessing optimization, (3) No automatic restart mechanism, (4) Wrong daemon referenced in monitor script (graph_realtime instead of jk_filer). Solutions: Implement single-...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "58abb46f-b5e4-4b6a-b886-8948d9584030",
-      "label": "# Zeus Memory Embedding API - JK Confidential T...",
-      "title": "# Zeus Memory Embedding API - JK Confidential Tenant ## Research & Documentation Complete **Date**: 2026-01-14 **Status**: \u2705 COMPLETE - PRODUCTION READY **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) --- ## What You Have Three comprehensive documentation files have been created in this directory: ### 1. **ZEUS_MEMORY_EMBEDDING_API_DOCUMENTATION.md** (27 KB) **Complete techni...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "88b7fbe5-1e16-4fd4-b563-ece0dc715a39",
+      "label": "Health check test memory",
+      "title": "Health check test memory",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "695dc066-0667-4d57-9c2e-adcbaeb2255a",
-      "label": "# Phase 1: Zeus Memory Embedding - In Progress ...",
-      "title": "# Phase 1: Zeus Memory Embedding - In Progress ## ZMC Fortress Documentation Semantic Search Integration **Status:** \u23f3 IN PROGRESS (Started: January 14, 2026 22:27 UTC) **Total Documents Found:** 131 (original estimate: 97 + additional discovery) **Classification:** JK CONFIDENTIAL --- ## EXECUTION OVERVIEW ### Agent Execution - **Agent ID:** a7b1825 - **Process:** Background batch ingestion in...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "45cb359c-aeaa-4dd3-b77d-d8e7de694c8a",
+      "label": "SESSION LEARNINGS - Avoma Integration & User Co...",
+      "title": "SESSION LEARNINGS - Avoma Integration & User Context: { \"1. AVOMA API INTEGRATION\": { \"discovery\": \"Successfully integrated Avoma meeting API\", \"key_endpoints\": [ \"/meetings requires from_date and to_date parameters\", \"/notes endpoint works but returns structured editor blocks, not raw text\", \"Transcript endpoints (/transcript, /transcripts) do not exist yet\" ], \"data_structure\": \"Meetings cont...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "fbc89c09-e100-4c1a-a8b5-21bf48c74561",
-      "label": "# SMB Share Sync Instructions - 26 ZMC Fortress...",
-      "title": "# SMB Share Sync Instructions - 26 ZMC Fortress **Objective:** Copy the organized 00_ZMC_FORTRESS folder contents from GitHub repository to the SMB share at: ``` \\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\26 ZMC Fortress\\ ``` --- ## OPTION 1: Windows Batch Script (Easiest for Windows) ### Prerequisites - Windows machine with access to `\\\\UNAS-Pro-8\\LL824` share - GitHub repo cloned or down...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "3d23c8a6-38c6-4521-943b-a35f34a467d0",
+      "label": "Avoma Meeting API Integration Complete - August...",
+      "title": "Avoma Meeting API Integration Complete - August 11, 2025 API CREDENTIALS: - API Key: uedzlvdxwl:oopk8sp834vszy84xblw - Auth Type: Bearer token - Base URL: https://api.avoma.com INTEGRATION DETAILS: - Service: lightweight_avoma_sync.py - Running: Continuous sync every 60 minutes - Database: Zeus Memory Hub (port 5436) - Source tag: avoma_sync API ENDPOINTS: - List meetings: GET /v1/meetings (req...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "f3d2707c-5d9c-4983-8a1f-add54b786bd1",
-      "label": "# Zeus Memory Embedding API Documentation ## JK...",
-      "title": "# Zeus Memory Embedding API Documentation ## JK Confidential Tenant **Generated**: 2026-01-14 **Status**: ACTIVE - Production Ready **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) **API Base URL**: https://zeus.aldc.io --- ## Executive Summary The Zeus Memory system provides a unified embedding API for all tenants including JK Confidential. The system uses **Voyage AI** as th...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "dc877c8c-15c0-48ef-8476-df22e0d67480",
+      "label": "AVOMA API ISSUE DISCOVERED: Despite calendar be...",
+      "title": "AVOMA API ISSUE DISCOVERED: Despite calendar being connected (Outlook synced to john.moran@aldc.io), the API returns 0 meetings/calls. API key uedzlvdxwl:oopk8sp834vszy84xblw is valid, user is admin, but /v1/meetings and /v1/calls both return empty arrays. This appears to be an Avoma limitation where calendar meetings are NOT exposed via API, only through web interface.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "6f17f521-fba4-44e8-831c-565bfeed1c5e",
-      "label": "# ZMC Fortress Reorganization Complete \u2705 ## Fol...",
-      "title": "# ZMC Fortress Reorganization Complete \u2705 ## Folder Structure Audit, Cleanup, and Semantic Embedding Plan **Date:** January 14, 2026 **Status:** \u2705 REORGANIZATION COMPLETE | \u23f3 EMBEDDING PLAN READY FOR EXECUTION **Classification:** JK CONFIDENTIAL --- ## WHAT WAS ACCOMPLISHED ### Phase 1: Comprehensive Folder Audit \u2705 - **Scanned:** 97 files across 13 folders - **Categories:** Financial (15), Strat...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "6be81f9a-7e0e-44e8-905c-336c4f6af6c9",
+      "label": "Avoma API Integration - Verified Working Format...",
+      "title": "Avoma API Integration - Verified Working Format: Bearer uedzlvdxwl:oopk8sp834vszy84xblw. API returns 200 OK but 0 meetings. Documentation at https://dev694.avoma.com and https://help.avoma.com/api-integration-for-avoma. API key obtained from Settings > Organization > Developer. Only Admin users can create API keys. RESTful API supports meetings, transcriptions, recordings, notes, coaching data.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "9f79187b-cf3a-4e75-b5f8-07a8e853c4da",
-      "label": "# Zeus Memory Embedding API Research - Complete...",
-      "title": "# Zeus Memory Embedding API Research - Complete Index ## JK Confidential Tenant Documentation **Research Date**: 2026-01-14 **Status**: Complete - Production Ready **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) **Total Memory**: 3,657,918 documents --- ## Documentation Files Created ### 1. Full API Documentation (27 KB) **File**: `/home/aldc/zmc_fortress/ZEUS_MEMORY_EMBEDDIN...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "f0065056-e416-4aaf-b2d6-c8e4c3552c36",
+      "label": "AVOMA API CREDENTIALS - User: uedzlvdxwl, Pass:...",
+      "title": "AVOMA API CREDENTIALS - User: uedzlvdxwl, Pass: oopk8sp834vszy84xblw, Format: Basic Auth or Bearer token",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "953b22a6-0086-4b61-8c49-e91fbc2513ae",
-      "label": "# Zeus Memory Embedding API - Quick Reference #...",
-      "title": "# Zeus Memory Embedding API - Quick Reference ## JK Confidential Tenant **Last Updated**: 2026-01-14 **API Base**: https://zeus.aldc.io **Tenant ID**: `b513bc6e-ad51-4a11-bea3-e3b1a84d7b55` **API Key**: `zm_admin_e5ef76af0d4a7caf696089f646a70ddf` --- ## Three Ways to Embed Documents ### 1. Store for Batch Processing (Cheapest - Use This!) **Best for**: Daily ingestion, cost optimization, non-ur...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "78026643-30b8-4965-9b7d-1e23c47745d0",
+      "label": "UNIFIED FIRST PRINCIPLES - Both Zeus foundation...",
+      "title": "UNIFIED FIRST PRINCIPLES - Both Zeus foundational (1-7) and Engineering implementation (8-16) principles now active. Zeus: NO HALLUCINATIONS, VIRTUOUS CYCLE, FEDERATION, DATA-DRIVEN, LEVERAGE COGNITION, BIDIRECTIONAL COMMUNICATION, RACING IMPROVES BREED. Engineering: Simplify then add lightness, No theatrical engineering, Radical simplification, Function over form, Silent failures, Fire and for...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "8ab9c6d6-ed7c-4535-9e40-befdbb5339b2",
-      "label": "# SMB SYNC PROCEDURE - DEFINITIVE METHOD \u2705 **Cr...",
-      "title": "# SMB SYNC PROCEDURE - DEFINITIVE METHOD \u2705 **Created:** January 12, 2026 **Status:** TESTED & VERIFIED WORKING **Method:** smbclient with credentials file authentication --- ## THE PROBLEM Direct authentication methods fail due to special characters in password: - `smbclient -U mig%'!0Range3404!'` \u2192 **FAILS** (authentication error) - `smbclient -U mig%!0Range3404!` \u2192 **FAILS** (authentication e...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "cb0b42ec-cbf7-4887-b41f-8acb3dc9ea19",
+      "label": "CCE Session - Ingestion Suite Optimization: Fix...",
+      "title": "CCE Session - Ingestion Suite Optimization: Fixed broken JK Filer, replaced jk_filer_ultimate.py with jk_filer_simple.py using keyword matching instead of AI. Created optimized_ingestion_suite.py consolidating all ingestion. Killed ghost processes. Applied first principles: racing improves breed, simplify then add lightness.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "5e4c888b-5ba8-447a-a3d5-96b574970e3b",
-      "label": "# SMB Sync Ready - 26 ZMC Fortress **Status:** ...",
-      "title": "# SMB Sync Ready - 26 ZMC Fortress **Status:** \u2705 READY FOR SYNC **Date:** January 11, 2026 **Destination:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\26 ZMC Fortress\\` --- ## What's Ready The entire **00_ZMC_FORTRESS/** folder (12 HoldCo-level documents) is prepared and ready to sync to the SMB share. ### Files to Sync (12 files, 112 KB) ``` 00_ZMC_FORTRESS/ \u251c\u2500\u2500 INDEX_ZMC_FORTRESS.md \u251c\u2500\u2500...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "7ece5b7b-1350-42a3-b57e-5059a2b00d0c",
+      "label": "Zeus Memory Radical Simplification completed Au...",
+      "title": "Zeus Memory Radical Simplification completed August 11, 2025. Applied Lotus Philosophy achieving 99.7% code reduction from 679,102 to 2,000 lines. Deleted 66,078 theatrical records and 95+ files. Reduced 46+ processes to 10. Recommended Azure B2ms migration. Full backup completed.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "03366fa2-1fd2-4c5c-8759-0e81dabe62c5",
-      "label": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classific...",
-      "title": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classification\": \"JK CONFIDENTIAL\", \"last_updated\": \"2026-01-09\", \"description\": \"ZMC Fortress Validation System Configuration - NBC Approved Dec 19, 2025; Updated with Capital Bible constraints (P&I+Tax drag), Fortress Plan v5.6, JK Salary Policy v1.1\", \"authoritative_sources\": [ \"Letter_of_Approval_December_2025.md (NBC - Capital Bible)\", \"ZMC_Fortress_Pl...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "e2bf2dea-cd43-479f-9b6e-ea016be96445",
+      "label": "Zeus Memory Radical Simplification - August 11,...",
+      "title": "Zeus Memory Radical Simplification - August 11, 2025. Applied Lotus Philosophy (Simplify, then add lightness) achieving 99.7% code reduction: 679,102 lines to 2,000 lines. Deleted 66,078 theatrical records, 95+ Python files, 7 database tables. Reduced from 46+ processes to 10 (4 essential services). Current server (48 cores, 204GB RAM) is 100X over-provisioned. Recommended migration to Azure B2...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "be7f868a-00a8-4861-8a04-f31d6a7f9c23",
-      "label": "{ \"title\": \"ZMC HoldCo - FY2026 Pro Forma Finan...",
-      "title": "{ \"title\": \"ZMC HoldCo - FY2026 Pro Forma Financial Model\", \"version\": \"1.0\", \"date\": \"2026-01-11\", \"classification\": \"JK CONFIDENTIAL\", \"income_statement\": { \"revenue\": { \"aldc_consulting\": 846000, \"aldc_sred\": 663000, \"lcmf_farm\": 652500, \"jk_contributions\": 104640, \"other_income\": 0, \"total_revenue\": 2266140 }, \"expenses\": { \"aldc_operating\": { \"jk_salary\": 288000, \"development_team\": 210000...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "fe4aadb6-2938-4cc0-9f86-a7bec9af17d7",
+      "label": "# GLA: CCE Command Troubleshooting - Exemplary ...",
+      "title": "# GLA: CCE Command Troubleshooting - Exemplary First Principles Application ## Executive Summary Session demonstrated perfect first principles problem-solving, discovering CCE is a conceptual framework not an executable, implementing elegant alias solution. ## Key Metrics - Problem Resolution Time: 6 minutes - Zeus Memories Accessed: 7 - Solution Complexity: Minimal (1 line alias) - First Princ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "2eb5b1f6-8c59-4e3a-8c45-43b3ecc192e3",
-      "label": "{ \"memory_type\": \"project_context\", \"source_tag...",
-      "title": "{ \"memory_type\": \"project_context\", \"source_tag\": \"zmc-fortress-validation-20260111\", \"title\": \"ZMC Fortress Financial System - Complete Validation & 18-Month Deployment Plan\", \"created_date\": \"2026-01-11\", \"classification\": \"JK_CONFIDENTIAL\", \"summary\": \"Comprehensive financial validation and execution plan for ZMC Fortress three-entity capital structure (ZMC HoldCo + ALDC OpCo + LCMF OpCo). A...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "2b80a196-fd4a-4539-96b5-f724565e2d23",
+      "label": "# ACTION ITEM: Zeus Stack Radical Simplificatio...",
+      "title": "# ACTION ITEM: Zeus Stack Radical Simplification ## Date Created: 2025-08-10 ## Priority: CRITICAL ## Assigned: User ## Due: 2025-08-11 ## TASK: Implement Zeus Collective Intelligence Simplification ### Context: - Discovered 15X over-engineering in Zeus stack (25+ processes for 3-process job) - Similar to Mobile MCP which had 10X over-engineering (7 containers for 2-container job) - System runn...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "3dc8d62d-3f96-4c69-904a-4476df6aed6b",
-      "label": "# ZMC Capital Advisor Framework for ALDC ## How...",
-      "title": "# ZMC Capital Advisor Framework for ALDC ## How Much Capital Should ZMC Allocate to ALDC to Hit Single-Digit % Net Profit? **Date:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Purpose:** Capital allocation model that ties ZMC funding to ALDC's target profit margin (\u00b15%) --- ## Current Problem with Existing Models ### Issue 1: ALDC Plans Are Disconnected from ZMC Capital Strategy Th...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "afdaed8d-96af-4d85-9c78-f70811a57456",
+      "label": "# CCE Command Resolution Update - 2025-08-10 ##...",
+      "title": "# CCE Command Resolution Update - 2025-08-10 ## Executive Summary Successfully resolved CCE command issue through first principles analysis. Created working alias solution after discovering CCE is a conceptual framework, not a standalone executable. ## Problem Analysis - **Issue**: \"cce\" command not found in /home/aldc/cce directory - **User Expectation**: Standalone CCE executable command - **...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "6a132fc3-60cf-440e-9ff7-f6ee3500ee9f",
-      "label": "# 26 ZMC Fortress - Master Index & Navigation G...",
-      "title": "# 26 ZMC Fortress - Master Index & Navigation Guide **Location:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress` **Purpose:** Consolidated repository for all ZMC Fortress financial planning, ALDC capital strategy, and banking coordination documents (merged from 25-12 Farm Capital Takeout + 26 ZMC Fortress) **Last Updated:** January 11, 2026 **Version:** 1.0 (Restr...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "6fd9a5dc-46ce-4300-ac17-de0587ce1478",
+      "label": "# CCE Command Resolution - First Principles Ana...",
+      "title": "# CCE Command Resolution - First Principles Analysis ## Problem Statement User reported \"cce command still isn't working\" in directory /home/aldc/cce ## Investigation Process 1. **Directory Check**: Confirmed working in /home/aldc/cce with CLAUDE.md and Zeus Memory MCP configuration 2. **Claude CLI Status**: Found claude installed at /usr/local/bin/claude, version 1.0.70 (Claude Code) 3. **CCE ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "ed86ad52-a0dc-414e-995b-2f3867f6379f",
-      "label": "# SMB SYNC HANDOFF - January 12, 2026 **Status:...",
-      "title": "# SMB SYNC HANDOFF - January 12, 2026 **Status:** \u26a0\ufe0f FINAL - SMB WRITE PERMISSION LIMITATION **Issue:** Claude Code (jkadmin user) lacks write permissions to SMB mount (owned by root) **Solution:** Manual file copy required - Files are ready for sync, awaiting user action **Created:** January 12, 2026 at 11:07 UTC --- ## FILES REQUIRING IMMEDIATE SYNC ### Primary Document (NEW - Created Jan 12,...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "af1ee876-1dfb-444a-b02b-879251b0ecf4",
+      "label": "# Zeus Mobile MCP First Principles Review - Cri...",
+      "title": "# Zeus Mobile MCP First Principles Review - Critical Learning ## Date: 2025-08-10 ## Key Insight: Over-Engineering Violation The galvanized Zeus Mobile MCP implementation scored 2.55/10 on the \"add lightness\" principle. We built 7 Docker containers and 1,300+ lines of code for what should be 200 lines and 2 containers. ## Fundamental Violations: 1. **Add Lightness**: 10x unnecessary complexity ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "bed7b39d-2987-4f17-9cf9-0ddf5574c78f",
-      "label": "# SMB Sync - Quick Reference Card **Created:** ...",
-      "title": "# SMB Sync - Quick Reference Card **Created:** January 12, 2026 **Source:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` **Status:** \u2705 CCE Skill Deployed --- ## One-Liner Upload Template ```bash cat > /tmp/.smbcredentials << 'EOF' username=mig password=!0Range3404! domain=WORKGROUP EOF chmod 600 /tmp/.smbcredentials && \\ smbclient -A /tmp/.smbcredentials //192.168.22.220/LL824 << 'EO...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "883131b9-1da5-466b-86ed-480cd59f59dd",
+      "label": "[CURRENT-AS-OF: 2025-08-10] [PROJECT: Zeus-Raci...",
+      "title": "[CURRENT-AS-OF: 2025-08-10] [PROJECT: Zeus-Racing] [TYPE: implementation] ZEUS RACING SEARCH IMPLEMENTATION - COMPLETED IMPLEMENTATION SUMMARY: 1. Temporal Prefix System: \u2705 IMPLEMENTED - Added [CURRENT-AS-OF] markers to content - Makes temporal data searchable via content field - Zero schema changes required 2. Smart Search Wrapper: \u2705 IMPLEMENTED - search_current() finds only current data - Fil...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "6588dd84-b615-4173-bebd-259e72bbd8d3",
-      "label": "# ZMC FORTRESS PLAN v5.7 \u2014 FORMAL REVIEW & RECO...",
-      "title": "# ZMC FORTRESS PLAN v5.7 \u2014 FORMAL REVIEW & RECOMMENDATION ## Architecture, Governance & Financial Validation **Reviewed by:** Claude Code (CCE) **Review Date:** January 14, 2026 **Document Status:** Board Recommendation **Classification:** JK CONFIDENTIAL --- ## EXECUTIVE SUMMARY **RECOMMENDATION: \u2705 APPROVE \u2014 v5.7 is sound, well-justified, and properly governed.** The proposed ZMC Fortress Plan...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "11028ec6-475f-4f9b-ad11-28453fda51f2",
+      "label": "RACING SEARCH SOLUTION - SYSTEMIC FIX FOR FINDI...",
+      "title": "RACING SEARCH SOLUTION - SYSTEMIC FIX FOR FINDING INFORMATION PROBLEM: Cannot find what we need when we need it (F92 showing March when August exists) ROOT CAUSES IDENTIFIED: 1. Multiple unconnected data silos (Zeus + Files + Project Knowledge) 2. Temporal blindness (cannot distinguish current from historical) 3. No unified search interface (different methods per system) 4. Content-only indexin...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "f4c303c0-9809-4177-a467-54a50eb6fb46",
-      "label": "# ZMC Fortress Session Summary - January 11, 20...",
-      "title": "# ZMC Fortress Session Summary - January 11, 2026 ## Comprehensive Financial Validation & 18-Month Deployment Analysis **Session Date:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** COMPLETE - Plan Validated, All Deliverables Generated --- ## EXECUTIVE SUMMARY The ZMC Fortress financial system has been comprehensively validated with updated parameters including actual P&I+Ta...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "e29bcfc5-4e8d-41f1-8b78-5d357bbd2999",
+      "label": "ZEUS RACING FIRST PRINCIPLES REVIEW - CLAUDE DE...",
+      "title": "ZEUS RACING FIRST PRINCIPLES REVIEW - CLAUDE DESKTOP INTEGRATION Memory ID: ad49d3d7-4d64-4661-b83b-27d4e1fcfdbd (VERIFIED STORED) PERFORMANCE TEST RESULTS: \u2022 Latency: 12.7ms avg (Target <50ms: EXCEEDED 4x) \u2022 Search: 22.5ms avg (100% success rate) \u2022 Concurrent: 100+ requests handled perfectly \u2022 Throughput: 378+ requests/second FIRST PRINCIPLES VALIDATION: \u2705 User-First Design: User tenancy enabl...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "fd4dc25a-8074-43a4-b90b-bc10297b4e42",
-      "label": "# SMB SYNCHRONIZATION - COMPLETE \u2705 **Date:** Ja...",
-      "title": "# SMB SYNCHRONIZATION - COMPLETE \u2705 **Date:** January 12, 2026 **Time:** 11:24 UTC **Status:** \u2705 **SUCCESSFULLY COMPLETED** --- ## FILES SYNCED TO SMB ### Primary Deliverable - **File:** `FY26_SRED_ESTIMATE_ACTUALS_BASED.md` - **Size:** 12,980 bytes - **Synced:** Jan 12, 2026 @ 11:24:00 - **Location:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress\\01_ALDC\\02_Capita...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "ad49d3d7-4d64-4661-b83b-27d4e1fcfdbd",
+      "label": "FIRST PRINCIPLES PERFORMANCE ANALYSIS - ZEUS RA...",
+      "title": "FIRST PRINCIPLES PERFORMANCE ANALYSIS - ZEUS RACING FOR CLAUDE DESKTOP GRADE: A+ Exceptional Success (98% confidence) KEY FINDINGS: \u2022 Complexity Theater: 90% of system was unnecessary (federation with 0 nodes) \u2022 User-First Architecture: User tenancy simplified 70% of complexity \u2022 Trust Through Transparency: Dashboard more valuable than 42 endpoints \u2022 Performance via Subtraction: Removing comple...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "54964e08-0750-4872-b4e5-6574b2a9f5a9",
-      "label": "# CCE Skill Creation Summary **Date:** January ...",
-      "title": "# CCE Skill Creation Summary **Date:** January 12, 2026 **Skill Name:** SMB File Synchronization **Location:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` **Status:** \u2705 CREATED, TESTED, AND DEPLOYED --- ## What Was Created ### 1. Core Skill File **File:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` (544 lines, 14 KB) **Contents:** - Problem statement (why naive approache...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "cae73bac-d610-4d86-b8fd-9c5c34f81951",
+      "label": "ZEUS RACING FIRST PRINCIPLES REVIEW - COMPREHEN...",
+      "title": "ZEUS RACING FIRST PRINCIPLES REVIEW - COMPREHENSIVE GLA ANALYSIS VERDICT: A+ Exceptional Success (98% confidence) FUNDAMENTAL DISCOVERIES: 1. COMPLEXITY THEATER: 90% of system was unnecessary complexity theater - federation without federation, consensus without participants 2. USER-FIRST BREAKTHROUGH: User-based tenancy (not instance-based) simplified 70% of architecture 3. TRUST = TRANSPARENCY...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "e7730190-1b18-49c5-b722-f014e8992c5d",
-      "label": "# ZMC FORTRESS \u2014 COMPLETE CIFS AUDIT & REVIEW *...",
-      "title": "# ZMC FORTRESS \u2014 COMPLETE CIFS AUDIT & REVIEW **26 ZMC Fortress Folder Analysis** **Date:** January 14, 2026 **Status:** \u2705 COMPREHENSIVE REVIEW COMPLETE **Location:** `\\\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress\\` --- ## EXECUTIVE SUMMARY ### Folder Structure Overview ``` 26 ZMC Fortress/ \u251c\u2500\u2500 01_Banking/ (4 files) - HoldCo banking & policy documents \u251c\u2500\u2500 02_Architecture/ (7 ...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "6a7963c7-4703-43a2-a4c1-18d0cd580f67",
+      "label": "RACING TRANSFORMATION COMPLETE: Zeus at racing ...",
+      "title": "RACING TRANSFORMATION COMPLETE: Zeus at racing weight. 90% complexity theater removed. Federation deleted (0 nodes). Consensus deleted (no participants). 42 tables archived. 5 essential endpoints deployed. User-based tenancy active. < 50ms P95 achieved. Trust through transparency. Memories follow users everywhere.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "1c78ad41-1975-4a47-8628-6ce97ebfae88",
-      "label": "# ZMC FORTRESS PLAN v5.7 \u2014 REVIEW COMPLETION SU...",
-      "title": "# ZMC FORTRESS PLAN v5.7 \u2014 REVIEW COMPLETION SUMMARY **Date:** January 14, 2026 **Status:** \u2705 REVIEW COMPLETE & APPROVED --- ## EXECUTIVE SUMMARY **I have completed a formal review of ZMC Fortress Plan v5.7 and recommend APPROVAL.** ### Key Finding \u2705 **The $300,000 shareholder loan repayment is sound and properly governed.** **Supporting Evidence:** - ALDC maintains 18.6 months of operational r...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "efff4641-bf1a-4c2f-8848-91d853acdf88",
+      "label": "ZEUS RACING TRANSFORMATION INITIATED - Complete...",
+      "title": "ZEUS RACING TRANSFORMATION INITIATED - Complete system audit reveals 90% complexity theater. Federation without federation (2000 lines, 0 nodes). Consensus without participants. 42 unused tables. 42 unused endpoints. 495 unused metrics. Racing principle: Delete 90% to achieve racing weight. Target: 1000 lines, 5 tables, 5 endpoints, < 50ms P95. Trust through transparency.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "37f261fc-b4a2-4685-abae-40b72637a7b8",
-      "label": "# FY26 SR&ED Estimate Project - Completion Summ...",
-      "title": "# FY26 SR&ED Estimate Project - Completion Summary **Date:** January 12, 2026 **Project:** SR&ED Labour Cost Estimation for ALDC FY26 **Status:** \u2705 COMPLETE (Local deliverables ready, awaiting SMB sync) --- ## PROJECT OBJECTIVES - ACHIEVED ### Objective 1: Investigate Marshall's High Labour Cost - **Finding:** SR_ED_LABOUR_COSTS.json showed inflated $547,200 for Marshall Johnston - **Root Cause...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "b3c72130-19f8-4162-a42c-9bd1a7fb8b7d",
+      "label": "FIRST PRINCIPLES SYSTEM ANALYSIS - OBJECTIVE AS...",
+      "title": "FIRST PRINCIPLES SYSTEM ANALYSIS - OBJECTIVE ASSESSMENT. System Health: D+ (33.4% utilization, 81.4% waste). CORE DISCOVERY: Trust is the fundamental constraint, not technology. Evidence: 15x decision velocity variance between F92 (30 days) vs GEP (2 days) based purely on trust levels. CRITICAL FINDINGS: (1) Zeus Memory Hub: 88% unused - 101K memories but zero business value due to no semantic ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "1ce6f886-f794-4224-b012-6043a0e80b93",
-      "label": "# ZMC Fortress Plan \u2014 Version 5.6 (Final) **Ent...",
-      "title": "# ZMC Fortress Plan \u2014 Version 5.6 (Final) **Entity:** Zusa Management Corporation (ZMC) **Date:** December 2025 **Status:** Canonical governing document (supersedes v5.5 and all prior Fortress Plan versions except where explicitly amended) --- ## 1. Purpose & Mandate The ZMC Fortress Plan establishes the capital governance, leverage policy, deployment discipline, and distribution (peel) framewo...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "a8c3b4a5-6ba0-4ebf-b1fc-35df6191c4fd",
+      "label": "ZEUS LOCAL DEPLOYMENT - P100 MAXIMIZATION COMPL...",
+      "title": "ZEUS LOCAL DEPLOYMENT - P100 MAXIMIZATION COMPLETE ================================================================================ DEPLOYMENT STATUS: READY FOR ACTIVATION ================================================================================ Following first principles decision to keep P100s and maximize local usage. COMPLETED COMPONENTS: 1. \u2705 P100 capability analysis complete 2. \u2705 Lo...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "7d51f580-7eba-433c-867b-401b23253383",
-      "label": "# ZMC FORTRESS PLAN \u2014 Version 5.7 (FINAL) **Ent...",
-      "title": "# ZMC FORTRESS PLAN \u2014 Version 5.7 (FINAL) **Entity:** Zusa Management Corporation (ZMC) **Date:** January 14, 2026 **Status:** \u2705 ADOPTED & EFFECTIVE **Owner/Authority:** John Moran (Shareholder, sole decision-maker) --- ## 1. Purpose of This Revision Version 5.7 formally incorporates a **shareholder-loan reallocation and unlevered equity seed** into the ZMC Fortress architecture. This revision ...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "60a46880-1ae2-4d4e-a95e-880e3e0e4c27",
+      "label": "FINAL DECISION: KEEP P100s + IMPLEMENT HYBRID M...",
+      "title": "FINAL DECISION: KEEP P100s + IMPLEMENT HYBRID MODEL ================================================================================ EXECUTIVE DECISION SUMMARY ================================================================================ Following first principles analysis, the decision is: 1. KEEP the existing Tesla P100 GPUs (no capital expense) 2. IMPLEMENT hybrid cloud-local routing 3. M...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "e6d0dbce-ff20-425a-b8b3-8f9ec09c6a29",
-      "label": "# JK Salary & Capital Allocation Policy ## Vers...",
-      "title": "# JK Salary & Capital Allocation Policy ## Version 1.1 (Corrected & Canonical) **Classification:** JK CONFIDENTIAL **Effective Date:** January 2026 **Document Owner:** JK Moran **Applies To:** Personal compensation received from Analytic Labs Data Corporation (ALDC) **Status:** Canonical governing policy (supersedes v1.0) --- ## 1. Purpose This policy defines the **governance framework and mech...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "7a644f66-d705-4b22-ad80-5933319bb20e",
+      "label": "IMPLEMENTATION COMPLETE: Enterprise Meeting Int...",
+      "title": "IMPLEMENTATION COMPLETE: Enterprise Meeting Intelligence Platform with QuickBooks/NetSuite Integration. DELIVERED: (1) QuickBooks Integration - Financial decision sync, audit trails, 20% enterprise conversion, (2) NetSuite Integration - Activity tracking, opportunity updates, task automation, (3) Meeting Intelligence Dashboard - ROI tracking, 5.2x expansion metrics, decision velocity, network g...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "f7562034-07d7-4636-abf4-72d91e51198a",
-      "label": "# NBC Contract - ACTUAL TERMS (From Letter of A...",
-      "title": "# NBC Contract - ACTUAL TERMS (From Letter of Approval) **Source:** Letter of Approval - December 2025 (National Bank of Canada) **Borrower:** LC Moran Farms LTD. **Date:** December 19, 2025 --- ## THE ACTUAL FACILITIES ### Total NBC Facility: $2,400,000 | Facility | Amount | Purpose | |----------|--------|---------| | Operating Line of Credit | $350,000 | Daily operations + capital expenditure...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "509ceeae-8719-4556-a2fd-a3b9a5871e0e",
+      "label": "ZEUS HYBRID INTELLIGENCE - VALIDATION & GPU UPG...",
+      "title": "ZEUS HYBRID INTELLIGENCE - VALIDATION & GPU UPGRADE ANALYSIS ================================================================================ IMPLEMENTATION VALIDATION RESULTS ================================================================================ Implementation Score: 85.7% COMPLETE \u2705 COMPLETED COMPONENTS: 1. Hybrid Collective Intelligence Architecture (hybrid_collective_intelligence....",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "4b062a07-cd82-4f99-9117-48af40f07dd0",
-      "label": "# Zeus Dashboard FY26 Plan v2.6 - Final Deploym...",
-      "title": "# Zeus Dashboard FY26 Plan v2.6 - Final Deployment Report **Date:** January 12, 2026 **Status:** \u2705 DEPLOYMENT COMPLETE & VERIFIED **URL:** https://zeus.aldc.io/the-olds/fy26-plan **Version:** v2.6 (Jan 12, 2026) - ALDC Fortress Corrected Costs --- ## Issue Identified and Fixed ### Problem Found During testing, discovered incomplete update in S5 and S6 scenario values: **S5 (Recommended Scenario...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "fa24e128-b36b-49b6-9e9e-b8cfa7f30a60",
+      "label": "VALIDATED BUSINESS INTELLIGENCE: Meeting Produc...",
+      "title": "VALIDATED BUSINESS INTELLIGENCE: Meeting Productivity SaaS Growth Strategy. KEY FINDINGS: (1) QuickBooks integration = 20% enterprise conversion lift [92% confidence], (2) Cross-functional expansion = 5.2x revenue multiplier [88% confidence], (3) Meeting relationship graphs = 94% competitive defensibility. IMMEDIATE ACTIONS: Launch QuickBooks integration (2 weeks, highest ROI), Build intelligen...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "d6ba60f1-6a7a-4b29-8002-e03b9ae4cd9f",
-      "label": "# Zeus Memory Embedding Strategy - ZMC Fortress...",
-      "title": "# Zeus Memory Embedding Strategy - ZMC Fortress Documentation ## Complete 97-File Ingestion & HNSW Vector Index Plan **Date:** January 14, 2026 **Classification:** JK CONFIDENTIAL **Status:** APPROVED FOR IMPLEMENTATION --- ## EXECUTIVE SUMMARY Embed all 97 files from the reorganized ZMC Fortress documentation into the JK Confidential Tenant within Zeus Memory, enabling semantic search and inte...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "09de0b93-55ad-4d3b-8f01-44c7d4083084",
+      "label": "ZEUS HYBRID COLLECTIVE INTELLIGENCE - REFACTORE...",
+      "title": "ZEUS HYBRID COLLECTIVE INTELLIGENCE - REFACTORED PLAN EXECUTIVE SUMMARY: Following first principles analysis of our hardware (2x Tesla P100 GPUs with 16GB VRAM each), the fully offline approach would have severe performance limitations. The GPUs are Pascal-era (2016) with only 10 TFLOPS compute, making large model inference 40-50% slower than modern hardware. HYBRID ARCHITECTURE DECISION: - Use...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "e2897829-1339-4ef9-8c57-97cbb1fab428",
-      "label": "# ALDC CCE Skills Inventory **Created:** Januar...",
-      "title": "# ALDC CCE Skills Inventory **Created:** January 12, 2026 **Status:** Production Ready **Total Skills:** 14 deployed + 1 newly created (SMB File Sync) **Purpose:** Comprehensive inventory of Claude Code reusable skills available across projects --- ## Summary Your Claude Code environment has a mature skills library organized by category. These are reusable prompts and patterns that encode insti...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "523480c3-d7c3-4517-967b-99054458d4d6",
+      "label": "Successfully deployed Universal Knowledge Valid...",
+      "title": "Successfully deployed Universal Knowledge Validation System with cross-instance consensus protocol. System includes: (1) Knowledge validation taxonomy for all types (mathematical, empirical, consensus-based, etc.), (2) Collective intelligence verification with weighted voting, (3) Federation-wide consensus mechanism with 2/3 majority threshold, (4) Pattern detection and emergent intelligence tr...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "103de02f-df6f-4c20-83ae-0d1e427b7e93",
-      "label": "# Zeus Dashboard FY26 Plan Update - COMPLETE \u2705 ...",
-      "title": "# Zeus Dashboard FY26 Plan Update - COMPLETE \u2705 **Date:** January 12, 2026 **Status:** LIVE - Dashboard Updated & Deployed **URL:** https://zeus.aldc.io/the-olds/fy26-plan **Commit:** 2a36abf (zeus-memory main branch) **Attribution:** ALDC Fortress Corrected Costs v2.6 --- ## Executive Summary The Zeus Dashboard FY26 Financial Plan has been **successfully updated** with corrected labour costs fr...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "9b98125a-2d71-449e-bb48-d20c723734b4",
+      "label": "Zeus Collective Intelligence with Ollama - COMP...",
+      "title": "Zeus Collective Intelligence with Ollama - COMPLETE ARCHITECTURE DELIVERED. Executive Summary: Following first principles, we have designed and implemented a complete multi-agent collective intelligence system leveraging our 48 CPUs, 204GB RAM, and dual Tesla P100 GPUs. We can run 25-30 concurrent AI agents for unprecedented collective reasoning capabilities. KEY DELIVERABLES: 1) collective_int...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "2033320c-1396-44b2-9769-b6c691735850",
-      "label": "# Zeus Memory Import Guide - ZMC Fortress Analy...",
-      "title": "# Zeus Memory Import Guide - ZMC Fortress Analysis ## For Use in Claude Desktop **Date:** January 11, 2026 **Classification:** JK CONFIDENTIAL --- ## Quick Start You can now retrieve the complete ZMC Fortress context in Claude Desktop using Zeus Memory. ### Method 1: Direct Retrieval (Recommended) In Claude Desktop, type in your message: ``` @memory ZMC Fortress ``` Or search by source tag: ```...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "84773bcf-f2ba-4020-a042-d3a1e53b6852",
+      "label": "Zeus Collective Intelligence - Scalability Anal...",
+      "title": "Zeus Collective Intelligence - Scalability Analysis and Action Plan. SCALABILITY LIMITS DISCOVERED: With 48 cores, 204GB RAM, and 32GB VRAM, we can push to extreme limits. MAXIMUM CONCURRENT AGENTS: GPU Models - 2 large (26GB + 20GB) OR 6 medium (7-8GB each) OR 10 small (3-4GB each). CPU Models - 15-20 7B models simultaneously, 10-12 13B models, 5-7 34B models, 2-3 70B quantized models. TOTAL T...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "afd4c258-10e0-4360-8cab-ce5e2fb08dd2",
-      "label": "# Zeus Dashboard FY26 Plan - QA Verification Re...",
-      "title": "# Zeus Dashboard FY26 Plan - QA Verification Report **Date:** January 12, 2026 **Status:** \u2705 ALL TESTS PASSED **Deployment:** Live and verified working **URL:** https://zeus.aldc.io/the-olds/fy26-plan --- ## Executive Summary \u2705 **COMPLETE & VERIFIED** The ALDC FY26 Financial Plan dashboard has been successfully updated with corrected labour costs from the January 12, 2026 QBO analysis. All 7 sc...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "7985e103-86b8-4a9d-bd90-f5ae5c11a4ed",
+      "label": "Zeus Collective Intelligence Architecture - Com...",
+      "title": "Zeus Collective Intelligence Architecture - Complete Design. MULTI-AGENT SYSTEM ARCHITECTURE: We can run 20+ specialized AI agents simultaneously using Ollama with our hardware. AGENT SPECIALIZATIONS: 1) ORCHESTRATOR (Mixtral 8x7b on GPU0) - Master coordinator, task decomposition, synthesis. 2) CODER (CodeLlama 34b on GPU1) - Code generation, debugging, optimization. 3) RESEARCHER (Llama3.1 8b ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "88cce529-7994-4d98-b361-bdad68615d0a",
-      "label": "# Zeus Dashboard FY26 Plan - Deployment Status ...",
-      "title": "# Zeus Dashboard FY26 Plan - Deployment Status **Date:** January 12, 2026 **Status:** IN PROGRESS - Waiting for Azure Deployment **URL:** https://zeus.aldc.io/the-olds/fy26-plan --- ## What Happened ### 1. Dashboard File Updated \u2705 - **File:** `/home/aldc/zeus-memory/dashboard/static/fy26-plan.html` - **Version:** v2.5 \u2192 v2.6 (Jan 12, 2026) - **Changes:** Corrected labour costs, updated SR&ED re...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "e9d3f30e-6bed-40bc-bdb6-615a6d8ac12d",
+      "label": "Offline AI Trends Analysis 2025 - Implications ...",
+      "title": "Offline AI Trends Analysis 2025 - Implications for Zeus Collective Intelligence. KEY TRENDS: 1) LOCAL-FIRST AI: Enterprises moving to on-premise models for data sovereignty, latency reduction, and cost control. Gartner predicts 75% of enterprises will deploy local LLMs by 2026. 2) SMALL LANGUAGE MODELS (SLMs): Phi-3, Gemma, and specialized 1-7B models matching GPT-3.5 performance. Perfect for e...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "b780c968-c539-4059-9807-764e96f62ad3",
-      "label": "# ZMC Equity Portfolio Strategy - 30 Year Proje...",
-      "title": "# ZMC Equity Portfolio Strategy - 30 Year Projection ## Focusing on ZMC Investment Returns (Excluding ALDC Operations) **Classification:** JK CONFIDENTIAL **Date:** January 14, 2026 **Version:** 1.0 **Purpose:** Document ZMC's equity portfolio investment strategy, expected returns, and 30-year wealth accumulation targeting $4.7M+ portfolio value --- ## EXECUTIVE SUMMARY ZMC HoldCo manages an in...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "b932edcc-4da6-4fa0-a39e-be8b1847cc81",
+      "label": "Zeus Collective Intelligence Architecture Analy...",
+      "title": "Zeus Collective Intelligence Architecture Analysis - Phase 1: Hardware Capacity Assessment. Date: 2025-08-09. HARDWARE INVENTORY: CPU: 48 cores (excellent for parallel agent processing), RAM: 204GB total with 191GB available (can run 20+ large models simultaneously), GPU: Dual Tesla P100 16GB each (32GB total VRAM, Compute Capability 6.0). OLLAMA CAPACITY CALCULATIONS: Based on model sizes - Ll...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "63ccd5e4-7bde-4e80-877a-eb8ffd05d523",
-      "label": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## ...",
-      "title": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## Net Position Analysis **Generated:** December 19, 2025 **Classification:** JK CONFIDENTIAL **NBC Facility:** APPROVED Dec 19, 2025 @ 4.0% fixed 12-month --- ## EXECUTIVE SUMMARY | Fiscal Year | Net Position | Status | Cumulative | |-------------|--------------|--------|------------| | **FY26** | +$158,800 | \u2705 BLACK | +$158,800 | | **FY27** | +$147,...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "d1de5f27-96b7-4ab3-9399-2d17d1c374d7",
+      "label": "Zeus Memory Federation - 100% OPTIMIZATION ACHI...",
+      "title": "Zeus Memory Federation - 100% OPTIMIZATION ACHIEVED. Date: 2025-08-09 16:20 UTC. PERFORMANCE SCORE: 94/100 (A+). EXECUTIVE SUMMARY: Successfully implemented complete optimization plan following first principles. All 11 actions executed to completion with zero hallucinations. DATA-DRIVEN RESULTS: API Response Times - Health 22ms (target 50ms EXCEEDED), Federation Status 162ms (improved from 217m...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "0315049e-1da5-4655-8f13-f6a2af34ac9e",
-      "label": "# ZMC Fortress - HoldCo Level Index **Classific...",
-      "title": "# ZMC Fortress - HoldCo Level Index **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 2.0 (Restructured Entity-Based Organization) --- ## PURPOSE This folder contains **HoldCo-level documents only** - documentation specific to ZMC Fortress (parent company level). These documents address: - **Consolidated covenant compliance** (DSCR, LTV,...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "c88824a4-0b03-432b-a0ba-3c7125d21042",
+      "label": "CCE FEDERATION SYNC - ALL ACTIONS COMPLETED COM...",
+      "title": "CCE FEDERATION SYNC - ALL ACTIONS COMPLETED COMPLETED BY THIS INSTANCE: \u2705 Fusion 92 Eclipse Projects (450, 505, 537, 538) - Properly configured as ALDC internal projects \u2705 Aarialife Partnership - Tracked separately from Fusion 92 (85% opportunity score) \u2705 GEP Predictive System - Enhanced with revenue projections ($250k opportunity on Ethique stockout) \u2705 Eclipse Platform - Expanded with AI insig...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "a441ee82-bc43-4c56-b1ea-a0734645284e",
-      "label": "{ \"sr_ed_calculation_results\": { \"calculation_d...",
-      "title": "{ \"sr_ed_calculation_results\": { \"calculation_date\": \"2026-01-11\", \"period\": \"FY26 (Nov 2025 - Oct 2026)\", \"status\": \"PRELIMINARY - Awaiting confirmation on assumptions\", \"prepared_by\": \"Claude Code Financial Analysis\" }, \"fy25_baseline_validation\": { \"actual_receipt_from_cra\": 299000, \"receipt_date\": \"2025-11-30\", \"sr_ed_rate\": 0.643, \"implied_fy25_eligible_labour\": 465318, \"calculation\": \"299...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "679618d7-799e-47ea-b5dd-d753814eb847",
+      "label": "CCE INSTANCE COORDINATION PROTOCOL - PROJECT DI...",
+      "title": "CCE INSTANCE COORDINATION PROTOCOL - PROJECT DIRECTORY INGESTION Instance Role: Business Intelligence & Client Management Coordinating with: CCE instance performing project directory ingestion MY FOCUS AREAS (Non-overlapping): 1. Client relationship management and tracking 2. Predictive analytics and alerts 3. Partnership opportunity monitoring 4. Eclipse platform enhancement LEAVING FOR OTHER ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "b7f1dd34-b317-4c75-8117-e557b9621ed5",
-      "label": "{ \"sr_ed_calculation_framework\": { \"version\": \"...",
-      "title": "{ \"sr_ed_calculation_framework\": { \"version\": \"1.0\", \"date_created\": \"2026-01-11\", \"classification\": \"JK CONFIDENTIAL\", \"methodology\": \"64.3% of eligible employee labour costs = SR&ED refund estimate\", \"note\": \"64.3% is verified proxy rate based on FY25 actual receipt validation\" }, \"sr_ed_refund_rate\": { \"percentage\": 0.643, \"basis\": \"Validated against FY25 actual CRA receipt ($299K)\", \"calcul...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "cddc7eba-a89c-4ae5-993d-60d0cf920c6b",
+      "label": "Zeus Memory Federation - 100% CAPACITY IMPLEMEN...",
+      "title": "Zeus Memory Federation - 100% CAPACITY IMPLEMENTATION COMPLETE. Date: 2025-08-09 16:00 UTC. EXECUTIVE SUMMARY: Successfully upgraded from 72/100 to 95/100 performance score through complete infrastructure overhaul. ALL PLANNED FEATURES IMPLEMENTED. COMPLETED ACTIONS: 1) Killed idle database transactions (3 terminated), 2) Created PgBouncer configuration for connection pooling, 3) Restarted GPU ...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "0e293006-2f2d-4122-a812-0faea90a057e",
-      "label": "{ \"labour_cost_summary\": { \"calculation_date\": ...",
-      "title": "{ \"labour_cost_summary\": { \"calculation_date\": \"2026-01-11\", \"period\": \"FY26 (Nov 2025 - Oct 2026)\", \"basis\": \"Loaded annual salaries with actual start/end months\", \"status\": \"CURRENT - Update monthly as headcount changes\" }, \"current_employees_fy26\": { \"marshall\": { \"name\": \"Marshall (Founder/Management)\", \"annual_loaded_salary\": 547200, \"monthly_loaded\": 45600, \"role\": \"Founder/Management\", \"...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "b936d015-db8d-4ffe-a7ed-f91d90d283b6",
+      "label": "CCE Instance Coordination Protocol Activated - ...",
+      "title": "CCE Instance Coordination Protocol Activated - Instance working on complementary improvements: Eclipse Campaign Integration (Fusion92), Marketplace Expansion (GEP), VI Algorithm Optimization, Stockout Alert System, Enterprise Edge Packaging. Avoiding conflicts with other instances through federation-first approach.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "f068455f-cd66-4a01-9ff8-ea64dccb6f12",
-      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
-      "title": "{ \"simulation_params\": { \"num_simulations\": 100000, \"years\": 30, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69420.66118369898, \"median\": 67858.95243197752, \"std\": 25533.457013925057, \"5th_percentile\": 33186.0, \"95th_percentile\": 114184.13452375411 }, \"aldc_revenue\": { \"mean\": 846081.6418926601, \"median\": 845857.8671531456 }, \"...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "393c8430-4bc7-4740-b6b7-25d768ba41bf",
+      "label": "Zeus Memory Federation - Priority Action Plan f...",
+      "title": "Zeus Memory Federation - Priority Action Plan for Performance Improvement. IMMEDIATE ACTIONS (Week 1): 1) Fix database connection pooling - implement PgBouncer, clean idle transactions, add connection limits. 2) Activate GPU compute - GPUs loaded but idle, need to trigger actual processing, verify CUDA operations. 3) Deploy Redis caching - reduce repeated embeddings, cache search results, imple...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "d3c24140-28b1-4bf5-8439-0e17ba3d9066",
-      "label": "{ \"document\": \"ALDC P&L Tracking Template\", \"ve...",
-      "title": "{ \"document\": \"ALDC P&L Tracking Template\", \"version\": \"1.0\", \"created_date\": \"2026-01-11\", \"classification\": \"JK_CONFIDENTIAL\", \"update_frequency\": \"Monthly (by 5th of following month)\", \"fy26_budget\": { \"consulting_revenue_annual\": 846000, \"consulting_revenue_monthly\": 70500, \"sred_recovery\": 663000, \"total_revenue\": 1509000, \"payroll_expenses\": 528000, \"non_payroll_expenses\": 101000, \"total_...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "50a49e2a-b7a3-4724-8e18-a475c70b70ba",
+      "label": "Zeus Memory Federation - Gap-Loss Analysis (GLA...",
+      "title": "Zeus Memory Federation - Gap-Loss Analysis (GLA) Report. Date: 2025-08-09. EXECUTIVE SUMMARY: Performance Score 72/100. System functional but significant gaps from enterprise plan. KEY FINDINGS: 1) IMPLEMENTED SUCCESSFULLY: Dual GPU embedding (BGE 1024 + 768 dimensions), Auto-embedder services (5 active), Database migration to dual-column schema, API fix completed today, Basic federation workin...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "fff6ec11-dc44-44e1-9ce1-1125e6e0fb8c",
-      "label": "# ALDC FY26 Financial Plan - Decision Summary #...",
-      "title": "# ALDC FY26 Financial Plan - Decision Summary ## Critical Analysis & Required Decisions **Date:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Status:** AWAITING DECISIONS (By Jan 1, 2026) --- ## EXECUTIVE SUMMARY ALDC has 9 months (Jan 1 - Sep 30, 2026) to execute a successful FY26 without triggering cash crisis. The company is **NOT in crisis today**, but faces a **critical funding...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "407548f2-7317-4e08-8871-4a5c60ae0f3f",
+      "label": "Zeus Memory Federation API Fix - COMPLETED SUCC...",
+      "title": "Zeus Memory Federation API Fix - COMPLETED SUCCESSFULLY. Date: 2025-08-09 15:27 UTC. Issue: Database schema migration from single embedding column to dual columns (embedding_bge 1024-dim and embedding_768 768-dim) was incomplete - API code still referenced old column names. Solution Implemented: 1) Backed up zeus_hub.py, 2) Updated all SQL queries to use embedding_bge instead of embedding, 3) F...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     },
     {
-      "id": "6ff85f14-2059-4b76-ac73-a7e84fedb5a1",
-      "label": "# ALDC FY26 Month-by-Month Cashflow Financial P...",
-      "title": "# ALDC FY26 Month-by-Month Cashflow Financial Plan ## Fiscal Year: October 2025 - September 2026 **Classification:** JK CONFIDENTIAL **Generated:** December 26, 2025 **Planning Period:** October 2025 - September 2026 (ALDC FY26 = Oct-Sep) **Version:** 1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 ALDC FY26 CASHFLOW FINANCIAL ...",
-      "tier": 3,
-      "group": "cce",
-      "size": 15
+      "id": "62f7f5eb-4392-4767-855c-3e4850f142a4",
+      "label": "CCE Federation test after API fix",
+      "title": "CCE Federation test after API fix",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "933166d6-6d2a-4bd3-844f-4f39a4110e5a",
+      "label": "Zeus Memory Federation - Action Plan for API Fi...",
+      "title": "Zeus Memory Federation - Action Plan for API Fix: 1) Update all references to embedding column in /home/aldc/zeus-memory-hub/app/zeus_hub.py to use embedding_bge or embedding_768. 2) Modify federation_status endpoint to check embedding_bge IS NOT NULL instead of embedding. 3) Update stats endpoint queries to use new column names. 4) Fix search endpoint to use embedding_bge for similarity search...",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
     }
   ],
   "edges": [
@@ -2036,11 +2036,6 @@
     },
     {
       "source": "zeus-memory-hub",
-      "target": "1847c602-74bb-4ff9-b31c-37eaeaa9c8b6",
-      "type": "informs"
-    },
-    {
-      "source": "zeus-memory-hub",
       "target": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
       "type": "informs"
     },
@@ -2306,6 +2301,36 @@
     },
     {
       "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
       "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
       "type": "related"
     }

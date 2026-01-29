@@ -5,6 +5,7 @@ Generates JSON in network-ecosystem format.
 """
 
 import json
+import re
 import psycopg2
 from datetime import datetime
 
@@ -40,10 +41,34 @@ EDGE_TYPES = {
 }
 
 
+# Patterns that might contain secrets
+SECRET_PATTERNS = [
+    r'ntn_[a-zA-Z0-9]{40,}',  # Notion tokens
+    r'sk-[a-zA-Z0-9]{32,}',   # OpenAI keys
+    r'xoxb-[a-zA-Z0-9\-]+',   # Slack bot tokens
+    r'xoxp-[a-zA-Z0-9\-]+',   # Slack user tokens
+    r'ghp_[a-zA-Z0-9]{36}',   # GitHub tokens
+    r'gho_[a-zA-Z0-9]{36}',   # GitHub OAuth tokens
+    r'zm_[a-zA-Z0-9_]{30,}',  # Zeus Memory API keys
+    r'AKIA[A-Z0-9]{16}',      # AWS access keys
+    r'password["\']?\s*[:=]\s*["\'][^"\']+["\']',  # Password patterns
+    r'api[_-]?key["\']?\s*[:=]\s*["\'][^"\']+["\']',  # API key patterns
+]
+
+def sanitize_secrets(text):
+    """Remove potential secrets from text."""
+    if not text:
+        return text
+    for pattern in SECRET_PATTERNS:
+        text = re.sub(pattern, '[REDACTED]', text, flags=re.IGNORECASE)
+    return text
+
 def clean_text(text, max_len=80):
     """Clean text for display."""
     if not text:
         return "Untitled"
+    # Sanitize secrets first
+    text = sanitize_secrets(text)
     # Remove newlines, extra spaces
     cleaned = ' '.join(text.split())
     if len(cleaned) > max_len:
@@ -86,16 +111,30 @@ def extract_data():
             "size": 25 + (int(confidence * 10) if confidence else 0),
         })
 
-    # 2. Get CCE memories
+    # 2. Get CCE memories - EXCLUDE CONFIDENTIAL CATEGORIES
+    # Only include technical/operational content, not financial/business sensitive
+    SAFE_CATEGORIES = [
+        'technical', 'cce_setup', 'general', 'workspace-management',
+        'implementation_plan', 'implementation_validation', 'prd-review',
+        'collective_intelligence', 'hybrid_collective_intelligence',
+        'local_p100_deployment', 'snowflake_search'
+    ]
+    # EXCLUDED (confidential): financial_analysis, cash_flow, tax_credit,
+    # debt_service, holdco_structure, business, business_context, operational_plan
+
     cur.execute("""
         SELECT memory_id, content, source, metadata, created_at
         FROM zeus_core.memories
         WHERE tenant_id = %s
           AND source IN ('cce_decision_log', 'cce_research', 'cce_failed_approach',
                         'cce_success_log', 'cce_system', 'cce')
+          AND (
+            metadata->>'category' IS NULL
+            OR metadata->>'category' IN %s
+          )
         ORDER BY created_at DESC
         LIMIT 100
-    """, (TENANT_ID,))
+    """, (TENANT_ID, tuple(SAFE_CATEGORIES)))
 
     memories = cur.fetchall()
     print(f"Found {len(memories)} CCE memories")
