@@ -18,3 +18,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated data (large files, can be recreated)
+data/clustering_results.json
+data/layout_results.json

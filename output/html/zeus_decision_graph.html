@@ -156,25 +156,10 @@
         .node-description {
             color: #444;
             line-height: 1.6;
-            margin-bottom: 10px;
-            max-height: 150px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .node-description.expanded {
-            max-height: none;
-        }
-        .expand-btn {
-            color: #3182ce;
-            font-size: 12px;
-            cursor: pointer;
             margin-bottom: 15px;
-            display: inline-block;
+            font-size: 13px;
         }
-        .expand-btn:hover {
-            text-decoration: underline;
-        }
-        .view-full-link {
+        .view-full-btn {
             display: inline-block;
             margin-bottom: 15px;
             padding: 6px 12px;
@@ -183,9 +168,88 @@
             text-decoration: none;
             border-radius: 4px;
             font-size: 12px;
+            cursor: pointer;
+            border: none;
         }
-        .view-full-link:hover {
+        .view-full-btn:hover {
             background: #2d4a7c;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            max-height: 80vh;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header h2 {
+            font-size: 18px;
+            color: #1a365d;
+            margin: 0;
+            flex: 1;
+            padding-right: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #333;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-body .full-content {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.7;
+            color: #333;
+        }
+        .modal-meta {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+        }
+        .modal-meta span {
+            margin-right: 20px;
+        }
+        .modal-meta .label {
+            font-weight: 600;
         }
         .node-meta {
             font-size: 11px;
@@ -441,12 +505,25 @@
                     </div>
                     <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
-                    <span class="expand-btn" id="expand-btn" onclick="toggleDescription()">Show more ▼</span>
-                    <a class="view-full-link" id="view-full-link" href="#" target="_blank">View in Zeus Memory →</a>
+                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Full Content Modal -->
+    <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Memory Content</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="full-content" id="modal-content"></div>
+            </div>
+            <div class="modal-meta" id="modal-meta"></div>
         </div>
     </div>
 
@@ -706,18 +783,32 @@
             });
         }
 
-        // Toggle description expansion
-        function toggleDescription() {
-            const desc = document.getElementById('node-description');
-            const btn = document.getElementById('expand-btn');
-            if (desc.classList.contains('expanded')) {
-                desc.classList.remove('expanded');
-                btn.textContent = 'Show more ▼';
-            } else {
-                desc.classList.add('expanded');
-                btn.textContent = 'Show less ▲';
+        // Show full content in modal
+        function showFullContent() {
+            if (!selectedNode) return;
+
+            document.getElementById('modal-title').textContent = selectedNode.name;
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            `;
+            document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(event) {
+            if (!event || event.target === event.currentTarget) {
+                document.getElementById('content-modal').classList.remove('active');
             }
         }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
 
         // Navigate to a node by ID (works even if filtered out)
         function navigateToNode(nodeId) {
@@ -764,24 +855,15 @@
             document.getElementById('node-info').classList.add('active');
             document.getElementById('node-title').textContent = node.name;
 
-            // Set description and reset expansion state
+            // Set description (truncated in sidebar, full in modal)
             const descEl = document.getElementById('node-description');
-            descEl.textContent = node.description || 'No description available.';
-            descEl.classList.remove('expanded');
-            document.getElementById('expand-btn').textContent = 'Show more ▼';
+            const fullDesc = node.description || 'No description available.';
+            // Show truncated preview in sidebar
+            descEl.textContent = fullDesc.length > 300 ? fullDesc.substring(0, 300) + '...' : fullDesc;
 
-            // Show/hide expand button based on content length
-            const expandBtn = document.getElementById('expand-btn');
-            expandBtn.style.display = (node.description && node.description.length > 200) ? 'inline-block' : 'none';
-
-            // Set Zeus Memory link
-            const linkEl = document.getElementById('view-full-link');
-            if (node.id && node.id.match(/^[0-9a-f]{8}-/)) {
-                linkEl.href = `https://zeus-api.jkode.cloud/api/memory/${node.id}`;
-                linkEl.style.display = 'inline-block';
-            } else {
-                linkEl.style.display = 'none';
-            }
+            // Show/hide view full button based on content length
+            const viewFullBtn = document.getElementById('view-full-btn');
+            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
 
             // Show metadata
             const metaEl = document.getElementById('node-meta');
