@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Zeus Decision Graph - Progressive Loading API
+Athena - Knowledge Graph Visualization API
 
 Serves cluster and memory data for semantic zoom visualization.
 Endpoints support loading data progressively based on zoom level:
@@ -8,25 +8,25 @@ Endpoints support loading data progressively based on zoom level:
 - L1 clusters within L2 (zoomed in - detail)
 - Individual memories within L1 (fully zoomed - node level)
 
-Usage:
-    source venv/bin/activate
-    pip install fastapi uvicorn
-    python src/api_server.py
-    # or: uvicorn src.api_server:app --reload --port 8080
+Deployment:
+    - Local: python src/api_server.py
+    - Container: gunicorn api_server:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8080
 """
 
 import json
+import os
 from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 
 app = FastAPI(
-    title="Zeus Decision Graph API",
-    description="Progressive loading API for semantic zoom visualization",
+    title="Athena - Knowledge Graph API",
+    description="Progressive loading API for Zeus Memory semantic zoom visualization",
     version="1.0.0"
 )
 
@@ -45,11 +45,42 @@ clustering_data = None
 layout_data = None
 
 
+def get_data_dir() -> Path:
+    """Get data directory - works in both local dev and container."""
+    # Container: /app/data
+    # Local: ./data (relative to project root)
+    container_path = Path("/app/data")
+    if container_path.exists():
+        return container_path
+
+    # Local development
+    local_path = Path(__file__).parent.parent / "data"
+    if local_path.exists():
+        return local_path
+
+    # Fallback to current directory
+    return Path("./data")
+
+
+def get_static_dir() -> Path:
+    """Get static files directory - works in both local dev and container."""
+    container_path = Path("/app/static")
+    if container_path.exists():
+        return container_path
+
+    local_path = Path(__file__).parent.parent / "output" / "html"
+    if local_path.exists():
+        return local_path
+
+    return Path("./static")
+
+
 def load_data():
     """Load clustering and layout data on startup."""
     global clustering_data, layout_data
 
-    data_dir = Path(__file__).parent.parent / "data"
+    data_dir = get_data_dir()
+    print(f"Loading data from: {data_dir}")
 
     clustering_path = data_dir / "clustering_results.json"
     layout_path = data_dir / "layout_results.json"
@@ -115,9 +146,24 @@ class MemoriesResponse(BaseModel):
 
 @app.get("/")
 async def root():
+    """Serve the 3D visualization HTML."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "zeus_decision_graph.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    # Fallback to API info if no HTML
+    return {
+        "service": "athena-knowledge-graph",
+        "version": "1.0.0",
+        "visualization": "HTML not found - use /api endpoints",
+    }
+
+
+@app.get("/api")
+async def api_info():
     """API info endpoint."""
     return {
-        "service": "zeus-decision-graph-api",
+        "service": "athena-knowledge-graph",
         "version": "1.0.0",
         "endpoints": {
             "/api/overview": "L2 cluster overview (zoomed out)",

@@ -1,27 +1,29 @@
-# Project Charter: Zeus Decision Graph Visualization
+# Project Charter: Athena - Knowledge Graph Visualization
 
 **Created**: 2026-01-28
 **SR&ED Project**: NO (internal tooling, reuses existing skill)
 **Project Duration**: 2026-01-28 to 2026-01-29
+**Service Name**: Athena
+**Domain**: athena.aldc.io
 
 ## Executive Summary
 
-This project applies the **network-ecosystem visualization skill** (created in the FBC partner ecosystem project) to visualize the Zeus Memory decision graph. It demonstrates the reusability of the skill and provides valuable insight into how decisions, memories, and agents relate within Zeus Memory.
+**Athena** is the ALDC Knowledge Graph Visualization system, providing interactive 3D exploration of Zeus Memory's decisions, learnings, and relationships. Named after the Greek goddess of wisdom, Athena complements Zeus (memory storage) and Atlas (workspace dashboard).
 
-**Business Problem**: Zeus Memory contains thousands of decisions, learnings, and memories with relationships between them (via `related_memory` metadata, decision chains, etc.). Currently, there's no visual way to explore these relationships.
+**Business Problem**: Zeus Memory contains 3M+ memories with complex relationships. Currently, there's no visual way to explore these relationships at scale.
 
-**Solution**: Use the `visualization/network-ecosystem.md` skill to generate an interactive 3D graph showing:
-- Decisions as primary nodes
-- Related memories as connected nodes
-- Agent relationships
-- Source type clustering
+**Solution**: Interactive 3D graph visualization with:
+- Semantic zoom (L2 clusters → L1 clusters → individual memories)
+- Progressive loading API for 50K+ nodes
+- Click-through navigation of decision chains
+- Deployed as `athena.aldc.io` on Azure Container Apps
 
 ## Objectives
 
-1. **Demonstrate skill reusability** - Second implementation of network-ecosystem skill
+1. **Deploy Athena service** - `athena.aldc.io` on Azure Container Apps
 2. **Visualize Zeus decision landscape** - Understand how decisions interconnect
 3. **Enable decision exploration** - Click-through navigation of decision chains
-4. **Validate polyrepo strategy** - Second standalone project repo
+4. **Scale to 50K+ memories** - Progressive loading with semantic zoom
 
 ## Data Sources
 
@@ -63,17 +65,60 @@ WHERE metadata->>'type' = 'decision'
 ## Technical Approach
 
 1. **Query Zeus** - Extract decisions and memories with relationships
-2. **Transform to JSON** - Convert to network-ecosystem data format
-3. **Generate HTML** - Use `generate_3d.py` from FBC project
-4. **Deploy** - Standalone HTML, push to GitHub
+2. **Cluster & Layout** - Leiden clustering + ForceAtlas2 positioning
+3. **Progressive API** - FastAPI server for semantic zoom
+4. **Generate HTML** - 3D visualization with 3d-force-graph
+5. **Deploy to Azure** - Container Apps at `athena.aldc.io`
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    athena.aldc.io                           │
+├─────────────────────────────────────────────────────────────┤
+│  Azure Container Apps (cae-zeus-memory-dev)                 │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  athena container (Python 3.11 + FastAPI)           │   │
+│  │  - /api/overview      → L2 clusters (385)           │   │
+│  │  - /api/l2/{id}       → L1 clusters within L2       │   │
+│  │  - /api/l1/{id}       → Memories within L1          │   │
+│  │  - /api/memory/{id}   → Single memory details       │   │
+│  │  - /                  → 3D visualization HTML       │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Data (baked into container)                                │
+│  - clustering_results.json (50K memories, 3264 L1, 385 L2) │
+│  - layout_results.json (pre-computed x,y positions)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Deployment Infrastructure
+
+| Component | Value |
+|-----------|-------|
+| **Resource Group** | `rg-zeus-memory-dev` |
+| **Container Environment** | `cae-zeus-memory-dev` |
+| **Container Registry** | `acrzeusmemorydev.azurecr.io` |
+| **Container Name** | `athena` |
+| **Image** | `acrzeusmemorydev.azurecr.io/athena:v1.0.0` |
+| **Port** | 8080 |
+| **CPU/Memory** | 1.0 cores / 2.0 GB |
+| **Replicas** | 1-3 (auto-scaling) |
+| **Domain** | `athena.aldc.io` (Cloudflare proxy) |
 
 ## Success Criteria
 
-- [ ] Visualize 50+ decisions with relationships
-- [ ] Click-through navigation works
-- [ ] Filters by decision type work
-- [ ] Reuses skill without modification
-- [ ] Published to GitHub as polyrepo
+- [x] Visualize 210 decisions with relationships (v1.0.0)
+- [x] Click-through navigation works
+- [x] Filters by node/edge type work
+- [x] Progressive loading API complete (Phase 3)
+- [x] Tagged v1.0.0 for rollback
+- [ ] Deployed to `athena.aldc.io`
+- [ ] Health endpoint responds
+- [ ] Custom domain with HTTPS working
 
 ## First Principles Alignment
 
@@ -110,10 +155,19 @@ WHERE metadata->>'type' = 'decision'
 ## Timeline
 
 **Day 1 (2026-01-28):**
-- Create project structure
-- Query Zeus for decision data
-- Generate JSON and visualization
-- Push to GitHub
+- [x] Create project structure
+- [x] Query Zeus for decision data
+- [x] Generate JSON and visualization
+- [x] Push to GitHub
+- [x] Phase 1-3 complete (clustering, layout, API)
+- [x] Tag v1.0.0
+
+**Day 2 (2026-01-29):**
+- [ ] Create Dockerfile
+- [ ] Build and push to ACR
+- [ ] Deploy to Azure Container Apps
+- [ ] Configure athena.aldc.io domain
+- [ ] Verify health endpoint
 
 ## Team
 
@@ -123,6 +177,9 @@ WHERE metadata->>'type' = 'decision'
 ## Related
 
 - **Skill**: `visualization/network-ecosystem.md`
+- **Skill**: `azure/container-apps-deployment.md`
+- **Skill**: `cloudflare/tunnel-setup.md`
 - **Reference Implementation**: https://github.com/ALDC-io/fbc-partner-ecosystem-visualization
 - **Architecture Patterns**: ZMID `7e2d0454-25f4-4189-a99a-644d2c4a9c00`
-- **Polyrepo Decision**: ZMID `1847c602-74bb-4ff9-b31c-37eaeaa9c8b6`
+- **CCE Learning - VR Mode Fix**: ZMID `c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0`
+- **CCE Learning - API Success**: ZMID `422126dd-2714-4008-b993-545e4ee8cdfb`

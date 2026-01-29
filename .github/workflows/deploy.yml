@@ -1,0 +1,131 @@
+name: Deploy Athena to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'data/**'
+      - 'output/**'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_ACR_NAME: acrzeusmemorydev
+  AZURE_RESOURCE_GROUP: rg-zeus-memory-dev
+  AZURE_ENVIRONMENT: cae-zeus-memory-dev
+  AZURE_CONTAINER_APP: athena
+  IMAGE_NAME: athena
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: |
+          az acr login --name ${{ env.AZURE_ACR_NAME }}
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_TAG="${{ github.sha }}"
+          IMAGE_URI="${{ env.AZURE_ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}"
+
+          echo "Building image: ${IMAGE_URI}:${IMAGE_TAG}"
+
+          docker build . \
+            -t "${IMAGE_URI}:${IMAGE_TAG}" \
+            -t "${IMAGE_URI}:latest"
+
+          docker push "${IMAGE_URI}:${IMAGE_TAG}"
+          docker push "${IMAGE_URI}:latest"
+
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          echo "Container App: ${{ env.AZURE_CONTAINER_APP }}"
+          echo "Resource Group: ${{ env.AZURE_RESOURCE_GROUP }}"
+          echo "Image: ${{ env.IMAGE_URI }}:${{ env.IMAGE_TAG }}"
+
+          # Check if container app exists
+          if az containerapp show \
+              --name ${{ env.AZURE_CONTAINER_APP }} \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --query name -o tsv 2>/dev/null; then
+
+            echo "Container App exists. Updating..."
+            az containerapp update \
+              --name ${{ env.AZURE_CONTAINER_APP }} \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --image "${{ env.IMAGE_URI }}:${{ env.IMAGE_TAG }}"
+          else
+            echo "Creating new Container App..."
+            az containerapp create \
+              --name ${{ env.AZURE_CONTAINER_APP }} \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --environment ${{ env.AZURE_ENVIRONMENT }} \
+              --image "${{ env.IMAGE_URI }}:${{ env.IMAGE_TAG }}" \
+              --registry-server "${{ env.AZURE_ACR_NAME }}.azurecr.io" \
+              --registry-username ${{ secrets.AZURE_REGISTRY_USERNAME }} \
+              --registry-password ${{ secrets.AZURE_REGISTRY_PASSWORD }} \
+              --cpu 1.0 \
+              --memory 2.0Gi \
+              --min-replicas 1 \
+              --max-replicas 3 \
+              --ingress external \
+              --target-port 8080
+          fi
+
+          echo "✓ Deployment completed"
+
+      - name: Verify Deployment
+        run: |
+          echo "Waiting for deployment..."
+          sleep 15
+
+          STATUS=$(az containerapp show \
+            --name ${{ env.AZURE_CONTAINER_APP }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --query 'properties.runningStatus' \
+            -o tsv 2>/dev/null || echo "unknown")
+
+          echo "Container App Status: ${STATUS}"
+
+          FQDN=$(az containerapp show \
+            --name ${{ env.AZURE_CONTAINER_APP }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --query 'properties.configuration.ingress.fqdn' \
+            -o tsv 2>/dev/null || echo "N/A")
+
+          echo "FQDN: ${FQDN}"
+
+          # Health check
+          if [ "${FQDN}" != "N/A" ]; then
+            curl -sf "https://${FQDN}/health" && echo "✓ Health check passed" || echo "⚠ Health check pending"
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Athena Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image**: ${{ env.IMAGE_URI }}:${{ env.IMAGE_TAG }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Container App**: ${{ env.AZURE_CONTAINER_APP }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Target Domain**: athena.aldc.io" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,13 @@
+# Athena - Knowledge Graph Visualization API
+# FastAPI + Uvicorn for async web server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+gunicorn>=21.2.0
+
+# Data handling
+pydantic>=2.5.0
+
+# Production dependencies (already in venv for dev)
+# numpy - for layout computation
+# scipy - for clustering
+# networkx - for graph operations
