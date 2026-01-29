@@ -834,6 +834,22 @@
       "size": 10
     },
     {
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "label": "Odin node successfully federated with Zeus Memo...",
+      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
       "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "label": "Prevention systems operational on Odin. Monitor...",
       "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
@@ -850,20 +866,36 @@
       "size": 10
     },
     {
-      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "label": "Odin node successfully federated with Zeus Memo...",
-      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10
+      "id": "00a75e30-ac3c-4ab3-abc4-11784f5a023f",
+      "label": "Decision: Use FastAPI for progressive loading A...",
+      "title": "Decision: Use FastAPI for progressive loading API instead of embedding data in HTML. Reasoning: Current HTML with inline JSON works for 210 nodes but will not scale to 50K memories. Progressive loading via API allows semantic zoom - show L2 clusters when zoomed out, L1 on zoom in, individual memories on full zoom. API serves pre-computed positions from ForceAtlas2 layout. Port 8085 chosen to avoid conflict with other services on 8080. Project: zeus-decision-graph-visualization.",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10
+      "id": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "label": "Progressive Loading API for semantic zoom visua...",
+      "title": "Progressive Loading API for semantic zoom visualization: Created FastAPI server (src/api_server.py) with endpoints for hierarchical data loading. Endpoints: /api/overview (L2 clusters), /api/l2/{id} (L1 clusters within L2), /api/l1/{id} (memories within L1, paginated), /api/memory/{id} (single memory). Loads pre-computed clustering (50K memories, 3264 L1 clusters, 385 L2 clusters) and ForceAtlas2 layout positions. Port 8085. Commit: a1603ef. Project: zeus-decision-graph-visualization.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "label": "Fixed sidebar node navigation in 3D force graph...",
+      "title": "Fixed sidebar node navigation in 3D force graph visualization. Root cause: .enableVRMode(true) crashed entire initialization chain. CSS improvements added (transform on hover/active, user-select: none). Changed addEventListener to onclick with debug logging. Regenerated visualization works correctly now. Commit: 6918e5c. Project: zeus-decision-graph-visualization.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "label": "3d-force-graph VR mode method crash: The method...",
+      "title": "3d-force-graph VR mode method crash: The method .enableVRMode(true) does not exist in the 3d-force-graph library. Using it in the initialization chain causes the entire graph initialization to fail silently, leaving the graph variable undefined. This breaks ALL graph interactions including navigation, filtering, and click handlers. The error only appears in browser console as \"enableVRMode is not a function\". Solution: Remove .enableVRMode(true) from the initialization chain. Project: zeus-decision-graph-visualization. Commit: 6918e5c",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
     },
     {
       "id": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
@@ -1787,6 +1819,56 @@
       "type": "references"
     },
     {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
       "source": "3235c2de-5748-4d13-84cc-306d9289c850",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
@@ -1814,6 +1896,16 @@
     {
       "source": "3235c2de-5748-4d13-84cc-306d9289c850",
       "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
       "type": "related"
     },
     {
@@ -1848,6 +1940,16 @@
     },
     {
       "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -1878,6 +1980,16 @@
     },
     {
       "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -1908,6 +2020,16 @@
     },
     {
       "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -1938,6 +2060,16 @@
     },
     {
       "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -1968,6 +2100,16 @@
     },
     {
       "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -1998,6 +2140,16 @@
     },
     {
       "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
       "target": "e761df6c-0629-4557-8200-11e6804c0e08",
       "type": "related"
     },
@@ -2024,6 +2176,16 @@
     {
       "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
       "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
       "type": "related"
     },
     {
@@ -2454,6 +2616,11 @@
     {
       "source": "d28c10b2-c5f7-49a2-aa21-b50c919e3a78",
       "target": "0efe4913-6543-47a2-9255-1212c86a944f",
+      "type": "temporal_context"
+    },
+    {
+      "source": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "temporal_context"
     },
     {
@@ -3305,6 +3472,11 @@
     {
       "source": "zeus-memory-hub",
       "target": "3e88d511-b784-49a0-b402-2d54377bec72",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "00a75e30-ac3c-4ab3-abc4-11784f5a023f",
       "type": "informs"
     },
     {
