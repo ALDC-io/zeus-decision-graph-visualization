@@ -535,6 +535,55 @@ async def get_memory(memory_id: str):
     }
 
 
+@app.get("/api/search")
+async def search_memories(
+    q: str = Query(..., min_length=2, description="Search query"),
+    limit: int = Query(default=20, le=100)
+):
+    """
+    Search memories by content and return matching results with cluster info.
+    Useful for finding where a topic fits in the hierarchy.
+    """
+    if not clustering_data or not layout_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    query_lower = q.lower()
+    l1_clusters = clustering_data.get('clusters', {}).get('l1', {})
+    l2_clusters = clustering_data.get('clusters', {}).get('l2', {})
+    memory_positions = layout_data.get('positions', {}).get('memories', {})
+
+    results = []
+    for mem in clustering_data.get('memories', []):
+        content = mem.get('content_preview', '').lower()
+        if query_lower in content:
+            l1_id = str(mem.get('cluster_l1', ''))
+            l2_id = str(mem.get('cluster_l2', ''))
+            l1_info = l1_clusters.get(l1_id, {})
+            l2_info = l2_clusters.get(l2_id, {})
+            pos = memory_positions.get(mem['id'], {"x": 0, "y": 0})
+
+            results.append({
+                "id": mem['id'],
+                "content_preview": mem.get('content_preview', '')[:200],
+                "category": mem.get('category', 'general'),
+                "cluster_l1": l1_id,
+                "cluster_l1_label": l1_info.get('label', f'L1-{l1_id}'),
+                "cluster_l2": l2_id,
+                "cluster_l2_label": l2_info.get('label', f'L2-{l2_id}'),
+                "x": pos.get("x", 0),
+                "y": pos.get("y", 0),
+            })
+
+            if len(results) >= limit:
+                break
+
+    return {
+        "query": q,
+        "total_results": len(results),
+        "results": results,
+    }
+
+
 @app.get("/api/stats")
 async def get_stats():
     """Get statistics about the loaded data."""
