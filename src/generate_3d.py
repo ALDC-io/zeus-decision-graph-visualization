@@ -693,6 +693,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         const DOUBLE_CLICK_DELAY = 300;
 
         function handleNodeClick(node) {{
+            console.log('[Athena] handleNodeClick called:', node ? node.name : 'null');
             const now = Date.now();
 
             // Always select immediately on click
@@ -856,6 +857,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const width = wrapper.offsetWidth;
             const height = wrapper.offsetHeight;
 
+            console.log('[Athena] Initializing ForceGraph3D');
             graph = ForceGraph3D()(container)
                 .width(width)
                 .height(height)
@@ -869,6 +871,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 .linkWidth(link => link.width)
                 .linkOpacity(0.6)
                 .onNodeClick(node => {{
+                    console.log('[Athena] onNodeClick fired:', node ? node.name : 'null');
                     handleNodeClick(node);
                 }})
                 .onBackgroundClick(() => {{
@@ -961,7 +964,28 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         // Single click - just select and populate sidebar
         function selectNodeOnly(node) {{
+            console.log('[Athena] selectNodeOnly called for:', node.name);
             selectedNode = node;
+
+            // Post message to parent window (for embed mode)
+            console.log('[Athena] window.parent !== window:', window.parent !== window);
+            if (window.parent !== window) {{
+                console.log('[Athena] Sending postMessage to parent');
+                window.parent.postMessage({{
+                    type: 'nodeSelected',
+                    node: {{
+                        id: node.id,
+                        name: node.name,
+                        description: node.description,
+                        group: node.group,
+                        groupLabel: node.groupLabel,
+                        tier: node.tier,
+                        color: node.color,
+                        logo: node.logo
+                    }}
+                }}, '*');
+                console.log('[Athena] postMessage sent');
+            }}
 
             // Update highlighted nodes
             highlightedNodes.clear();
@@ -1065,6 +1089,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             highlightedNodes.clear();
             lastClickNode = null;
             lastClickTime = 0;
+
+            // Post message to parent window (for embed mode)
+            if (window.parent !== window) {{
+                window.parent.postMessage({{
+                    type: 'nodeDeselected'
+                }}, '*');
+            }}
 
             document.getElementById('placeholder').style.display = 'block';
             document.getElementById('node-info').classList.remove('active');
