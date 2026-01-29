@@ -337,11 +337,11 @@ async def health():
     }
 
 
-@app.get("/api/overview", response_model=L2OverviewResponse)
+@app.get("/api/overview")
 async def get_overview():
     """
     Get L2 cluster overview for zoomed-out view.
-    Returns all L2 clusters with their positions and sizes.
+    Returns all L2 clusters with their positions, sizes, and colors.
     """
     if not clustering_data or not layout_data:
         raise HTTPException(status_code=503, detail="Data not loaded")
@@ -349,22 +349,39 @@ async def get_overview():
     l2_clusters = clustering_data.get('clusters', {}).get('l2', {})
     l2_positions = layout_data.get('positions', {}).get('l2_clusters', {})
 
+    # Color palette for L2 clusters based on dominant category
+    category_colors = {
+        "decision": "#1a365d",
+        "cce_decision_log": "#2f855a",
+        "cce_research": "#3182ce",
+        "cce_failed_approach": "#e53e3e",
+        "cce_success_log": "#38a169",
+        "cce_system": "#805ad5",
+        "cce": "#d69e2e",
+        "architecture": "#dd6b20",
+        "default": "#718096",
+    }
+
     clusters = []
     for cluster_id, info in l2_clusters.items():
         pos = l2_positions.get(cluster_id, {"x": 0, "y": 0})
-        clusters.append(ClusterInfo(
-            id=cluster_id,
-            x=pos.get("x", 0),
-            y=pos.get("y", 0),
-            size=info.get("total_size", info.get("size", 1)),
-            label=info.get("label", f"Cluster {cluster_id}")
-        ))
+        # Determine color based on dominant category
+        dominant_cat = info.get("dominant_category", "default")
+        color = category_colors.get(dominant_cat, category_colors["default"])
+        clusters.append({
+            "id": cluster_id,
+            "x": pos.get("x", 0),
+            "y": pos.get("y", 0),
+            "size": info.get("total_size", info.get("size", 1)),
+            "label": info.get("label", f"Cluster {cluster_id}"),
+            "color": color,
+        })
 
-    return L2OverviewResponse(
-        total_clusters=len(clusters),
-        total_memories=len(clustering_data.get('memories', [])),
-        clusters=clusters
-    )
+    return {
+        "total_clusters": len(clusters),
+        "total_memories": len(clustering_data.get('memories', [])),
+        "clusters": clusters
+    }
 
 
 @app.get("/api/l2/{cluster_id}")
@@ -386,23 +403,39 @@ async def get_l2_detail(cluster_id: str):
     l2_info = l2_clusters[cluster_id]
     l1_ids = l2_info.get('l1_clusters', [])
 
+    # Color palette for L1 clusters
+    category_colors = {
+        "decision": "#1a365d",
+        "cce_decision_log": "#2f855a",
+        "cce_research": "#3182ce",
+        "cce_failed_approach": "#e53e3e",
+        "cce_success_log": "#38a169",
+        "cce_system": "#805ad5",
+        "cce": "#d69e2e",
+        "architecture": "#dd6b20",
+        "default": "#4299e1",
+    }
+
     clusters = []
     for l1_id in l1_ids:
         l1_id_str = str(l1_id)
         l1_info = l1_clusters.get(l1_id_str, {})
         pos = l1_positions.get(l1_id_str, {"x": 0, "y": 0})
+        dominant_cat = l1_info.get("dominant_category", "default")
+        color = category_colors.get(dominant_cat, category_colors["default"])
         clusters.append({
             "id": l1_id_str,
             "x": pos.get("x", 0),
             "y": pos.get("y", 0),
             "size": l1_info.get("size", 1),
-            "label": l1_info.get("label", f"L1-{l1_id}")
+            "label": l1_info.get("label", f"L1-{l1_id}"),
+            "color": color,
         })
 
     return {
-        "l2_cluster_id": cluster_id,
-        "total_l1_clusters": len(clusters),
-        "clusters": clusters
+        "cluster_id": cluster_id,
+        "cluster_label": l2_info.get("label", f"L2-{cluster_id}"),
+        "l1_clusters": clusters
     }
 
 
@@ -422,6 +455,10 @@ async def get_l1_memories(
 
     cluster_id_int = int(cluster_id)
     memory_positions = layout_data.get('positions', {}).get('memories', {})
+    l1_clusters = clustering_data.get('clusters', {}).get('l1', {})
+
+    # Get L1 cluster info
+    l1_info = l1_clusters.get(cluster_id, {})
 
     # Filter memories by L1 cluster
     cluster_memories = [
@@ -435,6 +472,7 @@ async def get_l1_memories(
     # Apply pagination
     total = len(cluster_memories)
     paginated = cluster_memories[offset:offset + limit]
+    has_more = offset + limit < total
 
     memories = []
     for mem in paginated:
@@ -451,11 +489,11 @@ async def get_l1_memories(
         })
 
     return {
-        "l1_cluster_id": cluster_id,
+        "cluster_id": cluster_id,
+        "cluster_label": l1_info.get("label", f"L1-{cluster_id}"),
         "total_memories": total,
-        "offset": offset,
-        "limit": limit,
-        "memories": memories
+        "memories": memories,
+        "has_more": has_more,
     }
 
 
@@ -484,12 +522,16 @@ async def get_memory(memory_id: str):
 
     return {
         "id": memory_id,
-        "x": pos.get("x", 0),
-        "y": pos.get("y", 0),
-        "content_preview": memory.get('content_preview', ''),
+        "content": memory.get('content_preview', ''),
         "category": memory.get('category', 'general'),
-        "cluster_l1": memory.get('cluster_l1'),
-        "cluster_l2": memory.get('cluster_l2'),
+        "source": memory.get('source', 'zeus'),
+        "created_at": memory.get('created_at', ''),
+        "cluster_l1": str(memory.get('cluster_l1', '')),
+        "cluster_l2": str(memory.get('cluster_l2', '')),
+        "metadata": {
+            "x": pos.get("x", 0),
+            "y": pos.get("y", 0),
+        }
     }
 
 
@@ -497,20 +539,18 @@ async def get_memory(memory_id: str):
 async def get_stats():
     """Get statistics about the loaded data."""
     if not clustering_data or not layout_data:
-        raise HTTPException(status_code=503, detail="Data not loaded")
+        return {
+            "total_memories": 0,
+            "total_l1_clusters": 0,
+            "total_l2_clusters": 0,
+            "data_loaded": False,
+        }
 
     return {
-        "metadata": clustering_data.get('metadata', {}),
-        "layout_metadata": layout_data.get('metadata', {}),
-        "clusters": {
-            "l1_count": len(clustering_data.get('clusters', {}).get('l1', {})),
-            "l2_count": len(clustering_data.get('clusters', {}).get('l2', {})),
-        },
-        "positions": {
-            "l1_positions": len(layout_data.get('positions', {}).get('l1_clusters', {})),
-            "l2_positions": len(layout_data.get('positions', {}).get('l2_clusters', {})),
-            "memory_positions": len(layout_data.get('positions', {}).get('memories', {})),
-        }
+        "total_memories": len(clustering_data.get('memories', [])),
+        "total_l1_clusters": len(clustering_data.get('clusters', {}).get('l1', {})),
+        "total_l2_clusters": len(clustering_data.get('clusters', {}).get('l2', {})),
+        "data_loaded": True,
     }
 
 
