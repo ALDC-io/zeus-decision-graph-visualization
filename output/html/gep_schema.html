@@ -563,29 +563,24 @@
         let sidebarVisible = true;
         const highlightedNodes = new Set();
 
-        // Double-click detection
+        // Click handling - immediate selection, double-click for zoom
         let lastClickTime = 0;
         let lastClickNode = null;
         const DOUBLE_CLICK_DELAY = 300;
 
         function handleNodeClick(node) {
             const now = Date.now();
+
+            // Always select immediately on click
+            selectNodeOnly(node);
+
+            // Check for double-click (zoom in)
             if (lastClickNode === node && (now - lastClickTime) < DOUBLE_CLICK_DELAY) {
-                // Double click detected
                 focusNodeIn2D(node);
-                lastClickNode = null;
-                lastClickTime = 0;
-            } else {
-                // Single click
-                lastClickNode = node;
-                lastClickTime = now;
-                // Delay single-click action to check for double-click
-                setTimeout(() => {
-                    if (lastClickNode === node) {
-                        selectNodeOnly(node);
-                    }
-                }, DOUBLE_CLICK_DELAY);
             }
+
+            lastClickNode = node;
+            lastClickTime = now;
         }
 
         // Track which groups (nodes) are visible - initialize from data
