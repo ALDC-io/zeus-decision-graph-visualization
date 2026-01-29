@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "ALDC Internal Data Schema",
+    "description": "Schema visualization for ALDC Operations Model - 12 tables, 98 columns, 80 measures",
+    "source": "Zeus Memory / Eclipse API",
+    "created": "2026-01-29",
+    "updated": "2026-01-29"
+  },
+  "groups": {
+    "hub": {"color": "#dd6b20", "label": "Dataset"},
+    "fact": {"color": "#1a365d", "label": "Fact Tables"},
+    "dimension": {"color": "#2f855a", "label": "Dimension Tables"},
+    "date": {"color": "#805ad5", "label": "Date Tables"},
+    "metadata": {"color": "#e53e3e", "label": "Metadata Tables"}
+  },
+  "edge_types": {
+    "contains": {"color": "#718096", "width": 2, "label": "Contains"},
+    "references": {"color": "#3182ce", "width": 2, "label": "References"}
+  },
+  "nodes": [
+    {"id": "hub", "label": "ALDC Operations Model", "tier": 0, "group": "hub", "title": "ALDC Internal Analytics Dataset\n12 Tables, 98 Columns, 80 Measures", "size": 50},
+    {"id": "table_worker", "label": "Worker", "tier": 2, "group": "dimension", "title": "Worker dimension table\nEmployee/Contractor records", "size": 25},
+    {"id": "table_labour", "label": "Labour", "tier": 1, "group": "fact", "title": "Labour fact table\nTime and effort tracking", "size": 35},
+    {"id": "table_jobcode", "label": "Jobcode", "tier": 2, "group": "dimension", "title": "Jobcode dimension table\nProject codes and categories", "size": 25},
+    {"id": "table_plan", "label": "Plan", "tier": 1, "group": "fact", "title": "Plan fact table\nResource planning data", "size": 30},
+    {"id": "table_date_work", "label": "Date (Work)", "tier": 2, "group": "date", "title": "Date dimension\nWork dates", "size": 25},
+    {"id": "table_date_invoice", "label": "Date (Invoice)", "tier": 2, "group": "date", "title": "Date dimension\nInvoice dates", "size": 25},
+    {"id": "table_service_item", "label": "Service Item", "tier": 2, "group": "dimension", "title": "Service Item dimension\nService catalog items", "size": 25},
+    {"id": "table_service_revenue", "label": "Service Revenue", "tier": 1, "group": "fact", "title": "Service Revenue fact table\nRevenue tracking", "size": 35},
+    {"id": "table_date_start", "label": "Date (Start)", "tier": 2, "group": "date", "title": "Date dimension\nProject start dates", "size": 25},
+    {"id": "table_invoice", "label": "Invoice", "tier": 1, "group": "fact", "title": "Invoice fact table\nClient invoices", "size": 30},
+    {"id": "table_report_metadata", "label": "Report Metadata", "tier": 3, "group": "metadata", "title": "Report metadata\nReporting configuration", "size": 20},
+    {"id": "table_account", "label": "Account", "tier": 2, "group": "dimension", "title": "Account dimension\nClient accounts", "size": 30}
+  ],
+  "edges": [
+    {"source": "hub", "target": "table_worker", "type": "contains"},
+    {"source": "hub", "target": "table_labour", "type": "contains"},
+    {"source": "hub", "target": "table_jobcode", "type": "contains"},
+    {"source": "hub", "target": "table_plan", "type": "contains"},
+    {"source": "hub", "target": "table_date_work", "type": "contains"},
+    {"source": "hub", "target": "table_date_invoice", "type": "contains"},
+    {"source": "hub", "target": "table_service_item", "type": "contains"},
+    {"source": "hub", "target": "table_service_revenue", "type": "contains"},
+    {"source": "hub", "target": "table_date_start", "type": "contains"},
+    {"source": "hub", "target": "table_invoice", "type": "contains"},
+    {"source": "hub", "target": "table_report_metadata", "type": "contains"},
+    {"source": "hub", "target": "table_account", "type": "contains"},
+    {"source": "table_labour", "target": "table_worker", "type": "references"},
+    {"source": "table_labour", "target": "table_jobcode", "type": "references"},
+    {"source": "table_labour", "target": "table_date_work", "type": "references"},
+    {"source": "table_plan", "target": "table_jobcode", "type": "references"},
+    {"source": "table_plan", "target": "table_worker", "type": "references"},
+    {"source": "table_service_revenue", "target": "table_account", "type": "references"},
+    {"source": "table_service_revenue", "target": "table_service_item", "type": "references"},
+    {"source": "table_invoice", "target": "table_account", "type": "references"},
+    {"source": "table_invoice", "target": "table_date_invoice", "type": "references"}
+  ]
+}

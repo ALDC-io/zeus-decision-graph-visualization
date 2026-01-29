@@ -146,17 +146,170 @@ class MemoriesResponse(BaseModel):
 
 @app.get("/")
 async def root():
-    """Serve the 3D visualization HTML."""
+    """Serve the landing page with links to all visualizations."""
+    static_dir = get_static_dir()
+
+    # Build list of available visualizations
+    visualizations = [
+        {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
+        {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
+        {"name": "Fusion92 Schema", "path": "/viz/f92", "description": "Data schema for Fusion92 Activation Model"},
+        {"name": "ALDC Internal Schema", "path": "/viz/aldc", "description": "Data schema for ALDC Operations Model"},
+        {"name": "GEP Schema", "path": "/viz/gep", "description": "Data schema for Global Export Platform"},
+    ]
+
+    # Generate landing page HTML
+    viz_cards = ""
+    for viz in visualizations:
+        viz_cards += f'''
+        <a href="{viz['path']}" class="viz-card">
+            <h2>{viz['name']}</h2>
+            <p>{viz['description']}</p>
+        </a>
+        '''
+
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Athena - Knowledge Graph Visualizations</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            min-height: 100vh;
+            color: #fff;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }}
+        header {{
+            text-align: center;
+            margin-bottom: 50px;
+        }}
+        h1 {{
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #3182ce, #805ad5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }}
+        .subtitle {{
+            font-size: 18px;
+            color: #a0aec0;
+        }}
+        .viz-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }}
+        .viz-card {{
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }}
+        .viz-card:hover {{
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #3182ce;
+            transform: translateY(-4px);
+        }}
+        .viz-card h2 {{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }}
+        .viz-card p {{
+            font-size: 14px;
+            color: #a0aec0;
+            line-height: 1.5;
+        }}
+        footer {{
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #718096;
+            font-size: 14px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Athena</h1>
+            <p class="subtitle">Interactive Knowledge Graph Visualizations</p>
+        </header>
+        <div class="viz-grid">
+            {viz_cards}
+        </div>
+        <footer>
+            <p>Powered by Zeus Memory | ALDC</p>
+        </footer>
+    </div>
+</body>
+</html>'''
+
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse(content=html)
+
+
+@app.get("/viz/zeus")
+async def viz_zeus():
+    """Serve the Zeus Decision Graph visualization."""
     static_dir = get_static_dir()
     html_file = static_dir / "zeus_decision_graph.html"
     if html_file.exists():
         return FileResponse(html_file, media_type="text/html")
-    # Fallback to API info if no HTML
-    return {
-        "service": "athena-knowledge-graph",
-        "version": "1.0.0",
-        "visualization": "HTML not found - use /api endpoints",
-    }
+    raise HTTPException(status_code=404, detail="Zeus visualization not found")
+
+
+@app.get("/viz/fbc")
+async def viz_fbc():
+    """Serve the Food Banks Canada ecosystem visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "fbc_ecosystem.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="FBC visualization not found")
+
+
+@app.get("/viz/f92")
+async def viz_f92():
+    """Serve the Fusion92 schema visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "f92_schema.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="F92 visualization not found")
+
+
+@app.get("/viz/aldc")
+async def viz_aldc():
+    """Serve the ALDC schema visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "aldc_schema.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="ALDC visualization not found")
+
+
+@app.get("/viz/gep")
+async def viz_gep():
+    """Serve the GEP schema visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "gep_schema.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="GEP visualization not found")
 
 
 @app.get("/api")

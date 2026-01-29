@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "title": "GEP (Global Export Platform) Data Schema",
+    "description": "Schema visualization for GEP Data Model - 10 tables, 79 columns across Order, Campaign, Consolidation, Date, Marketplace and more",
+    "source": "Zeus Memory / Eclipse API",
+    "created": "2026-01-29",
+    "updated": "2026-01-29"
+  },
+  "groups": {
+    "hub": {"color": "#dd6b20", "label": "Dataset"},
+    "fact": {"color": "#1a365d", "label": "Fact Tables"},
+    "dimension": {"color": "#2f855a", "label": "Dimension Tables"},
+    "date": {"color": "#805ad5", "label": "Date Tables"},
+    "consolidation": {"color": "#e53e3e", "label": "Consolidation Tables"}
+  },
+  "edge_types": {
+    "contains": {"color": "#718096", "width": 2, "label": "Contains"},
+    "references": {"color": "#3182ce", "width": 2, "label": "References"},
+    "aggregates": {"color": "#38a169", "width": 2, "label": "Aggregates"}
+  },
+  "nodes": [
+    {"id": "hub", "label": "GEP Data Model", "tier": 0, "group": "hub", "title": "Global Export Platform Analytics\n10 Tables, 79 Columns", "size": 50},
+    {"id": "table_order", "label": "Order", "tier": 1, "group": "fact", "title": "Order fact table\nCustomer orders with shipping, status, country", "size": 40},
+    {"id": "table_order_line", "label": "Order Line", "tier": 1, "group": "fact", "title": "Order Line fact table\nLine item details, quantities, amounts", "size": 35},
+    {"id": "table_campaign", "label": "Campaign", "tier": 1, "group": "fact", "title": "Campaign fact table\nMarketing campaign tracking", "size": 30},
+    {"id": "table_date", "label": "Date", "tier": 2, "group": "date", "title": "Date dimension\nStandard date hierarchy", "size": 25},
+    {"id": "table_marketplace", "label": "Marketplace", "tier": 2, "group": "dimension", "title": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "size": 25},
+    {"id": "table_product", "label": "Product", "tier": 2, "group": "dimension", "title": "Product dimension\nProduct catalog and attributes", "size": 30},
+    {"id": "table_customer", "label": "Customer", "tier": 2, "group": "dimension", "title": "Customer dimension\nCustomer demographics and segments", "size": 25},
+    {"id": "table_consolidation", "label": "Consolidation", "tier": 3, "group": "consolidation", "title": "Consolidation table\nAggregated metrics", "size": 25},
+    {"id": "table_returns", "label": "Returns", "tier": 1, "group": "fact", "title": "Returns fact table\nReturn transactions", "size": 25},
+    {"id": "table_inventory", "label": "Inventory", "tier": 1, "group": "fact", "title": "Inventory fact table\nStock levels and movements", "size": 25}
+  ],
+  "edges": [
+    {"source": "hub", "target": "table_order", "type": "contains"},
+    {"source": "hub", "target": "table_order_line", "type": "contains"},
+    {"source": "hub", "target": "table_campaign", "type": "contains"},
+    {"source": "hub", "target": "table_date", "type": "contains"},
+    {"source": "hub", "target": "table_marketplace", "type": "contains"},
+    {"source": "hub", "target": "table_product", "type": "contains"},
+    {"source": "hub", "target": "table_customer", "type": "contains"},
+    {"source": "hub", "target": "table_consolidation", "type": "contains"},
+    {"source": "hub", "target": "table_returns", "type": "contains"},
+    {"source": "hub", "target": "table_inventory", "type": "contains"},
+    {"source": "table_order_line", "target": "table_order", "type": "references"},
+    {"source": "table_order_line", "target": "table_product", "type": "references"},
+    {"source": "table_order", "target": "table_customer", "type": "references"},
+    {"source": "table_order", "target": "table_marketplace", "type": "references"},
+    {"source": "table_order", "target": "table_date", "type": "references"},
+    {"source": "table_campaign", "target": "table_marketplace", "type": "references"},
+    {"source": "table_returns", "target": "table_order", "type": "references"},
+    {"source": "table_inventory", "target": "table_product", "type": "references"},
+    {"source": "table_consolidation", "target": "table_order", "type": "aggregates"},
+    {"source": "table_consolidation", "target": "table_order_line", "type": "aggregates"}
+  ]
+}

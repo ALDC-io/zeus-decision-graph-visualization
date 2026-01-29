@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "title": "Fusion92 Data Schema",
+    "description": "Schema visualization for Activation Model - 7 tables, 56 columns, 43 measures",
+    "source": "Zeus Memory / Eclipse API",
+    "created": "2026-01-29",
+    "updated": "2026-01-29"
+  },
+  "groups": {
+    "hub": {"color": "#dd6b20", "label": "Dataset"},
+    "fact": {"color": "#1a365d", "label": "Fact Tables"},
+    "dimension": {"color": "#2f855a", "label": "Dimension Tables"},
+    "date": {"color": "#805ad5", "label": "Date Tables"}
+  },
+  "edge_types": {
+    "contains": {"color": "#718096", "width": 2, "label": "Contains"},
+    "references": {"color": "#3182ce", "width": 2, "label": "References"}
+  },
+  "nodes": [
+    {"id": "hub", "label": "Activation Model", "tier": 0, "group": "hub", "title": "Fusion92 Analytics Dataset\n7 Tables, 56 Columns, 43 Measures", "size": 50},
+    {"id": "table_platform", "label": "Platform", "tier": 2, "group": "dimension", "title": "Platform dimension table\nAd platforms (Google, Meta, etc.)", "size": 25},
+    {"id": "table_flight", "label": "Flight", "tier": 1, "group": "fact", "title": "Flight fact table\nCampaign flight periods", "size": 30},
+    {"id": "table_campaign", "label": "Campaign", "tier": 1, "group": "fact", "title": "Campaign fact table\nMarketing campaigns", "size": 35},
+    {"id": "table_spend", "label": "Spend", "tier": 1, "group": "fact", "title": "Spend fact table\nAd spend metrics", "size": 35},
+    {"id": "table_date_action", "label": "Date (Action)", "tier": 2, "group": "date", "title": "Date dimension\nAction/Event dates", "size": 25},
+    {"id": "table_creative", "label": "Creative", "tier": 2, "group": "dimension", "title": "Creative dimension table\nAd creatives and assets", "size": 25},
+    {"id": "table_account", "label": "Account", "tier": 2, "group": "dimension", "title": "Account dimension table\nClient accounts", "size": 25}
+  ],
+  "edges": [
+    {"source": "hub", "target": "table_platform", "type": "contains"},
+    {"source": "hub", "target": "table_flight", "type": "contains"},
+    {"source": "hub", "target": "table_campaign", "type": "contains"},
+    {"source": "hub", "target": "table_spend", "type": "contains"},
+    {"source": "hub", "target": "table_date_action", "type": "contains"},
+    {"source": "hub", "target": "table_creative", "type": "contains"},
+    {"source": "hub", "target": "table_account", "type": "contains"},
+    {"source": "table_campaign", "target": "table_account", "type": "references"},
+    {"source": "table_campaign", "target": "table_platform", "type": "references"},
+    {"source": "table_flight", "target": "table_campaign", "type": "references"},
+    {"source": "table_spend", "target": "table_campaign", "type": "references"},
+    {"source": "table_spend", "target": "table_date_action", "type": "references"},
+    {"source": "table_creative", "target": "table_campaign", "type": "references"}
+  ]
+}

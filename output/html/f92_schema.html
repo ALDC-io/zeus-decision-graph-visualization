@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fusion92 Data Schema</title>
+    <link rel="icon" href="data:,">
+    <script src="//unpkg.com/3d-force-graph"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a1a;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        #graph-wrapper {
+            flex: 1;
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+        #graph {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #graph canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        #sidebar {
+            width: 350px;
+            min-width: 350px;
+            background: #ffffff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        #sidebar.hidden {
+            transform: translateX(100%);
+        }
+        #sidebar-toggle {
+            position: fixed;
+            right: 350px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 60px;
+            background: #1a365d;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            color: white;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: right 0.3s ease;
+        }
+        #sidebar-toggle.sidebar-hidden {
+            right: 0;
+        }
+        #sidebar-toggle:hover {
+            background: #2d4a7c;
+        }
+        .header {
+            background: #1a365d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        #info-panel {
+            padding: 20px;
+            flex: 1;
+        }
+        .info-placeholder {
+            color: #666;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .info-placeholder p {
+            margin-bottom: 10px;
+        }
+        .node-info {
+            display: none;
+        }
+        .node-info.active {
+            display: block;
+        }
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .node-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: #f8f9fa;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .node-logo[src=""], .node-logo:not([src]) {
+            display: none;
+        }
+        .node-header-text {
+            flex: 1;
+        }
+        .node-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 5px;
+        }
+        .node-tier {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .tier-hub { background: #1a365d; }
+        .tier-1 { background: #2f855a; }
+        .tier-2 { background: #3182ce; }
+        .tier-3 { background: #805ad5; }
+        .tier-4 { background: #718096; }
+        .node-description {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .view-full-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 6px 12px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+        }
+        .view-full-btn:hover {
+            background: #2d4a7c;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            max-height: 80vh;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header h2 {
+            font-size: 18px;
+            color: #1a365d;
+            margin: 0;
+            flex: 1;
+            padding-right: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #333;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-body .full-content {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.7;
+            color: #333;
+        }
+        .modal-meta {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+        }
+        .modal-meta span {
+            margin-right: 20px;
+        }
+        .modal-meta .label {
+            font-weight: 600;
+        }
+        .node-meta {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .node-meta span {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .node-meta .label {
+            color: #666;
+            font-weight: 500;
+        }
+        .connections-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .connection-list {
+            list-style: none;
+        }
+        .connection-item {
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-left: 4px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+        }
+        .connection-item:hover {
+            background: #e8f4fd;
+            border-left-color: #3182ce;
+            transform: translateX(3px);
+        }
+        .connection-item:active {
+            background: #d0e8fa;
+            transform: translateX(5px);
+        }
+        .connection-item .conn-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: #fff;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+        .connection-item .conn-logo[src=""] {
+            display: none;
+        }
+        .connection-item .conn-info {
+            flex: 1;
+        }
+        .connection-item .name {
+            font-weight: 500;
+            color: #1a365d;
+            margin-bottom: 3px;
+        }
+        .connection-item .relation {
+            font-size: 11px;
+            color: #666;
+        }
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 10000;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toolbar-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #1a365d;
+            text-transform: uppercase;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #e8f4fd;
+        }
+        .toolbar-label:hover {
+            background: #d0e8fa;
+        }
+        .toolbar-label .arrow {
+            font-size: 8px;
+            margin-left: 3px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .toolbar-label.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            transition: max-width 0.3s ease, opacity 0.2s ease;
+            max-width: 2000px;
+            opacity: 1;
+        }
+        .filter-group.collapsed {
+            max-width: 0;
+            opacity: 0;
+            gap: 0;
+        }
+        .toolbar-divider {
+            width: 1px;
+            height: 20px;
+            background: #ddd;
+        }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            color: #333;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .filter-chip:hover {
+            background: #e0e0e0;
+        }
+        .filter-chip.active {
+            background: #1a365d;
+            color: white;
+            border-color: #1a365d;
+        }
+        .filter-chip .chip-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .filter-chip.active .chip-color {
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .view-btn {
+            padding: 5px 12px;
+            border: 1px solid #1a365d;
+            background: white;
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .view-btn.active {
+            background: #1a365d;
+            color: white;
+        }
+        .view-btn:hover:not(.active) {
+            background: #e8f4fd;
+        }
+        .mini-btn {
+            font-size: 9px;
+            padding: 2px 6px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #666;
+        }
+        .mini-btn:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="graph-wrapper">
+            <div id="graph"></div>
+            <div id="toolbar">
+                <div class="toolbar-section">
+                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
+                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('nodes')">Nodes <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="nodes-filters">
+                        <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#dd6b20"></span>Dataset</span>
+                        <span class="filter-chip active" data-group="fact"><span class="chip-color" style="background:#1a365d"></span>Fact Tables</span>
+                        <span class="filter-chip active" data-group="dimension"><span class="chip-color" style="background:#2f855a"></span>Dimension Tables</span>
+                        <span class="filter-chip active" data-group="date"><span class="chip-color" style="background:#805ad5"></span>Date Tables</span>
+                        
+                        <button class="mini-btn" onclick="toggleAllNodes()">Toggle</button>
+                    </div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('edges')">Edges <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="edges-filters">
+                        <span class="filter-chip active" data-edge-type="contains"><span class="chip-color" style="background:#718096"></span>Contains</span>
+                        <span class="filter-chip active" data-edge-type="references"><span class="chip-color" style="background:#3182ce"></span>References</span>
+                        
+                        <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="sidebar-toggle" onclick="toggleSidebar()">◀</button>
+        <div id="sidebar">
+            <div class="header">
+                <h1>Fusion92 Data Schema</h1>
+                <p>Schema visualization for Activation Model - 7 tables, 56 columns, 43 measures</p>
+            </div>
+            <div id="info-panel">
+                <div class="info-placeholder" id="placeholder">
+                    <p><strong>Select a node</strong></p>
+                    <p>Click on any node in the graph to see details and navigate to connected items.</p>
+                    <p style="margin-top: 20px; font-size: 11px; color: #999;">Drag to rotate • Scroll to zoom • Right-drag to pan</p>
+                </div>
+                <div class="node-info" id="node-info">
+                    <div class="node-header">
+                        <img id="node-logo" class="node-logo" src="" alt="">
+                        <div class="node-header-text">
+                            <div class="node-title" id="node-title"></div>
+                            <div class="node-tier" id="node-tier"></div>
+                        </div>
+                    </div>
+                    <div class="node-meta" id="node-meta"></div>
+                    <div class="node-description" id="node-description"></div>
+                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
+                    <div class="connections-header">Connected Nodes</div>
+                    <ul class="connection-list" id="connections"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Content Modal -->
+    <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Memory Content</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="full-content" id="modal-content"></div>
+            </div>
+            <div class="modal-meta" id="modal-meta"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const nodesData = [{"id": "hub", "name": "Activation Model", "description": "Fusion92 Analytics Dataset\n7 Tables, 56 Columns, 43 Measures", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": ""}, {"id": "table_platform", "name": "Platform", "description": "Platform dimension table\nAd platforms (Google, Meta, etc.)", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}, {"id": "table_flight", "name": "Flight", "description": "Flight fact table\nCampaign flight periods", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaigns", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_spend", "name": "Spend", "description": "Spend fact table\nAd spend metrics", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_date_action", "name": "Date (Action)", "description": "Date dimension\nAction/Event dates", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": ""}, {"id": "table_creative", "name": "Creative", "description": "Creative dimension table\nAd creatives and assets", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}, {"id": "table_account", "name": "Account", "description": "Account dimension table\nClient accounts", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}];
+        const linksData = [{"source": "hub", "target": "table_platform", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_flight", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_campaign", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_spend", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date_action", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_creative", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_account", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "table_account", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_campaign", "target": "table_platform", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_flight", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_spend", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_spend", "target": "table_date_action", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_creative", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}];
+        const groupsData = {"hub": {"color": "#dd6b20", "label": "Dataset"}, "fact": {"color": "#1a365d", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "date": {"color": "#805ad5", "label": "Date Tables"}};
+
+        // Create node lookup map
+        const nodeMap = {};
+        nodesData.forEach(node => {
+            nodeMap[node.id] = node;
+        });
+
+        // Create link lookup for connections
+        const linksByNode = {};
+        linksData.forEach(link => {
+            const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+            const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+
+            if (!linksByNode[sourceId]) linksByNode[sourceId] = [];
+            if (!linksByNode[targetId]) linksByNode[targetId] = [];
+
+            linksByNode[sourceId].push({ nodeId: targetId, relationType: link.relationType });
+            linksByNode[targetId].push({ nodeId: sourceId, relationType: link.relationType });
+        });
+
+        // Graph data
+        const graphData = {
+            nodes: nodesData,
+            links: linksData
+        };
+
+        let graph;
+        let selectedNode = null;
+        let sidebarVisible = true;
+        const highlightedNodes = new Set();
+
+        // Double-click detection
+        let lastClickTime = 0;
+        let lastClickNode = null;
+        const DOUBLE_CLICK_DELAY = 300;
+
+        function handleNodeClick(node) {
+            const now = Date.now();
+            if (lastClickNode === node && (now - lastClickTime) < DOUBLE_CLICK_DELAY) {
+                // Double click detected
+                focusNodeIn2D(node);
+                lastClickNode = null;
+                lastClickTime = 0;
+            } else {
+                // Single click
+                lastClickNode = node;
+                lastClickTime = now;
+                // Delay single-click action to check for double-click
+                setTimeout(() => {
+                    if (lastClickNode === node) {
+                        selectNodeOnly(node);
+                    }
+                }, DOUBLE_CLICK_DELAY);
+            }
+        }
+
+        // Track which groups (nodes) are visible - initialize from data
+        const allGroups = Object.keys(groupsData);
+        const visibleGroups = new Set(allGroups);
+
+        // Track which edge types are visible
+        const allEdgeTypes = [...new Set(linksData.map(l => l.edgeType))];
+        const visibleEdgeTypes = new Set(allEdgeTypes);
+
+        // Attach event listeners to node filter chips
+        document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const group = this.dataset.group;
+                if (visibleGroups.has(group)) {
+                    visibleGroups.delete(group);
+                    this.classList.remove('active');
+                } else {
+                    visibleGroups.add(group);
+                    this.classList.add('active');
+                }
+                applyFilters();
+            });
+        });
+
+        // Attach event listeners to edge filter chips
+        document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const edgeType = this.dataset.edgeType;
+                if (visibleEdgeTypes.has(edgeType)) {
+                    visibleEdgeTypes.delete(edgeType);
+                    this.classList.remove('active');
+                } else {
+                    visibleEdgeTypes.add(edgeType);
+                    this.classList.add('active');
+                }
+                applyFilters();
+            });
+        });
+
+        function toggleAllNodes() {
+            const allVisible = allGroups.every(g => visibleGroups.has(g));
+            if (allVisible) {
+                visibleGroups.clear();
+            } else {
+                allGroups.forEach(g => visibleGroups.add(g));
+            }
+            updateNodeChips();
+            applyFilters();
+        }
+
+        function toggleAllEdges() {
+            const allVisible = allEdgeTypes.every(e => visibleEdgeTypes.has(e));
+            if (allVisible) {
+                visibleEdgeTypes.clear();
+            } else {
+                allEdgeTypes.forEach(e => visibleEdgeTypes.add(e));
+            }
+            updateEdgeChips();
+            applyFilters();
+        }
+
+        function updateNodeChips() {
+            document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {
+                const group = chip.dataset.group;
+                chip.classList.toggle('active', visibleGroups.has(group));
+            });
+        }
+
+        function updateEdgeChips() {
+            document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {
+                const edgeType = chip.dataset.edgeType;
+                chip.classList.toggle('active', visibleEdgeTypes.has(edgeType));
+            });
+        }
+
+        function applyFilters() {
+            // Filter nodes by group
+            const filteredNodes = nodesData.filter(node => visibleGroups.has(node.group));
+            const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+
+            // Filter links by node visibility AND edge type
+            const filteredLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                const nodeVisible = filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId);
+                const edgeVisible = visibleEdgeTypes.has(link.edgeType);
+                return nodeVisible && edgeVisible;
+            });
+
+            graph.graphData({
+                nodes: filteredNodes,
+                links: filteredLinks
+            });
+        }
+
+        // View toggle
+        let currentView = '3d';
+
+        function setView(view) {
+            currentView = view;
+            document.getElementById('btn-3d').classList.toggle('active', view === '3d');
+            document.getElementById('btn-2d').classList.toggle('active', view === '2d');
+
+            if (view === '2d') {
+                graph.numDimensions(2);
+                graph.cameraPosition({ x: 0, y: 0, z: 500 }, { x: 0, y: 0, z: 0 }, 1000);
+            } else {
+                graph.numDimensions(3);
+            }
+        }
+
+        // Toggle filter sections
+        function toggleFilterSection(section) {
+            const label = document.querySelector(`.toolbar-label[onclick*="${section}"]`);
+            const group = document.getElementById(`${section}-filters`);
+            label.classList.toggle('collapsed');
+            group.classList.toggle('collapsed');
+        }
+
+        // Toggle sidebar visibility
+        function toggleSidebar() {
+            sidebarVisible = !sidebarVisible;
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebar-toggle');
+
+            if (sidebarVisible) {
+                sidebar.classList.remove('hidden');
+                toggle.classList.remove('sidebar-hidden');
+                toggle.textContent = '▶';
+            } else {
+                sidebar.classList.add('hidden');
+                toggle.classList.add('sidebar-hidden');
+                toggle.textContent = '◀';
+            }
+
+            // Resize graph after animation
+            setTimeout(() => {
+                const wrapper = document.getElementById('graph-wrapper');
+                graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+            }, 350);
+        }
+
+        // Initialize graph
+        function initGraph() {
+            const container = document.getElementById('graph');
+            const wrapper = document.getElementById('graph-wrapper');
+
+            const width = wrapper.offsetWidth;
+            const height = wrapper.offsetHeight;
+
+            graph = ForceGraph3D()(container)
+                .width(width)
+                .height(height)
+                .graphData(graphData)
+                .backgroundColor('#0a0a1a')
+                .nodeLabel(node => node.name)
+                .nodeVal(node => Math.max(node.val / 5, 2))
+                .nodeRelSize(6)
+                .nodeColor(node => node.color)
+                .linkColor(link => link.color)
+                .linkWidth(link => link.width)
+                .linkOpacity(0.6)
+                .onNodeClick(node => {
+                    handleNodeClick(node);
+                })
+                .onBackgroundClick(() => {
+                    clearSelection();
+                })
+                .enableNodeDrag(true)
+                .onNodeDragEnd(node => {
+                    node.fx = node.x;
+                    node.fy = node.y;
+                    node.fz = node.z;
+                })
+                .enableNavigationControls(true);
+
+            // Set initial camera position
+            setTimeout(() => {
+                graph.cameraPosition({ x: 0, y: 0, z: 500 });
+            }, 100);
+
+            // Disable default double-click zoom on background
+            const rendererEl = graph.renderer().domElement;
+            rendererEl.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+            }, true);
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                const newWidth = wrapper.offsetWidth;
+                const newHeight = wrapper.offsetHeight;
+                graph.width(newWidth).height(newHeight);
+            });
+        }
+
+        // Show full content in modal
+        function showFullContent() {
+            if (!selectedNode) return;
+
+            document.getElementById('modal-title').textContent = selectedNode.name;
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            `;
+            document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(event) {
+            if (!event || event.target === event.currentTarget) {
+                document.getElementById('content-modal').classList.remove('active');
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Navigate to a node by ID (works even if filtered out)
+        function navigateToNode(nodeId) {
+            console.log('navigateToNode called with:', nodeId);
+            // First check if node is in current graph view
+            let targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+            console.log('Found in current view:', !!targetNode);
+
+            // If not found in filtered view, get from full node list
+            if (!targetNode) {
+                targetNode = nodeMap[nodeId];
+                if (targetNode) {
+                    // Make sure the node's group is visible
+                    visibleGroups.add(targetNode.group);
+                    updateNodeChips();
+                    applyFilters();
+                    // Now get the node from the updated graph
+                    targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                }
+            }
+
+            if (targetNode) {
+                selectNodeOnly(targetNode);
+                // Pan to the node
+                graph.cameraPosition(
+                    { x: targetNode.x, y: targetNode.y, z: 300 },
+                    targetNode,
+                    500
+                );
+            }
+        }
+
+        // Single click - just select and populate sidebar
+        function selectNodeOnly(node) {
+            selectedNode = node;
+
+            // Update highlighted nodes
+            highlightedNodes.clear();
+            highlightedNodes.add(node.id);
+            (linksByNode[node.id] || []).forEach(conn => {
+                highlightedNodes.add(conn.nodeId);
+            });
+
+            // Update sidebar
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('node-info').classList.add('active');
+            document.getElementById('node-title').textContent = node.name;
+
+            // Set description (truncated in sidebar, full in modal)
+            const descEl = document.getElementById('node-description');
+            const fullDesc = node.description || 'No description available.';
+            // Show truncated preview in sidebar
+            descEl.textContent = fullDesc.length > 300 ? fullDesc.substring(0, 300) + '...' : fullDesc;
+
+            // Show/hide view full button based on content length
+            const viewFullBtn = document.getElementById('view-full-btn');
+            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+
+            // Show metadata
+            const metaEl = document.getElementById('node-meta');
+            metaEl.innerHTML = `
+                <span><span class="label">ID:</span> ${node.id.substring(0, 8)}...</span>
+                <span><span class="label">Type:</span> ${node.groupLabel || node.group}</span>
+            `;
+
+            // Show logo if available
+            const logoEl = document.getElementById('node-logo');
+            logoEl.src = node.logo || '';
+            logoEl.style.display = node.logo ? 'block' : 'none';
+
+            // Set tier badge using group label
+            const tierEl = document.getElementById('node-tier');
+            tierEl.textContent = node.groupLabel || 'Unknown';
+            tierEl.style.background = node.color;
+            tierEl.className = 'node-tier';
+
+            // Build connections list
+            const connections = linksByNode[node.id] || [];
+            const connectionsList = document.getElementById('connections');
+            connectionsList.innerHTML = '';
+
+            connections.forEach(conn => {
+                const connNode = nodeMap[conn.nodeId];
+                if (!connNode) return;
+
+                const li = document.createElement('li');
+                li.className = 'connection-item';
+                const logoHtml = connNode.logo ? `<img class="conn-logo" src="${connNode.logo}" alt="">` : '';
+                li.innerHTML = `
+                    ${logoHtml}
+                    <div class="conn-info">
+                        <div class="name">${connNode.name}</div>
+                        <div class="relation">${conn.relationType}</div>
+                    </div>
+                `;
+                li.onclick = function(e) {
+                    console.log('Connection clicked:', conn.nodeId, connNode.name);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigateToNode(conn.nodeId);
+                };
+                connectionsList.appendChild(li);
+            });
+
+            // Update visuals - highlight connected, dim others
+            graph
+                .nodeColor(n => highlightedNodes.has(n.id) ? n.color : '#333333')
+                .linkColor(l => {
+                    const sId = typeof l.source === 'object' ? l.source.id : l.source;
+                    const tId = typeof l.target === 'object' ? l.target.id : l.target;
+                    return (sId === node.id || tId === node.id) ? l.color : '#222222';
+                });
+        }
+
+        // Double click - switch to 2D, zoom in, show direct connections
+        function focusNodeIn2D(node) {
+            // First select the node
+            selectNodeOnly(node);
+
+            // Switch to 2D view
+            setView('2d');
+
+            // Zoom in on node after short delay for 2D transition
+            setTimeout(() => {
+                const distance = 200;
+                graph.cameraPosition(
+                    { x: node.x, y: node.y, z: distance },
+                    { x: node.x, y: node.y, z: 0 },
+                    1000
+                );
+            }, 100);
+        }
+
+        function clearSelection() {
+            selectedNode = null;
+            highlightedNodes.clear();
+            lastClickNode = null;
+            lastClickTime = 0;
+
+            document.getElementById('placeholder').style.display = 'block';
+            document.getElementById('node-info').classList.remove('active');
+
+            // Restore original colors
+            graph
+                .nodeColor(n => n.color)
+                .linkColor(l => l.color);
+
+            // Restore all filtered nodes
+            applyFilters();
+        }
+
+        function showDirectConnectionsOnly(node) {
+            // Filter to show only this node and its direct connections
+            const directIds = new Set([node.id]);
+            (linksByNode[node.id] || []).forEach(conn => {
+                directIds.add(conn.nodeId);
+            });
+
+            const filteredNodes = nodesData.filter(n => directIds.has(n.id));
+            const filteredLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return sourceId === node.id || targetId === node.id;
+            });
+
+            graph.graphData({
+                nodes: filteredNodes,
+                links: filteredLinks
+            });
+
+            // Switch to 2D and center
+            setView('2d');
+
+            // Update sidebar
+            selectNode(graph.graphData().nodes.find(n => n.id === node.id));
+
+            // Fit view after a short delay
+            setTimeout(() => {
+                graph.zoomToFit(500, 50);
+            }, 100);
+        }
+
+        // Initialize
+        initGraph();
+    </script>
+</body>
+</html>
