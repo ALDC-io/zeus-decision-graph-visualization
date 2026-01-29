@@ -1,0 +1,2313 @@
+{
+  "metadata": {
+    "title": "Zeus Memory Decision Graph",
+    "description": "Visualization of decisions, learnings, and relationships in Zeus Memory",
+    "source": "zeus_core database",
+    "created": "2026-01-28",
+    "updated": "2026-01-28"
+  },
+  "groups": {
+    "decision": {
+      "color": "#1a365d",
+      "label": "Decisions"
+    },
+    "cce_decision_log": {
+      "color": "#2f855a",
+      "label": "CCE Decisions"
+    },
+    "cce_research": {
+      "color": "#3182ce",
+      "label": "Research"
+    },
+    "cce_failed_approach": {
+      "color": "#e53e3e",
+      "label": "Failed Approaches"
+    },
+    "cce_success_log": {
+      "color": "#38a169",
+      "label": "Successes"
+    },
+    "cce_system": {
+      "color": "#805ad5",
+      "label": "System Events"
+    },
+    "cce": {
+      "color": "#d69e2e",
+      "label": "CCE General"
+    },
+    "architecture": {
+      "color": "#dd6b20",
+      "label": "Architecture"
+    }
+  },
+  "nodes": [
+    {
+      "id": "zeus-memory-hub",
+      "label": "Zeus Memory",
+      "title": "Zeus Memory Hub - Central knowledge store for ALDC",
+      "tier": 0,
+      "group": "architecture",
+      "size": 50
+    },
+    {
+      "id": "3fef9c85-6da2-4dcf-bd29-1617db201147",
+      "label": "model_selection",
+      "title": "model_selection\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "548b4c44-79ee-45f7-bbb9-355bb0b42a2f",
+      "label": "file_edit",
+      "title": "file_edit\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "e2fd38db-ebcc-4f64-b23a-8bac3398acc8",
+      "label": "test_decision",
+      "title": "test_decision\n\nConfidence: 0.9900",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "34d0e836-a5b9-43f5-b385-7db383dfbfc7",
+      "label": "memory_graph_implementation_approach",
+      "title": "memory_graph_implementation_approach\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "1a00c8a1-8e02-4a19-95dd-46f8509f76b9",
+      "label": "Deploy auto-linking feature v2 with fixed RRF s...",
+      "title": "Deploy auto-linking feature v2 with fixed RRF score threshold\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "5b2c9ea4-fa9c-4de1-9103-9b5d6fd7c8b2",
+      "label": "Test auto-linking feature for DAA graph integra...",
+      "title": "Test auto-linking feature for DAA graph integration\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "0aa00c82-6ed6-4300-a809-106fe339778d",
+      "label": "Fix DAA Dashboard data loading - deploy v6.8.0-...",
+      "title": "Fix DAA Dashboard data loading - deploy v6.8.0-overrides-fix\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "38b02108-bb7d-4f99-8b05-da0700b69493",
+      "label": "Implement progressive complexity for DAA decisions",
+      "title": "Implement progressive complexity for DAA decisions\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
+      "label": "recommend_kb_article",
+      "title": "recommend_kb_article\n\nConfidence: 0.7800",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "992eef00-4c3d-43e4-b834-4928b669648e",
+      "label": "CLIENT UPDATE: GEP rebranded to Navira",
+      "title": "CLIENT UPDATE: GEP rebranded to Navira\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "6e516af0-8a60-4059-a279-bc2173b05c7e",
+      "label": "analyze_customer_data",
+      "title": "analyze_customer_data\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "b657a888-15ed-4c4d-ba20-b19656051b9f",
+      "label": "VALIDATED: Zeus Threads Migration project compl...",
+      "title": "VALIDATED: Zeus Threads Migration project completed\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "a717edb3-7402-4414-bbcc-54e678a539fd",
+      "label": "COMPLETED: Zeus Memory Remediation Project",
+      "title": "COMPLETED: Zeus Memory Remediation Project\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "e1a52711-a0c2-4dde-a81c-839f102d54b0",
+      "label": "VALIDATED: Skills extraction process for Claude...",
+      "title": "VALIDATED: Skills extraction process for Claude Code\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "deddc242-ceed-48cb-9918-bfb9b44f347c",
+      "label": "VALIDATED: AFFiNE folder organization via Yjs w...",
+      "title": "VALIDATED: AFFiNE folder organization via Yjs workspace meta\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "f88f5de8-998c-40a8-9f85-4e83e2871279",
+      "label": "REJECTED: Using generateId() for existing page IDs",
+      "title": "REJECTED: Using generateId() for existing page IDs",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "c55f436d-596a-4e38-bfd7-61012c8ee8ae",
+      "label": "REJECTED: Looking for collections in db$...$fol...",
+      "title": "REJECTED: Looking for collections in db$...$folders document",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "699c27d9-4296-4b91-acc4-31d9983f46c1",
+      "label": "REJECTED: Looking for collections in meta.pages...",
+      "title": "REJECTED: Looking for collections in meta.pages parentId",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "cad69c5b-3a18-41e7-93d4-f96c3feb4eb7",
+      "label": "TEST: Verify log-failed-approach skill",
+      "title": "TEST: Verify log-failed-approach skill\n\nConfidence: 1.0000",
+      "tier": 1,
+      "group": "decision",
+      "size": 35
+    },
+    {
+      "id": "6dd576d8-1a46-46a0-a1e8-fdce18295296",
+      "label": "project_status",
+      "title": "project_status\n\nConfidence: 0.7500",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "70823756-2eba-4481-bb2a-593a8cf1b383",
+      "label": "bug_fix",
+      "title": "bug_fix\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "839fef50-c4e8-42ec-b703-6f41706ef349",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "e6eaca60-16d5-4729-89bd-1430ff444c83",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "031e1716-dfc4-48d9-9f57-d97282c8b702",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "8faa1f44-0d30-4417-a079-d9c79e9d1fbf",
+      "label": "refactoring",
+      "title": "refactoring\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "d84858c1-ada7-4036-b50b-75a5f057c009",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "2904e824-6d3f-43b6-b025-963b2b32ea3e",
+      "label": "project_status",
+      "title": "project_status\n\nConfidence: 0.7500",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "0ce8fe66-2ebe-4832-90fb-3d03ab17c2ac",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "8a84cfcf-73ff-4562-a9ef-fdf034b3157e",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "3385075e-0802-4edd-8581-5a650d1a7203",
+      "label": "refactoring",
+      "title": "refactoring\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "639bbe4b-eb5b-43b2-aec5-27c0683a22b9",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "9c0b91ca-da05-4fee-b851-6cb69e9484d8",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "b489c558-3367-458f-9ed5-777240a2d640",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "4f8f75ca-fedb-4220-b515-189c08a1f969",
+      "label": "refactoring",
+      "title": "refactoring\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "cee8aee7-ae47-4531-9ad1-00322fe6845e",
+      "label": "refactoring",
+      "title": "refactoring\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "7f778d6e-72b5-4f02-a895-f73c1f647dea",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "301dcfd4-e87a-491e-89e6-1f2553b7bede",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "3cf049fe-2499-4086-bbd5-4ad1568b4b79",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "51fdd8df-ebae-4546-b9f0-f82975a2ced4",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "cde029e7-6b18-4a60-b667-a6c334ba485c",
+      "label": "project_status",
+      "title": "project_status\n\nConfidence: 0.7000",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "d011d91a-06d9-4b5a-89ee-f89b5539bb7c",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "373c8d2c-3428-41ca-8fe2-c0f91dee0717",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "e5961fc3-085f-4785-837d-28a5199fe08f",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "73c28b37-51fe-4acc-9815-f27bd7b4cf83",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "74f5c24d-012c-4caa-9199-808beee74434",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "6e7b5f25-3af8-433f-8a36-db49f9ff6356",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "5c67100c-b27b-4350-bab8-5f45ae95f64b",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "57313db7-6cac-4971-a43a-15c8946f906c",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "f5207362-f875-4115-a2ff-0b91e174c6c7",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "ff7c0670-0671-42fe-8789-904b616cc5e6",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "8485c0a0-c903-4f4b-b71b-4d37d7b1ea64",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "cd667643-d6af-4c2c-a334-289ffa1b4a49",
+      "label": "refactoring",
+      "title": "refactoring\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "58d76de1-e11f-40d7-9f0b-9e4f9111e3ae",
+      "label": "session_summary",
+      "title": "session_summary\n\nConfidence: 0.8000",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "71e966a0-f0f8-484c-a1a2-f8aa1be04db0",
+      "label": "bug_fix",
+      "title": "bug_fix\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "12819dea-5275-436c-a66c-fed0aa1785d0",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "d6f7a690-8814-4c62-8427-e1526ef2f4bc",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "e9988895-82fd-4e26-9274-1caf9228b0d3",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "876beceb-7131-408a-a265-1e9d59163cc3",
+      "label": "file_edit",
+      "title": "file_edit\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "47b00f20-a54f-4ba5-89b1-c5c2619e6fda",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "eac3c75c-a5d1-44d4-b61d-34a59639587f",
+      "label": "task_completion",
+      "title": "task_completion\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "b48ceef6-049c-446b-9699-e911a037a3b4",
+      "label": "session_summary",
+      "title": "session_summary\n\nConfidence: 0.7500",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "a3ac0b0c-c2e6-4b72-a2ee-8bd1a9999384",
+      "label": "code_addition",
+      "title": "code_addition\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "0b75abad-d8d2-49e4-b398-8c057953275b",
+      "label": "recommend_support_action",
+      "title": "recommend_support_action\n\nConfidence: 0.7800",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "7c43826a-f428-4a2d-98e8-176dad1c2ce0",
+      "label": "analyze_customer_sentiment",
+      "title": "analyze_customer_sentiment\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "92cc962e-8939-4264-95af-4728d6809157",
+      "label": "auto_escalate_ticket",
+      "title": "auto_escalate_ticket\n\nConfidence: 0.7200",
+      "tier": 1,
+      "group": "decision",
+      "size": 32
+    },
+    {
+      "id": "b1c33fe6-630e-4cc3-9f78-6a97e77c1b92",
+      "label": "REJECTED: POST to /api/v1/memories endpoint",
+      "title": "REJECTED: POST to /api/v1/memories endpoint",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "bb413002-025e-432c-93f5-ac86f7c8e956",
+      "label": "REJECTED: Mermaid Code Blocks for Architecture ...",
+      "title": "REJECTED: Mermaid Code Blocks for Architecture Diagrams",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "fc71d3c7-f5b0-4291-b209-bb6525e43c05",
+      "label": "REJECTED: Direct Database Writes for AFFiNE Sync",
+      "title": "REJECTED: Direct Database Writes for AFFiNE Sync",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "e5ba31e1-f010-41e0-a05e-2e5bbf897b6c",
+      "label": "test_outcome_tracking",
+      "title": "test_outcome_tracking\n\nConfidence: 0.8500",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "6014a7e2-6070-409a-aa2c-a8c0c3f1f4c1",
+      "label": "test_endpoint_validation",
+      "title": "test_endpoint_validation\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "2eee720d-e833-453e-80c0-6ab7fc292e19",
+      "label": "Execute second validation test cycle on all Zeu...",
+      "title": "Execute second validation test cycle on all Zeus Memory MCP endpoints\n\nConfidence: 0.8240",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "bd49db28-4f45-444d-bf8f-b671d1ef6191",
+      "label": "test_tampering",
+      "title": "test_tampering",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "c8c806d2-1b59-4f4b-aafc-2fa22e0b04dc",
+      "label": "test_isolation",
+      "title": "test_isolation\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "86a46cab-8e6f-4ec6-8d03-be445a455c8b",
+      "label": "test_tampering",
+      "title": "test_tampering",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "9f672255-f7fb-4bc1-8d5e-46468d86400e",
+      "label": "test_isolation",
+      "title": "test_isolation\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "59e4aa9e-a5a2-400a-9b0f-828a32dce6b3",
+      "label": "qa_full_test_with_provenance",
+      "title": "qa_full_test_with_provenance\n\nConfidence: 0.9700",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "25d46499-4817-4bef-beb5-e1714b32e3bc",
+      "label": "qa_full_test",
+      "title": "qa_full_test\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "a84ebdf4-1e16-48c1-ba5f-63ec3c5a5a49",
+      "label": "test_tampering",
+      "title": "test_tampering",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "be37665d-3262-4cbc-b323-0874ec0d6d0b",
+      "label": "test_isolation",
+      "title": "test_isolation\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "ff97e417-e766-4d2e-84e4-71240c931fc6",
+      "label": "test_tampering",
+      "title": "test_tampering",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "eb4fec34-d605-4b33-9979-7c481981d158",
+      "label": "test_isolation",
+      "title": "test_isolation\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "89309e40-c91a-4e59-acff-e4366acc9a6b",
+      "label": "test_isolation",
+      "title": "test_isolation\n\nConfidence: 0.9000",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "bbabb03c-4696-4f4d-be27-ae748e965ae9",
+      "label": "qa_test_decision",
+      "title": "qa_test_decision\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "0efe4913-6543-47a2-9255-1212c86a944f",
+      "label": "Created Zeus Memory Hub v2.1 PRD with Learning ...",
+      "title": "Created Zeus Memory Hub v2.1 PRD with Learning Mode leveraging DAA\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "d28c10b2-c5f7-49a2-aa21-b50c919e3a78",
+      "label": "Created Zeus Memory Hub v2.0 PRD with world-cla...",
+      "title": "Created Zeus Memory Hub v2.0 PRD with world-class feature roadmap\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "69ed9807-0422-4119-bfe9-2777cd7a4ad9",
+      "label": "Selected AFFiNE + Focalboard + Outline as open ...",
+      "title": "Selected AFFiNE + Focalboard + Outline as open source stack to replace Notion and provide Zeus visual layer\n\nConfidence: 0.8800",
+      "tier": 1,
+      "group": "decision",
+      "size": 33
+    },
+    {
+      "id": "91e801e7-0f84-4cfe-b236-1a4a409cadaf",
+      "label": "Completed competitive analysis of AI agent memo...",
+      "title": "Completed competitive analysis of AI agent memory market and identified Zeus feature gaps\n\nConfidence: 0.9200",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "6fd65557-9222-417e-a272-3864d8ecad83",
+      "label": "Approved implementation of Claude-to-Zeus decis...",
+      "title": "Approved implementation of Claude-to-Zeus decision capture feature\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "78d2cc42-7552-442c-9994-ca6a3cec95fb",
+      "label": "Implemented database-backed OAuth auth codes an...",
+      "title": "Implemented database-backed OAuth auth codes and simple login form for Claude.ai MCP connector",
+      "tier": 1,
+      "group": "decision",
+      "size": 25
+    },
+    {
+      "id": "ac9983db-6096-4c54-abe9-66de22aa72f8",
+      "label": "Full Zeus MCP endpoint validation completed",
+      "title": "Full Zeus MCP endpoint validation completed\n\nConfidence: 0.9900",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "3e88d511-b784-49a0-b402-2d54377bec72",
+      "label": "approve_credit",
+      "title": "approve_credit\n\nConfidence: 0.9500",
+      "tier": 1,
+      "group": "decision",
+      "size": 34
+    },
+    {
+      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
+      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "label": "Odin node successfully federated with Zeus Memo...",
+      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10
+    },
+    {
+      "id": "1847c602-74bb-4ff9-b31c-37eaeaa9c8b6",
+      "label": "# CCE Decision: Polyrepo Strategy for Project D...",
+      "title": "# CCE Decision: Polyrepo Strategy for Project Deliverables **Decision ID**: CCE-2026-01-28-REPO-STRATEGY **Date**: 2026-01-28 **Status**: Accepted **Decided By**: JK ## Context CCE (Claude Code Enhanced) generates various project deliverables including visualizations, tools, integrations, and standalone applications. We needed to decide how to organize these in GitHub. ## Decision **Use Polyrep...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
+      "label": "Session Decisions: Liquid Apps Architecture (20...",
+      "title": "Session Decisions: Liquid Apps Architecture (2026-01-28) DECISIONS MADE: 1. Keep backward compatibility - Legacy requestData() and useEclipseDataResponse() still work. Reasoning: Existing apps shouldn't break. Confidence: High. 2. Module-level pendingRequests Map - Store pending Promise resolvers outside React state. Reasoning: Persists across re-renders, enables Promise resolution from message...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "label": "Session Success: Liquid Apps Security Hardening...",
+      "title": "Session Success: Liquid Apps Security Hardening Complete (2026-01-28) ACHIEVEMENTS: 1. Tier 1 Security (Critical): postMessage origin validation (send+receive), CSP hardening (removed unsafe-inline/unsafe-eval), replay protection with timestamps 2. Tier 2 Security (High): Permissions-Policy header, error handling with try-catch, message queuing, Docker HEALTHCHECK 3. Tier 3 Maintenance: Exhaust...",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "label": "Session Learning: Liquid Apps Security Hardenin...",
+      "title": "Session Learning: Liquid Apps Security Hardening (2026-01-28) FAILURES ENCOUNTERED: 1. Git push rejected - Remote had new commits. Resolution: git pull --rebase before push. Prevention: Always pull before push. 2. Merge conflict in next.config.example.mjs - Remote added basePath/fonts config. Resolution: Manual merge preserving both changes. 3. Edit tool failed \"file modified since read\" - Lint...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "f6da3153-56ad-4b7d-9df0-954382221dc3",
+      "label": "Decision: ALDC Repository Architecture Strategy...",
+      "title": "Decision: ALDC Repository Architecture Strategy - 2026-01-28 DECIDED: Use Amazon/Netflix polyrepo pattern for ALDC Reasoning: - Small team (5 people) with clear service ownership - Services already separated (zeus-memory, eclipse, core_api) - Scales to 50+ people without major restructuring - Avoids Google-style monorepo tooling investment DECIDED: Don't create GitHub repos for time-bounded pro...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "label": "Repository Architecture Research - 2026-01-28 R...",
+      "title": "Repository Architecture Research - 2026-01-28 Researched how top companies manage repos and documentation: - Google: Monorepo (Piper) - 2B lines, requires custom tooling - Amazon: Polyrepo + Two-Pizza Teams - \"you build it, you run it\" - Spotify: Polyrepo + Backstage portal for discovery - Shopify: Modular Monolith with Development Handbook ALDC Recommendation (5 people now, scaling to 50+): - ...",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "label": "Miro-Zeus Integration Success - 2026-01-28 Impl...",
+      "title": "Miro-Zeus Integration Success - 2026-01-28 Implemented 4-layer dynamic integration between Miro boards and Zeus Memory: 1. Board Reference Layer: 9 boards stored as searchable Zeus memories with metadata 2. Content Sync Layer: Board text content pulled via API, stored for semantic search 3. Architecture-as-Code: Population scripts generate boards from source docs 4. Cross-Reference Layer: MIRO_...",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "label": "Miro Board Layout Failures - 2026-01-28 1. Fram...",
+      "title": "Miro Board Layout Failures - 2026-01-28 1. Frame update returned 400 error - Root cause: Items positioned outside frame bounds prevent resize/move via API - Resolution: Delete frame entirely, then recreate with correct bounds calculated from content - Prevention: Always calculate actual content bounds BEFORE creating/updating frames 2. Frames blocking content (z-index issue) - Root cause: Miro ...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "1d09669e-fa54-4650-bbd8-4c8ae6819b05",
+      "label": "DECISION: Scoped messaging features to Presence...",
+      "title": "DECISION: Scoped messaging features to Presence Alerts, @Mentions, and Task Notifications only. Rejected threading/reply chains, typing indicators, and offline queue from the feature research. Rationale: User said these three are enough for now. Keep it simple - presence and mentions add the most value for team awareness. Task notifications integrate with existing Zeus task system. Avoid over-e...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "e523eab1-34e5-4e50-9a02-27ea5206b1a2",
+      "label": "DECISION: Threading-based broker (simple_daemon...",
+      "title": "DECISION: Threading-based broker (simple_daemon.py) over asyncio (daemon.py) for Unix socket IPC. Rationale: (1) Simpler debugging - each connection is a thread with straightforward blocking I/O, (2) No event loop complexity for what is fundamentally request-response over sockets, (3) json.loads/json.dumps with newline-delimited framing is sufficient, (4) Lock-based thread safety is predictable...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "575b79f2-f591-44dd-8fe9-a7568f42e26a",
+      "label": "DECISION: Keep Slack as offline fallback rather...",
+      "title": "DECISION: Keep Slack as offline fallback rather than implementing message queuing. Rationale: (1) Slack is already integrated and working, (2) Message queuing adds complexity with queue persistence, ordering, and delivery guarantees, (3) Slack DMs serve the same purpose - user sees message when they check Slack, (4) Direct delivery handles the online case. Added presence alerts so users know wh...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "label": "SUCCESS: Task watcher integrated into CCE start...",
+      "title": "SUCCESS: Task watcher integrated into CCE startup. Polls zeus_core.task_activity table every 30 seconds for the-olds board (ALDC Management tenant). Detects: task assignments (notifies new assignee unless self-assigned), status changes (notifies assignee if changed by someone else), comments (notifies assignee if commented by someone else). Sends notifications via broker direct delivery.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "label": "SUCCESS: Presence alerts working end-to-end. Wh...",
+      "title": "SUCCESS: Presence alerts working end-to-end. When a CCE session registers with the broker, all other connected sessions receive a JSON-RPC notification with method=presence, params={user, status=online/offline, timestamp}. Listener displays green/red circle emoji. Tested: registered user2, saw online alert; unregistered user2, saw offline alert.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "label": "SUCCESS: Built complete CCE-to-CCE direct messa...",
+      "title": "SUCCESS: Built complete CCE-to-CCE direct messaging system with Unix domain sockets. Features: (1) Simple threaded broker daemon with JSON-RPC 2.0, (2) UnifiedDelivery - direct-first with Slack DM fallback, (3) Presence alerts - online/offline broadcast to all connected sessions, (4) @mention detection with regex extraction, (5) Zeus task watcher polling task_activity table every 30s, (6) Full ...",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20
+    },
+    {
+      "id": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "label": "FAILED APPROACH: git reset HEAD to unstage pyca...",
+      "title": "FAILED APPROACH: git reset HEAD to unstage pycache files alarmed user who thought work was being reverted. User warned: do not fuck up any of our work, do not revert to old shit. Resolution: Reset staging completely, then individually git add only the specific .py files by listing each one explicitly. Prevention: When staging files for commit, ALWAYS use explicit git add for each file rather th...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "label": "FAILED APPROACH: sudo password piping via echo ...",
+      "title": "FAILED APPROACH: sudo password piping via echo pipe to sudo -S failed repeatedly (3 incorrect password attempts). The jkadmin password was not accepted through stdin pipe in Claude Code sandboxed bash. Resolution: Wrote updated file to /tmp/cce-updated, then user ran sudo cp manually. Prevention: For sudo operations, write to temp file and ask user to run the sudo command, or use a passwordless...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "label": "FAILED APPROACH: Async broker daemon (daemon.py...",
+      "title": "FAILED APPROACH: Async broker daemon (daemon.py) did not respond to connections. The asyncio-based broker with complex event loops and abstract classes was unreliable. Resolution: Replaced with simple_daemon.py using threading + blocking sockets. Simple threaded approach with json.loads/json.dumps over Unix sockets proved far more reliable than asyncio for IPC broker. Prevention: For Unix socke...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "label": "FAILED APPROACH: Navbar had hardcoded broken ro...",
+      "title": "FAILED APPROACH: Navbar had hardcoded broken routes to non-existent internal pages (/marketing, /daily-sales, /budget, /data-explorer, /profitability, /ai-dashboards, /innovation). These were mock app routes that would cause 404 errors. Also, app viewer page had mock app definitions (marketing-dashboard, profitability-analyzer, data-explorer, daily-sales, budget-manager, ai-dashboards, innovati...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "label": "FAILED APPROACH: /api/tasks endpoint does not s...",
+      "title": "FAILED APPROACH: /api/tasks endpoint does not send Slack notifications. Used /api/tasks to create task for Mike Stuart but notification was not sent automatically. Had to separately call /the-olds/api/notify-team to alert Mike. The /the-olds/api/tasks endpoint (POST with cookie auth) DOES auto-notify, but /api/tasks (API key auth) does NOT. Resolution: Always call /the-olds/api/notify-team afte...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "3b5c53da-e55d-492a-928a-693d20b77964",
+      "label": "CCE DECISION: Strategic Alignment Analysis Meth...",
+      "title": "CCE DECISION: Strategic Alignment Analysis Methodology Created Date: 2026-01-27 Decision Type: skill_creation Confidence: 0.9 Action: Created new CCE skill for analyzing AI industry patterns against ALDC strategy. Reasoning: User asked 'do we see any patterns emerging?' from web scraping data. Analysis revealed strong alignment between industry trends (agent, memory, RAG, safety) and ALDC capab...",
+      "tier": 1,
+      "group": "cce_decision_log",
+      "size": 25
+    },
+    {
+      "id": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "label": "FAILED APPROACH: Stale Slack Webhook URLs Date:...",
+      "title": "FAILED APPROACH: Stale Slack Webhook URLs Date: 2026-01-27 Category: api What we tried: Used Slack webhook URLs from CLAUDE.md to send strategic alignment summary to Lori. Webhook: https://hooks.slack.com/services/T01Q410SQ9W/B0994H2UFB3/... Why we thought it would work: Webhook URLs were documented in CLAUDE.md as operational. What actually happened: Slack API returned 'no_service' error. Mess...",
+      "tier": 3,
+      "group": "cce_failed_approach",
+      "size": 15
+    },
+    {
+      "id": "e67ea1ab-c81f-4e9f-9c25-8fae6e9a9d8a",
+      "label": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classific...",
+      "title": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classification\": \"JK CONFIDENTIAL\", \"last_updated\": \"2026-01-09\", \"description\": \"ZMC Fortress Validation System Configuration - NBC Approved Dec 19, 2025; Updated with Capital Bible constraints (P&I+Tax drag), Fortress Plan v5.6, JK Salary Policy v1.1\", \"authoritative_sources\": [ \"Letter_of_Approval_December_2025.md (NBC - Capital Bible)\", \"ZMC_Fortress_Pl...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "15f8316c-b208-4c82-bad1-69dbb9a617e0",
+      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
+      "title": "{ \"simulation_params\": { \"num_simulations\": 10000, \"years\": 10, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69181.96628738304, \"median\": 67931.58151185855, \"std\": 25307.560278457924, \"5th_percentile\": 33186.0, \"95th_percentile\": 113847.18705756754 }, \"aldc_revenue\": { \"mean\": 846408.1191678448, \"median\": 847127.6598355117 }, \"t...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "2e5bdb53-58f1-45f9-8aff-e69614c5a672",
+      "label": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Val...",
+      "title": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Validation System\", \"version\": \"1.0.0\", \"classification\": \"JK CONFIDENTIAL\", \"generated_at\": \"2026-01-11T12:11:55.627247\" }, \"overall_status\": \"pass\", \"summary\": { \"total\": 13, \"passed\": 13, \"failed\": 0, \"warnings\": 0, \"critical\": 0, \"skipped\": 0, \"errors\": 0 }, \"plans_validated\": [ \"zmc_fortress\", \"aldc\", \"lcmf\" ], \"results_by_category\": { \"capital_d...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f4d376f3-f1a1-4514-9440-91415511744c",
+      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
+      "title": "{ \"simulation_params\": { \"num_simulations\": 10000, \"years\": 10, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69181.96628738304, \"median\": 67931.58151185855, \"std\": 25307.560278457924, \"5th_percentile\": 33186.0, \"95th_percentile\": 113847.18705756754 }, \"aldc_revenue\": { \"mean\": 846408.1191678448, \"median\": 847127.6598355117 }, \"t...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "d24e0bcf-ce31-4715-b5a6-a22665862650",
+      "label": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Val...",
+      "title": "{ \"_metadata\": { \"generator\": \"ZMC Fortress Validation System\", \"version\": \"1.0.0\", \"classification\": \"JK CONFIDENTIAL\", \"generated_at\": \"2026-01-11T12:11:55.627247\" }, \"overall_status\": \"pass\", \"summary\": { \"total\": 13, \"passed\": 13, \"failed\": 0, \"warnings\": 0, \"critical\": 0, \"skipped\": 0, \"errors\": 0 }, \"plans_validated\": [ \"zmc_fortress\", \"aldc\", \"lcmf\" ], \"results_by_category\": { \"capital_d...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "825d6bb2-a122-43de-8d02-0aadf370a42f",
+      "label": "# LCMF - OpCo Level Index **Classification:** C...",
+      "title": "# LCMF - OpCo Level Index **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 1.0 (Framework - Awaiting Content) --- ## PURPOSE This folder is reserved for **LCMF OpCo documents** - documentation specific to LC Moran Farms LTD (operating company level). These documents will address: - **LCMF capital strategy** (equipment financing, land op...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "ee8d2c5c-0537-41a0-976c-878e0366dbf6",
+      "label": "# ZMC Fortress Validation Report: FY2026 Financ...",
+      "title": "# ZMC Fortress Validation Report: FY2026 Financial Model with Lori Hire **Classification:** JK CONFIDENTIAL **Generated:** 2025-12-16 **Model Version:** FY2026 v4.0 (Lori Hire Update) **Validator:** ZMC Fortress Financial Validation Framework v1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 ZMC FORTRESS VALIDATION DASHBOARD \u2551 \u2551...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "c4a170a2-5a7d-480f-92ae-7f311d45d698",
+      "label": "# QBO Parser Parse QuickBooks Online Profit & L...",
+      "title": "# QBO Parser Parse QuickBooks Online Profit & Loss CSV exports into structured financial data for dashboards and analysis. ## When to Use This Skill - Importing QBO/QuickBooks Profit & Loss data into applications - Parsing P&L by Month CSV exports from QuickBooks Online - Converting CSV financial reports to structured JSON/TypeScript - Building financial dashboards that consume QBO exports - Ag...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "c8762435-ff34-41f0-b0db-75405d123964",
+      "label": "# Financial Validation Framework Validate multi...",
+      "title": "# Financial Validation Framework Validate multi-entity financial structures to prevent capital double-counting, constraint violations, cash flow timing issues, and stress test failures. ## When to Use This Skill - Validating holding company / operating company structures - Checking capital allocations across ZMC entities (ZMC HoldCo, ALDC OpCo, LCMF OpCo) - Preventing double-counting of interco...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "cfed72d2-c80e-4f06-8ae8-4760088f78a1",
+      "label": "# ZMC Fortress Analysis - Document Index **Last...",
+      "title": "# ZMC Fortress Analysis - Document Index **Last Updated:** January 1, 2026 **Classification:** JK CONFIDENTIAL **Repository:** `/home/aldc/cce-production/projects/zmc_fortress/` --- ## Core Financial Analysis Documents ### 1. JK Paycheck Reconciliation - **File:** `JK_PAYCHECK_RECONCILIATION.md` - **Zeus Memory ID:** 63be4619-add7-49ac-a5ff-83acfe12fcb2 - **Date:** January 1, 2026 - **Scope:** ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f5c26e6a-762d-4cf7-9e94-1eb14cefaea1",
+      "label": "# ALDC FY26 Financial Plan - START HERE **Date:...",
+      "title": "# ALDC FY26 Financial Plan - START HERE **Date:** December 26, 2025 **Status:** COMPLETE & AWAITING DECISIONS **Deadline for Decisions:** January 1, 2026 --- ## \ud83c\udfaf Quick Navigation This package contains **13 documents** totaling **~200KB** of detailed financial analysis. Here's how to navigate: ### For a Quick Understanding (15 minutes) 1. **Read this file** (you are here) 2. Read **`FY26_REALIS...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "38f4785b-31dd-4eee-b674-b37f69130932",
+      "label": "# ALDC FY26 Revised Strategy: $2M Capital Acces...",
+      "title": "# ALDC FY26 Revised Strategy: $2M Capital Access Changes Everything **Date:** December 26, 2025 (Updated) **Status:** GAME CHANGER - Complete Strategy Revision Required **Classification:** JK CONFIDENTIAL --- ## Executive Summary: The New Reality **Previous Constraint:** $350K LOC facility (tight liquidity) **New Reality:** $2M capital access available (abundant liquidity) **Impact:** Transform...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "3fde19f6-7be6-4a8a-883f-1f6f7de1ef34",
+      "label": "# JK Paycheck Analysis - ALDC FY26 v2.5 & ZMC F...",
+      "title": "# JK Paycheck Analysis - ALDC FY26 v2.5 & ZMC Fortress v2.0 Reconciliation **Classification:** JK CONFIDENTIAL **Date:** January 1, 2026 **Analysis Period:** FY26 (Oct 2025 - Sep 2026) **Source Documents:** - ALDC FY26 Financial Plan v2.5 (Dec 28, 2025) - ZMC Fortress Plan v2.0 (Oct 17, 2025) - ALDC FY26 Month-by-Month Cashflow (Dec 26, 2025) --- ## EXECUTIVE SUMMARY Your paycheck structure ope...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "259f8490-afd4-47a9-8c34-127a94b80df2",
+      "label": "# Car Payment Affordability Analysis ## ZMC For...",
+      "title": "# Car Payment Affordability Analysis ## ZMC Fortress Capital Impact Assessment **Date:** January 1, 2026 **Classification:** JK CONFIDENTIAL **Scope:** Evaluating feasibility of adding two car payments ($850 \u00d7 2) to current ZMC contribution structure --- ## CURRENT STATE (JANUARY 2026) ### Your After-Tax Paycheck - **Gross Monthly:** $24,000 - **After-Tax:** $13,920 - **ZMC Contribution:** $10,...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "bc474507-0992-4c25-8192-fb11c59f5139",
+      "label": "# ALDC FY26 Month-by-Month Cashflow Plan - Docu...",
+      "title": "# ALDC FY26 Month-by-Month Cashflow Plan - Document Guide **Generated:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Version:** 1.0 --- ## \ud83d\udcc4 Documents Included ### 1. **FY26_MOM_CASHFLOW_PLAN.md** (30 KB) - COMPREHENSIVE **Use this for:** Detailed financial planning, executive presentations, board reviews **Contains:** - Executive Summary with key metrics - Detailed revenue assumpti...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "4aae439f-d51a-4859-af58-b28fe0592648",
+      "label": "# ALDC FY26 Month-by-Month Cashflow Financial P...",
+      "title": "# ALDC FY26 Month-by-Month Cashflow Financial Plan **Classification:** JK CONFIDENTIAL **Generated:** December 26, 2025 **Planning Period:** November 2025 - October 2026 (FY26) **Version:** 1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 FY26 ALDC CASHFLOW FINANCIAL PLAN \u2551 \u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "a6403734-67df-4fee-823a-ac5d1ed4805c",
+      "label": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## ...",
+      "title": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## Net Position Analysis **Generated:** December 19, 2025 **Classification:** JK CONFIDENTIAL **NBC Facility:** APPROVED Dec 19, 2025 @ 4.0% fixed 12-month --- ## EXECUTIVE SUMMARY | Fiscal Year | Net Position | Status | Cumulative | |-------------|--------------|--------|------------| | **FY26** | +$158,800 | \u2705 BLACK | +$158,800 | | **FY27** | +$147,...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "c1344fd8-b027-43e9-bca4-a28db0cd4109",
+      "label": "# ZMC Fortress Validation System **Classificati...",
+      "title": "# ZMC Fortress Validation System **Classification: JK CONFIDENTIAL** Automated validation system for the three-tier financial planning structure: - **ZMC Fortress Plan** - Master leverage/capital rules (HoldCo) - **ALDC Plan** - Technology company operations (OpCo) - **LCMF Plan** - Farmland operations (OpCo) ## Quick Start ```bash # Run full validation with dashboard python main.py # JSON outp...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "d1114272-7ef3-4cd5-a683-869683bfe7a8",
+      "label": "# ZMC Fortress - CCE Instructions **CONFIDENTIA...",
+      "title": "# ZMC Fortress - CCE Instructions **CONFIDENTIAL - JK Personal** This repo contains the ZMC Fortress financial validation framework for managing budgets across ZMC entities (ZMC HoldCo, ALDC OpCo, LCMF OpCo). ## Classification - **Owner**: John Moran (JK) - **Access**: Private - JK only - **NOT for**: ALDC team repo (claude_code_enhanced) ## Repository Structure ``` zmc_fortress/ \u251c\u2500\u2500 config/ # ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "15cc1433-4324-4885-ac63-f5afde7fda0d",
+      "label": "# ZMC Fortress Validation System - Quick Start ...",
+      "title": "# ZMC Fortress Validation System - Quick Start **Version:** 2.2.0 **Status:** Ready for deployment with updated parameters (Fortress Plan v5.6, JK Salary v1.1, NBC Capital Bible) --- ## Current System Configuration ``` \ud83d\udcca Validation Status: \u2705 ALL CHECKS PASS (13/13) \ud83d\udcdd Configuration Version: 2.2.0 \ud83d\udcc5 Last Updated: 2026-01-11 \ud83d\udd10 Classification: JK CONFIDENTIAL ``` --- ## Quick Commands ### Run Full ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "23e94365-cd0b-49e4-a6b5-9ffda2c268dc",
+      "label": "# ZMC Fortress Validation System **Project Name...",
+      "title": "# ZMC Fortress Validation System **Project Name:** ZMC Fortress Validation System **Project Start Date:** 2025-12-13 **External Memory Document Version:** 1.0 **Following First Principles:** YES **Project Type:** System Integration **Priority:** High **Classification:** JK CONFIDENTIAL --- ## THE 8 FIRST PRINCIPLES (CANONICAL) 1. **NO HALLUCINATIONS** - Zero tolerance for false/synthetic data 2...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "a25abfcc-e701-449b-af75-69eaa31af4a5",
+      "label": "# SR&ED Repays the Debt - Correct Model **Key I...",
+      "title": "# SR&ED Repays the Debt - Correct Model **Key Insight:** The $679,135 SR&ED payment (arriving Oct 2026) repays the entire ALDC draw + interest. ALDC is NOT carrying long-term debt. --- ## THE CORRECT CASH FLOW ### ALDC's Draw & Burn ``` Mar 31, 2026: Draw #1 arrives \u2192 ALDC gets $400-500K Apr-Sep 2026: ALDC burns capital on operations Monthly loss: -$84,634 (flat revenue scenario) Or: -$38,134 (...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "a334de08-4b07-47da-93ee-7eca3c4f9f3c",
+      "label": "# ZMC Fortress Validation Summary - January 11,...",
+      "title": "# ZMC Fortress Validation Summary - January 11, 2026 **Classification:** JK CONFIDENTIAL **Configuration Version:** 2.2.0 **Authoritative Sources Version:** Fortress Plan v5.6 + JK Salary Policy v1.1 + NBC Capital Bible (Dec 19, 2025 Letter of Approval) **Generated:** 2026-01-11 --- ## Executive Summary **Status:** \u2705 **ALL VALIDATION CHECKS PASSED (13/13)** The ZMC Fortress system is operationa...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "49338a4d-1a2e-482a-8300-d9e7ba7e2631",
+      "label": "# \ud83c\udf89 ORGANIZATION COMPLETE - Summary Report **Da...",
+      "title": "# \ud83c\udf89 ORGANIZATION COMPLETE - Summary Report **Date Completed:** January 11, 2026 **Status:** \u2705 COMPREHENSIVE RESTRUCTURING COMPLETE **Classification:** JK CONFIDENTIAL --- ## What Was Done ### 1. \u2705 Complete Directory Reorganization **MOVED:** 3 financial tracking documents to dedicated ALDC Finances subfolder - `ALDC_PnL_FY26_ONGOING.md` \u2192 ALDC Finances/ - `ALDC_PnL_Tracking_Template.json` \u2192 ALD...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f0b461e7-793d-4fdd-914f-408c391645a2",
+      "label": "# National Bank of Canada - Transaction Outline...",
+      "title": "# National Bank of Canada - Transaction Outline for AG Financing **Document Type:** Discussion Paper (For Discussion Purposes Only) **Date:** Friday, December 12th, 2025 **Status:** Subject to Credit Approval --- ## Parties | Role | Entity | |------|--------| | **Borrower** | LC Moran Farms LTD. | | **Lender** | National Bank of Canada | | **Contact** | St\u00e9phane Danr\u00e9, PAg - Manager of Commerci...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "465c9c1f-8e10-47f1-9283-28813d305443",
+      "label": "# ZMC Fortress - Farm Capital Takeout (25-12) #...",
+      "title": "# ZMC Fortress - Farm Capital Takeout (25-12) ## Comprehensive Financial Planning & Execution Framework **Last Updated:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** ACTIVE --- ## \ud83d\udcc1 Master Directory Structure ``` \\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\25-12 Farm Capital Takeout\\ \u2502 \u251c\u2500\u2500 \ud83d\udccb ALDC Canonical Plans/ [ALDC Operating Company - Strategic & Financi...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "24a54b03-e926-424f-9542-499958a0434f",
+      "label": "# ZMC Fortress - Workstation Pickup Guide **Las...",
+      "title": "# ZMC Fortress - Workstation Pickup Guide **Last Updated:** January 11, 2026 **Status:** READY FOR ANOTHER WORKSTATION **Commit ID:** 9ebe450db77cd52afc10744232c9ee1cfdd1fa4c **Repository:** `/home/aldc/zmc_fortress` --- ## WHAT WAS UPDATED ### \ud83c\udfaf CORE DECISION: ALDC Draw Strategy Finalized **Decision:** Draw #1 ONLY ($500-600K) - 100% self-liquidating via SR&ED **Why:** - Borrow $500-600K on Ma...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "d4545aff-a6a5-4dc5-91b1-4bca29602bf1",
+      "label": "# \ud83c\udfaf MASTER INDEX - Farm Capital Takeout (25-12)...",
+      "title": "# \ud83c\udfaf MASTER INDEX - Farm Capital Takeout (25-12) ## Complete Navigation & Reference Guide **Date Created:** January 11, 2026 **Last Updated:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** COMPREHENSIVE ORGANIZATION COMPLETE --- ## \ud83d\udccd START HERE If this is your first time accessing this folder: \ud83d\udc49 **Read:** `README_Farm_Capital_Takeout.md` This master README provides: - Quick-st...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "6b263a08-f608-42fe-b56d-23eb0a1b6fed",
+      "label": "# ZMC Fortress Project - Document Index **Locat...",
+      "title": "# ZMC Fortress Project - Document Index **Location:** `\\\\192.168.22.220\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\25-12 Farm Capital Takeout\\ZMC Fortress Project` **Last Updated:** 2026-01-11 **Status:** \u2705 All documents uploaded and organized --- ## Folder Structure ``` ZMC Fortress Project/ \u251c\u2500\u2500 Config/ \u2502 \u2514\u2500\u2500 validation_rules_v2.2.0.json \u251c\u2500\u2500 Source Documents/ \u2502 \u251c\u2500\u2500 ZMC_Fortress_Plan_v5.6_F...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "ad017233-f439-491a-befc-72644cb7ce06",
+      "label": "# ZMC Fortress - Financial Planning & Capital S...",
+      "title": "# ZMC Fortress - Financial Planning & Capital Strategy Repository **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 2.0 (Entity-Based Organization) --- ## REPOSITORY OVERVIEW This repository contains comprehensive financial planning and capital strategy documentation for **ZMC Fortress** - a holding company with two operating companies (...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "58abb46f-b5e4-4b6a-b886-8948d9584030",
+      "label": "# Zeus Memory Embedding API - JK Confidential T...",
+      "title": "# Zeus Memory Embedding API - JK Confidential Tenant ## Research & Documentation Complete **Date**: 2026-01-14 **Status**: \u2705 COMPLETE - PRODUCTION READY **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) --- ## What You Have Three comprehensive documentation files have been created in this directory: ### 1. **ZEUS_MEMORY_EMBEDDING_API_DOCUMENTATION.md** (27 KB) **Complete techni...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "695dc066-0667-4d57-9c2e-adcbaeb2255a",
+      "label": "# Phase 1: Zeus Memory Embedding - In Progress ...",
+      "title": "# Phase 1: Zeus Memory Embedding - In Progress ## ZMC Fortress Documentation Semantic Search Integration **Status:** \u23f3 IN PROGRESS (Started: January 14, 2026 22:27 UTC) **Total Documents Found:** 131 (original estimate: 97 + additional discovery) **Classification:** JK CONFIDENTIAL --- ## EXECUTION OVERVIEW ### Agent Execution - **Agent ID:** a7b1825 - **Process:** Background batch ingestion in...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "fbc89c09-e100-4c1a-a8b5-21bf48c74561",
+      "label": "# SMB Share Sync Instructions - 26 ZMC Fortress...",
+      "title": "# SMB Share Sync Instructions - 26 ZMC Fortress **Objective:** Copy the organized 00_ZMC_FORTRESS folder contents from GitHub repository to the SMB share at: ``` \\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\26 ZMC Fortress\\ ``` --- ## OPTION 1: Windows Batch Script (Easiest for Windows) ### Prerequisites - Windows machine with access to `\\\\UNAS-Pro-8\\LL824` share - GitHub repo cloned or down...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f3d2707c-5d9c-4983-8a1f-add54b786bd1",
+      "label": "# Zeus Memory Embedding API Documentation ## JK...",
+      "title": "# Zeus Memory Embedding API Documentation ## JK Confidential Tenant **Generated**: 2026-01-14 **Status**: ACTIVE - Production Ready **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) **API Base URL**: https://zeus.aldc.io --- ## Executive Summary The Zeus Memory system provides a unified embedding API for all tenants including JK Confidential. The system uses **Voyage AI** as th...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "6f17f521-fba4-44e8-831c-565bfeed1c5e",
+      "label": "# ZMC Fortress Reorganization Complete \u2705 ## Fol...",
+      "title": "# ZMC Fortress Reorganization Complete \u2705 ## Folder Structure Audit, Cleanup, and Semantic Embedding Plan **Date:** January 14, 2026 **Status:** \u2705 REORGANIZATION COMPLETE | \u23f3 EMBEDDING PLAN READY FOR EXECUTION **Classification:** JK CONFIDENTIAL --- ## WHAT WAS ACCOMPLISHED ### Phase 1: Comprehensive Folder Audit \u2705 - **Scanned:** 97 files across 13 folders - **Categories:** Financial (15), Strat...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "9f79187b-cf3a-4e75-b5f8-07a8e853c4da",
+      "label": "# Zeus Memory Embedding API Research - Complete...",
+      "title": "# Zeus Memory Embedding API Research - Complete Index ## JK Confidential Tenant Documentation **Research Date**: 2026-01-14 **Status**: Complete - Production Ready **Tenant**: JK Confidential (b513bc6e-ad51-4a11-bea3-e3b1a84d7b55) **Total Memory**: 3,657,918 documents --- ## Documentation Files Created ### 1. Full API Documentation (27 KB) **File**: `/home/aldc/zmc_fortress/ZEUS_MEMORY_EMBEDDIN...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "953b22a6-0086-4b61-8c49-e91fbc2513ae",
+      "label": "# Zeus Memory Embedding API - Quick Reference #...",
+      "title": "# Zeus Memory Embedding API - Quick Reference ## JK Confidential Tenant **Last Updated**: 2026-01-14 **API Base**: https://zeus.aldc.io **Tenant ID**: `b513bc6e-ad51-4a11-bea3-e3b1a84d7b55` **API Key**: `zm_admin_e5ef76af0d4a7caf696089f646a70ddf` --- ## Three Ways to Embed Documents ### 1. Store for Batch Processing (Cheapest - Use This!) **Best for**: Daily ingestion, cost optimization, non-ur...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "8ab9c6d6-ed7c-4535-9e40-befdbb5339b2",
+      "label": "# SMB SYNC PROCEDURE - DEFINITIVE METHOD \u2705 **Cr...",
+      "title": "# SMB SYNC PROCEDURE - DEFINITIVE METHOD \u2705 **Created:** January 12, 2026 **Status:** TESTED & VERIFIED WORKING **Method:** smbclient with credentials file authentication --- ## THE PROBLEM Direct authentication methods fail due to special characters in password: - `smbclient -U mig%'!0Range3404!'` \u2192 **FAILS** (authentication error) - `smbclient -U mig%!0Range3404!` \u2192 **FAILS** (authentication e...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "5e4c888b-5ba8-447a-a3d5-96b574970e3b",
+      "label": "# SMB Sync Ready - 26 ZMC Fortress **Status:** ...",
+      "title": "# SMB Sync Ready - 26 ZMC Fortress **Status:** \u2705 READY FOR SYNC **Date:** January 11, 2026 **Destination:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\26 ZMC Fortress\\` --- ## What's Ready The entire **00_ZMC_FORTRESS/** folder (12 HoldCo-level documents) is prepared and ready to sync to the SMB share. ### Files to Sync (12 files, 112 KB) ``` 00_ZMC_FORTRESS/ \u251c\u2500\u2500 INDEX_ZMC_FORTRESS.md \u251c\u2500\u2500...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "03366fa2-1fd2-4c5c-8759-0e81dabe62c5",
+      "label": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classific...",
+      "title": "{ \"_metadata\": { \"version\": \"2.2.0\", \"classification\": \"JK CONFIDENTIAL\", \"last_updated\": \"2026-01-09\", \"description\": \"ZMC Fortress Validation System Configuration - NBC Approved Dec 19, 2025; Updated with Capital Bible constraints (P&I+Tax drag), Fortress Plan v5.6, JK Salary Policy v1.1\", \"authoritative_sources\": [ \"Letter_of_Approval_December_2025.md (NBC - Capital Bible)\", \"ZMC_Fortress_Pl...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "be7f868a-00a8-4861-8a04-f31d6a7f9c23",
+      "label": "{ \"title\": \"ZMC HoldCo - FY2026 Pro Forma Finan...",
+      "title": "{ \"title\": \"ZMC HoldCo - FY2026 Pro Forma Financial Model\", \"version\": \"1.0\", \"date\": \"2026-01-11\", \"classification\": \"JK CONFIDENTIAL\", \"income_statement\": { \"revenue\": { \"aldc_consulting\": 846000, \"aldc_sred\": 663000, \"lcmf_farm\": 652500, \"jk_contributions\": 104640, \"other_income\": 0, \"total_revenue\": 2266140 }, \"expenses\": { \"aldc_operating\": { \"jk_salary\": 288000, \"development_team\": 210000...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "2eb5b1f6-8c59-4e3a-8c45-43b3ecc192e3",
+      "label": "{ \"memory_type\": \"project_context\", \"source_tag...",
+      "title": "{ \"memory_type\": \"project_context\", \"source_tag\": \"zmc-fortress-validation-20260111\", \"title\": \"ZMC Fortress Financial System - Complete Validation & 18-Month Deployment Plan\", \"created_date\": \"2026-01-11\", \"classification\": \"JK_CONFIDENTIAL\", \"summary\": \"Comprehensive financial validation and execution plan for ZMC Fortress three-entity capital structure (ZMC HoldCo + ALDC OpCo + LCMF OpCo). A...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "3dc8d62d-3f96-4c69-904a-4476df6aed6b",
+      "label": "# ZMC Capital Advisor Framework for ALDC ## How...",
+      "title": "# ZMC Capital Advisor Framework for ALDC ## How Much Capital Should ZMC Allocate to ALDC to Hit Single-Digit % Net Profit? **Date:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Purpose:** Capital allocation model that ties ZMC funding to ALDC's target profit margin (\u00b15%) --- ## Current Problem with Existing Models ### Issue 1: ALDC Plans Are Disconnected from ZMC Capital Strategy Th...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "6a132fc3-60cf-440e-9ff7-f6ee3500ee9f",
+      "label": "# 26 ZMC Fortress - Master Index & Navigation G...",
+      "title": "# 26 ZMC Fortress - Master Index & Navigation Guide **Location:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress` **Purpose:** Consolidated repository for all ZMC Fortress financial planning, ALDC capital strategy, and banking coordination documents (merged from 25-12 Farm Capital Takeout + 26 ZMC Fortress) **Last Updated:** January 11, 2026 **Version:** 1.0 (Restr...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "ed86ad52-a0dc-414e-995b-2f3867f6379f",
+      "label": "# SMB SYNC HANDOFF - January 12, 2026 **Status:...",
+      "title": "# SMB SYNC HANDOFF - January 12, 2026 **Status:** \u26a0\ufe0f FINAL - SMB WRITE PERMISSION LIMITATION **Issue:** Claude Code (jkadmin user) lacks write permissions to SMB mount (owned by root) **Solution:** Manual file copy required - Files are ready for sync, awaiting user action **Created:** January 12, 2026 at 11:07 UTC --- ## FILES REQUIRING IMMEDIATE SYNC ### Primary Document (NEW - Created Jan 12,...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "bed7b39d-2987-4f17-9cf9-0ddf5574c78f",
+      "label": "# SMB Sync - Quick Reference Card **Created:** ...",
+      "title": "# SMB Sync - Quick Reference Card **Created:** January 12, 2026 **Source:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` **Status:** \u2705 CCE Skill Deployed --- ## One-Liner Upload Template ```bash cat > /tmp/.smbcredentials << 'EOF' username=mig password=!0Range3404! domain=WORKGROUP EOF chmod 600 /tmp/.smbcredentials && \\ smbclient -A /tmp/.smbcredentials //192.168.22.220/LL824 << 'EO...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "6588dd84-b615-4173-bebd-259e72bbd8d3",
+      "label": "# ZMC FORTRESS PLAN v5.7 \u2014 FORMAL REVIEW & RECO...",
+      "title": "# ZMC FORTRESS PLAN v5.7 \u2014 FORMAL REVIEW & RECOMMENDATION ## Architecture, Governance & Financial Validation **Reviewed by:** Claude Code (CCE) **Review Date:** January 14, 2026 **Document Status:** Board Recommendation **Classification:** JK CONFIDENTIAL --- ## EXECUTIVE SUMMARY **RECOMMENDATION: \u2705 APPROVE \u2014 v5.7 is sound, well-justified, and properly governed.** The proposed ZMC Fortress Plan...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f4c303c0-9809-4177-a467-54a50eb6fb46",
+      "label": "# ZMC Fortress Session Summary - January 11, 20...",
+      "title": "# ZMC Fortress Session Summary - January 11, 2026 ## Comprehensive Financial Validation & 18-Month Deployment Analysis **Session Date:** January 11, 2026 **Classification:** JK CONFIDENTIAL **Status:** COMPLETE - Plan Validated, All Deliverables Generated --- ## EXECUTIVE SUMMARY The ZMC Fortress financial system has been comprehensively validated with updated parameters including actual P&I+Ta...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "fd4dc25a-8074-43a4-b90b-bc10297b4e42",
+      "label": "# SMB SYNCHRONIZATION - COMPLETE \u2705 **Date:** Ja...",
+      "title": "# SMB SYNCHRONIZATION - COMPLETE \u2705 **Date:** January 12, 2026 **Time:** 11:24 UTC **Status:** \u2705 **SUCCESSFULLY COMPLETED** --- ## FILES SYNCED TO SMB ### Primary Deliverable - **File:** `FY26_SRED_ESTIMATE_ACTUALS_BASED.md` - **Size:** 12,980 bytes - **Synced:** Jan 12, 2026 @ 11:24:00 - **Location:** `\\\\UNAS-Pro-8\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress\\01_ALDC\\02_Capita...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "54964e08-0750-4872-b4e5-6574b2a9f5a9",
+      "label": "# CCE Skill Creation Summary **Date:** January ...",
+      "title": "# CCE Skill Creation Summary **Date:** January 12, 2026 **Skill Name:** SMB File Synchronization **Location:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` **Status:** \u2705 CREATED, TESTED, AND DEPLOYED --- ## What Was Created ### 1. Core Skill File **File:** `/home/aldc/.claude/skills/deployment/smb-file-sync.md` (544 lines, 14 KB) **Contents:** - Problem statement (why naive approache...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "e7730190-1b18-49c5-b722-f014e8992c5d",
+      "label": "# ZMC FORTRESS \u2014 COMPLETE CIFS AUDIT & REVIEW *...",
+      "title": "# ZMC FORTRESS \u2014 COMPLETE CIFS AUDIT & REVIEW **26 ZMC Fortress Folder Analysis** **Date:** January 14, 2026 **Status:** \u2705 COMPREHENSIVE REVIEW COMPLETE **Location:** `\\\\LL824\\Harbour\\Users\\JK\\ZMC\\Finance\\ZMC Banking\\26 ZMC Fortress\\` --- ## EXECUTIVE SUMMARY ### Folder Structure Overview ``` 26 ZMC Fortress/ \u251c\u2500\u2500 01_Banking/ (4 files) - HoldCo banking & policy documents \u251c\u2500\u2500 02_Architecture/ (7 ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "1c78ad41-1975-4a47-8628-6ce97ebfae88",
+      "label": "# ZMC FORTRESS PLAN v5.7 \u2014 REVIEW COMPLETION SU...",
+      "title": "# ZMC FORTRESS PLAN v5.7 \u2014 REVIEW COMPLETION SUMMARY **Date:** January 14, 2026 **Status:** \u2705 REVIEW COMPLETE & APPROVED --- ## EXECUTIVE SUMMARY **I have completed a formal review of ZMC Fortress Plan v5.7 and recommend APPROVAL.** ### Key Finding \u2705 **The $300,000 shareholder loan repayment is sound and properly governed.** **Supporting Evidence:** - ALDC maintains 18.6 months of operational r...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "37f261fc-b4a2-4685-abae-40b72637a7b8",
+      "label": "# FY26 SR&ED Estimate Project - Completion Summ...",
+      "title": "# FY26 SR&ED Estimate Project - Completion Summary **Date:** January 12, 2026 **Project:** SR&ED Labour Cost Estimation for ALDC FY26 **Status:** \u2705 COMPLETE (Local deliverables ready, awaiting SMB sync) --- ## PROJECT OBJECTIVES - ACHIEVED ### Objective 1: Investigate Marshall's High Labour Cost - **Finding:** SR_ED_LABOUR_COSTS.json showed inflated $547,200 for Marshall Johnston - **Root Cause...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "1ce6f886-f794-4224-b012-6043a0e80b93",
+      "label": "# ZMC Fortress Plan \u2014 Version 5.6 (Final) **Ent...",
+      "title": "# ZMC Fortress Plan \u2014 Version 5.6 (Final) **Entity:** Zusa Management Corporation (ZMC) **Date:** December 2025 **Status:** Canonical governing document (supersedes v5.5 and all prior Fortress Plan versions except where explicitly amended) --- ## 1. Purpose & Mandate The ZMC Fortress Plan establishes the capital governance, leverage policy, deployment discipline, and distribution (peel) framewo...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "7d51f580-7eba-433c-867b-401b23253383",
+      "label": "# ZMC FORTRESS PLAN \u2014 Version 5.7 (FINAL) **Ent...",
+      "title": "# ZMC FORTRESS PLAN \u2014 Version 5.7 (FINAL) **Entity:** Zusa Management Corporation (ZMC) **Date:** January 14, 2026 **Status:** \u2705 ADOPTED & EFFECTIVE **Owner/Authority:** John Moran (Shareholder, sole decision-maker) --- ## 1. Purpose of This Revision Version 5.7 formally incorporates a **shareholder-loan reallocation and unlevered equity seed** into the ZMC Fortress architecture. This revision ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "e6d0dbce-ff20-425a-b8b3-8f9ec09c6a29",
+      "label": "# JK Salary & Capital Allocation Policy ## Vers...",
+      "title": "# JK Salary & Capital Allocation Policy ## Version 1.1 (Corrected & Canonical) **Classification:** JK CONFIDENTIAL **Effective Date:** January 2026 **Document Owner:** JK Moran **Applies To:** Personal compensation received from Analytic Labs Data Corporation (ALDC) **Status:** Canonical governing policy (supersedes v1.0) --- ## 1. Purpose This policy defines the **governance framework and mech...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f7562034-07d7-4636-abf4-72d91e51198a",
+      "label": "# NBC Contract - ACTUAL TERMS (From Letter of A...",
+      "title": "# NBC Contract - ACTUAL TERMS (From Letter of Approval) **Source:** Letter of Approval - December 2025 (National Bank of Canada) **Borrower:** LC Moran Farms LTD. **Date:** December 19, 2025 --- ## THE ACTUAL FACILITIES ### Total NBC Facility: $2,400,000 | Facility | Amount | Purpose | |----------|--------|---------| | Operating Line of Credit | $350,000 | Daily operations + capital expenditure...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "4b062a07-cd82-4f99-9117-48af40f07dd0",
+      "label": "# Zeus Dashboard FY26 Plan v2.6 - Final Deploym...",
+      "title": "# Zeus Dashboard FY26 Plan v2.6 - Final Deployment Report **Date:** January 12, 2026 **Status:** \u2705 DEPLOYMENT COMPLETE & VERIFIED **URL:** https://zeus.aldc.io/the-olds/fy26-plan **Version:** v2.6 (Jan 12, 2026) - ALDC Fortress Corrected Costs --- ## Issue Identified and Fixed ### Problem Found During testing, discovered incomplete update in S5 and S6 scenario values: **S5 (Recommended Scenario...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "d6ba60f1-6a7a-4b29-8002-e03b9ae4cd9f",
+      "label": "# Zeus Memory Embedding Strategy - ZMC Fortress...",
+      "title": "# Zeus Memory Embedding Strategy - ZMC Fortress Documentation ## Complete 97-File Ingestion & HNSW Vector Index Plan **Date:** January 14, 2026 **Classification:** JK CONFIDENTIAL **Status:** APPROVED FOR IMPLEMENTATION --- ## EXECUTIVE SUMMARY Embed all 97 files from the reorganized ZMC Fortress documentation into the JK Confidential Tenant within Zeus Memory, enabling semantic search and inte...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "e2897829-1339-4ef9-8c57-97cbb1fab428",
+      "label": "# ALDC CCE Skills Inventory **Created:** Januar...",
+      "title": "# ALDC CCE Skills Inventory **Created:** January 12, 2026 **Status:** Production Ready **Total Skills:** 14 deployed + 1 newly created (SMB File Sync) **Purpose:** Comprehensive inventory of Claude Code reusable skills available across projects --- ## Summary Your Claude Code environment has a mature skills library organized by category. These are reusable prompts and patterns that encode insti...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "103de02f-df6f-4c20-83ae-0d1e427b7e93",
+      "label": "# Zeus Dashboard FY26 Plan Update - COMPLETE \u2705 ...",
+      "title": "# Zeus Dashboard FY26 Plan Update - COMPLETE \u2705 **Date:** January 12, 2026 **Status:** LIVE - Dashboard Updated & Deployed **URL:** https://zeus.aldc.io/the-olds/fy26-plan **Commit:** 2a36abf (zeus-memory main branch) **Attribution:** ALDC Fortress Corrected Costs v2.6 --- ## Executive Summary The Zeus Dashboard FY26 Financial Plan has been **successfully updated** with corrected labour costs fr...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "2033320c-1396-44b2-9769-b6c691735850",
+      "label": "# Zeus Memory Import Guide - ZMC Fortress Analy...",
+      "title": "# Zeus Memory Import Guide - ZMC Fortress Analysis ## For Use in Claude Desktop **Date:** January 11, 2026 **Classification:** JK CONFIDENTIAL --- ## Quick Start You can now retrieve the complete ZMC Fortress context in Claude Desktop using Zeus Memory. ### Method 1: Direct Retrieval (Recommended) In Claude Desktop, type in your message: ``` @memory ZMC Fortress ``` Or search by source tag: ```...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "afd4c258-10e0-4360-8cab-ce5e2fb08dd2",
+      "label": "# Zeus Dashboard FY26 Plan - QA Verification Re...",
+      "title": "# Zeus Dashboard FY26 Plan - QA Verification Report **Date:** January 12, 2026 **Status:** \u2705 ALL TESTS PASSED **Deployment:** Live and verified working **URL:** https://zeus.aldc.io/the-olds/fy26-plan --- ## Executive Summary \u2705 **COMPLETE & VERIFIED** The ALDC FY26 Financial Plan dashboard has been successfully updated with corrected labour costs from the January 12, 2026 QBO analysis. All 7 sc...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "88cce529-7994-4d98-b361-bdad68615d0a",
+      "label": "# Zeus Dashboard FY26 Plan - Deployment Status ...",
+      "title": "# Zeus Dashboard FY26 Plan - Deployment Status **Date:** January 12, 2026 **Status:** IN PROGRESS - Waiting for Azure Deployment **URL:** https://zeus.aldc.io/the-olds/fy26-plan --- ## What Happened ### 1. Dashboard File Updated \u2705 - **File:** `/home/aldc/zeus-memory/dashboard/static/fy26-plan.html` - **Version:** v2.5 \u2192 v2.6 (Jan 12, 2026) - **Changes:** Corrected labour costs, updated SR&ED re...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "b780c968-c539-4059-9807-764e96f62ad3",
+      "label": "# ZMC Equity Portfolio Strategy - 30 Year Proje...",
+      "title": "# ZMC Equity Portfolio Strategy - 30 Year Projection ## Focusing on ZMC Investment Returns (Excluding ALDC Operations) **Classification:** JK CONFIDENTIAL **Date:** January 14, 2026 **Version:** 1.0 **Purpose:** Document ZMC's equity portfolio investment strategy, expected returns, and 30-year wealth accumulation targeting $4.7M+ portfolio value --- ## EXECUTIVE SUMMARY ZMC HoldCo manages an in...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "63ccd5e4-7bde-4e80-877a-eb8ffd05d523",
+      "label": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## ...",
+      "title": "# ZMC Fortress 5-Year Projection: FY26-FY30 ## Net Position Analysis **Generated:** December 19, 2025 **Classification:** JK CONFIDENTIAL **NBC Facility:** APPROVED Dec 19, 2025 @ 4.0% fixed 12-month --- ## EXECUTIVE SUMMARY | Fiscal Year | Net Position | Status | Cumulative | |-------------|--------------|--------|------------| | **FY26** | +$158,800 | \u2705 BLACK | +$158,800 | | **FY27** | +$147,...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "0315049e-1da5-4655-8f13-f6a2af34ac9e",
+      "label": "# ZMC Fortress - HoldCo Level Index **Classific...",
+      "title": "# ZMC Fortress - HoldCo Level Index **Classification:** Confidential **Owner:** John Moran (JK) **Last Updated:** January 11, 2026 **Version:** 2.0 (Restructured Entity-Based Organization) --- ## PURPOSE This folder contains **HoldCo-level documents only** - documentation specific to ZMC Fortress (parent company level). These documents address: - **Consolidated covenant compliance** (DSCR, LTV,...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "a441ee82-bc43-4c56-b1ea-a0734645284e",
+      "label": "{ \"sr_ed_calculation_results\": { \"calculation_d...",
+      "title": "{ \"sr_ed_calculation_results\": { \"calculation_date\": \"2026-01-11\", \"period\": \"FY26 (Nov 2025 - Oct 2026)\", \"status\": \"PRELIMINARY - Awaiting confirmation on assumptions\", \"prepared_by\": \"Claude Code Financial Analysis\" }, \"fy25_baseline_validation\": { \"actual_receipt_from_cra\": 299000, \"receipt_date\": \"2025-11-30\", \"sr_ed_rate\": 0.643, \"implied_fy25_eligible_labour\": 465318, \"calculation\": \"299...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "b7f1dd34-b317-4c75-8117-e557b9621ed5",
+      "label": "{ \"sr_ed_calculation_framework\": { \"version\": \"...",
+      "title": "{ \"sr_ed_calculation_framework\": { \"version\": \"1.0\", \"date_created\": \"2026-01-11\", \"classification\": \"JK CONFIDENTIAL\", \"methodology\": \"64.3% of eligible employee labour costs = SR&ED refund estimate\", \"note\": \"64.3% is verified proxy rate based on FY25 actual receipt validation\" }, \"sr_ed_refund_rate\": { \"percentage\": 0.643, \"basis\": \"Validated against FY25 actual CRA receipt ($299K)\", \"calcul...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "0e293006-2f2d-4122-a812-0faea90a057e",
+      "label": "{ \"labour_cost_summary\": { \"calculation_date\": ...",
+      "title": "{ \"labour_cost_summary\": { \"calculation_date\": \"2026-01-11\", \"period\": \"FY26 (Nov 2025 - Oct 2026)\", \"basis\": \"Loaded annual salaries with actual start/end months\", \"status\": \"CURRENT - Update monthly as headcount changes\" }, \"current_employees_fy26\": { \"marshall\": { \"name\": \"Marshall (Founder/Management)\", \"annual_loaded_salary\": 547200, \"monthly_loaded\": 45600, \"role\": \"Founder/Management\", \"...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "f068455f-cd66-4a01-9ff8-ea64dccb6f12",
+      "label": "{ \"simulation_params\": { \"num_simulations\": 100...",
+      "title": "{ \"simulation_params\": { \"num_simulations\": 100000, \"years\": 30, \"debt_service_annual\": 143600, \"annual_jk_contribution\": 104640 }, \"by_year\": { \"1\": { \"lcmf_ebitda\": { \"mean\": 69420.66118369898, \"median\": 67858.95243197752, \"std\": 25533.457013925057, \"5th_percentile\": 33186.0, \"95th_percentile\": 114184.13452375411 }, \"aldc_revenue\": { \"mean\": 846081.6418926601, \"median\": 845857.8671531456 }, \"...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "d3c24140-28b1-4bf5-8439-0e17ba3d9066",
+      "label": "{ \"document\": \"ALDC P&L Tracking Template\", \"ve...",
+      "title": "{ \"document\": \"ALDC P&L Tracking Template\", \"version\": \"1.0\", \"created_date\": \"2026-01-11\", \"classification\": \"JK_CONFIDENTIAL\", \"update_frequency\": \"Monthly (by 5th of following month)\", \"fy26_budget\": { \"consulting_revenue_annual\": 846000, \"consulting_revenue_monthly\": 70500, \"sred_recovery\": 663000, \"total_revenue\": 1509000, \"payroll_expenses\": 528000, \"non_payroll_expenses\": 101000, \"total_...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "fff6ec11-dc44-44e1-9ce1-1125e6e0fb8c",
+      "label": "# ALDC FY26 Financial Plan - Decision Summary #...",
+      "title": "# ALDC FY26 Financial Plan - Decision Summary ## Critical Analysis & Required Decisions **Date:** December 26, 2025 **Classification:** JK CONFIDENTIAL **Status:** AWAITING DECISIONS (By Jan 1, 2026) --- ## EXECUTIVE SUMMARY ALDC has 9 months (Jan 1 - Sep 30, 2026) to execute a successful FY26 without triggering cash crisis. The company is **NOT in crisis today**, but faces a **critical funding...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    },
+    {
+      "id": "6ff85f14-2059-4b76-ac73-a7e84fedb5a1",
+      "label": "# ALDC FY26 Month-by-Month Cashflow Financial P...",
+      "title": "# ALDC FY26 Month-by-Month Cashflow Financial Plan ## Fiscal Year: October 2025 - September 2026 **Classification:** JK CONFIDENTIAL **Generated:** December 26, 2025 **Planning Period:** October 2025 - September 2026 (ALDC FY26 = Oct-Sep) **Version:** 1.0 --- ## EXECUTIVE SUMMARY ``` \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 ALDC FY26 CASHFLOW FINANCIAL ...",
+      "tier": 3,
+      "group": "cce",
+      "size": 15
+    }
+  ],
+  "edges": [
+    {
+      "source": "zeus-memory-hub",
+      "target": "3fef9c85-6da2-4dcf-bd29-1617db201147",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "548b4c44-79ee-45f7-bbb9-355bb0b42a2f",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e2fd38db-ebcc-4f64-b23a-8bac3398acc8",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "34d0e836-a5b9-43f5-b385-7db383dfbfc7",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "1a00c8a1-8e02-4a19-95dd-46f8509f76b9",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "5b2c9ea4-fa9c-4de1-9103-9b5d6fd7c8b2",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "0aa00c82-6ed6-4300-a809-106fe339778d",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "38b02108-bb7d-4f99-8b05-da0700b69493",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "992eef00-4c3d-43e4-b834-4928b669648e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "6e516af0-8a60-4059-a279-bc2173b05c7e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "b657a888-15ed-4c4d-ba20-b19656051b9f",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "a717edb3-7402-4414-bbcc-54e678a539fd",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e1a52711-a0c2-4dde-a81c-839f102d54b0",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "deddc242-ceed-48cb-9918-bfb9b44f347c",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "f88f5de8-998c-40a8-9f85-4e83e2871279",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "c55f436d-596a-4e38-bfd7-61012c8ee8ae",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "699c27d9-4296-4b91-acc4-31d9983f46c1",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "cad69c5b-3a18-41e7-93d4-f96c3feb4eb7",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "6dd576d8-1a46-46a0-a1e8-fdce18295296",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "70823756-2eba-4481-bb2a-593a8cf1b383",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "839fef50-c4e8-42ec-b703-6f41706ef349",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e6eaca60-16d5-4729-89bd-1430ff444c83",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "031e1716-dfc4-48d9-9f57-d97282c8b702",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "8faa1f44-0d30-4417-a079-d9c79e9d1fbf",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d84858c1-ada7-4036-b50b-75a5f057c009",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "2904e824-6d3f-43b6-b025-963b2b32ea3e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "0ce8fe66-2ebe-4832-90fb-3d03ab17c2ac",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "8a84cfcf-73ff-4562-a9ef-fdf034b3157e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "3385075e-0802-4edd-8581-5a650d1a7203",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "639bbe4b-eb5b-43b2-aec5-27c0683a22b9",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "9c0b91ca-da05-4fee-b851-6cb69e9484d8",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "b489c558-3367-458f-9ed5-777240a2d640",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "4f8f75ca-fedb-4220-b515-189c08a1f969",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "cee8aee7-ae47-4531-9ad1-00322fe6845e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "7f778d6e-72b5-4f02-a895-f73c1f647dea",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "301dcfd4-e87a-491e-89e6-1f2553b7bede",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "3cf049fe-2499-4086-bbd5-4ad1568b4b79",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "51fdd8df-ebae-4546-b9f0-f82975a2ced4",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "cde029e7-6b18-4a60-b667-a6c334ba485c",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d011d91a-06d9-4b5a-89ee-f89b5539bb7c",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "373c8d2c-3428-41ca-8fe2-c0f91dee0717",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e5961fc3-085f-4785-837d-28a5199fe08f",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "73c28b37-51fe-4acc-9815-f27bd7b4cf83",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "74f5c24d-012c-4caa-9199-808beee74434",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "6e7b5f25-3af8-433f-8a36-db49f9ff6356",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "5c67100c-b27b-4350-bab8-5f45ae95f64b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "57313db7-6cac-4971-a43a-15c8946f906c",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "f5207362-f875-4115-a2ff-0b91e174c6c7",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "ff7c0670-0671-42fe-8789-904b616cc5e6",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "8485c0a0-c903-4f4b-b71b-4d37d7b1ea64",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "cd667643-d6af-4c2c-a334-289ffa1b4a49",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "58d76de1-e11f-40d7-9f0b-9e4f9111e3ae",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "71e966a0-f0f8-484c-a1a2-f8aa1be04db0",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "12819dea-5275-436c-a66c-fed0aa1785d0",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d6f7a690-8814-4c62-8427-e1526ef2f4bc",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e9988895-82fd-4e26-9274-1caf9228b0d3",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "876beceb-7131-408a-a265-1e9d59163cc3",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "47b00f20-a54f-4ba5-89b1-c5c2619e6fda",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "eac3c75c-a5d1-44d4-b61d-34a59639587f",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "b48ceef6-049c-446b-9699-e911a037a3b4",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "a3ac0b0c-c2e6-4b72-a2ee-8bd1a9999384",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "0b75abad-d8d2-49e4-b398-8c057953275b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "7c43826a-f428-4a2d-98e8-176dad1c2ce0",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "92cc962e-8939-4264-95af-4728d6809157",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "b1c33fe6-630e-4cc3-9f78-6a97e77c1b92",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "bb413002-025e-432c-93f5-ac86f7c8e956",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "fc71d3c7-f5b0-4291-b209-bb6525e43c05",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e5ba31e1-f010-41e0-a05e-2e5bbf897b6c",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "6014a7e2-6070-409a-aa2c-a8c0c3f1f4c1",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "2eee720d-e833-453e-80c0-6ab7fc292e19",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "bd49db28-4f45-444d-bf8f-b671d1ef6191",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "c8c806d2-1b59-4f4b-aafc-2fa22e0b04dc",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "86a46cab-8e6f-4ec6-8d03-be445a455c8b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "9f672255-f7fb-4bc1-8d5e-46468d86400e",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "59e4aa9e-a5a2-400a-9b0f-828a32dce6b3",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "25d46499-4817-4bef-beb5-e1714b32e3bc",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "a84ebdf4-1e16-48c1-ba5f-63ec3c5a5a49",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "be37665d-3262-4cbc-b323-0874ec0d6d0b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "ff97e417-e766-4d2e-84e4-71240c931fc6",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "eb4fec34-d605-4b33-9979-7c481981d158",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "89309e40-c91a-4e59-acff-e4366acc9a6b",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "bbabb03c-4696-4f4d-be27-ae748e965ae9",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "0efe4913-6543-47a2-9255-1212c86a944f",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d28c10b2-c5f7-49a2-aa21-b50c919e3a78",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "69ed9807-0422-4119-bfe9-2777cd7a4ad9",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "91e801e7-0f84-4cfe-b236-1a4a409cadaf",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "6fd65557-9222-417e-a272-3864d8ecad83",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "78d2cc42-7552-442c-9994-ca6a3cec95fb",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "ac9983db-6096-4c54-abe9-66de22aa72f8",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "3e88d511-b784-49a0-b402-2d54377bec72",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "1847c602-74bb-4ff9-b31c-37eaeaa9c8b6",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "f6da3153-56ad-4b7d-9df0-954382221dc3",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "1d09669e-fa54-4650-bbd8-4c8ae6819b05",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e523eab1-34e5-4e50-9a02-27ea5206b1a2",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "575b79f2-f591-44dd-8fe9-a7568f42e26a",
+      "type": "informs"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "3b5c53da-e55d-492a-928a-693d20b77964",
+      "type": "informs"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    }
+  ]
+}
