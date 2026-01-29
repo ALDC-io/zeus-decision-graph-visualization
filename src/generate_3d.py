@@ -60,7 +60,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         })
 
     # Prepare links JSON with relationship type labels
+    # Default edge styles - can be overridden by data
     edge_styles = {
+        "references": {"color": "#3182ce", "width": 2, "label": "References"},
+        "informs": {"color": "#2f855a", "width": 2, "label": "Informs"},
+        "related": {"color": "#a0aec0", "width": 1, "label": "Related"},
         "strategic_partner": {"color": "#2f855a", "width": 3, "label": "Strategic Partner"},
         "emerging_partner": {"color": "#3182ce", "width": 2, "label": "Emerging Partner"},
         "sme_expert": {"color": "#805ad5", "width": 2, "label": "SME Expert"},
@@ -86,6 +90,16 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     nodes_json = json.dumps(nodes_list)
     links_json = json.dumps(links_list)
     groups_json = json.dumps(groups)
+
+    # Generate dynamic legend items from groups
+    legend_items_html = ""
+    for group_id, group_info in groups.items():
+        color = group_info.get("color", "#888888")
+        label = group_info.get("label", group_id)
+        legend_items_html += f'''<label class="legend-item"><input type="checkbox" checked data-group="{group_id}"><span class="legend-color" style="background:{color}"></span> {label}</label>\n                    '''
+
+    # Get description from metadata
+    description = data.get("metadata", {}).get("description", "Click a node to explore")
 
     html = f'''<!DOCTYPE html>
 <html>
@@ -409,20 +423,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             <div id="legend">
                 <div class="legend-title">Filter by Type (click to toggle)</div>
                 <div class="legend-items">
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('hub')"><span class="legend-color" style="background:#1a365d"></span> Hub</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('tier1')"><span class="legend-color" style="background:#2f855a"></span> Associations</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('tier2')"><span class="legend-color" style="background:#3182ce"></span> Emerging</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('tier3')"><span class="legend-color" style="background:#805ad5"></span> SMEs</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('member_retail')"><span class="legend-color" style="background:#e53e3e"></span> Retailers</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('member_mfg')"><span class="legend-color" style="background:#dd6b20"></span> Manufacturers</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('member_produce')"><span class="legend-color" style="background:#38a169"></span> Produce</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('member_restaurant')"><span class="legend-color" style="background:#d69e2e"></span> Restaurants</label>
-                    <label class="legend-item"><input type="checkbox" checked onchange="toggleFilter('member_dist')"><span class="legend-color" style="background:#319795"></span> Distributors</label>
+                    {legend_items_html}
                 </div>
                 <div class="filter-controls">
                     <button class="filter-btn" onclick="showAll()">Show All</button>
-                    <button class="filter-btn" onclick="showCoreOnly()">Core Only</button>
-                    <button class="filter-btn" onclick="showMembersOnly()">Members Only</button>
+                    <button class="filter-btn" onclick="hideAll()">Hide All</button>
                 </div>
             </div>
         </div>
@@ -430,12 +435,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         <div id="sidebar">
             <div class="header">
                 <h1>{title}</h1>
-                <p>Click a node to explore</p>
+                <p>{description}</p>
             </div>
             <div id="info-panel">
                 <div class="info-placeholder" id="placeholder">
                     <p><strong>Select a node</strong></p>
-                    <p>Click on any organization in the graph to see details and navigate to connected partners.</p>
+                    <p>Click on any node in the graph to see details and navigate to connected items.</p>
                     <p style="margin-top: 20px; font-size: 11px; color: #999;">Drag to rotate • Scroll to zoom • Right-drag to pan</p>
                 </div>
                 <div class="node-info" id="node-info">
@@ -447,7 +452,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                         </div>
                     </div>
                     <div class="node-description" id="node-description"></div>
-                    <div class="connections-header">Connected Organizations</div>
+                    <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                 </div>
             </div>
@@ -515,42 +520,38 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}
         }}
 
-        // Track which groups are visible
-        const visibleGroups = new Set(['hub', 'tier1', 'tier2', 'tier3', 'member_retail', 'member_mfg', 'member_produce', 'member_restaurant', 'member_dist']);
+        // Track which groups are visible - initialize from data
+        const allGroups = Object.keys(groupsData);
+        const visibleGroups = new Set(allGroups);
 
-        // Filter functions
-        function toggleFilter(group) {{
-            if (visibleGroups.has(group)) {{
-                visibleGroups.delete(group);
-            }} else {{
-                visibleGroups.add(group);
-            }}
-            applyFilters();
-        }}
+        // Attach event listeners to legend checkboxes
+        document.querySelectorAll('#legend input[type="checkbox"]').forEach(cb => {{
+            cb.addEventListener('change', function() {{
+                const group = this.dataset.group;
+                if (this.checked) {{
+                    visibleGroups.add(group);
+                }} else {{
+                    visibleGroups.delete(group);
+                }}
+                applyFilters();
+            }});
+        }});
 
         function showAll() {{
-            ['hub', 'tier1', 'tier2', 'tier3', 'member_retail', 'member_mfg', 'member_produce', 'member_restaurant', 'member_dist'].forEach(g => visibleGroups.add(g));
+            allGroups.forEach(g => visibleGroups.add(g));
             updateCheckboxes();
             applyFilters();
         }}
 
-        function showCoreOnly() {{
+        function hideAll() {{
             visibleGroups.clear();
-            ['hub', 'tier1', 'tier2', 'tier3'].forEach(g => visibleGroups.add(g));
-            updateCheckboxes();
-            applyFilters();
-        }}
-
-        function showMembersOnly() {{
-            visibleGroups.clear();
-            ['member_retail', 'member_mfg', 'member_produce', 'member_restaurant', 'member_dist'].forEach(g => visibleGroups.add(g));
             updateCheckboxes();
             applyFilters();
         }}
 
         function updateCheckboxes() {{
             document.querySelectorAll('#legend input[type="checkbox"]').forEach(cb => {{
-                const group = cb.getAttribute('onchange').match(/'([^']+)'/)[1];
+                const group = cb.dataset.group;
                 cb.checked = visibleGroups.has(group);
             }});
         }}
@@ -648,6 +649,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 graph.cameraPosition({{ x: 0, y: 0, z: 500 }});
             }}, 100);
 
+            // Disable default double-click zoom on background
+            const rendererEl = graph.renderer().domElement;
+            rendererEl.addEventListener('dblclick', (e) => {{
+                e.stopPropagation();
+            }}, true);
+
             // Handle window resize
             window.addEventListener('resize', () => {{
                 const newWidth = wrapper.offsetWidth;
@@ -678,11 +685,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             logoEl.src = node.logo || '';
             logoEl.style.display = node.logo ? 'block' : 'none';
 
-            // Set tier badge
+            // Set tier badge using group label
             const tierEl = document.getElementById('node-tier');
-            const tierLabels = ['Central Hub', 'Tier 1: Core Partner', 'Tier 2: Emerging Partner', 'Tier 3: SME Expert', 'Member Organization'];
-            tierEl.textContent = tierLabels[node.tier] || 'Unknown';
-            tierEl.className = 'node-tier tier-' + (node.tier === 0 ? 'hub' : node.tier);
+            tierEl.textContent = node.groupLabel || 'Unknown';
+            tierEl.style.background = node.color;
+            tierEl.className = 'node-tier';
 
             // Build connections list
             const connections = linksByNode[node.id] || [];
