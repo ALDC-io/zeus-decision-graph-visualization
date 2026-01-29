@@ -50,11 +50,12 @@ The current visualization shows ~200 nodes. To scale to Zeus Memory's 3M+ memori
 - Endpoints: `/api/overview`, `/api/l2/{id}`, `/api/l1/{id}`, `/api/memory/{id}`
 - Loads pre-computed positions from Phase 2
 
-### Phase 4: Semantic Zoom Frontend
-- Switch to Sigma.js (WebGL, handles 50K+ nodes)
-- Implement semantic zoom - clusters expand on click/zoom
-- Keep current dark space aesthetic
-- LOD switching based on zoom level
+### Phase 4: Semantic Zoom Frontend ✅
+- Sigma.js component integrated into Atlas (`SigmaGraph.tsx`)
+- API client for progressive loading (`athenaApi.ts`)
+- Semantic zoom navigation: L2 domains → L1 topics → individual memories
+- Breadcrumb navigation and details sidebar
+- Available in Atlas Knowledge Graph view as "Zeus Semantic Zoom"
 
 ### Hierarchy Levels
 | Zoom Level | What You See | ~Node Count |
@@ -111,10 +112,34 @@ python3 -m http.server 8889 -d output/html
     └── zeus_decision_graph.html    # Interactive visualization
 ```
 
+## Deployment
+
+### Athena API (Knowledge Graph Backend)
+- **URL**: https://athena.aldc.io
+- **Container**: Azure Container Apps (`athena` in `cae-zeus-memory-dev`)
+- **CI/CD**: GitHub Actions auto-deploys on push to main
+- **Data**: 50K memories clustered into 385 L2 domains and 3,264 L1 topics
+
+### Atlas Frontend (Semantic Zoom UI)
+- **URL**: https://atlas.aldc.io
+- **Container**: Azure Container Apps (`atlas` in `cae-zeus-memory-dev`)
+- **CI/CD**: GitHub Actions auto-deploys on push to main
+- **Integration**: Sigma.js component fetches from Athena API
+
+### API Endpoints
+| Endpoint | Description |
+|----------|-------------|
+| `/api/overview` | L2 cluster overview (385 domains) |
+| `/api/l2/{id}` | L1 clusters within L2 domain |
+| `/api/l1/{id}?limit=N` | Memories within L1 topic (paginated) |
+| `/api/memory/{id}` | Full memory details |
+| `/api/stats` | Data statistics |
+
 ## Related
 
 - **Skill**: `visualization/network-ecosystem.md`
 - **Reference Implementation**: [FBC Partner Ecosystem](https://github.com/ALDC-io/fbc-partner-ecosystem-visualization)
+- **Atlas Repository**: [ALDC-io/atlas](https://github.com/ALDC-io/atlas)
 
 ## License
 
