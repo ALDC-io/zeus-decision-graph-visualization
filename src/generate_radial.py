@@ -96,8 +96,7 @@ def generate_radial_html(data: dict[str, Any], title: str) -> str:
     <meta charset="utf-8">
     <title>{title}</title>
     <link rel="icon" href="data:,">
-    <script src="https://unpkg.com/3d-force-graph@1.73.0/dist/3d-force-graph.min.js"></script>
-    <script src="https://unpkg.com/d3-force-3d@3.0.5/dist/d3-force-3d.min.js"></script>
+    <script src="//unpkg.com/3d-force-graph"></script>
     <style>
         * {{
             margin: 0;
@@ -579,22 +578,28 @@ def generate_radial_html(data: dict[str, Any], title: str) -> str:
         function applyRadialLayout() {{
             const positions = calculateRadialPositions();
             const nodes = graph.graphData().nodes;
+            const links = graph.graphData().links;
 
+            // Set fixed positions for all nodes
             nodes.forEach(node => {{
                 const pos = positions[node.id];
                 if (pos) {{
+                    node.x = pos.x;
+                    node.y = pos.y;
+                    node.z = pos.z;
                     node.fx = pos.x;
                     node.fy = pos.y;
                     node.fz = pos.z;
                 }}
             }});
 
-            graph.graphData({{ nodes, links: graph.graphData().links }});
+            // Re-set the graph data to apply positions
+            graph.graphData({{ nodes: [...nodes], links: [...links] }});
 
-            // Zoom to fit
+            // Zoom to fit after a short delay
             setTimeout(() => {{
                 graph.cameraPosition({{ x: 0, y: 0, z: 600 }}, {{ x: 0, y: 0, z: 0 }}, 1000);
-            }}, 100);
+            }}, 200);
         }}
 
         // Release force layout
@@ -867,13 +872,7 @@ def generate_radial_html(data: dict[str, Any], title: str) -> str:
                 .onNodeClick(handleNodeClick)
                 .onBackgroundClick(clearSelection)
                 .enableNodeDrag(false)  // Disable for radial layout
-                .d3Force('charge', d3.forceManyBody().strength(-100))
-                .d3Force('link', d3.forceLink().distance(link => {{
-                    const source = nodeMap[link.source.id || link.source];
-                    const target = nodeMap[link.target.id || link.target];
-                    if (!source || !target) return 100;
-                    return Math.abs(source.tier - target.tier) * 80 + 50;
-                }}));
+                .cooldownTicks(0);  // Start with no simulation - we position manually
 
             // Apply radial layout after initialization
             setTimeout(() => {{
