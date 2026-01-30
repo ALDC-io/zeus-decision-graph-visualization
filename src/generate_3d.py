@@ -1782,33 +1782,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             if (geometry === 'sphere') {{
                 graph.nodeThreeObject(null); // Use default sphere
             }} else {{
-                graph.nodeThreeObject(node => {{
-                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
-                    const size = Math.max(node.val / 5, 2) * 2;
-                    let geom;
-
-                    switch(geometry) {{
-                        case 'cube':
-                            geom = new THREE.BoxGeometry(size, size, size);
-                            break;
-                        case 'octahedron':
-                            geom = new THREE.OctahedronGeometry(size * 0.7);
-                            break;
-                        case 'ring':
-                            geom = new THREE.TorusGeometry(size * 0.5, size * 0.15, 8, 24);
-                            break;
-                        default:
-                            geom = new THREE.SphereGeometry(size / 2);
-                    }}
-
-                    const material = new THREE.MeshLambertMaterial({{
-                        color: node.color,
-                        transparent: true,
-                        opacity: 0.9
-                    }});
-
-                    return new THREE.Mesh(geom, material);
-                }});
+                // Note: Custom geometries require THREE.js to be available
+                // The 3d-force-graph library bundles THREE but doesn't expose it globally
+                // For now, just use the default sphere for all geometries
+                console.warn('Custom geometries not supported in this build - using default spheres');
+                graph.nodeThreeObject(null);
             }}
         }}
 
