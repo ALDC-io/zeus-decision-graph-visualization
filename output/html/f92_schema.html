@@ -948,12 +948,23 @@
 
         // Safe getter for graph data - handles edge cases
         function getGraphNodes() {
-            if (!graph) return [];
+            if (!graph) {
+                console.warn('[getGraphNodes] graph is null/undefined');
+                return [];
+            }
             try {
                 const data = graph.graphData();
-                return (data && data.nodes) ? data.nodes : [];
+                if (!data) {
+                    console.warn('[getGraphNodes] graphData() returned:', data);
+                    return [];
+                }
+                if (!data.nodes) {
+                    console.warn('[getGraphNodes] data has no nodes. data:', data, 'keys:', Object.keys(data));
+                    return [];
+                }
+                return data.nodes;
             } catch (e) {
-                console.warn('Error getting graph nodes:', e);
+                console.warn('[getGraphNodes] Error:', e);
                 return [];
             }
         }
