@@ -1284,8 +1284,21 @@
         // Navigate to a node by ID (works even if filtered out)
         function navigateToNode(nodeId) {
             console.log('navigateToNode called with:', nodeId);
+
+            // Guard against graph not being ready
+            if (!graph || !graph.graphData) {
+                console.warn('Graph not ready yet');
+                return;
+            }
+
+            const graphData = graph.graphData();
+            if (!graphData || !graphData.nodes) {
+                console.warn('Graph data not available');
+                return;
+            }
+
             // First check if node is in current graph view
-            let targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+            let targetNode = graphData.nodes.find(n => n.id === nodeId);
             console.log('Found in current view:', !!targetNode);
 
             // If not found in filtered view, get from full node list
@@ -1298,7 +1311,9 @@
                     applyFilters();
                     // Wait for simulation to position the node, then navigate
                     setTimeout(() => {
-                        targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                        const updatedData = graph.graphData();
+                        if (!updatedData || !updatedData.nodes) return;
+                        targetNode = updatedData.nodes.find(n => n.id === nodeId);
                         if (targetNode) {
                             selectNodeOnly(targetNode);
                             // Pan to the node (use 0,0,0 if position not yet set)
