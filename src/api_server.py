@@ -282,6 +282,16 @@ async def viz_fbc():
     raise HTTPException(status_code=404, detail="FBC visualization not found")
 
 
+@app.get("/viz/fbc_radial")
+async def viz_fbc_radial():
+    """Serve the Food Banks Canada radial/concentric visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "fbc_radial.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="FBC radial visualization not found")
+
+
 @app.get("/viz/f92")
 async def viz_f92():
     """Serve the Fusion92 schema visualization."""
