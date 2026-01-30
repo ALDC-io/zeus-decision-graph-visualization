@@ -2166,9 +2166,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         // --- Update stats display ---
         function updateStats() {{
-            const data = graph.graphData();
+            const nodes = getGraphNodes();
+            const links = getGraphLinks();
             const statsEl = document.getElementById('stats-display');
-            statsEl.textContent = `${{data.nodes.length}} nodes · ${{data.links.length}} edges`;
+            statsEl.textContent = `${{nodes.length}} nodes · ${{links.length}} edges`;
         }}
 
         // --- Path highlighting (find shortest path between multi-selected nodes) ---
