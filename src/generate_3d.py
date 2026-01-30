@@ -1740,7 +1740,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
             // Show/hide view full button based on content length
             const viewFullBtn = document.getElementById('view-full-btn');
-            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+            // Always show View Full Content button to access detailed popup
+            viewFullBtn.style.display = 'inline-block';
 
             // Show metadata
             const metaEl = document.getElementById('node-meta');
