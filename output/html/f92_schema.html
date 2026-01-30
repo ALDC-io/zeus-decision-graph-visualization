@@ -192,13 +192,96 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 85vh;
             width: 90%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             overflow: hidden;
+        }
+        .modal-section {
+            margin-bottom: 20px;
+        }
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .modal-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .modal-detail-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+        .modal-detail-item .detail-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .modal-detail-item .detail-value {
+            font-size: 13px;
+            color: #1a365d;
+            font-weight: 500;
+        }
+        .modal-connections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .modal-conn-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #2b6cb0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-conn-chip:hover {
+            background: #bee3f8;
+        }
+        .modal-conn-chip .conn-type {
+            font-size: 10px;
+            color: #666;
+            margin-left: 6px;
+        }
+        .modal-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 6px;
+        }
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+        }
+        .modal-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-top: 6px;
         }
         .modal-header {
             padding: 20px;
@@ -906,11 +989,28 @@
     <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2 id="modal-title">Memory Content</h2>
+                <div class="modal-header-content">
+                    <img id="modal-logo" class="modal-logo" src="" alt="" style="display:none;">
+                    <div>
+                        <h2 id="modal-title">Node Details</h2>
+                        <span id="modal-tier-badge" class="modal-tier-badge"></span>
+                    </div>
+                </div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="full-content" id="modal-content"></div>
+                <div class="modal-section">
+                    <div class="modal-section-title">Description</div>
+                    <div class="full-content" id="modal-content"></div>
+                </div>
+                <div class="modal-section" id="modal-details-section">
+                    <div class="modal-section-title">Details</div>
+                    <div class="modal-detail-grid" id="modal-details"></div>
+                </div>
+                <div class="modal-section" id="modal-connections-section">
+                    <div class="modal-section-title">Connected Nodes</div>
+                    <div class="modal-connections" id="modal-connections"></div>
+                </div>
             </div>
             <div class="modal-meta" id="modal-meta"></div>
         </div>
@@ -1285,13 +1385,103 @@
         function showFullContent() {
             if (!selectedNode) return;
 
+            // Set title and logo
             document.getElementById('modal-title').textContent = selectedNode.name;
-            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
-            document.getElementById('modal-meta').innerHTML = `
-                <span><span class="label">ID:</span> ${selectedNode.id}</span>
-                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            const modalLogo = document.getElementById('modal-logo');
+            if (selectedNode.logo) {
+                modalLogo.src = selectedNode.logo;
+                modalLogo.style.display = 'block';
+            } else {
+                modalLogo.style.display = 'none';
+            }
+
+            // Set tier badge
+            const tierBadge = document.getElementById('modal-tier-badge');
+            tierBadge.textContent = selectedNode.groupLabel || selectedNode.group;
+            tierBadge.style.background = selectedNode.color;
+
+            // Set description
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No description available.';
+
+            // Build details grid
+            const detailsGrid = document.getElementById('modal-details');
+            const detailsSection = document.getElementById('modal-details-section');
+            let detailsHtml = '';
+
+            // Add node type detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node Type</div>
+                    <div class="detail-value">${selectedNode.groupLabel || selectedNode.group}</div>
+                </div>
             `;
+
+            // Add tier detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Tier Level</div>
+                    <div class="detail-value">Tier ${selectedNode.tier}</div>
+                </div>
+            `;
+
+            // Add ID detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node ID</div>
+                    <div class="detail-value">${selectedNode.id}</div>
+                </div>
+            `;
+
+            // Add size/importance detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Relative Size</div>
+                    <div class="detail-value">${selectedNode.val || 20}</div>
+                </div>
+            `;
+
+            detailsGrid.innerHTML = detailsHtml;
+            detailsSection.style.display = detailsHtml ? 'block' : 'none';
+
+            // Build connections section
+            const connectionsEl = document.getElementById('modal-connections');
+            const connectionsSection = document.getElementById('modal-connections-section');
+            const connections = linksByNode[selectedNode.id] || [];
+
+            if (connections.length > 0) {
+                let connectionsHtml = '';
+                connections.forEach(conn => {
+                    const connNode = nodeMap[conn.nodeId];
+                    if (!connNode) return;
+                    connectionsHtml += `
+                        <span class="modal-conn-chip" onclick="navigateToNodeFromModal('${conn.nodeId}')">
+                            ${connNode.name}
+                            <span class="conn-type">${conn.relationType}</span>
+                        </span>
+                    `;
+                });
+                connectionsEl.innerHTML = connectionsHtml;
+                connectionsSection.style.display = 'block';
+            } else {
+                connectionsSection.style.display = 'none';
+            }
+
+            // Set footer meta
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">Full ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Group:</span> ${selectedNode.group}</span>
+                <span><span class="label">Connections:</span> ${connections.length}</span>
+            `;
+
             document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Navigate to node from modal and close modal
+        function navigateToNodeFromModal(nodeId) {
+            closeModal();
+            setTimeout(() => {
+                navigateToNode(nodeId);
+            }, 100);
         }
 
         // Close modal
