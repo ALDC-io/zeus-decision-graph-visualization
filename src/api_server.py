@@ -151,6 +151,7 @@ async def root():
 
     # Build list of available visualizations
     visualizations = [
+        {"name": "Ecosystem Navigator", "path": "/viz/navigator", "description": "Multi-scale semantic zoom with project/initiative overlays - drill from ecosystem to data elements", "featured": True},
         {"name": "ALDC Data Ecosystem", "path": "/viz/ecosystem", "description": "Complete data lineage from sources through transformations to AI/ML consumption"},
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
@@ -901,6 +902,268 @@ async def get_neighbors(memory_id: str, max_neighbors: int = Query(default=20, l
         "memory_id": memory_id,
         "total_neighbors": len(neighbors),
         "neighbors": neighbors,
+    }
+
+
+# =============================================================================
+# Multi-Scale Navigator & Overlay Endpoints (v3.0)
+# =============================================================================
+
+@app.get("/viz/navigator")
+async def viz_navigator():
+    """Serve the Multi-Scale Ecosystem Navigator with semantic zoom and overlays."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "ecosystem_navigator.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Navigator visualization not found")
+
+
+@app.get("/api/navigator/graph")
+async def get_navigator_graph(level: str = "ecosystem", node_id: Optional[str] = None):
+    """
+    Get graph data for the multi-scale navigator.
+    Supports zooming into specific nodes to load sub-graphs.
+
+    Levels:
+    - ecosystem: Full ALDC ecosystem overview
+    - client: Client-specific schema (requires node_id)
+    - schema: Table-level view
+    - element: Column/measure level
+    """
+    data_dir = get_data_dir()
+
+    if level == "ecosystem" or node_id is None:
+        # Load main ecosystem navigator data
+        graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+    else:
+        # Load sub-graph based on zoom target
+        graph_mapping = {
+            "fusion92_client": "f92_schema_graph.json",
+            "gep_client": "gep_schema_graph.json",
+            "aldc_eng": "aldc_schema_graph.json",
+        }
+
+        if node_id in graph_mapping:
+            graph_file = data_dir / "examples" / graph_mapping[node_id]
+        else:
+            graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+
+    if not graph_file.exists():
+        raise HTTPException(status_code=404, detail=f"Graph data not found: {graph_file}")
+
+    with open(graph_file, 'r') as f:
+        graph_data = json.load(f)
+
+    return {
+        "level": level,
+        "node_id": node_id,
+        "graph": graph_data,
+        "navigation": graph_data.get("navigation", {}),
+        "available_overlays": list(graph_data.get("overlays", {}).keys()),
+    }
+
+
+@app.get("/api/overlays/projects")
+async def get_project_overlays():
+    """
+    Get project overlay data to show on the ecosystem graph.
+    Returns projects with their affected nodes for visualization.
+    """
+    data_dir = get_data_dir()
+
+    # Load navigator data which contains sample overlays
+    graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+
+    if graph_file.exists():
+        with open(graph_file, 'r') as f:
+            data = json.load(f)
+
+        projects = data.get("sample_overlays", {}).get("projects", [])
+    else:
+        # Fallback sample data
+        projects = [
+            {
+                "id": "prj-fu92-28",
+                "name": "Smartsheet Replacement",
+                "status": "in_progress",
+                "jira_key": "FU92-28",
+                "affected_nodes": ["smartsheet", "eclipse_connectors", "snowflake_warehouse", "fusion92_client"],
+                "hours_spent": 218.39,
+                "due_date": "2026-02-15"
+            }
+        ]
+
+    return {
+        "overlay_type": "projects",
+        "total": len(projects),
+        "items": projects,
+        "style": {
+            "node_halo": "#ffd700",
+            "edge_style": "dashed",
+            "badge_color": "#ffd700",
+            "badge_icon": "clipboard"
+        }
+    }
+
+
+@app.get("/api/overlays/initiatives")
+async def get_initiative_overlays():
+    """
+    Get initiative overlay data for strategic view.
+    Shows business initiatives mapped to technical components.
+    """
+    data_dir = get_data_dir()
+
+    graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+
+    if graph_file.exists():
+        with open(graph_file, 'r') as f:
+            data = json.load(f)
+
+        initiatives = data.get("sample_overlays", {}).get("initiatives", [])
+    else:
+        initiatives = []
+
+    return {
+        "overlay_type": "initiatives",
+        "total": len(initiatives),
+        "items": initiatives,
+        "style": {
+            "node_halo": "#00ff88",
+            "edge_style": "dotted",
+            "badge_color": "#00ff88",
+            "badge_icon": "flag"
+        }
+    }
+
+
+@app.get("/api/overlays/dashboards")
+async def get_dashboard_overlays():
+    """
+    Get dashboard overlay showing data dependencies.
+    Shows which data sources feed into which dashboards.
+    """
+    data_dir = get_data_dir()
+
+    graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+
+    if graph_file.exists():
+        with open(graph_file, 'r') as f:
+            data = json.load(f)
+
+        dashboards = data.get("sample_overlays", {}).get("dashboards", [])
+    else:
+        dashboards = []
+
+    return {
+        "overlay_type": "dashboards",
+        "total": len(dashboards),
+        "items": dashboards,
+        "style": {
+            "node_halo": "#ff6b6b",
+            "badge_color": "#ff6b6b",
+            "badge_icon": "chart"
+        }
+    }
+
+
+@app.get("/api/overlays/timelines")
+async def get_timeline_overlays():
+    """
+    Get timeline overlay for temporal view.
+    Shows when data flows through the system.
+    """
+    return {
+        "overlay_type": "timelines",
+        "total": 0,
+        "items": [],
+        "style": {
+            "node_pulse": True,
+            "edge_particles": True,
+            "gradient": ["#3182ce", "#e53e3e"]
+        },
+        "message": "Timeline data is derived from temporal distribution endpoint"
+    }
+
+
+@app.get("/api/zoom-targets/{node_id}")
+async def get_zoom_target(node_id: str):
+    """
+    Get zoom target information for a specific node.
+    Returns details about what sub-graph to load when zooming into this node.
+    """
+    data_dir = get_data_dir()
+
+    # Load navigator data
+    graph_file = data_dir / "examples" / "aldc_ecosystem_navigator.json"
+
+    if not graph_file.exists():
+        raise HTTPException(status_code=404, detail="Navigator data not found")
+
+    with open(graph_file, 'r') as f:
+        data = json.load(f)
+
+    # Check navigation zoom_targets
+    zoom_targets = data.get("navigation", {}).get("zoom_targets", {})
+
+    if node_id in zoom_targets:
+        target = zoom_targets[node_id]
+        return {
+            "node_id": node_id,
+            "can_zoom": True,
+            "target_graph": target.get("target_graph"),
+            "target_endpoint": target.get("target_endpoint"),
+            "level": target.get("level"),
+            "description": target.get("description"),
+        }
+
+    # Check nodes for expandable flag
+    for node in data.get("nodes", []):
+        if node.get("id") == node_id and node.get("expandable"):
+            return {
+                "node_id": node_id,
+                "can_zoom": True,
+                "target_graph": node.get("zoom_target"),
+                "target_endpoint": node.get("zoom_endpoint"),
+                "children_preview": node.get("children_preview", {}),
+            }
+
+    return {
+        "node_id": node_id,
+        "can_zoom": False,
+        "message": "This node does not have a drill-down view"
+    }
+
+
+@app.get("/api/breadcrumb")
+async def get_breadcrumb(path: str = "ecosystem"):
+    """
+    Get breadcrumb navigation for current position in the multi-scale view.
+    Path format: ecosystem > client:fusion92 > schema:Campaign > element:Spend
+    """
+    parts = path.split(">")
+
+    breadcrumb = []
+    for i, part in enumerate(parts):
+        part = part.strip()
+        if ":" in part:
+            level, node_id = part.split(":", 1)
+        else:
+            level = part
+            node_id = None
+
+        breadcrumb.append({
+            "level": level,
+            "node_id": node_id,
+            "path": " > ".join(parts[:i+1]),
+            "is_current": i == len(parts) - 1,
+        })
+
+    return {
+        "breadcrumb": breadcrumb,
+        "current_level": breadcrumb[-1]["level"] if breadcrumb else "ecosystem",
+        "can_zoom_out": len(breadcrumb) > 1,
     }
 
 

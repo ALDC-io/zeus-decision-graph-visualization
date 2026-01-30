@@ -2281,7 +2281,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     const ringMat = new THREE.MeshBasicMaterial({{
                         color: 0x3182ce,
                         transparent: true,
-                        opacity: 0.15,
+                        opacity: 0.06,
                         side: THREE.DoubleSide
                     }});
                     const ring = new THREE.Mesh(ringGeom, ringMat);
