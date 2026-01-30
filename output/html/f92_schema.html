@@ -1956,6 +1956,11 @@
         function changeLayout() {
             currentLayout = document.getElementById('layout-select').value;
 
+            // Clear tier platforms when switching away from cylinder
+            if (currentLayout !== 'cylinder') {
+                clearTierPlatforms();
+            }
+
             switch(currentLayout) {
                 case 'force':
                     applyForceLayout();
@@ -2046,10 +2051,16 @@
             setTimeout(() => graph.zoomToFit(500), 100);
         }
 
+        // Track tier platform meshes for cleanup
+        let tierPlatforms = [];
+
         function applyCylinderLayout() {
             // Y-axis = tier/time, circumference = category/group
             const nodes = getGraphNodes();
             if (nodes.length === 0) return;
+
+            // Clean up existing tier platforms
+            clearTierPlatforms();
 
             // Check if we have dates or tiers to use for Y-axis
             const nodesWithDates = nodes.filter(n => n.createdAt);
@@ -2057,6 +2068,7 @@
 
             let useDate = nodesWithDates.length > nodes.length / 2;
             let minY, maxY, getYValue;
+            let tierLabels = {};
 
             if (useDate && nodesWithDates.length > 0) {
                 // Use dates for Y positioning
@@ -2070,6 +2082,14 @@
                 minY = Math.min(...tiers);
                 maxY = Math.max(...tiers);
                 getYValue = (node) => typeof node.tier === 'number' ? node.tier : minY;
+
+                // Build tier labels from groupsData
+                nodes.forEach(node => {
+                    const tier = node.tier;
+                    if (typeof tier === 'number' && !tierLabels[tier]) {
+                        tierLabels[tier] = node.groupLabel || node.group || `Tier ${tier}`;
+                    }
+                });
             } else {
                 // Fallback: use node index
                 minY = 0;
@@ -2091,6 +2111,66 @@
             const radius = 200;
             const height = 500;
 
+            // Collect unique tiers for platform creation
+            const uniqueTiers = new Set();
+            nodes.forEach(node => {
+                const yValue = getYValue(node);
+                uniqueTiers.add(yValue);
+            });
+
+            // Create tier platforms (rings with labels)
+            if (typeof THREE !== 'undefined') {
+                const scene = graph.scene();
+                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
+
+                sortedTiers.forEach((tierValue, index) => {
+                    const yNorm = (tierValue - minY) / yRange;
+                    const yPos = (yNorm - 0.5) * height;
+
+                    // Create ring geometry
+                    const ringGeom = new THREE.RingGeometry(radius - 10, radius + 60, 64);
+                    const ringMat = new THREE.MeshBasicMaterial({
+                        color: 0x3182ce,
+                        transparent: true,
+                        opacity: 0.15,
+                        side: THREE.DoubleSide
+                    });
+                    const ring = new THREE.Mesh(ringGeom, ringMat);
+                    ring.rotation.x = Math.PI / 2; // Lay flat
+                    ring.position.y = yPos;
+                    scene.add(ring);
+                    tierPlatforms.push(ring);
+
+                    // Create tier label
+                    const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
+
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
                 // Spread nodes within their group segment
@@ -2111,6 +2191,20 @@
 
             graph.d3ReheatSimulation();
             setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        function clearTierPlatforms() {
+            if (typeof THREE === 'undefined') return;
+            const scene = graph.scene();
+            tierPlatforms.forEach(obj => {
+                scene.remove(obj);
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (obj.material.map) obj.material.map.dispose();
+                    obj.material.dispose();
+                }
+            });
+            tierPlatforms = [];
         }
 
         // --- Multi-select with shift-click ---
