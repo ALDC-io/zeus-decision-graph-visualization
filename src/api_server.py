@@ -613,6 +613,286 @@ async def get_stats():
     }
 
 
+# =============================================================================
+# Extended Feature Endpoints (v2.0)
+# =============================================================================
+
+@app.get("/api/visualization-options")
+async def get_visualization_options():
+    """
+    Get available visualization options and their configurations.
+    Used by Atlas frontend to populate settings panels.
+    """
+    return {
+        "layouts": [
+            {"id": "force", "name": "Force-Directed", "description": "Physics-based node positioning"},
+            {"id": "layered", "name": "Layered 3D", "description": "Z-axis represents hierarchy/tier"},
+            {"id": "spherical", "name": "Spherical", "description": "Nodes on sphere surface by category"},
+            {"id": "cylinder", "name": "Cylinder", "description": "Time on Y-axis, categories on circumference"},
+        ],
+        "geometries": [
+            {"id": "sphere", "name": "Sphere", "symbol": "●"},
+            {"id": "cube", "name": "Cube", "symbol": "■"},
+            {"id": "octahedron", "name": "Octahedron", "symbol": "◆"},
+            {"id": "ring", "name": "Ring", "symbol": "○"},
+        ],
+        "effects": [
+            {"id": "glow", "name": "Glow", "description": "Add glow effect to nodes"},
+            {"id": "particles", "name": "Particles", "description": "Animated particles along edges"},
+            {"id": "labels", "name": "Labels", "description": "Show node labels on hover", "default": True},
+            {"id": "pulse", "name": "Pulse Recent", "description": "Pulse animation for recent nodes"},
+        ],
+        "colorModes": [
+            {"id": "category", "name": "By Category", "description": "Color by node type/category"},
+            {"id": "heatmap_connections", "name": "Heat Map (Connections)", "description": "Color by connection count"},
+            {"id": "heatmap_recency", "name": "Heat Map (Recency)", "description": "Color by creation date"},
+        ],
+        "sizeModes": [
+            {"id": "default", "name": "Default", "description": "Use data-defined sizes"},
+            {"id": "centrality", "name": "By Centrality", "description": "Size based on node degree"},
+        ],
+    }
+
+
+@app.get("/api/centrality")
+async def compute_centrality():
+    """
+    Compute centrality metrics for all nodes in the graph.
+    Returns degree centrality for each node.
+    """
+    if not clustering_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    # Build adjacency from clustering data
+    # This is a simplified centrality - for full graph we'd need edge data
+    memories = clustering_data.get('memories', [])
+    l1_clusters = clustering_data.get('clusters', {}).get('l1', {})
+
+    centrality = {}
+    for mem in memories:
+        mem_id = mem['id']
+        # Use cluster membership as proxy for connectivity
+        l1_id = str(mem.get('cluster_l1', 0))
+        cluster_size = l1_clusters.get(l1_id, {}).get('size', 1)
+        # Nodes in larger clusters have higher "centrality"
+        centrality[mem_id] = min(cluster_size / 10, 1.0)
+
+    return {
+        "metric": "degree_centrality",
+        "total_nodes": len(centrality),
+        "values": centrality,
+    }
+
+
+@app.get("/api/temporal-distribution")
+async def get_temporal_distribution():
+    """
+    Get temporal distribution of nodes for time slider feature.
+    Returns date range and counts per time bucket.
+    """
+    if not clustering_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    from datetime import datetime
+
+    memories = clustering_data.get('memories', [])
+    dated_memories = [m for m in memories if m.get('created_at')]
+
+    if not dated_memories:
+        return {
+            "has_temporal_data": False,
+            "total_with_dates": 0,
+        }
+
+    # Parse dates and find range
+    dates = []
+    for mem in dated_memories:
+        try:
+            dt = datetime.fromisoformat(mem['created_at'].replace('Z', '+00:00'))
+            dates.append(dt)
+        except (ValueError, TypeError):
+            pass
+
+    if not dates:
+        return {"has_temporal_data": False, "total_with_dates": 0}
+
+    min_date = min(dates)
+    max_date = max(dates)
+
+    # Create monthly buckets
+    buckets = {}
+    for dt in dates:
+        bucket = dt.strftime("%Y-%m")
+        buckets[bucket] = buckets.get(bucket, 0) + 1
+
+    return {
+        "has_temporal_data": True,
+        "total_with_dates": len(dates),
+        "date_range": {
+            "min": min_date.isoformat(),
+            "max": max_date.isoformat(),
+        },
+        "distribution": [
+            {"period": k, "count": v}
+            for k, v in sorted(buckets.items())
+        ],
+    }
+
+
+@app.get("/api/clusters/{level}")
+async def get_clusters_for_collapse(level: str = "l1"):
+    """
+    Get all clusters at a specific level for expand/collapse feature.
+    Returns cluster info with member counts.
+    """
+    if not clustering_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    if level not in ["l1", "l2"]:
+        raise HTTPException(status_code=400, detail="Level must be 'l1' or 'l2'")
+
+    clusters = clustering_data.get('clusters', {}).get(level, {})
+
+    result = []
+    for cluster_id, info in clusters.items():
+        result.append({
+            "id": cluster_id,
+            "label": info.get("label", f"{level.upper()}-{cluster_id}"),
+            "size": info.get("size", info.get("total_size", 0)),
+            "dominant_category": info.get("dominant_category", "unknown"),
+        })
+
+    return {
+        "level": level,
+        "total_clusters": len(result),
+        "clusters": sorted(result, key=lambda x: x["size"], reverse=True),
+    }
+
+
+@app.get("/api/path/{start_id}/{end_id}")
+async def find_path(start_id: str, end_id: str):
+    """
+    Find shortest path between two nodes.
+    Uses cluster membership for path approximation.
+    """
+    if not clustering_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    memories = clustering_data.get('memories', [])
+    mem_by_id = {m['id']: m for m in memories}
+
+    if start_id not in mem_by_id:
+        raise HTTPException(status_code=404, detail=f"Start node {start_id} not found")
+    if end_id not in mem_by_id:
+        raise HTTPException(status_code=404, detail=f"End node {end_id} not found")
+
+    start_mem = mem_by_id[start_id]
+    end_mem = mem_by_id[end_id]
+
+    # Check if same cluster
+    if start_mem.get('cluster_l1') == end_mem.get('cluster_l1'):
+        return {
+            "path_exists": True,
+            "path_length": 1,
+            "path": [start_id, end_id],
+            "path_type": "same_l1_cluster",
+        }
+    elif start_mem.get('cluster_l2') == end_mem.get('cluster_l2'):
+        # Find bridge through L2 cluster
+        return {
+            "path_exists": True,
+            "path_length": 2,
+            "path": [start_id, f"l2-{start_mem.get('cluster_l2')}", end_id],
+            "path_type": "same_l2_cluster",
+        }
+    else:
+        return {
+            "path_exists": True,
+            "path_length": 3,
+            "path": [
+                start_id,
+                f"l2-{start_mem.get('cluster_l2')}",
+                f"l2-{end_mem.get('cluster_l2')}",
+                end_id
+            ],
+            "path_type": "cross_cluster",
+        }
+
+
+@app.get("/api/neighbors/{memory_id}")
+async def get_neighbors(memory_id: str, max_neighbors: int = Query(default=20, le=100)):
+    """
+    Get neighbors of a memory node based on cluster membership.
+    Useful for highlighting connected nodes on selection.
+    """
+    if not clustering_data or not layout_data:
+        raise HTTPException(status_code=503, detail="Data not loaded")
+
+    memories = clustering_data.get('memories', [])
+    memory_positions = layout_data.get('positions', {}).get('memories', {})
+
+    # Find the target memory
+    target = None
+    for m in memories:
+        if m['id'] == memory_id:
+            target = m
+            break
+
+    if not target:
+        raise HTTPException(status_code=404, detail=f"Memory {memory_id} not found")
+
+    target_l1 = target.get('cluster_l1')
+    target_l2 = target.get('cluster_l2')
+
+    # Find neighbors (same L1 cluster first, then same L2)
+    neighbors = []
+    for m in memories:
+        if m['id'] == memory_id:
+            continue
+
+        if m.get('cluster_l1') == target_l1:
+            pos = memory_positions.get(m['id'], {"x": 0, "y": 0})
+            neighbors.append({
+                "id": m['id'],
+                "x": pos.get("x", 0),
+                "y": pos.get("y", 0),
+                "content_preview": m.get('content_preview', '')[:100],
+                "category": m.get('category', 'general'),
+                "relationship": "same_l1_cluster",
+                "weight": 1.0,
+            })
+
+        if len(neighbors) >= max_neighbors:
+            break
+
+    # If not enough, add L2 neighbors
+    if len(neighbors) < max_neighbors:
+        for m in memories:
+            if m['id'] == memory_id or m.get('cluster_l1') == target_l1:
+                continue
+
+            if m.get('cluster_l2') == target_l2:
+                pos = memory_positions.get(m['id'], {"x": 0, "y": 0})
+                neighbors.append({
+                    "id": m['id'],
+                    "x": pos.get("x", 0),
+                    "y": pos.get("y", 0),
+                    "content_preview": m.get('content_preview', '')[:100],
+                    "category": m.get('category', 'general'),
+                    "relationship": "same_l2_cluster",
+                    "weight": 0.5,
+                })
+
+            if len(neighbors) >= max_neighbors:
+                break
+
+    return {
+        "memory_id": memory_id,
+        "total_neighbors": len(neighbors),
+        "neighbors": neighbors,
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8085)

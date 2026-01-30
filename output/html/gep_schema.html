@@ -446,6 +446,309 @@
         .mini-btn:hover {
             background: #f0f0f0;
         }
+        .date-select {
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        .date-input {
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 110px;
+        }
+        .date-count {
+            font-size: 10px;
+            color: #666;
+            margin-left: 4px;
+        }
+        /* Extended Features - v2.0 Styles */
+
+        /* Search bar */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        #search-input {
+            font-size: 11px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            background: white;
+        }
+        #search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+        .search-results.active {
+            display: block;
+        }
+        .search-result-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 11px;
+        }
+        .search-result-item:hover {
+            background: #f0f7ff;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item .name {
+            font-weight: 500;
+            color: #1a365d;
+        }
+        .search-result-item .type {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Time slider */
+        .time-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #time-slider {
+            width: 120px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        #time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #3182ce;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .time-display {
+            font-size: 10px;
+            color: #666;
+            min-width: 80px;
+        }
+        .play-btn {
+            font-size: 12px;
+            padding: 2px 8px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .play-btn:hover {
+            background: #f0f0f0;
+        }
+        .play-btn.playing {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+
+        /* Layout selector */
+        .layout-select {
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Geometry selector */
+        .geometry-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            cursor: pointer;
+            padding: 3px 6px;
+            border-radius: 3px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+        }
+        .geometry-chip:hover {
+            background: #e0e0e0;
+        }
+        .geometry-chip.active {
+            background: #1a365d;
+            color: white;
+            border-color: #1a365d;
+        }
+
+        /* VR button */
+        .vr-btn {
+            padding: 4px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .vr-btn:hover {
+            background: #805ad5;
+            color: white;
+        }
+        .vr-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Multi-select indicator */
+        .selection-count {
+            font-size: 10px;
+            color: #666;
+            padding: 2px 8px;
+            background: #e8f4fd;
+            border-radius: 10px;
+            display: none;
+        }
+        .selection-count.active {
+            display: inline-block;
+        }
+
+        /* Effects toggle */
+        .effects-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 28px;
+            height: 16px;
+            background: #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle-switch.active {
+            background: #3182ce;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.2s;
+        }
+        .toggle-switch.active::after {
+            left: 14px;
+        }
+        .toggle-label {
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* Path highlight animation */
+        @keyframes pathPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Node pulse animation for recent items */
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Expand/collapse group indicator */
+        .cluster-badge {
+            position: absolute;
+            background: #1a365d;
+            color: white;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        /* Stats display */
+        .stats-display {
+            font-size: 9px;
+            color: #666;
+            padding: 2px 6px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 3px;
+        }
+
+        /* Heat map legend */
+        .heatmap-legend {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .heatmap-legend.active {
+            display: block;
+        }
+        .heatmap-gradient {
+            width: 150px;
+            height: 12px;
+            background: linear-gradient(to right, #3182ce, #38a169, #ecc94b, #e53e3e);
+            border-radius: 2px;
+            margin-bottom: 4px;
+        }
+        .heatmap-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* Toolbar extended section */
+        .toolbar-extended {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar-extended.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -480,6 +783,88 @@
                         
                         <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
                     </div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label" onclick="toggleFilterSection('dates')">Date <span class="arrow">▼</span></span>
+                    <div class="filter-group" id="dates-filters">
+                        <select id="date-preset" class="date-select" onchange="applyDatePreset()">
+                            <option value="all">All Time</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <input type="date" id="date-from" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <input type="date" id="date-to" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <span id="date-count" class="date-count"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Extended Toolbar (v2.0 Features) -->
+            <div id="toolbar-extended" class="toolbar-extended">
+                <!-- Search -->
+                <div class="toolbar-section search-container" style="position: relative;">
+                    <input type="text" id="search-input" placeholder="Search nodes..." onkeyup="handleSearch(event)" onfocus="showSearchResults()" onblur="hideSearchResults()">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Layout selector -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Layout:</span>
+                    <select id="layout-select" class="layout-select" onchange="changeLayout()">
+                        <option value="force">Force-Directed</option>
+                        <option value="layered">Layered 3D</option>
+                        <option value="spherical">Spherical</option>
+                        <option value="cylinder">Cylinder</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Node geometry -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Shape:</span>
+                    <span class="geometry-chip active" data-geometry="sphere" onclick="setNodeGeometry('sphere')">●</span>
+                    <span class="geometry-chip" data-geometry="cube" onclick="setNodeGeometry('cube')">■</span>
+                    <span class="geometry-chip" data-geometry="octahedron" onclick="setNodeGeometry('octahedron')">◆</span>
+                    <span class="geometry-chip" data-geometry="ring" onclick="setNodeGeometry('ring')">○</span>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Effects toggles -->
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Glow</span>
+                    <div id="glow-toggle" class="toggle-switch" onclick="toggleGlow()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Particles</span>
+                    <div id="particles-toggle" class="toggle-switch" onclick="toggleParticles()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Labels</span>
+                    <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Multi-select indicator -->
+                <span id="selection-count" class="selection-count">0 selected</span>
+                <!-- VR button -->
+                <button id="vr-btn" class="vr-btn" onclick="enterVR()" disabled>VR</button>
+                <!-- Stats -->
+                <span id="stats-display" class="stats-display"></span>
+            </div>
+            <!-- Time slider (for temporal data) -->
+            <div id="time-toolbar" class="toolbar-extended" style="top: 90px; display: none;">
+                <div class="toolbar-section time-slider-container">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Time:</span>
+                    <button id="play-btn" class="play-btn" onclick="toggleTimePlay()">▶</button>
+                    <input type="range" id="time-slider" min="0" max="100" value="100" oninput="updateTimeSlider()">
+                    <span id="time-display" class="time-display">All time</span>
+                </div>
+            </div>
+            <!-- Heat map legend -->
+            <div id="heatmap-legend" class="heatmap-legend">
+                <div class="heatmap-gradient"></div>
+                <div class="heatmap-labels">
+                    <span>Low</span>
+                    <span>High</span>
                 </div>
             </div>
         </div>
@@ -529,7 +914,7 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "hub", "name": "GEP Data Model", "description": "Global Export Platform Analytics\n10 Tables, 79 Columns", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": ""}, {"id": "table_order", "name": "Order", "description": "Order fact table\nCustomer orders with shipping, status, country", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_order_line", "name": "Order Line", "description": "Order Line fact table\nLine item details, quantities, amounts", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaign tracking", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_date", "name": "Date", "description": "Date dimension\nStandard date hierarchy", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": ""}, {"id": "table_marketplace", "name": "Marketplace", "description": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}, {"id": "table_product", "name": "Product", "description": "Product dimension\nProduct catalog and attributes", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}, {"id": "table_customer", "name": "Customer", "description": "Customer dimension\nCustomer demographics and segments", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": ""}, {"id": "table_consolidation", "name": "Consolidation", "description": "Consolidation table\nAggregated metrics", "val": 25, "color": "#e53e3e", "group": "consolidation", "groupLabel": "Consolidation Tables", "tier": 3, "logo": ""}, {"id": "table_returns", "name": "Returns", "description": "Returns fact table\nReturn transactions", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}, {"id": "table_inventory", "name": "Inventory", "description": "Inventory fact table\nStock levels and movements", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": ""}];
+        const nodesData = [{"id": "hub", "name": "GEP Data Model", "description": "Global Export Platform Analytics\n10 Tables, 79 Columns", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null}, {"id": "table_order", "name": "Order", "description": "Order fact table\nCustomer orders with shipping, status, country", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_order_line", "name": "Order Line", "description": "Order Line fact table\nLine item details, quantities, amounts", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaign tracking", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_date", "name": "Date", "description": "Date dimension\nStandard date hierarchy", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_marketplace", "name": "Marketplace", "description": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_product", "name": "Product", "description": "Product dimension\nProduct catalog and attributes", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_customer", "name": "Customer", "description": "Customer dimension\nCustomer demographics and segments", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_consolidation", "name": "Consolidation", "description": "Consolidation table\nAggregated metrics", "val": 25, "color": "#e53e3e", "group": "consolidation", "groupLabel": "Consolidation Tables", "tier": 3, "logo": "", "createdAt": null}, {"id": "table_returns", "name": "Returns", "description": "Returns fact table\nReturn transactions", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_inventory", "name": "Inventory", "description": "Inventory fact table\nStock levels and movements", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}];
         const linksData = [{"source": "hub", "target": "table_order", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_order_line", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_campaign", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_marketplace", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_product", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_customer", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_consolidation", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_returns", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_inventory", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "table_order", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order_line", "target": "table_product", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_customer", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_marketplace", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_date", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_campaign", "target": "table_marketplace", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_returns", "target": "table_order", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_inventory", "target": "table_product", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_consolidation", "target": "table_order", "color": "#38a169", "width": 2, "relationType": "Aggregates", "edgeType": "aggregates"}, {"source": "table_consolidation", "target": "table_order_line", "color": "#38a169", "width": 2, "relationType": "Aggregates", "edgeType": "aggregates"}];
         const groupsData = {"hub": {"color": "#dd6b20", "label": "Dataset"}, "fact": {"color": "#1a365d", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "date": {"color": "#805ad5", "label": "Date Tables"}, "consolidation": {"color": "#e53e3e", "label": "Consolidation Tables"}};
 
@@ -658,9 +1043,91 @@
             });
         }
 
+        // Date filter state
+        let dateFilterFrom = null;
+        let dateFilterTo = null;
+
+        function applyDatePreset() {
+            const preset = document.getElementById('date-preset').value;
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (preset === 'custom') {
+                fromInput.style.display = 'inline-block';
+                toInput.style.display = 'inline-block';
+                // Set defaults to last 30 days
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                toInput.value = today.toISOString().split('T')[0];
+                fromInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+                applyCustomDateFilter();
+                return;
+            }
+
+            fromInput.style.display = 'none';
+            toInput.style.display = 'none';
+
+            if (preset === 'all') {
+                dateFilterFrom = null;
+                dateFilterTo = null;
+            } else {
+                const days = parseInt(preset);
+                const today = new Date();
+                const fromDate = new Date(today);
+                fromDate.setDate(fromDate.getDate() - days);
+                dateFilterFrom = fromDate;
+                dateFilterTo = today;
+            }
+
+            applyFilters();
+        }
+
+        function applyCustomDateFilter() {
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (fromInput.value) {
+                dateFilterFrom = new Date(fromInput.value);
+                dateFilterFrom.setHours(0, 0, 0, 0);
+            } else {
+                dateFilterFrom = null;
+            }
+
+            if (toInput.value) {
+                dateFilterTo = new Date(toInput.value);
+                dateFilterTo.setHours(23, 59, 59, 999);
+            } else {
+                dateFilterTo = null;
+            }
+
+            applyFilters();
+        }
+
+        function nodePassesDateFilter(node) {
+            // Hub node always passes
+            if (node.id === 'zeus-memory-hub' || !node.createdAt) {
+                return dateFilterFrom === null && dateFilterTo === null ? true : !node.createdAt;
+            }
+
+            const nodeDate = new Date(node.createdAt);
+
+            if (dateFilterFrom && nodeDate < dateFilterFrom) {
+                return false;
+            }
+            if (dateFilterTo && nodeDate > dateFilterTo) {
+                return false;
+            }
+            return true;
+        }
+
         function applyFilters() {
-            // Filter nodes by group
-            const filteredNodes = nodesData.filter(node => visibleGroups.has(node.group));
+            // Filter nodes by group AND date
+            const filteredNodes = nodesData.filter(node => {
+                const groupVisible = visibleGroups.has(node.group);
+                const dateVisible = nodePassesDateFilter(node);
+                return groupVisible && dateVisible;
+            });
             const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
 
             // Filter links by node visibility AND edge type
@@ -671,6 +1138,15 @@
                 const edgeVisible = visibleEdgeTypes.has(link.edgeType);
                 return nodeVisible && edgeVisible;
             });
+
+            // Update count display
+            const countEl = document.getElementById('date-count');
+            const nodesWithDates = nodesData.filter(n => n.createdAt).length;
+            if (dateFilterFrom || dateFilterTo) {
+                countEl.textContent = `(${filteredNodes.length} nodes)`;
+            } else {
+                countEl.textContent = '';
+            }
 
             graph.graphData({
                 nodes: filteredNodes,
@@ -822,8 +1298,22 @@
                     visibleGroups.add(targetNode.group);
                     updateNodeChips();
                     applyFilters();
-                    // Now get the node from the updated graph
-                    targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                    // Wait for simulation to position the node, then navigate
+                    setTimeout(() => {
+                        targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                        if (targetNode) {
+                            selectNodeOnly(targetNode);
+                            // Pan to the node (use 0,0,0 if position not yet set)
+                            const x = targetNode.x || 0;
+                            const y = targetNode.y || 0;
+                            graph.cameraPosition(
+                                { x: x, y: y, z: 300 },
+                                { x: x, y: y, z: 0 },
+                                500
+                            );
+                        }
+                    }, 300);
+                    return;
                 }
             }
 
@@ -831,7 +1321,7 @@
                 selectNodeOnly(targetNode);
                 // Pan to the node
                 graph.cameraPosition(
-                    { x: targetNode.x, y: targetNode.y, z: 300 },
+                    { x: targetNode.x || 0, y: targetNode.y || 0, z: 300 },
                     targetNode,
                     500
                 );
@@ -1016,8 +1506,749 @@
             }, 100);
         }
 
+        // Check for embed mode
+        function checkEmbedMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEmbed = urlParams.get('embed') === 'true';
+
+            if (isEmbed) {
+                // Hide sidebar and toggle button in embed mode
+                const sidebar = document.getElementById('sidebar');
+                const toggle = document.getElementById('sidebar-toggle');
+                if (sidebar) sidebar.style.display = 'none';
+                if (toggle) toggle.style.display = 'none';
+
+                // Expand graph to full width
+                setTimeout(() => {
+                    const wrapper = document.getElementById('graph-wrapper');
+                    if (wrapper && graph) {
+                        graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+                    }
+                }, 100);
+            }
+        }
+
+        // ============================================================
+        // EXTENDED FEATURES v2.0
+        // ============================================================
+
+        // --- State for extended features ---
+        let currentGeometry = 'sphere';
+        let glowEnabled = false;
+        let particlesEnabled = false;
+        let labelsEnabled = true;
+        let currentLayout = 'force';
+        let multiSelectedNodes = new Set();
+        let timePlayInterval = null;
+        let timeSliderValue = 100;
+
+        // --- Search functionality ---
+        let searchTimeout = null;
+
+        function handleSearch(event) {
+            const query = event.target.value.toLowerCase().trim();
+            clearTimeout(searchTimeout);
+
+            if (query.length < 2) {
+                document.getElementById('search-results').classList.remove('active');
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const results = nodesData.filter(n =>
+                    n.name.toLowerCase().includes(query) ||
+                    (n.description && n.description.toLowerCase().includes(query))
+                ).slice(0, 10);
+
+                const resultsEl = document.getElementById('search-results');
+                resultsEl.innerHTML = results.map(n => `
+                    <div class="search-result-item" onmousedown="searchSelectNode('${n.id}')">
+                        <div class="name">${n.name}</div>
+                        <div class="type">${n.groupLabel || n.group}</div>
+                    </div>
+                `).join('');
+                resultsEl.classList.add('active');
+            }, 150);
+
+            // Handle Enter key to select first result
+            if (event.key === 'Enter') {
+                const firstResult = nodesData.find(n =>
+                    n.name.toLowerCase().includes(query) ||
+                    (n.description && n.description.toLowerCase().includes(query))
+                );
+                if (firstResult) {
+                    searchSelectNode(firstResult.id);
+                }
+            }
+        }
+
+        function showSearchResults() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query.length >= 2) {
+                document.getElementById('search-results').classList.add('active');
+            }
+        }
+
+        function hideSearchResults() {
+            setTimeout(() => {
+                document.getElementById('search-results').classList.remove('active');
+            }, 200);
+        }
+
+        function searchSelectNode(nodeId) {
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').classList.remove('active');
+            navigateToNode(nodeId);
+        }
+
+        // --- Node geometry ---
+        function setNodeGeometry(geometry) {
+            currentGeometry = geometry;
+
+            // Update chip states
+            document.querySelectorAll('.geometry-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.geometry === geometry);
+            });
+
+            // Apply custom geometry via nodeThreeObject
+            if (geometry === 'sphere') {
+                graph.nodeThreeObject(null); // Use default sphere
+            } else {
+                graph.nodeThreeObject(node => {
+                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                    const size = Math.max(node.val / 5, 2) * 2;
+                    let geom;
+
+                    switch(geometry) {
+                        case 'cube':
+                            geom = new THREE.BoxGeometry(size, size, size);
+                            break;
+                        case 'octahedron':
+                            geom = new THREE.OctahedronGeometry(size * 0.7);
+                            break;
+                        case 'ring':
+                            geom = new THREE.TorusGeometry(size * 0.5, size * 0.15, 8, 24);
+                            break;
+                        default:
+                            geom = new THREE.SphereGeometry(size / 2);
+                    }
+
+                    const material = new THREE.MeshLambertMaterial({
+                        color: node.color,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+
+                    return new THREE.Mesh(geom, material);
+                });
+            }
+        }
+
+        // --- Glow effect ---
+        function toggleGlow() {
+            glowEnabled = !glowEnabled;
+            document.getElementById('glow-toggle').classList.toggle('active', glowEnabled);
+
+            if (glowEnabled) {
+                // Add bloom effect using post-processing
+                const renderer = graph.renderer();
+                const scene = graph.scene();
+                const camera = graph.camera();
+
+                // Note: Full bloom requires three.js post-processing libraries
+                // For now, we simulate glow with emissive materials
+                graph.nodeThreeObject(node => {
+                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                    const size = Math.max(node.val / 5, 2) * 2;
+                    const geom = new THREE.SphereGeometry(size / 2);
+                    const material = new THREE.MeshBasicMaterial({
+                        color: node.color,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+
+                    const mesh = new THREE.Mesh(geom, material);
+
+                    // Add glow sprite
+                    const spriteMaterial = new THREE.SpriteMaterial({
+                        map: createGlowTexture(node.color),
+                        transparent: true,
+                        blending: THREE.AdditiveBlending,
+                        opacity: 0.6
+                    });
+                    const sprite = new THREE.Sprite(spriteMaterial);
+                    sprite.scale.set(size * 3, size * 3, 1);
+                    mesh.add(sprite);
+
+                    return mesh;
+                });
+            } else {
+                setNodeGeometry(currentGeometry);
+            }
+        }
+
+        function createGlowTexture(color) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(0.3, color + '80');
+            gradient.addColorStop(1, 'transparent');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 64, 64);
+
+            const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+            const texture = new THREE.CanvasTexture(canvas);
+            return texture;
+        }
+
+        // --- Edge particles ---
+        function toggleParticles() {
+            particlesEnabled = !particlesEnabled;
+            document.getElementById('particles-toggle').classList.toggle('active', particlesEnabled);
+
+            if (particlesEnabled) {
+                graph.linkDirectionalParticles(4)
+                    .linkDirectionalParticleSpeed(0.005)
+                    .linkDirectionalParticleWidth(2)
+                    .linkDirectionalParticleColor(link => link.color);
+            } else {
+                graph.linkDirectionalParticles(0);
+            }
+        }
+
+        // --- Labels toggle ---
+        function toggleLabels() {
+            labelsEnabled = !labelsEnabled;
+            document.getElementById('labels-toggle').classList.toggle('active', labelsEnabled);
+
+            if (labelsEnabled) {
+                graph.nodeLabel(node => node.name);
+            } else {
+                graph.nodeLabel(null);
+            }
+        }
+
+        // --- Layout variations ---
+        function changeLayout() {
+            currentLayout = document.getElementById('layout-select').value;
+
+            switch(currentLayout) {
+                case 'force':
+                    applyForceLayout();
+                    break;
+                case 'layered':
+                    applyLayeredLayout();
+                    break;
+                case 'spherical':
+                    applySphericalLayout();
+                    break;
+                case 'cylinder':
+                    applyCylinderLayout();
+                    break;
+            }
+        }
+
+        function applyForceLayout() {
+            // Reset to force-directed (clear fixed positions)
+            graph.graphData().nodes.forEach(node => {
+                node.fx = undefined;
+                node.fy = undefined;
+                node.fz = undefined;
+            });
+            graph.d3ReheatSimulation();
+        }
+
+        function applyLayeredLayout() {
+            // Z-axis represents tier/hierarchy
+            const tierSpacing = 100;
+            const tierCounts = {};
+
+            graph.graphData().nodes.forEach(node => {
+                const tier = node.tier || 0;
+                if (!tierCounts[tier]) tierCounts[tier] = { count: 0, total: 0 };
+                tierCounts[tier].total++;
+            });
+
+            graph.graphData().nodes.forEach(node => {
+                const tier = node.tier || 0;
+                const angle = (tierCounts[tier].count / tierCounts[tier].total) * Math.PI * 2;
+                const radius = 50 + tier * 80;
+
+                node.fx = Math.cos(angle) * radius;
+                node.fy = Math.sin(angle) * radius;
+                node.fz = tier * tierSpacing;
+
+                tierCounts[tier].count++;
+            });
+
+            graph.d3ReheatSimulation();
+            setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        function applySphericalLayout() {
+            // Nodes on sphere surface, grouped by category
+            const radius = 200;
+            const groups = {};
+
+            graph.graphData().nodes.forEach(node => {
+                const group = node.group || 'default';
+                if (!groups[group]) groups[group] = [];
+                groups[group].push(node);
+            });
+
+            const groupKeys = Object.keys(groups);
+            groupKeys.forEach((group, gi) => {
+                const phi = (gi / groupKeys.length) * Math.PI * 2;
+
+                groups[group].forEach((node, ni) => {
+                    const theta = (ni / groups[group].length) * Math.PI - Math.PI / 2;
+                    const r = radius + (node.tier || 0) * 30;
+
+                    node.fx = r * Math.cos(theta) * Math.cos(phi);
+                    node.fy = r * Math.sin(theta);
+                    node.fz = r * Math.cos(theta) * Math.sin(phi);
+                });
+            });
+
+            graph.d3ReheatSimulation();
+            setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        function applyCylinderLayout() {
+            // Y-axis = time, circumference = category
+            const nodesWithDates = graph.graphData().nodes.filter(n => n.createdAt);
+            if (nodesWithDates.length === 0) {
+                alert('Cylinder layout requires nodes with createdAt timestamps');
+                document.getElementById('layout-select').value = 'force';
+                return;
+            }
+
+            const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
+            const minDate = Math.min(...dates);
+            const maxDate = Math.max(...dates);
+            const dateRange = maxDate - minDate || 1;
+
+            const groups = {};
+            graph.graphData().nodes.forEach(node => {
+                const group = node.group || 'default';
+                if (!groups[group]) groups[group] = { nodes: [], index: Object.keys(groups).length };
+                groups[group].nodes.push(node);
+            });
+
+            const totalGroups = Object.keys(groups).length;
+            const radius = 150;
+            const height = 400;
+
+            graph.graphData().nodes.forEach(node => {
+                const group = groups[node.group || 'default'];
+                const angle = (group.index / totalGroups) * Math.PI * 2;
+
+                // Y position based on date
+                const nodeDate = node.createdAt ? new Date(node.createdAt).getTime() : minDate;
+                const yNorm = (nodeDate - minDate) / dateRange;
+
+                node.fx = Math.cos(angle) * radius;
+                node.fz = Math.sin(angle) * radius;
+                node.fy = (yNorm - 0.5) * height;
+            });
+
+            graph.d3ReheatSimulation();
+            setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        // --- Multi-select with shift-click ---
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Shift') {
+                graph.onNodeClick((node, event) => {
+                    if (multiSelectedNodes.has(node.id)) {
+                        multiSelectedNodes.delete(node.id);
+                    } else {
+                        multiSelectedNodes.add(node.id);
+                    }
+                    updateMultiSelectDisplay();
+                    highlightMultiSelected();
+                });
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (e.key === 'Shift') {
+                graph.onNodeClick(node => handleNodeClick(node));
+            }
+        });
+
+        function updateMultiSelectDisplay() {
+            const countEl = document.getElementById('selection-count');
+            if (multiSelectedNodes.size > 0) {
+                countEl.textContent = `${multiSelectedNodes.size} selected`;
+                countEl.classList.add('active');
+            } else {
+                countEl.classList.remove('active');
+            }
+        }
+
+        function highlightMultiSelected() {
+            graph.nodeColor(node => {
+                if (multiSelectedNodes.has(node.id)) {
+                    return '#ffd700'; // Gold highlight for multi-selected
+                }
+                return node.color;
+            });
+        }
+
+        // --- Time slider ---
+        function initTimeSlider() {
+            const nodesWithDates = nodesData.filter(n => n.createdAt);
+            if (nodesWithDates.length > 0) {
+                document.getElementById('time-toolbar').style.display = 'flex';
+
+                // Calculate date range
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime()).sort((a, b) => a - b);
+                window.timeRange = {
+                    min: dates[0],
+                    max: dates[dates.length - 1]
+                };
+            }
+        }
+
+        function updateTimeSlider() {
+            timeSliderValue = parseInt(document.getElementById('time-slider').value);
+
+            if (!window.timeRange) return;
+
+            const cutoffTime = window.timeRange.min + (timeSliderValue / 100) * (window.timeRange.max - window.timeRange.min);
+            const cutoffDate = new Date(cutoffTime);
+
+            document.getElementById('time-display').textContent =
+                timeSliderValue === 100 ? 'All time' : cutoffDate.toLocaleDateString();
+
+            // Filter nodes by time
+            const filteredNodes = nodesData.filter(node => {
+                if (!node.createdAt) return true; // Include nodes without dates
+                const nodeDate = new Date(node.createdAt).getTime();
+                return nodeDate <= cutoffTime && visibleGroups.has(node.group);
+            });
+
+            const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+            const filteredLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId) && visibleEdgeTypes.has(link.edgeType);
+            });
+
+            graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+        }
+
+        function toggleTimePlay() {
+            const btn = document.getElementById('play-btn');
+
+            if (timePlayInterval) {
+                clearInterval(timePlayInterval);
+                timePlayInterval = null;
+                btn.textContent = '▶';
+                btn.classList.remove('playing');
+            } else {
+                if (timeSliderValue >= 100) {
+                    document.getElementById('time-slider').value = 0;
+                    timeSliderValue = 0;
+                }
+
+                btn.textContent = '⏸';
+                btn.classList.add('playing');
+
+                timePlayInterval = setInterval(() => {
+                    timeSliderValue += 1;
+                    document.getElementById('time-slider').value = timeSliderValue;
+                    updateTimeSlider();
+
+                    if (timeSliderValue >= 100) {
+                        toggleTimePlay(); // Stop at end
+                    }
+                }, 100);
+            }
+        }
+
+        // --- VR mode ---
+        function checkVRSupport() {
+            if (navigator.xr) {
+                navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+                    document.getElementById('vr-btn').disabled = !supported;
+                });
+            }
+        }
+
+        function enterVR() {
+            if (graph.scene && navigator.xr) {
+                // ForceGraph3D has built-in VR support
+                const renderer = graph.renderer();
+                renderer.xr.enabled = true;
+
+                navigator.xr.requestSession('immersive-vr').then(session => {
+                    renderer.xr.setSession(session);
+                });
+            }
+        }
+
+        // --- Update stats display ---
+        function updateStats() {
+            const data = graph.graphData();
+            const statsEl = document.getElementById('stats-display');
+            statsEl.textContent = `${data.nodes.length} nodes · ${data.links.length} edges`;
+        }
+
+        // --- Path highlighting (find shortest path between multi-selected nodes) ---
+        function highlightPath() {
+            if (multiSelectedNodes.size !== 2) {
+                alert('Select exactly 2 nodes (shift-click) to highlight path');
+                return;
+            }
+
+            const [startId, endId] = Array.from(multiSelectedNodes);
+            const path = findShortestPath(startId, endId);
+
+            if (path) {
+                // Highlight path nodes and edges
+                const pathSet = new Set(path);
+                graph.nodeColor(node => pathSet.has(node.id) ? '#ffd700' : '#333333');
+                graph.linkColor(link => {
+                    const sId = typeof link.source === 'object' ? link.source.id : link.source;
+                    const tId = typeof link.target === 'object' ? link.target.id : link.target;
+                    const sIdx = path.indexOf(sId);
+                    const tIdx = path.indexOf(tId);
+                    if (sIdx >= 0 && tIdx >= 0 && Math.abs(sIdx - tIdx) === 1) {
+                        return '#ffd700';
+                    }
+                    return '#222222';
+                });
+            } else {
+                alert('No path found between selected nodes');
+            }
+        }
+
+        function findShortestPath(startId, endId) {
+            // BFS for shortest path
+            const visited = new Set();
+            const queue = [[startId]];
+
+            while (queue.length > 0) {
+                const path = queue.shift();
+                const nodeId = path[path.length - 1];
+
+                if (nodeId === endId) return path;
+
+                if (visited.has(nodeId)) continue;
+                visited.add(nodeId);
+
+                const connections = linksByNode[nodeId] || [];
+                for (const conn of connections) {
+                    if (!visited.has(conn.nodeId)) {
+                        queue.push([...path, conn.nodeId]);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // --- Heat map coloring by metric ---
+        function applyHeatMapColoring(metric = 'connections') {
+            let values = {};
+
+            if (metric === 'connections') {
+                nodesData.forEach(node => {
+                    values[node.id] = (linksByNode[node.id] || []).length;
+                });
+            } else if (metric === 'recency') {
+                const now = Date.now();
+                nodesData.forEach(node => {
+                    if (node.createdAt) {
+                        const age = now - new Date(node.createdAt).getTime();
+                        values[node.id] = 1 - (age / (365 * 24 * 60 * 60 * 1000)); // Normalize to 1 year
+                    } else {
+                        values[node.id] = 0;
+                    }
+                });
+            }
+
+            const maxVal = Math.max(...Object.values(values));
+            const minVal = Math.min(...Object.values(values));
+            const range = maxVal - minVal || 1;
+
+            graph.nodeColor(node => {
+                const normalized = (values[node.id] - minVal) / range;
+                return interpolateColor(normalized);
+            });
+
+            document.getElementById('heatmap-legend').classList.add('active');
+        }
+
+        function interpolateColor(t) {
+            // Blue -> Green -> Yellow -> Red gradient
+            const colors = [
+                [49, 130, 206],  // Blue
+                [56, 161, 105],  // Green
+                [236, 201, 75],  // Yellow
+                [229, 62, 62]    // Red
+            ];
+
+            const idx = t * (colors.length - 1);
+            const lower = Math.floor(idx);
+            const upper = Math.min(lower + 1, colors.length - 1);
+            const frac = idx - lower;
+
+            const r = Math.round(colors[lower][0] + frac * (colors[upper][0] - colors[lower][0]));
+            const g = Math.round(colors[lower][1] + frac * (colors[upper][1] - colors[lower][1]));
+            const b = Math.round(colors[lower][2] + frac * (colors[upper][2] - colors[lower][2]));
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function resetHeatMap() {
+            graph.nodeColor(node => node.color);
+            document.getElementById('heatmap-legend').classList.remove('active');
+        }
+
+        // --- Size by centrality ---
+        function applyCentralitySizing() {
+            // Simple degree centrality
+            const centrality = {};
+            nodesData.forEach(node => {
+                centrality[node.id] = (linksByNode[node.id] || []).length;
+            });
+
+            const maxCent = Math.max(...Object.values(centrality));
+
+            graph.nodeVal(node => {
+                const c = centrality[node.id] || 0;
+                return Math.max(node.val * (0.5 + (c / maxCent) * 1.5), 2);
+            });
+        }
+
+        function resetCentralitySizing() {
+            graph.nodeVal(node => Math.max(node.val / 5, 2));
+        }
+
+        // --- Pulsing recent nodes ---
+        function enablePulsingNodes(dayThreshold = 7) {
+            const now = Date.now();
+            const threshold = dayThreshold * 24 * 60 * 60 * 1000;
+
+            graph.nodeThreeObject(node => {
+                const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                const size = Math.max(node.val / 5, 2) * 2;
+
+                const geom = new THREE.SphereGeometry(size / 2);
+                const material = new THREE.MeshLambertMaterial({
+                    color: node.color,
+                    transparent: true,
+                    opacity: 0.9
+                });
+
+                const mesh = new THREE.Mesh(geom, material);
+
+                // Check if recent
+                if (node.createdAt) {
+                    const age = now - new Date(node.createdAt).getTime();
+                    if (age < threshold) {
+                        // Add pulsing animation
+                        mesh.userData.pulsing = true;
+                        mesh.userData.pulsePhase = Math.random() * Math.PI * 2;
+                    }
+                }
+
+                return mesh;
+            });
+
+            // Animate pulsing nodes
+            const animate = () => {
+                graph.graphData().nodes.forEach(node => {
+                    const obj = graph.scene().getObjectByProperty('__data', node);
+                    if (obj && obj.userData.pulsing) {
+                        const scale = 1 + 0.2 * Math.sin(Date.now() / 500 + obj.userData.pulsePhase);
+                        obj.scale.set(scale, scale, scale);
+                    }
+                });
+                requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        // --- Expand/collapse cluster groups ---
+        const collapsedGroups = new Set();
+
+        function toggleGroupCollapse(groupId) {
+            if (collapsedGroups.has(groupId)) {
+                collapsedGroups.delete(groupId);
+            } else {
+                collapsedGroups.add(groupId);
+            }
+            applyGroupCollapse();
+        }
+
+        function applyGroupCollapse() {
+            // When collapsed, show only one representative node per group
+            const visibleNodes = [];
+            const groupReps = {};
+
+            nodesData.forEach(node => {
+                if (collapsedGroups.has(node.group)) {
+                    // Show only first node as group representative
+                    if (!groupReps[node.group]) {
+                        groupReps[node.group] = {
+                            ...node,
+                            name: `${node.groupLabel || node.group} (${nodesData.filter(n => n.group === node.group).length})`,
+                            val: 50, // Larger for group node
+                            isGroupNode: true
+                        };
+                        visibleNodes.push(groupReps[node.group]);
+                    }
+                } else {
+                    visibleNodes.push(node);
+                }
+            });
+
+            const visibleIds = new Set(visibleNodes.map(n => n.id));
+            const visibleLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return visibleIds.has(sourceId) && visibleIds.has(targetId);
+            });
+
+            graph.graphData({ nodes: visibleNodes, links: visibleLinks });
+        }
+
+        // --- Edge thickness by weight ---
+        function applyEdgeThickness() {
+            graph.linkWidth(link => {
+                const weight = link.weight || 1;
+                return Math.max(1, Math.min(link.width * weight, 8));
+            });
+        }
+
+        // --- Initialize extended features ---
+        function initExtendedFeatures() {
+            initTimeSlider();
+            checkVRSupport();
+            updateStats();
+
+            // Update stats when graph data changes
+            const originalGraphData = graph.graphData.bind(graph);
+            graph.graphData = function(data) {
+                const result = originalGraphData(data);
+                if (data) updateStats();
+                return result;
+            };
+        }
+
         // Initialize
         initGraph();
+        checkEmbedMode();
+        initExtendedFeatures();
     </script>
 </body>
 </html>
