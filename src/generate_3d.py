@@ -1101,6 +1101,29 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let sidebarVisible = true;
         const highlightedNodes = new Set();
 
+        // Safe getter for graph data - handles edge cases
+        function getGraphNodes() {{
+            if (!graph) return [];
+            try {{
+                const data = graph.graphData();
+                return (data && data.nodes) ? data.nodes : [];
+            }} catch (e) {{
+                console.warn('Error getting graph nodes:', e);
+                return [];
+            }}
+        }}
+
+        function getGraphLinks() {{
+            if (!graph) return [];
+            try {{
+                const data = graph.graphData();
+                return (data && data.links) ? data.links : [];
+            }} catch (e) {{
+                console.warn('Error getting graph links:', e);
+                return [];
+            }}
+        }}
+
         // Click handling - immediate selection, double-click for zoom
         let lastClickTime = 0;
         let lastClickNode = null;
@@ -1440,21 +1463,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         function navigateToNode(nodeId) {{
             console.log('navigateToNode called with:', nodeId);
 
-            // Guard against graph not being ready
-            if (!graph || !graph.graphData) {{
-                console.warn('Graph not ready yet');
-                return;
-            }}
-
-            const graphData = graph.graphData();
-            if (!graphData || !graphData.nodes) {{
-                console.warn('Graph data not available');
-                return;
-            }}
-
             // First check if node is in current graph view
-            let targetNode = graphData.nodes.find(n => n.id === nodeId);
-            console.log('Found in current view:', !!targetNode);
+            const currentNodes = getGraphNodes();
+            let targetNode = currentNodes.find(n => n.id === nodeId);
+            console.log('Found in current view:', !!targetNode, 'total nodes:', currentNodes.length);
 
             // If not found in filtered view, get from full node list
             if (!targetNode) {{
@@ -1466,9 +1478,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     applyFilters();
                     // Wait for simulation to position the node, then navigate
                     setTimeout(() => {{
-                        const updatedData = graph.graphData();
-                        if (!updatedData || !updatedData.nodes) return;
-                        targetNode = updatedData.nodes.find(n => n.id === nodeId);
+                        const updatedNodes = getGraphNodes();
+                        targetNode = updatedNodes.find(n => n.id === nodeId);
                         if (targetNode) {{
                             selectNodeOnly(targetNode);
                             // Pan to the node (use 0,0,0 if position not yet set)
@@ -1666,7 +1677,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             setView('2d');
 
             // Update sidebar
-            selectNode(graph.graphData().nodes.find(n => n.id === node.id));
+            const currentNodes = getGraphNodes();
+            const nodeInGraph = currentNodes.find(n => n.id === node.id);
+            if (nodeInGraph) selectNode(nodeInGraph);
 
             // Fit view after a short delay
             setTimeout(() => {{
@@ -1901,7 +1914,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         function applyForceLayout() {{
             // Reset to force-directed (clear fixed positions)
-            graph.graphData().nodes.forEach(node => {{
+            const nodes = getGraphNodes();
+            if (nodes.length === 0) return;
+            nodes.forEach(node => {{
                 node.fx = undefined;
                 node.fy = undefined;
                 node.fz = undefined;
@@ -1911,16 +1926,19 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         function applyLayeredLayout() {{
             // Z-axis represents tier/hierarchy
+            const nodes = getGraphNodes();
+            if (nodes.length === 0) return;
+
             const tierSpacing = 100;
             const tierCounts = {{}};
 
-            graph.graphData().nodes.forEach(node => {{
+            nodes.forEach(node => {{
                 const tier = node.tier || 0;
                 if (!tierCounts[tier]) tierCounts[tier] = {{ count: 0, total: 0 }};
                 tierCounts[tier].total++;
             }});
 
-            graph.graphData().nodes.forEach(node => {{
+            nodes.forEach(node => {{
                 const tier = node.tier || 0;
                 const angle = (tierCounts[tier].count / tierCounts[tier].total) * Math.PI * 2;
                 const radius = 50 + tier * 80;
@@ -1938,10 +1956,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         function applySphericalLayout() {{
             // Nodes on sphere surface, grouped by category
+            const nodes = getGraphNodes();
+            if (nodes.length === 0) return;
+
             const radius = 200;
             const groups = {{}};
 
-            graph.graphData().nodes.forEach(node => {{
+            nodes.forEach(node => {{
                 const group = node.group || 'default';
                 if (!groups[group]) groups[group] = [];
                 groups[group].push(node);
@@ -1967,7 +1988,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         function applyCylinderLayout() {{
             // Y-axis = time, circumference = category
-            const nodesWithDates = graph.graphData().nodes.filter(n => n.createdAt);
+            const nodes = getGraphNodes();
+            if (nodes.length === 0) return;
+
+            const nodesWithDates = nodes.filter(n => n.createdAt);
             if (nodesWithDates.length === 0) {{
                 alert('Cylinder layout requires nodes with createdAt timestamps');
                 document.getElementById('layout-select').value = 'force';
@@ -1980,7 +2004,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const dateRange = maxDate - minDate || 1;
 
             const groups = {{}};
-            graph.graphData().nodes.forEach(node => {{
+            nodes.forEach(node => {{
                 const group = node.group || 'default';
                 if (!groups[group]) groups[group] = {{ nodes: [], index: Object.keys(groups).length }};
                 groups[group].nodes.push(node);
@@ -1990,7 +2014,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const radius = 150;
             const height = 400;
 
-            graph.graphData().nodes.forEach(node => {{
+            nodes.forEach(node => {{
                 const group = groups[node.group || 'default'];
                 const angle = (group.index / totalGroups) * Math.PI * 2;
 
@@ -2312,7 +2336,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
             // Animate pulsing nodes
             const animate = () => {{
-                graph.graphData().nodes.forEach(node => {{
+                const nodes = getGraphNodes();
+                nodes.forEach(node => {{
                     const obj = graph.scene().getObjectByProperty('__data', node);
                     if (obj && obj.userData.pulsing) {{
                         const scale = 1 + 0.2 * Math.sin(Date.now() / 500 + obj.userData.pulsePhase);
