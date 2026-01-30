@@ -1,0 +1,544 @@
+{
+  "metadata": {
+    "title": "ALDC Data Ecosystem",
+    "description": "Complete data lineage from source systems through transformations to consumption layers - Zeus Memory, Eclipse Pipeline, AI APIs, and client data models",
+    "source": "ALDC Data Mapping Project - Research Phase",
+    "created": "2026-01-30",
+    "updated": "2026-01-30",
+    "project": "ALDC Data Mapping Ecosystem Visualization"
+  },
+  "groups": {
+    "hub": {"color": "#1a365d", "label": "Central Hub"},
+    "source_external": {"color": "#3182ce", "label": "External Data Sources"},
+    "source_internal": {"color": "#2b6cb0", "label": "Internal Sources"},
+    "ingestion": {"color": "#38a169", "label": "Ingestion Layer"},
+    "processing": {"color": "#d69e2e", "label": "Processing & ETL"},
+    "storage": {"color": "#805ad5", "label": "Storage Layer"},
+    "ai_model": {"color": "#e53e3e", "label": "AI/ML Models"},
+    "api": {"color": "#319795", "label": "APIs & Services"},
+    "consumption": {"color": "#dd6b20", "label": "Consumption Layer"},
+    "client": {"color": "#667eea", "label": "Client Systems"}
+  },
+  "edge_types": {
+    "data_flow": {"color": "#3182ce", "width": 3, "label": "Data Flow"},
+    "api_call": {"color": "#38a169", "width": 2, "label": "API Call"},
+    "embedding": {"color": "#805ad5", "width": 2, "label": "Embedding Generation"},
+    "transform": {"color": "#d69e2e", "width": 2, "label": "Transformation"},
+    "stores": {"color": "#e53e3e", "width": 2, "label": "Stores Data"},
+    "queries": {"color": "#319795", "width": 1.5, "label": "Queries"},
+    "serves": {"color": "#dd6b20", "width": 1.5, "label": "Serves"},
+    "configures": {"color": "#718096", "width": 1, "label": "Configures"}
+  },
+  "nodes": [
+    {
+      "id": "aldc_hub",
+      "label": "ALDC Data Hub",
+      "tier": 0,
+      "group": "hub",
+      "title": "Central data orchestration hub - Zeus Memory Federation, Eclipse Pipeline, and AI Intelligence layer",
+      "size": 60
+    },
+
+    {
+      "id": "nextcloud",
+      "label": "Nextcloud",
+      "tier": 1,
+      "group": "source_internal",
+      "title": "Nextcloud file storage - 110+ files from J5 directory, supports PDF, DOCX, TXT, MD, XLS formats",
+      "size": 25
+    },
+    {
+      "id": "avoma",
+      "label": "Avoma",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Meeting transcripts and AI-generated notes - speaker-by-speaker dialogue with timestamps",
+      "size": 25
+    },
+    {
+      "id": "email_systems",
+      "label": "Email Systems",
+      "tier": 1,
+      "group": "source_internal",
+      "title": "Email ingestion service - customer communication and internal correspondence",
+      "size": 22
+    },
+    {
+      "id": "web_scraper",
+      "label": "Web Scraper",
+      "tier": 1,
+      "group": "source_external",
+      "title": "AI blogs, documentation, RSS feeds - batch processing with Voyage embeddings",
+      "size": 22
+    },
+    {
+      "id": "slack",
+      "label": "Slack",
+      "tier": 1,
+      "group": "source_internal",
+      "title": "Slack message archival - thread mapping, presence tracking, webhook delivery",
+      "size": 22
+    },
+    {
+      "id": "jira_confluence",
+      "label": "Jira/Confluence",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Atlassian integration - issue tracking and documentation via AtlassianClient",
+      "size": 22
+    },
+
+    {
+      "id": "google_ads",
+      "label": "Google Ads",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Google Ads API via Windsor AI - campaigns, impressions, conversions, video metrics",
+      "size": 20
+    },
+    {
+      "id": "meta_facebook",
+      "label": "Meta/Facebook",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Meta Ads - 12 templates for ad set insights, campaign performance across clients",
+      "size": 20
+    },
+    {
+      "id": "amazon_seller",
+      "label": "Amazon Seller",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Amazon Seller Central - orders, inventory, FBA returns, listings, sales reports",
+      "size": 20
+    },
+    {
+      "id": "sellercloud",
+      "label": "SellerCloud",
+      "tier": 1,
+      "group": "source_external",
+      "title": "SellerCloud REST + SQL - orders, inventory, products, RMA, vendors (14 templates)",
+      "size": 20
+    },
+    {
+      "id": "salesforce",
+      "label": "Salesforce",
+      "tier": 1,
+      "group": "source_external",
+      "title": "CRM data - customer relationships, opportunities, activities",
+      "size": 20
+    },
+    {
+      "id": "smartsheet",
+      "label": "Smartsheet",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Budget planning spreadsheets - flight management, spend tracking",
+      "size": 18
+    },
+    {
+      "id": "trade_desk",
+      "label": "Trade Desk",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Trade Desk reporting - performance reports, unique impression tracking",
+      "size": 18
+    },
+    {
+      "id": "viant_dsp",
+      "label": "Viant DSP",
+      "tier": 1,
+      "group": "source_external",
+      "title": "Viant DSP - campaign performance, ROAS, reach frequency metrics",
+      "size": 18
+    },
+    {
+      "id": "linkedin_ads",
+      "label": "LinkedIn Ads",
+      "tier": 1,
+      "group": "source_external",
+      "title": "LinkedIn advertising - video social, professional audience targeting",
+      "size": 18
+    },
+
+    {
+      "id": "zeus_ingestion",
+      "label": "Zeus Ingestion",
+      "tier": 2,
+      "group": "ingestion",
+      "title": "BaseIngestionService - connection pooling, deduplication via external_id + content_hash, batch processing (100-item)",
+      "size": 30
+    },
+    {
+      "id": "eclipse_connectors",
+      "label": "Eclipse Connectors",
+      "tier": 2,
+      "group": "ingestion",
+      "title": "143 Eclipse templates across ALDC/F92/GEP - CSV, REST API, SQL Server, Snowflake connectors",
+      "size": 30
+    },
+    {
+      "id": "quickstart_api",
+      "label": "quickstart-api",
+      "tier": 2,
+      "group": "ingestion",
+      "title": "Python API client for ALDC Analytics Labs platform - dataset querying, field filtering, measure calculations",
+      "size": 22
+    },
+    {
+      "id": "avoma_ingestion",
+      "label": "Avoma Ingestion",
+      "tier": 2,
+      "group": "ingestion",
+      "title": "Full Avoma ingestion (926 lines) - transcripts, AI notes, action items, rate limiting with backoff",
+      "size": 22
+    },
+    {
+      "id": "nextcloud_scanner",
+      "label": "Nextcloud J5 Scanner",
+      "tier": 2,
+      "group": "ingestion",
+      "title": "Production cron job - periodic scanning of 110+ files from J5 shared directory",
+      "size": 20
+    },
+
+    {
+      "id": "voyage_embedder",
+      "label": "Voyage Batch Embedder",
+      "tier": 3,
+      "group": "processing",
+      "title": "Voyage-3 batch embeddings (1024-dim) - 33% cost savings, 1000 items/batch, async processing at 2 AM UTC",
+      "size": 28
+    },
+    {
+      "id": "eclipse_etl",
+      "label": "Eclipse ETL",
+      "tier": 3,
+      "group": "processing",
+      "title": "Template-based extraction - partition schemes, merge strategies (insert/add/upsert), TTL management",
+      "size": 28
+    },
+    {
+      "id": "quality_scorer",
+      "label": "Quality Scorer",
+      "tier": 3,
+      "group": "processing",
+      "title": "Content quality assessment - confidence scores, deduplication, metadata enrichment",
+      "size": 22
+    },
+    {
+      "id": "entity_extractor",
+      "label": "Entity Extractor",
+      "tier": 3,
+      "group": "processing",
+      "title": "Business entity extraction - vendors, products, channels, metrics, time periods with schema mapping",
+      "size": 22
+    },
+    {
+      "id": "dbt_pipelines",
+      "label": "dbt Pipelines",
+      "tier": 3,
+      "group": "processing",
+      "title": "Snowflake transformations - warehouse views, dimension tables, fact tables, scheduled tasks",
+      "size": 22
+    },
+    {
+      "id": "leiden_clustering",
+      "label": "Leiden Clustering",
+      "tier": 3,
+      "group": "processing",
+      "title": "Memory clustering - k-NN graph (k=15), 385 L2 domains, 3,264 L1 topics, 50K+ memories",
+      "size": 20
+    },
+
+    {
+      "id": "postgresql_zeus",
+      "label": "PostgreSQL (Zeus)",
+      "tier": 4,
+      "group": "storage",
+      "title": "Zeus core database - 3.6M+ memories, pgvector embeddings (1024-dim), GIN text search, HNSW indexes",
+      "size": 35
+    },
+    {
+      "id": "snowflake_warehouse",
+      "label": "Snowflake Warehouse",
+      "tier": 4,
+      "group": "storage",
+      "title": "Cloud data warehouse - ALDC_ENG, FUSION_92, GEP schemas, star schema models, 89+ warehouse files",
+      "size": 35
+    },
+    {
+      "id": "cosmos_db",
+      "label": "Cosmos DB",
+      "tier": 4,
+      "group": "storage",
+      "title": "Eclipse configuration - task connections, LLM message trails, conversation storage",
+      "size": 25
+    },
+    {
+      "id": "redis_cache",
+      "label": "Redis Cache",
+      "tier": 4,
+      "group": "storage",
+      "title": "Query result caching - 60-second TTL stats cache, semantic similarity cache (40-60% hit rate)",
+      "size": 20
+    },
+    {
+      "id": "embedding_queue",
+      "label": "Embedding Queue",
+      "tier": 4,
+      "group": "storage",
+      "title": "Async processing queue - pending/processing/completed status tracking, batch audit trail",
+      "size": 18
+    },
+
+    {
+      "id": "anthropic_claude",
+      "label": "Anthropic Claude",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "claude-sonnet-4-20250514 - business insights, SQL generation, meeting analysis, max 4096 tokens",
+      "size": 30
+    },
+    {
+      "id": "voyage_ai",
+      "label": "Voyage AI",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "voyage-3.5 embeddings - 1024 dimensions, 2000 RPM, 8M TPM, batch API for cost optimization",
+      "size": 28
+    },
+    {
+      "id": "openai_gpt",
+      "label": "OpenAI GPT",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "gpt-3.5-turbo-16k - SQL generation, Assistants API, schema context for Snowflake queries",
+      "size": 25
+    },
+    {
+      "id": "bge_embeddings",
+      "label": "BGE Embeddings",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "BGE-M3 alternative embeddings - 1024 dimensions, local deployment option",
+      "size": 20
+    },
+    {
+      "id": "langchain_agent",
+      "label": "LangChain Agent",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "HybridEclipseAgent - tool calling, conversation history, data cache, context compression",
+      "size": 25
+    },
+    {
+      "id": "voyage_rerank",
+      "label": "Voyage Rerank",
+      "tier": 3,
+      "group": "ai_model",
+      "title": "voyage-rerank-2 - cross-encoder reranking, +13.89% accuracy improvement, ~14ms additional latency",
+      "size": 20
+    },
+
+    {
+      "id": "zeus_api",
+      "label": "Zeus Memory API",
+      "tier": 4,
+      "group": "api",
+      "title": "FastAPI server (21,039 lines) - /api/store, /api/search, /api/memory, hybrid search (125ms latency)",
+      "size": 30
+    },
+    {
+      "id": "eclipse_api",
+      "label": "Eclipse API",
+      "tier": 4,
+      "group": "api",
+      "title": "Data analytics API - dataset queries, field/measure selection, row/column/array formats",
+      "size": 28
+    },
+    {
+      "id": "athena_api",
+      "label": "Athena API",
+      "tier": 4,
+      "group": "api",
+      "title": "Progressive loading API - /api/overview, /api/l2/{id}, /api/l1/{id}, semantic zoom endpoints",
+      "size": 25
+    },
+    {
+      "id": "mcp_server",
+      "label": "MCP Server",
+      "tier": 4,
+      "group": "api",
+      "title": "17 MCP tools - remember, search, recall, create_task, record_decision, notion_sync",
+      "size": 22
+    },
+    {
+      "id": "oauth_azure",
+      "label": "OAuth Azure AD",
+      "tier": 4,
+      "group": "api",
+      "title": "Azure Entra ID integration - /authorize, /callback, /token, user impersonation",
+      "size": 20
+    },
+
+    {
+      "id": "athena_viz",
+      "label": "Athena Visualization",
+      "tier": 5,
+      "group": "consumption",
+      "title": "3D force graphs - 7 visualizations, 2,480-line generator, radial/force/spherical layouts",
+      "size": 30
+    },
+    {
+      "id": "atlas_workspace",
+      "label": "Atlas Workspace",
+      "tier": 5,
+      "group": "consumption",
+      "title": "Document workspace - semantic zoom, Sigma.js 2D graphs, markdown editor, Zeus Console",
+      "size": 28
+    },
+    {
+      "id": "eclipse_chat",
+      "label": "Eclipse Chat",
+      "tier": 5,
+      "group": "consumption",
+      "title": "Natural language analytics - query classification, multi-step orchestration, visualization engine",
+      "size": 28
+    },
+    {
+      "id": "powerbi_dashboards",
+      "label": "Power BI Dashboards",
+      "tier": 5,
+      "group": "consumption",
+      "title": "Client reporting - data model integration, capacity provider, workspace impersonation",
+      "size": 25
+    },
+    {
+      "id": "claude_code",
+      "label": "Claude Code",
+      "tier": 5,
+      "group": "consumption",
+      "title": "CCE development - @remember, @search commands, Zeus MCP integration, project management",
+      "size": 25
+    },
+    {
+      "id": "slack_webhooks",
+      "label": "Slack Webhooks",
+      "tier": 5,
+      "group": "consumption",
+      "title": "Team notifications - alerts for F92, Navira, task assignments, status updates",
+      "size": 20
+    },
+
+    {
+      "id": "fusion92_client",
+      "label": "Fusion92",
+      "tier": 5,
+      "group": "client",
+      "title": "47 Eclipse templates, 37 Snowflake files, 12 connections - Google/Meta/LinkedIn/Trade Desk/Viant advertising",
+      "size": 28
+    },
+    {
+      "id": "gep_client",
+      "label": "GEP/Navira",
+      "tier": 5,
+      "group": "client",
+      "title": "61 Eclipse templates, 43 Snowflake files, 15 connections - Amazon, SellerCloud e-commerce",
+      "size": 28
+    },
+    {
+      "id": "aldc_eng",
+      "label": "ALDC Engineering",
+      "tier": 5,
+      "group": "client",
+      "title": "35 Eclipse templates, 9 Snowflake files, 5 connections - internal operations monitoring",
+      "size": 22
+    }
+  ],
+  "edges": [
+    {"source": "nextcloud", "target": "aldc_hub", "type": "data_flow"},
+    {"source": "avoma", "target": "aldc_hub", "type": "data_flow"},
+    {"source": "email_systems", "target": "aldc_hub", "type": "data_flow"},
+    {"source": "web_scraper", "target": "aldc_hub", "type": "data_flow"},
+    {"source": "slack", "target": "aldc_hub", "type": "data_flow"},
+    {"source": "jira_confluence", "target": "aldc_hub", "type": "data_flow"},
+
+    {"source": "google_ads", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "meta_facebook", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "amazon_seller", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "sellercloud", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "salesforce", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "smartsheet", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "trade_desk", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "viant_dsp", "target": "eclipse_connectors", "type": "data_flow"},
+    {"source": "linkedin_ads", "target": "eclipse_connectors", "type": "data_flow"},
+
+    {"source": "nextcloud", "target": "zeus_ingestion", "type": "data_flow"},
+    {"source": "avoma", "target": "avoma_ingestion", "type": "data_flow"},
+    {"source": "avoma_ingestion", "target": "zeus_ingestion", "type": "data_flow"},
+    {"source": "email_systems", "target": "zeus_ingestion", "type": "data_flow"},
+    {"source": "web_scraper", "target": "zeus_ingestion", "type": "data_flow"},
+    {"source": "slack", "target": "zeus_ingestion", "type": "data_flow"},
+    {"source": "nextcloud", "target": "nextcloud_scanner", "type": "data_flow"},
+    {"source": "nextcloud_scanner", "target": "zeus_ingestion", "type": "data_flow"},
+
+    {"source": "eclipse_connectors", "target": "eclipse_etl", "type": "transform"},
+    {"source": "quickstart_api", "target": "eclipse_etl", "type": "api_call"},
+
+    {"source": "zeus_ingestion", "target": "embedding_queue", "type": "stores"},
+    {"source": "zeus_ingestion", "target": "postgresql_zeus", "type": "stores"},
+    {"source": "embedding_queue", "target": "voyage_embedder", "type": "data_flow"},
+    {"source": "voyage_embedder", "target": "voyage_ai", "type": "api_call"},
+    {"source": "voyage_ai", "target": "voyage_embedder", "type": "embedding"},
+    {"source": "voyage_embedder", "target": "postgresql_zeus", "type": "stores"},
+
+    {"source": "zeus_ingestion", "target": "quality_scorer", "type": "data_flow"},
+    {"source": "quality_scorer", "target": "postgresql_zeus", "type": "stores"},
+
+    {"source": "eclipse_etl", "target": "dbt_pipelines", "type": "transform"},
+    {"source": "dbt_pipelines", "target": "snowflake_warehouse", "type": "stores"},
+    {"source": "eclipse_etl", "target": "cosmos_db", "type": "stores"},
+
+    {"source": "eclipse_chat", "target": "entity_extractor", "type": "api_call"},
+    {"source": "entity_extractor", "target": "eclipse_api", "type": "queries"},
+
+    {"source": "postgresql_zeus", "target": "leiden_clustering", "type": "queries"},
+    {"source": "leiden_clustering", "target": "athena_api", "type": "serves"},
+
+    {"source": "postgresql_zeus", "target": "zeus_api", "type": "queries"},
+    {"source": "zeus_api", "target": "redis_cache", "type": "stores"},
+    {"source": "zeus_api", "target": "anthropic_claude", "type": "api_call"},
+    {"source": "zeus_api", "target": "voyage_rerank", "type": "api_call"},
+
+    {"source": "snowflake_warehouse", "target": "eclipse_api", "type": "queries"},
+    {"source": "eclipse_api", "target": "anthropic_claude", "type": "api_call"},
+    {"source": "eclipse_api", "target": "openai_gpt", "type": "api_call"},
+    {"source": "eclipse_api", "target": "langchain_agent", "type": "api_call"},
+
+    {"source": "langchain_agent", "target": "anthropic_claude", "type": "api_call"},
+    {"source": "langchain_agent", "target": "zeus_api", "type": "api_call"},
+
+    {"source": "zeus_api", "target": "mcp_server", "type": "serves"},
+    {"source": "oauth_azure", "target": "zeus_api", "type": "configures"},
+
+    {"source": "athena_api", "target": "athena_viz", "type": "serves"},
+    {"source": "zeus_api", "target": "atlas_workspace", "type": "serves"},
+    {"source": "eclipse_api", "target": "eclipse_chat", "type": "serves"},
+    {"source": "snowflake_warehouse", "target": "powerbi_dashboards", "type": "queries"},
+
+    {"source": "mcp_server", "target": "claude_code", "type": "serves"},
+    {"source": "zeus_api", "target": "slack_webhooks", "type": "serves"},
+
+    {"source": "eclipse_api", "target": "fusion92_client", "type": "serves"},
+    {"source": "eclipse_api", "target": "gep_client", "type": "serves"},
+    {"source": "eclipse_api", "target": "aldc_eng", "type": "serves"},
+    {"source": "powerbi_dashboards", "target": "fusion92_client", "type": "serves"},
+    {"source": "powerbi_dashboards", "target": "gep_client", "type": "serves"},
+
+    {"source": "athena_viz", "target": "atlas_workspace", "type": "serves"},
+
+    {"source": "bge_embeddings", "target": "postgresql_zeus", "type": "embedding"},
+    {"source": "voyage_ai", "target": "zeus_api", "type": "embedding"}
+  ]
+}

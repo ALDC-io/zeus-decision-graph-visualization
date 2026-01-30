@@ -151,6 +151,7 @@ async def root():
 
     # Build list of available visualizations
     visualizations = [
+        {"name": "ALDC Data Ecosystem", "path": "/viz/ecosystem", "description": "Complete data lineage from sources through transformations to AI/ML consumption"},
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
         {"name": "Fusion92 Schema", "path": "/viz/f92", "description": "Data schema for Fusion92 Activation Model"},
@@ -260,6 +261,16 @@ async def root():
 
     from fastapi.responses import HTMLResponse
     return HTMLResponse(content=html)
+
+
+@app.get("/viz/ecosystem")
+async def viz_ecosystem():
+    """Serve the ALDC Data Ecosystem visualization - complete data lineage."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "aldc_ecosystem.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="ALDC Ecosystem visualization not found")
 
 
 @app.get("/viz/zeus")
