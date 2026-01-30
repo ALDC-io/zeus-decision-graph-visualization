@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <title>Food Banks Canada - Partner Ecosystem</title>
     <link rel="icon" href="data:,">
-    <script src="https://unpkg.com/3d-force-graph@1.73.0/dist/3d-force-graph.min.js"></script>
-    <script src="https://unpkg.com/d3-force-3d@3.0.5/dist/d3-force-3d.min.js"></script>
+    <script src="//unpkg.com/3d-force-graph"></script>
     <style>
         * {
             margin: 0;
@@ -14,7 +13,7 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #0a0a1a 100%);
+            background: #0a0a1a;
             overflow: hidden;
         }
         .container {
@@ -24,105 +23,45 @@
         }
         #graph-wrapper {
             flex: 1;
+            background: #0a0a1a;
             position: relative;
             overflow: hidden;
         }
         #graph {
             width: 100%;
             height: 100%;
-        }
-
-        /* Concentric ring guides (subtle) */
-        .ring-guide {
             position: absolute;
-            border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            top: 50%;
+            top: 0;
+            left: 0;
         }
-
-        /* Legend */
-        #legend {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 16px;
-            color: white;
-            font-size: 12px;
-            z-index: 100;
-            max-width: 280px;
+        #graph canvas {
+            width: 100% !important;
+            height: 100% !important;
         }
-        #legend h3 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
-            margin-bottom: 12px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .legend-ring {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            font-weight: 600;
-        }
-        .legend-label {
-            flex: 1;
-            color: #ccc;
-        }
-
-        /* Tier labels on rings */
-        .tier-label {
-            position: absolute;
-            color: rgba(255,255,255,0.15);
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            left: 50%;
-        }
-
-        /* Sidebar */
         #sidebar {
-            width: 360px;
-            min-width: 360px;
-            background: rgba(255,255,255,0.98);
+            width: 350px;
+            min-width: 350px;
+            background: #ffffff;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             z-index: 100;
-            box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
         }
         #sidebar.hidden {
             transform: translateX(100%);
         }
         #sidebar-toggle {
             position: fixed;
-            right: 360px;
+            right: 350px;
             top: 50%;
             transform: translateY(-50%);
-            width: 28px;
-            height: 64px;
-            background: linear-gradient(135deg, #1a365d, #2d4a7c);
+            width: 24px;
+            height: 60px;
+            background: #1a365d;
             border: none;
-            border-radius: 8px 0 0 8px;
+            border-radius: 6px 0 0 6px;
             color: white;
             cursor: pointer;
             z-index: 101;
@@ -130,34 +69,31 @@
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: right 0.3s ease;
         }
         #sidebar-toggle.sidebar-hidden {
             right: 0;
         }
         #sidebar-toggle:hover {
-            background: linear-gradient(135deg, #2d4a7c, #3d5a8c);
-            width: 32px;
+            background: #2d4a7c;
         }
-
         .header {
-            background: linear-gradient(135deg, #1a365d, #2d4a7c);
+            background: #1a365d;
             color: white;
-            padding: 24px;
+            padding: 20px;
             text-align: center;
         }
         .header h1 {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         .header p {
             font-size: 12px;
             opacity: 0.8;
         }
-
         #info-panel {
-            padding: 24px;
+            padding: 20px;
             flex: 1;
         }
         .info-placeholder {
@@ -166,10 +102,8 @@
             padding: 40px 20px;
         }
         .info-placeholder p {
-            margin-bottom: 12px;
-            line-height: 1.6;
+            margin-bottom: 10px;
         }
-
         .node-info {
             display: none;
         }
@@ -179,168 +113,358 @@
         .node-header {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-            padding-bottom: 18px;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #e0e0e0;
         }
         .node-logo {
-            width: 56px;
-            height: 56px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
-            border-radius: 8px;
+            border-radius: 6px;
             background: #f8f9fa;
-            padding: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 4px;
+            flex-shrink: 0;
         }
         .node-logo[src=""], .node-logo:not([src]) {
             display: none;
         }
+        .node-header-text {
+            flex: 1;
+        }
         .node-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #1a365d;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         .node-tier {
             display: inline-block;
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
             color: white;
+            margin-bottom: 15px;
         }
+        .tier-hub { background: #1a365d; }
+        .tier-1 { background: #2f855a; }
+        .tier-2 { background: #3182ce; }
+        .tier-3 { background: #805ad5; }
+        .tier-4 { background: #718096; }
         .node-description {
             color: #444;
-            line-height: 1.7;
-            margin-bottom: 18px;
-            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 13px;
         }
-
-        .connections-header {
+        .view-full-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 6px 12px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
             font-size: 12px;
+            cursor: pointer;
+            border: none;
+        }
+        .view-full-btn:hover {
+            background: #2d4a7c;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            max-height: 80vh;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header h2 {
+            font-size: 18px;
+            color: #1a365d;
+            margin: 0;
+            flex: 1;
+            padding-right: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #333;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+        .modal-body .full-content {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.7;
+            color: #333;
+        }
+        .modal-meta {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+        }
+        .modal-meta span {
+            margin-right: 20px;
+        }
+        .modal-meta .label {
             font-weight: 600;
+        }
+        .node-meta {
+            font-size: 11px;
             color: #888;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .node-meta span {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .node-meta .label {
+            color: #666;
+            font-weight: 500;
+        }
+        .connections-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         .connection-list {
             list-style: none;
         }
         .connection-item {
-            padding: 12px 14px;
+            padding: 10px 12px;
             margin-bottom: 8px;
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             border-left: 4px solid #e0e0e0;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            user-select: none;
         }
         .connection-item:hover {
             background: #e8f4fd;
             border-left-color: #3182ce;
-            transform: translateX(4px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transform: translateX(3px);
+        }
+        .connection-item:active {
+            background: #d0e8fa;
+            transform: translateX(5px);
         }
         .connection-item .conn-logo {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
-            border-radius: 6px;
+            border-radius: 4px;
             background: #fff;
-            padding: 3px;
+            padding: 2px;
+            flex-shrink: 0;
         }
         .connection-item .conn-logo[src=""] {
             display: none;
         }
+        .connection-item .conn-info {
+            flex: 1;
+        }
         .connection-item .name {
             font-weight: 500;
             color: #1a365d;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
         .connection-item .relation {
             font-size: 11px;
             color: #666;
         }
-
-        /* Toolbar */
         #toolbar {
             position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
-            padding: 10px 14px;
-            border-radius: 10px;
-            z-index: 1000;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 10000;
+            pointer-events: auto;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
         .toolbar-section {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+        }
+        .toolbar-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #1a365d;
+            text-transform: uppercase;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #e8f4fd;
+        }
+        .toolbar-label:hover {
+            background: #d0e8fa;
+        }
+        .toolbar-label .arrow {
+            font-size: 8px;
+            margin-left: 3px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .toolbar-label.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            transition: max-width 0.3s ease, opacity 0.2s ease;
+            max-width: 2000px;
+            opacity: 1;
+        }
+        .filter-group.collapsed {
+            max-width: 0;
+            opacity: 0;
+            gap: 0;
         }
         .toolbar-divider {
             width: 1px;
-            height: 24px;
-            background: rgba(255,255,255,0.2);
+            height: 20px;
+            background: #ddd;
+        }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            color: #333;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .filter-chip:hover {
+            background: #e0e0e0;
+        }
+        .filter-chip.active {
+            background: #1a365d;
+            color: white;
+            border-color: #1a365d;
+        }
+        .filter-chip .chip-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .filter-chip.active .chip-color {
+            border: 1px solid rgba(255,255,255,0.5);
         }
         .view-btn {
-            padding: 8px 16px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: transparent;
-            color: white;
-            font-weight: 500;
-            font-size: 12px;
+            padding: 5px 12px;
+            border: 1px solid #1a365d;
+            background: white;
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 11px;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
         }
         .view-btn.active {
-            background: white;
-            color: #1a365d;
-            border-color: white;
+            background: #1a365d;
+            color: white;
         }
         .view-btn:hover:not(.active) {
-            background: rgba(255,255,255,0.1);
+            background: #e8f4fd;
         }
-
-        /* Focus indicator */
-        #focus-indicator {
-            position: absolute;
-            top: 16px;
-            right: 380px;
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(10px);
-            padding: 10px 16px;
-            border-radius: 10px;
-            color: white;
-            font-size: 13px;
-            z-index: 100;
-            display: none;
-        }
-        #focus-indicator.active {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        #focus-indicator .reset-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
+        .mini-btn {
+            font-size: 9px;
+            padding: 2px 6px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 11px;
+            color: #666;
         }
-        #focus-indicator .reset-btn:hover {
-            background: rgba(255,255,255,0.3);
+        .mini-btn:hover {
+            background: #f0f0f0;
+        }
+        .date-select {
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        .date-input {
+            font-size: 10px;
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 110px;
+        }
+        .date-count {
+            font-size: 10px;
+            color: #666;
+            margin-left: 4px;
         }
     </style>
 </head>
@@ -348,51 +472,62 @@
     <div class="container">
         <div id="graph-wrapper">
             <div id="graph"></div>
-
             <div id="toolbar">
                 <div class="toolbar-section">
-                    <button class="view-btn active" id="btn-radial" onclick="setLayout('radial')">Radial</button>
-                    <button class="view-btn" id="btn-force" onclick="setLayout('force')">Force</button>
+                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
+                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
                 </div>
                 <div class="toolbar-divider"></div>
                 <div class="toolbar-section">
-                    <button class="view-btn" id="btn-2d" onclick="setDimension(2)">2D</button>
-                    <button class="view-btn active" id="btn-3d" onclick="setDimension(3)">3D</button>
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('nodes')">Nodes <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="nodes-filters">
+                        <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#1a365d"></span>Central Hub</span>
+                        <span class="filter-chip active" data-group="tier1"><span class="chip-color" style="background:#2f855a"></span>Tier 1: Core Industry Associations</span>
+                        <span class="filter-chip active" data-group="tier2"><span class="chip-color" style="background:#3182ce"></span>Tier 2: Broader & Emerging Partners</span>
+                        <span class="filter-chip active" data-group="tier3"><span class="chip-color" style="background:#805ad5"></span>Tier 3: Specialized SMEs</span>
+                        <span class="filter-chip active" data-group="member_retail"><span class="chip-color" style="background:#e53e3e"></span>Member: Major Retailers</span>
+                        <span class="filter-chip active" data-group="member_mfg"><span class="chip-color" style="background:#dd6b20"></span>Member: Food Manufacturers</span>
+                        <span class="filter-chip active" data-group="member_produce"><span class="chip-color" style="background:#38a169"></span>Member: Produce Companies</span>
+                        <span class="filter-chip active" data-group="member_restaurant"><span class="chip-color" style="background:#d69e2e"></span>Member: Restaurant Chains</span>
+                        <span class="filter-chip active" data-group="member_dist"><span class="chip-color" style="background:#319795"></span>Member: Distributors</span>
+                        
+                        <button class="mini-btn" onclick="toggleAllNodes()">Toggle</button>
+                    </div>
                 </div>
-            </div>
-
-            <div id="focus-indicator">
-                <span>Focused on: <strong id="focus-name"></strong></span>
-                <button class="reset-btn" onclick="resetFocus()">Show All</button>
-            </div>
-
-            <div id="legend">
-                <h3>Ecosystem Tiers</h3>
-                <div class="legend-item">
-                    <div class="legend-ring" style="border-color: #1a365d; background: rgba(26,54,93,0.3);">●</div>
-                    <span class="legend-label">Central Hub</span>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('edges')">Edges <span class="arrow">▼</span></span>
+                    <div class="filter-group collapsed" id="edges-filters">
+                        <span class="filter-chip active" data-edge-type="collaboration"><span class="chip-color" style="background:#a0aec0"></span>Collaboration</span>
+                        <span class="filter-chip active" data-edge-type="direct_partner"><span class="chip-color" style="background:#888888"></span>direct_partner</span>
+                        <span class="filter-chip active" data-edge-type="emerging_partner"><span class="chip-color" style="background:#3182ce"></span>Emerging Partner</span>
+                        <span class="filter-chip active" data-edge-type="member"><span class="chip-color" style="background:#718096"></span>Member</span>
+                        <span class="filter-chip active" data-edge-type="sme_expert"><span class="chip-color" style="background:#888888"></span>sme_expert</span>
+                        <span class="filter-chip active" data-edge-type="strategic_partner"><span class="chip-color" style="background:#2f855a"></span>Strategic Partner</span>
+                        <span class="filter-chip active" data-edge-type="supply_chain"><span class="chip-color" style="background:#888888"></span>supply_chain</span>
+                        
+                        <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
+                    </div>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-ring" style="border-color: #2f855a; background: rgba(47,133,90,0.2);">1</div>
-                    <span class="legend-label">Core Industry Associations</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-ring" style="border-color: #3182ce; background: rgba(49,130,206,0.2);">2</div>
-                    <span class="legend-label">Broader & Emerging Partners</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-ring" style="border-color: #805ad5; background: rgba(128,90,213,0.2);">3</div>
-                    <span class="legend-label">Specialized SMEs</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-ring" style="border-color: #e53e3e; background: rgba(229,62,62,0.2);">4</div>
-                    <span class="legend-label">Industry Members</span>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span class="toolbar-label" onclick="toggleFilterSection('dates')">Date <span class="arrow">▼</span></span>
+                    <div class="filter-group" id="dates-filters">
+                        <select id="date-preset" class="date-select" onchange="applyDatePreset()">
+                            <option value="all">All Time</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <input type="date" id="date-from" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <input type="date" id="date-to" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
+                        <span id="date-count" class="date-count"></span>
+                    </div>
                 </div>
             </div>
         </div>
-
         <button id="sidebar-toggle" onclick="toggleSidebar()">◀</button>
-
         <div id="sidebar">
             <div class="header">
                 <h1>Food Banks Canada - Partner Ecosystem</h1>
@@ -400,146 +535,309 @@
             </div>
             <div id="info-panel">
                 <div class="info-placeholder" id="placeholder">
-                    <p><strong>Explore the Ecosystem</strong></p>
-                    <p>Click on any node to see details and connections. Double-click to focus on that entity's network.</p>
-                    <p style="margin-top: 20px; font-size: 11px; color: #999;">
-                        Drag to rotate • Scroll to zoom • Right-drag to pan
-                    </p>
+                    <p><strong>Select a node</strong></p>
+                    <p>Click on any node in the graph to see details and navigate to connected items.</p>
+                    <p style="margin-top: 20px; font-size: 11px; color: #999;">Drag to rotate • Scroll to zoom • Right-drag to pan</p>
                 </div>
                 <div class="node-info" id="node-info">
                     <div class="node-header">
                         <img id="node-logo" class="node-logo" src="" alt="">
-                        <div>
+                        <div class="node-header-text">
                             <div class="node-title" id="node-title"></div>
                             <div class="node-tier" id="node-tier"></div>
                         </div>
                     </div>
+                    <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
-                    <div class="connections-header">Connected Entities</div>
+                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
+                    <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Full Content Modal -->
+    <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Memory Content</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="full-content" id="modal-content"></div>
+            </div>
+            <div class="modal-meta" id="modal-meta"></div>
+        </div>
+    </div>
+
     <script>
         // Data
-        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": ""}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": ""}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": ""}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": ""}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128"}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128"}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128"}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128"}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128"}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128"}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128"}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128"}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128"}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128"}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128"}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128"}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128"}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128"}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128"}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128"}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128"}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128"}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128"}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128"}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128"}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128"}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128"}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128"}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128"}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128"}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128"}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128"}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128"}];
-        const linksData = [{"source": "fbc", "target": "rcc", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fhcp", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fbcan", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cpma", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "restcan", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cfig", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "wholesale", "color": "#2f855a", "width": 4, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "sustainability", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "packaging", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "coldchain_tech", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "health_canada", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "municipal_eda", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "indigenous_edc", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "tech_platforms", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "philanthropy", "color": "#3182ce", "width": 3, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "cta", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "ccca", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "aafc", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "cfa", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "supply_councils", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "indigenous_food", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "foodservice_dist", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "food_policy", "color": "#805ad5", "width": 2, "relationType": "SME Expert", "edgeType": "sme_expert"}, {"source": "rcc", "target": "sustainability", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "cfig", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "packaging", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "health_canada", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "coldchain_tech", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "ccca", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "cfa", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "restcan", "target": "foodservice_dist", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "cta", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "supply_councils", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "indigenous_edc", "target": "indigenous_food", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "tech_platforms", "target": "coldchain_tech", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "municipal_eda", "target": "food_policy", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "aafc", "target": "cfa", "color": "#a0aec0", "width": 1.5, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "loblaw", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "sobeys", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "metro", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "costco", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "walmart_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "pattison", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "nestle", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "pepsico", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "kraft", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "mondelez", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "unilever", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "generalmills", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "danone", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "cocacola", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "dole", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "driscolls", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mastronardi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mucci", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "naturefresh", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "redsun", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "rbi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "recipe", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mty", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mcdonalds_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "starbucks_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "aw_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fbc", "target": "loblaw", "color": "#e53e3e", "width": 3, "relationType": "Direct Partner", "edgeType": "direct_partner"}, {"source": "loblaw", "target": "nestle", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "loblaw", "target": "kraft", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "nestle", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "pepsico", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "metro", "target": "danone", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "costco", "target": "mastronardi", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "rbi", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "recipe", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}, {"source": "gfs", "target": "mty", "color": "#dd6b20", "width": 1, "relationType": "Supply Chain", "edgeType": "supply_chain"}];
+        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": null}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "createdAt": null}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "createdAt": null}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "createdAt": null}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "createdAt": null}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "createdAt": null}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "createdAt": null}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "createdAt": null}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "createdAt": null}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "createdAt": null}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "createdAt": null}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "createdAt": null}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "createdAt": null}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "createdAt": null}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "createdAt": null}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "createdAt": null}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "createdAt": null}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "createdAt": null}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "createdAt": null}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "createdAt": null}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "createdAt": null}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "createdAt": null}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "createdAt": null}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "createdAt": null}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "createdAt": null}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "createdAt": null}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "createdAt": null}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "createdAt": null}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "createdAt": null}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "createdAt": null}];
+        const linksData = [{"source": "fbc", "target": "rcc", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fhcp", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fbcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cpma", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "restcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cfig", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "wholesale", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "sustainability", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "packaging", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "coldchain_tech", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "health_canada", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "municipal_eda", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "indigenous_edc", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "tech_platforms", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "philanthropy", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "cta", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "ccca", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "aafc", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "cfa", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "supply_councils", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "indigenous_food", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "foodservice_dist", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "food_policy", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "rcc", "target": "sustainability", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "cfig", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "packaging", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "health_canada", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "ccca", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "restcan", "target": "foodservice_dist", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "cta", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "supply_councils", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "indigenous_edc", "target": "indigenous_food", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "tech_platforms", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "municipal_eda", "target": "food_policy", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "aafc", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "loblaw", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "sobeys", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "metro", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "costco", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "walmart_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "pattison", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "nestle", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "pepsico", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "kraft", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "mondelez", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "unilever", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "generalmills", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "danone", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "cocacola", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "dole", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "driscolls", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mastronardi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mucci", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "naturefresh", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "redsun", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "rbi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "recipe", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mty", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mcdonalds_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "starbucks_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "aw_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fbc", "target": "loblaw", "color": "#888888", "width": 1, "relationType": "direct_partner", "edgeType": "direct_partner"}, {"source": "loblaw", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "loblaw", "target": "kraft", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "pepsico", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "metro", "target": "danone", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "costco", "target": "mastronardi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "rbi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "recipe", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "gfs", "target": "mty", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}];
         const groupsData = {"hub": {"color": "#1a365d", "label": "Central Hub"}, "tier1": {"color": "#2f855a", "label": "Tier 1: Core Industry Associations"}, "tier2": {"color": "#3182ce", "label": "Tier 2: Broader & Emerging Partners"}, "tier3": {"color": "#805ad5", "label": "Tier 3: Specialized SMEs"}, "member_retail": {"color": "#e53e3e", "label": "Member: Major Retailers"}, "member_mfg": {"color": "#dd6b20", "label": "Member: Food Manufacturers"}, "member_produce": {"color": "#38a169", "label": "Member: Produce Companies"}, "member_restaurant": {"color": "#d69e2e", "label": "Member: Restaurant Chains"}, "member_dist": {"color": "#319795", "label": "Member: Distributors"}};
-        const tierNodes = {"0": ["fbc"], "1": ["rcc", "fhcp", "fbcan", "cpma", "restcan", "cfig", "wholesale"], "2": ["sustainability", "packaging", "coldchain_tech", "health_canada", "municipal_eda", "indigenous_edc", "tech_platforms", "philanthropy"], "3": ["cta", "ccca", "aafc", "cfa", "supply_councils", "indigenous_food", "foodservice_dist", "food_policy"], "4": ["loblaw", "sobeys", "metro", "costco", "walmart_ca", "fedcoop", "pattison", "nestle", "pepsico", "kraft", "mondelez", "unilever", "generalmills", "danone", "cocacola", "dole", "driscolls", "mastronardi", "mucci", "naturefresh", "redsun", "rbi", "recipe", "mty", "mcdonalds_ca", "starbucks_ca", "aw_ca", "sysco_ca", "gfs"]};
 
-        // Configuration
-        const RING_SPACING = 120;  // Distance between concentric rings
-        const HUB_RADIUS = 0;      // Center position for hub
-
-        // Create lookups
+        // Create node lookup map
         const nodeMap = {};
-        nodesData.forEach(node => { nodeMap[node.id] = node; });
+        nodesData.forEach(node => {
+            nodeMap[node.id] = node;
+        });
 
+        // Create link lookup for connections
         const linksByNode = {};
         linksData.forEach(link => {
             const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
             const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+
             if (!linksByNode[sourceId]) linksByNode[sourceId] = [];
             if (!linksByNode[targetId]) linksByNode[targetId] = [];
+
             linksByNode[sourceId].push({ nodeId: targetId, relationType: link.relationType });
             linksByNode[targetId].push({ nodeId: sourceId, relationType: link.relationType });
         });
 
+        // Graph data
+        const graphData = {
+            nodes: nodesData,
+            links: linksData
+        };
+
         let graph;
         let selectedNode = null;
-        let focusedNode = null;
-        let currentLayout = 'radial';
-        let currentDimension = 3;
         let sidebarVisible = true;
+        const highlightedNodes = new Set();
 
-        // Calculate radial positions for nodes
-        function calculateRadialPositions() {
-            const positions = {};
-            const maxTier = Math.max(...Object.keys(tierNodes).map(Number));
+        // Click handling - immediate selection, double-click for zoom
+        let lastClickTime = 0;
+        let lastClickNode = null;
+        const DOUBLE_CLICK_DELAY = 300;
 
-            for (const [tier, nodeIds] of Object.entries(tierNodes)) {
-                const tierNum = parseInt(tier);
-                const radius = tierNum === 0 ? HUB_RADIUS : tierNum * RING_SPACING;
-                const count = nodeIds.length;
+        function handleNodeClick(node) {
+            console.log('[Athena] handleNodeClick called:', node ? node.name : 'null');
+            const now = Date.now();
 
-                nodeIds.forEach((nodeId, index) => {
-                    if (tierNum === 0) {
-                        // Hub at center
-                        positions[nodeId] = { x: 0, y: 0, z: 0 };
-                    } else {
-                        // Distribute evenly on ring with slight randomization for 3D depth
-                        const angle = (2 * Math.PI * index) / count - Math.PI / 2;
-                        const zOffset = (Math.random() - 0.5) * 30; // Slight 3D variation
-                        positions[nodeId] = {
-                            x: radius * Math.cos(angle),
-                            y: radius * Math.sin(angle),
-                            z: zOffset
-                        };
-                    }
-                });
+            // Always select immediately on click
+            selectNodeOnly(node);
+
+            // Check for double-click (zoom in)
+            if (lastClickNode === node && (now - lastClickTime) < DOUBLE_CLICK_DELAY) {
+                focusNodeIn2D(node);
             }
-            return positions;
+
+            lastClickNode = node;
+            lastClickTime = now;
         }
 
-        // Apply radial layout
-        function applyRadialLayout() {
-            const positions = calculateRadialPositions();
-            const nodes = graph.graphData().nodes;
+        // Track which groups (nodes) are visible - initialize from data
+        const allGroups = Object.keys(groupsData);
+        const visibleGroups = new Set(allGroups);
 
-            nodes.forEach(node => {
-                const pos = positions[node.id];
-                if (pos) {
-                    node.fx = pos.x;
-                    node.fy = pos.y;
-                    node.fz = pos.z;
+        // Track which edge types are visible
+        const allEdgeTypes = [...new Set(linksData.map(l => l.edgeType))];
+        const visibleEdgeTypes = new Set(allEdgeTypes);
+
+        // Attach event listeners to node filter chips
+        document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const group = this.dataset.group;
+                if (visibleGroups.has(group)) {
+                    visibleGroups.delete(group);
+                    this.classList.remove('active');
+                } else {
+                    visibleGroups.add(group);
+                    this.classList.add('active');
                 }
+                applyFilters();
             });
+        });
 
-            graph.graphData({ nodes, links: graph.graphData().links });
-
-            // Zoom to fit
-            setTimeout(() => {
-                graph.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1000);
-            }, 100);
-        }
-
-        // Release force layout
-        function applyForceLayout() {
-            const nodes = graph.graphData().nodes;
-            nodes.forEach(node => {
-                node.fx = undefined;
-                node.fy = undefined;
-                node.fz = undefined;
+        // Attach event listeners to edge filter chips
+        document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const edgeType = this.dataset.edgeType;
+                if (visibleEdgeTypes.has(edgeType)) {
+                    visibleEdgeTypes.delete(edgeType);
+                    this.classList.remove('active');
+                } else {
+                    visibleEdgeTypes.add(edgeType);
+                    this.classList.add('active');
+                }
+                applyFilters();
             });
-            graph.graphData({ nodes, links: graph.graphData().links });
-            graph.d3ReheatSimulation();
-        }
+        });
 
-        function setLayout(layout) {
-            currentLayout = layout;
-            document.getElementById('btn-radial').classList.toggle('active', layout === 'radial');
-            document.getElementById('btn-force').classList.toggle('active', layout === 'force');
-
-            if (layout === 'radial') {
-                applyRadialLayout();
+        function toggleAllNodes() {
+            const allVisible = allGroups.every(g => visibleGroups.has(g));
+            if (allVisible) {
+                visibleGroups.clear();
             } else {
-                applyForceLayout();
+                allGroups.forEach(g => visibleGroups.add(g));
+            }
+            updateNodeChips();
+            applyFilters();
+        }
+
+        function toggleAllEdges() {
+            const allVisible = allEdgeTypes.every(e => visibleEdgeTypes.has(e));
+            if (allVisible) {
+                visibleEdgeTypes.clear();
+            } else {
+                allEdgeTypes.forEach(e => visibleEdgeTypes.add(e));
+            }
+            updateEdgeChips();
+            applyFilters();
+        }
+
+        function updateNodeChips() {
+            document.querySelectorAll('.filter-chip[data-group]').forEach(chip => {
+                const group = chip.dataset.group;
+                chip.classList.toggle('active', visibleGroups.has(group));
+            });
+        }
+
+        function updateEdgeChips() {
+            document.querySelectorAll('.filter-chip[data-edge-type]').forEach(chip => {
+                const edgeType = chip.dataset.edgeType;
+                chip.classList.toggle('active', visibleEdgeTypes.has(edgeType));
+            });
+        }
+
+        // Date filter state
+        let dateFilterFrom = null;
+        let dateFilterTo = null;
+
+        function applyDatePreset() {
+            const preset = document.getElementById('date-preset').value;
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (preset === 'custom') {
+                fromInput.style.display = 'inline-block';
+                toInput.style.display = 'inline-block';
+                // Set defaults to last 30 days
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                toInput.value = today.toISOString().split('T')[0];
+                fromInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+                applyCustomDateFilter();
+                return;
+            }
+
+            fromInput.style.display = 'none';
+            toInput.style.display = 'none';
+
+            if (preset === 'all') {
+                dateFilterFrom = null;
+                dateFilterTo = null;
+            } else {
+                const days = parseInt(preset);
+                const today = new Date();
+                const fromDate = new Date(today);
+                fromDate.setDate(fromDate.getDate() - days);
+                dateFilterFrom = fromDate;
+                dateFilterTo = today;
+            }
+
+            applyFilters();
+        }
+
+        function applyCustomDateFilter() {
+            const fromInput = document.getElementById('date-from');
+            const toInput = document.getElementById('date-to');
+
+            if (fromInput.value) {
+                dateFilterFrom = new Date(fromInput.value);
+                dateFilterFrom.setHours(0, 0, 0, 0);
+            } else {
+                dateFilterFrom = null;
+            }
+
+            if (toInput.value) {
+                dateFilterTo = new Date(toInput.value);
+                dateFilterTo.setHours(23, 59, 59, 999);
+            } else {
+                dateFilterTo = null;
+            }
+
+            applyFilters();
+        }
+
+        function nodePassesDateFilter(node) {
+            // Hub node always passes
+            if (node.id === 'zeus-memory-hub' || !node.createdAt) {
+                return dateFilterFrom === null && dateFilterTo === null ? true : !node.createdAt;
+            }
+
+            const nodeDate = new Date(node.createdAt);
+
+            if (dateFilterFrom && nodeDate < dateFilterFrom) {
+                return false;
+            }
+            if (dateFilterTo && nodeDate > dateFilterTo) {
+                return false;
+            }
+            return true;
+        }
+
+        function applyFilters() {
+            // Filter nodes by group AND date
+            const filteredNodes = nodesData.filter(node => {
+                const groupVisible = visibleGroups.has(node.group);
+                const dateVisible = nodePassesDateFilter(node);
+                return groupVisible && dateVisible;
+            });
+            const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+
+            // Filter links by node visibility AND edge type
+            const filteredLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                const nodeVisible = filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId);
+                const edgeVisible = visibleEdgeTypes.has(link.edgeType);
+                return nodeVisible && edgeVisible;
+            });
+
+            // Update count display
+            const countEl = document.getElementById('date-count');
+            const nodesWithDates = nodesData.filter(n => n.createdAt).length;
+            if (dateFilterFrom || dateFilterTo) {
+                countEl.textContent = `(${filteredNodes.length} nodes)`;
+            } else {
+                countEl.textContent = '';
+            }
+
+            graph.graphData({
+                nodes: filteredNodes,
+                links: filteredLinks
+            });
+        }
+
+        // View toggle
+        let currentView = '3d';
+
+        function setView(view) {
+            currentView = view;
+            document.getElementById('btn-3d').classList.toggle('active', view === '3d');
+            document.getElementById('btn-2d').classList.toggle('active', view === '2d');
+
+            if (view === '2d') {
+                graph.numDimensions(2);
+                graph.cameraPosition({ x: 0, y: 0, z: 500 }, { x: 0, y: 0, z: 0 }, 1000);
+            } else {
+                graph.numDimensions(3);
             }
         }
 
-        function setDimension(dim) {
-            currentDimension = dim;
-            document.getElementById('btn-2d').classList.toggle('active', dim === 2);
-            document.getElementById('btn-3d').classList.toggle('active', dim === 3);
-            graph.numDimensions(dim);
-
-            if (dim === 2) {
-                graph.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1000);
-            }
+        // Toggle filter sections
+        function toggleFilterSection(section) {
+            const label = document.querySelector(`.toolbar-label[onclick*="${section}"]`);
+            const group = document.getElementById(`${section}-filters`);
+            label.classList.toggle('collapsed');
+            group.classList.toggle('collapsed');
         }
 
+        // Toggle sidebar visibility
         function toggleSidebar() {
             sidebarVisible = !sidebarVisible;
             const sidebar = document.getElementById('sidebar');
@@ -555,37 +853,135 @@
                 toggle.textContent = '◀';
             }
 
+            // Resize graph after animation
             setTimeout(() => {
                 const wrapper = document.getElementById('graph-wrapper');
                 graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
             }, 350);
         }
 
-        // Node click handling
-        let lastClickTime = 0;
-        let lastClickNode = null;
-        const DOUBLE_CLICK_DELAY = 300;
+        // Initialize graph
+        function initGraph() {
+            const container = document.getElementById('graph');
+            const wrapper = document.getElementById('graph-wrapper');
 
-        function handleNodeClick(node) {
-            const now = Date.now();
+            const width = wrapper.offsetWidth;
+            const height = wrapper.offsetHeight;
 
-            // Always select on click
-            selectNode(node);
+            console.log('[Athena] Initializing ForceGraph3D');
+            graph = ForceGraph3D()(container)
+                .width(width)
+                .height(height)
+                .graphData(graphData)
+                .backgroundColor('#0a0a1a')
+                .nodeLabel(node => node.name)
+                .nodeVal(node => Math.max(node.val / 5, 2))
+                .nodeRelSize(6)
+                .nodeColor(node => node.color)
+                .linkColor(link => link.color)
+                .linkWidth(link => link.width)
+                .linkOpacity(0.6)
+                .onNodeClick(node => {
+                    console.log('[Athena] onNodeClick fired:', node ? node.name : 'null');
+                    handleNodeClick(node);
+                })
+                .onBackgroundClick(() => {
+                    clearSelection();
+                })
+                .enableNodeDrag(true)
+                .onNodeDragEnd(node => {
+                    node.fx = node.x;
+                    node.fy = node.y;
+                    node.fz = node.z;
+                })
+                .enableNavigationControls(true);
 
-            // Check for double-click
-            if (lastClickNode === node && (now - lastClickTime) < DOUBLE_CLICK_DELAY) {
-                focusOnNode(node);
-            }
+            // Set initial camera position
+            setTimeout(() => {
+                graph.cameraPosition({ x: 0, y: 0, z: 500 });
+            }, 100);
 
-            lastClickNode = node;
-            lastClickTime = now;
+            // Disable default double-click zoom on background
+            const rendererEl = graph.renderer().domElement;
+            rendererEl.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+            }, true);
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                const newWidth = wrapper.offsetWidth;
+                const newHeight = wrapper.offsetHeight;
+                graph.width(newWidth).height(newHeight);
+            });
         }
 
-        function selectNode(node) {
+        // Show full content in modal
+        function showFullContent() {
+            if (!selectedNode) return;
+
+            document.getElementById('modal-title').textContent = selectedNode.name;
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            `;
+            document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(event) {
+            if (!event || event.target === event.currentTarget) {
+                document.getElementById('content-modal').classList.remove('active');
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Navigate to a node by ID (works even if filtered out)
+        function navigateToNode(nodeId) {
+            console.log('navigateToNode called with:', nodeId);
+            // First check if node is in current graph view
+            let targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+            console.log('Found in current view:', !!targetNode);
+
+            // If not found in filtered view, get from full node list
+            if (!targetNode) {
+                targetNode = nodeMap[nodeId];
+                if (targetNode) {
+                    // Make sure the node's group is visible
+                    visibleGroups.add(targetNode.group);
+                    updateNodeChips();
+                    applyFilters();
+                    // Now get the node from the updated graph
+                    targetNode = graph.graphData().nodes.find(n => n.id === nodeId);
+                }
+            }
+
+            if (targetNode) {
+                selectNodeOnly(targetNode);
+                // Pan to the node
+                graph.cameraPosition(
+                    { x: targetNode.x, y: targetNode.y, z: 300 },
+                    targetNode,
+                    500
+                );
+            }
+        }
+
+        // Single click - just select and populate sidebar
+        function selectNodeOnly(node) {
+            console.log('[Athena] selectNodeOnly called for:', node.name);
             selectedNode = node;
 
-            // Post message to parent (for embed mode)
+            // Post message to parent window (for embed mode)
+            console.log('[Athena] window.parent !== window:', window.parent !== window);
             if (window.parent !== window) {
+                console.log('[Athena] Sending postMessage to parent');
                 window.parent.postMessage({
                     type: 'nodeSelected',
                     node: {
@@ -599,33 +995,53 @@
                         logo: node.logo
                     }
                 }, '*');
+                console.log('[Athena] postMessage sent');
             }
+
+            // Update highlighted nodes
+            highlightedNodes.clear();
+            highlightedNodes.add(node.id);
+            (linksByNode[node.id] || []).forEach(conn => {
+                highlightedNodes.add(conn.nodeId);
+            });
 
             // Update sidebar
             document.getElementById('placeholder').style.display = 'none';
             document.getElementById('node-info').classList.add('active');
             document.getElementById('node-title').textContent = node.name;
-            document.getElementById('node-description').textContent = node.description || 'No description available.';
 
+            // Set description (truncated in sidebar, full in modal)
+            const descEl = document.getElementById('node-description');
+            const fullDesc = node.description || 'No description available.';
+            // Show truncated preview in sidebar
+            descEl.textContent = fullDesc.length > 300 ? fullDesc.substring(0, 300) + '...' : fullDesc;
+
+            // Show/hide view full button based on content length
+            const viewFullBtn = document.getElementById('view-full-btn');
+            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+
+            // Show metadata
+            const metaEl = document.getElementById('node-meta');
+            metaEl.innerHTML = `
+                <span><span class="label">ID:</span> ${node.id.substring(0, 8)}...</span>
+                <span><span class="label">Type:</span> ${node.groupLabel || node.group}</span>
+            `;
+
+            // Show logo if available
             const logoEl = document.getElementById('node-logo');
             logoEl.src = node.logo || '';
             logoEl.style.display = node.logo ? 'block' : 'none';
 
+            // Set tier badge using group label
             const tierEl = document.getElementById('node-tier');
             tierEl.textContent = node.groupLabel || 'Unknown';
             tierEl.style.background = node.color;
+            tierEl.className = 'node-tier';
 
-            // Build connections
+            // Build connections list
             const connections = linksByNode[node.id] || [];
             const connectionsList = document.getElementById('connections');
             connectionsList.innerHTML = '';
-
-            // Sort connections by tier
-            connections.sort((a, b) => {
-                const nodeA = nodeMap[a.nodeId];
-                const nodeB = nodeMap[b.nodeId];
-                return (nodeA?.tier || 99) - (nodeB?.tier || 99);
-            });
 
             connections.forEach(conn => {
                 const connNode = nodeMap[conn.nodeId];
@@ -641,174 +1057,123 @@
                         <div class="relation">${conn.relationType}</div>
                     </div>
                 `;
-                li.onclick = () => navigateToNode(conn.nodeId);
+                li.onclick = function(e) {
+                    console.log('Connection clicked:', conn.nodeId, connNode.name);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigateToNode(conn.nodeId);
+                };
                 connectionsList.appendChild(li);
             });
 
-            // Highlight connected nodes
-            updateHighlights(node);
-        }
-
-        function updateHighlights(focusNode) {
-            const connectedIds = new Set([focusNode.id]);
-            (linksByNode[focusNode.id] || []).forEach(conn => connectedIds.add(conn.nodeId));
-
+            // Update visuals - highlight connected, dim others
             graph
-                .nodeColor(n => {
-                    if (n.id === focusNode.id) return n.color;
-                    if (connectedIds.has(n.id)) return n.color;
-                    return '#333333';
-                })
-                .nodeOpacity(n => {
-                    if (n.id === focusNode.id) return 1;
-                    if (connectedIds.has(n.id)) return 0.9;
-                    return 0.3;
-                })
-                .linkOpacity(link => {
-                    const sId = typeof link.source === 'object' ? link.source.id : link.source;
-                    const tId = typeof link.target === 'object' ? link.target.id : link.target;
-                    return (sId === focusNode.id || tId === focusNode.id) ? 0.8 : 0.1;
+                .nodeColor(n => highlightedNodes.has(n.id) ? n.color : '#333333')
+                .linkColor(l => {
+                    const sId = typeof l.source === 'object' ? l.source.id : l.source;
+                    const tId = typeof l.target === 'object' ? l.target.id : l.target;
+                    return (sId === node.id || tId === node.id) ? l.color : '#222222';
                 });
         }
 
-        function focusOnNode(node) {
-            focusedNode = node;
-            document.getElementById('focus-name').textContent = node.name;
-            document.getElementById('focus-indicator').classList.add('active');
+        // Double click - switch to 2D, zoom in, show direct connections
+        function focusNodeIn2D(node) {
+            // First select the node
+            selectNodeOnly(node);
 
-            // Filter to show only this node and its connections
-            const connectedIds = new Set([node.id]);
-            (linksByNode[node.id] || []).forEach(conn => connectedIds.add(conn.nodeId));
+            // Switch to 2D view
+            setView('2d');
 
-            const filteredNodes = nodesData.filter(n => connectedIds.has(n.id));
-            const filteredLinks = linksData.filter(link => {
-                const sId = typeof link.source === 'object' ? link.source.id : link.source;
-                const tId = typeof link.target === 'object' ? link.target.id : link.target;
-                return sId === node.id || tId === node.id;
-            });
-
-            graph.graphData({ nodes: filteredNodes, links: filteredLinks });
-
-            if (currentLayout === 'radial') {
-                setTimeout(() => applyRadialLayout(), 100);
-            }
-
-            graph.zoomToFit(500, 50);
-        }
-
-        function resetFocus() {
-            focusedNode = null;
-            document.getElementById('focus-indicator').classList.remove('active');
-
-            graph.graphData({ nodes: nodesData, links: linksData });
-
-            if (currentLayout === 'radial') {
-                setTimeout(() => applyRadialLayout(), 100);
-            }
-
-            // Reset colors
-            graph
-                .nodeColor(n => n.color)
-                .nodeOpacity(1)
-                .linkOpacity(0.6);
-        }
-
-        function navigateToNode(nodeId) {
-            const node = nodeMap[nodeId];
-            if (node) {
-                selectNode(node);
+            // Zoom in on node after short delay for 2D transition
+            setTimeout(() => {
+                const distance = 200;
                 graph.cameraPosition(
-                    { x: node.x, y: node.y, z: 300 },
-                    node,
-                    500
+                    { x: node.x, y: node.y, z: distance },
+                    { x: node.x, y: node.y, z: 0 },
+                    1000
                 );
-            }
+            }, 100);
         }
 
         function clearSelection() {
             selectedNode = null;
+            highlightedNodes.clear();
             lastClickNode = null;
+            lastClickTime = 0;
 
+            // Post message to parent window (for embed mode)
             if (window.parent !== window) {
-                window.parent.postMessage({ type: 'nodeDeselected' }, '*');
+                window.parent.postMessage({
+                    type: 'nodeDeselected'
+                }, '*');
             }
 
             document.getElementById('placeholder').style.display = 'block';
             document.getElementById('node-info').classList.remove('active');
 
-            // Reset colors
+            // Restore original colors
             graph
                 .nodeColor(n => n.color)
-                .nodeOpacity(1)
-                .linkOpacity(0.6);
+                .linkColor(l => l.color);
+
+            // Restore all filtered nodes
+            applyFilters();
         }
 
-        // Initialize
-        function initGraph() {
-            const container = document.getElementById('graph');
-            const wrapper = document.getElementById('graph-wrapper');
-
-            graph = ForceGraph3D()(container)
-                .width(wrapper.offsetWidth)
-                .height(wrapper.offsetHeight)
-                .graphData({ nodes: nodesData, links: linksData })
-                .backgroundColor('rgba(0,0,0,0)')
-                .nodeLabel(node => `<div style="background: rgba(0,0,0,0.8); padding: 6px 10px; border-radius: 4px; color: white; font-size: 12px;">${node.name}</div>`)
-                .nodeVal(node => {
-                    // Size based on tier - hub biggest, tier 4 smallest
-                    const tierSizes = { 0: 40, 1: 25, 2: 18, 3: 14, 4: 10 };
-                    return tierSizes[node.tier] || 12;
-                })
-                .nodeRelSize(5)
-                .nodeColor(node => node.color)
-                .nodeOpacity(0.95)
-                .linkColor(link => link.color)
-                .linkWidth(link => link.width)
-                .linkOpacity(0.6)
-                .linkCurvature(0.2)  // Curved edges for better readability
-                .linkDirectionalParticles(link => {
-                    // Particles on important connections
-                    return link.edgeType === 'strategic_partner' ? 2 : 0;
-                })
-                .linkDirectionalParticleWidth(2)
-                .linkDirectionalParticleSpeed(0.005)
-                .onNodeClick(handleNodeClick)
-                .onBackgroundClick(clearSelection)
-                .enableNodeDrag(false)  // Disable for radial layout
-                .d3Force('charge', d3.forceManyBody().strength(-100))
-                .d3Force('link', d3.forceLink().distance(link => {
-                    const source = nodeMap[link.source.id || link.source];
-                    const target = nodeMap[link.target.id || link.target];
-                    if (!source || !target) return 100;
-                    return Math.abs(source.tier - target.tier) * 80 + 50;
-                }));
-
-            // Apply radial layout after initialization
-            setTimeout(() => {
-                applyRadialLayout();
-            }, 500);
-
-            // Handle resize
-            window.addEventListener('resize', () => {
-                graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+        function showDirectConnectionsOnly(node) {
+            // Filter to show only this node and its direct connections
+            const directIds = new Set([node.id]);
+            (linksByNode[node.id] || []).forEach(conn => {
+                directIds.add(conn.nodeId);
             });
+
+            const filteredNodes = nodesData.filter(n => directIds.has(n.id));
+            const filteredLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return sourceId === node.id || targetId === node.id;
+            });
+
+            graph.graphData({
+                nodes: filteredNodes,
+                links: filteredLinks
+            });
+
+            // Switch to 2D and center
+            setView('2d');
+
+            // Update sidebar
+            selectNode(graph.graphData().nodes.find(n => n.id === node.id));
+
+            // Fit view after a short delay
+            setTimeout(() => {
+                graph.zoomToFit(500, 50);
+            }, 100);
         }
 
         // Check for embed mode
         function checkEmbedMode() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('embed') === 'true') {
-                document.getElementById('sidebar').style.display = 'none';
-                document.getElementById('sidebar-toggle').style.display = 'none';
-                document.getElementById('legend').style.display = 'none';
+            const isEmbed = urlParams.get('embed') === 'true';
+
+            if (isEmbed) {
+                // Hide sidebar and toggle button in embed mode
+                const sidebar = document.getElementById('sidebar');
+                const toggle = document.getElementById('sidebar-toggle');
+                if (sidebar) sidebar.style.display = 'none';
+                if (toggle) toggle.style.display = 'none';
+
+                // Expand graph to full width
                 setTimeout(() => {
                     const wrapper = document.getElementById('graph-wrapper');
-                    graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+                    if (wrapper && graph) {
+                        graph.width(wrapper.offsetWidth).height(wrapper.offsetHeight);
+                    }
                 }, 100);
             }
         }
 
-        // Start
+        // Initialize
         initGraph();
         checkEmbedMode();
     </script>
