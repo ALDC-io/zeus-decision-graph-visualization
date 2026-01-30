@@ -1,35 +1,113 @@
 {
   "metadata": {
-    "title": "GEP (Global Export Platform) Data Schema",
-    "description": "Schema visualization for GEP Data Model - 10 tables, 79 columns across Order, Campaign, Consolidation, Date, Marketplace and more",
+    "title": "GEP/Navira Data Schema",
+    "description": "Schema visualization for GEP (Navira) Data Model - 10 tables, 79 columns, data sources, and measures across Order, Campaign, Consolidation, Date, Marketplace and more",
     "source": "Zeus Memory / Eclipse API",
     "created": "2026-01-29",
-    "updated": "2026-01-29"
+    "updated": "2026-01-30"
   },
   "groups": {
     "hub": {"color": "#dd6b20", "label": "Dataset"},
     "fact": {"color": "#1a365d", "label": "Fact Tables"},
     "dimension": {"color": "#2f855a", "label": "Dimension Tables"},
     "date": {"color": "#805ad5", "label": "Date Tables"},
-    "consolidation": {"color": "#e53e3e", "label": "Consolidation Tables"}
+    "consolidation": {"color": "#e53e3e", "label": "Consolidation Tables"},
+    "column": {"color": "#718096", "label": "Columns"},
+    "measure": {"color": "#d69e2e", "label": "Measures"},
+    "source": {"color": "#00a67d", "label": "Data Sources"},
+    "api": {"color": "#9f7aea", "label": "API Connectors"}
   },
   "edge_types": {
     "contains": {"color": "#718096", "width": 2, "label": "Contains"},
     "references": {"color": "#3182ce", "width": 2, "label": "References"},
-    "aggregates": {"color": "#38a169", "width": 2, "label": "Aggregates"}
+    "aggregates": {"color": "#38a169", "width": 2, "label": "Aggregates"},
+    "feeds": {"color": "#00a67d", "width": 2, "label": "Feeds"},
+    "calculates": {"color": "#d69e2e", "width": 2, "label": "Calculates"}
   },
   "nodes": [
-    {"id": "hub", "label": "GEP Data Model", "tier": 0, "group": "hub", "title": "Global Export Platform Analytics\n10 Tables, 79 Columns", "size": 50},
+    {"id": "hub", "label": "GEP/Navira Data Model", "tier": 0, "group": "hub", "title": "Global Export Platform Analytics\nRebranded to Navira Dec 2025\n10 Tables, 79 Columns", "size": 50},
+
     {"id": "table_order", "label": "Order", "tier": 1, "group": "fact", "title": "Order fact table\nCustomer orders with shipping, status, country", "size": 40},
     {"id": "table_order_line", "label": "Order Line", "tier": 1, "group": "fact", "title": "Order Line fact table\nLine item details, quantities, amounts", "size": 35},
     {"id": "table_campaign", "label": "Campaign", "tier": 1, "group": "fact", "title": "Campaign fact table\nMarketing campaign tracking", "size": 30},
+    {"id": "table_returns", "label": "Returns", "tier": 1, "group": "fact", "title": "Returns fact table\nReturn transactions", "size": 25},
+    {"id": "table_inventory", "label": "Inventory", "tier": 1, "group": "fact", "title": "Inventory fact table\nStock levels and movements", "size": 25},
+
     {"id": "table_date", "label": "Date", "tier": 2, "group": "date", "title": "Date dimension\nStandard date hierarchy", "size": 25},
     {"id": "table_marketplace", "label": "Marketplace", "tier": 2, "group": "dimension", "title": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "size": 25},
     {"id": "table_product", "label": "Product", "tier": 2, "group": "dimension", "title": "Product dimension\nProduct catalog and attributes", "size": 30},
     {"id": "table_customer", "label": "Customer", "tier": 2, "group": "dimension", "title": "Customer dimension\nCustomer demographics and segments", "size": 25},
+
     {"id": "table_consolidation", "label": "Consolidation", "tier": 3, "group": "consolidation", "title": "Consolidation table\nAggregated metrics", "size": 25},
-    {"id": "table_returns", "label": "Returns", "tier": 1, "group": "fact", "title": "Returns fact table\nReturn transactions", "size": 25},
-    {"id": "table_inventory", "label": "Inventory", "tier": 1, "group": "fact", "title": "Inventory fact table\nStock levels and movements", "size": 25}
+
+    {"id": "col_order_id", "label": "Order ID", "tier": 2, "group": "column", "title": "Primary key for orders", "size": 12},
+    {"id": "col_order_date", "label": "Order Date", "tier": 2, "group": "column", "title": "Date of order placement", "size": 12},
+    {"id": "col_shipping_status", "label": "Shipping Status", "tier": 2, "group": "column", "title": "Current shipping state", "size": 12},
+    {"id": "col_country", "label": "Country", "tier": 2, "group": "column", "title": "Destination country", "size": 12},
+    {"id": "col_order_total", "label": "Order Total", "tier": 2, "group": "column", "title": "Total order amount", "size": 12},
+    {"id": "col_currency", "label": "Currency", "tier": 2, "group": "column", "title": "Order currency code", "size": 12},
+
+    {"id": "col_line_id", "label": "Line ID", "tier": 2, "group": "column", "title": "Order line item identifier", "size": 12},
+    {"id": "col_quantity", "label": "Quantity", "tier": 2, "group": "column", "title": "Quantity ordered", "size": 12},
+    {"id": "col_unit_price", "label": "Unit Price", "tier": 2, "group": "column", "title": "Price per unit", "size": 12},
+    {"id": "col_line_total", "label": "Line Total", "tier": 2, "group": "column", "title": "Total for line item", "size": 12},
+    {"id": "col_sku", "label": "SKU", "tier": 2, "group": "column", "title": "Product stock keeping unit", "size": 12},
+
+    {"id": "col_campaign_id", "label": "Campaign ID", "tier": 2, "group": "column", "title": "Campaign identifier", "size": 12},
+    {"id": "col_campaign_name", "label": "Campaign Name", "tier": 2, "group": "column", "title": "Campaign display name", "size": 12},
+    {"id": "col_ad_spend", "label": "Ad Spend", "tier": 2, "group": "column", "title": "Advertising expenditure", "size": 12},
+    {"id": "col_impressions", "label": "Impressions", "tier": 2, "group": "column", "title": "Ad impressions count", "size": 12},
+    {"id": "col_clicks", "label": "Clicks", "tier": 2, "group": "column", "title": "Ad clicks count", "size": 12},
+
+    {"id": "col_return_id", "label": "Return ID", "tier": 2, "group": "column", "title": "Return transaction ID", "size": 12},
+    {"id": "col_return_reason", "label": "Return Reason", "tier": 2, "group": "column", "title": "Reason for return", "size": 12},
+    {"id": "col_return_date", "label": "Return Date", "tier": 2, "group": "column", "title": "Date of return", "size": 12},
+    {"id": "col_refund_amount", "label": "Refund Amount", "tier": 2, "group": "column", "title": "Amount refunded", "size": 12},
+
+    {"id": "col_inventory_id", "label": "Inventory ID", "tier": 2, "group": "column", "title": "Inventory record ID", "size": 12},
+    {"id": "col_stock_level", "label": "Stock Level", "tier": 2, "group": "column", "title": "Current stock quantity", "size": 12},
+    {"id": "col_reorder_point", "label": "Reorder Point", "tier": 2, "group": "column", "title": "Threshold for reordering", "size": 12},
+    {"id": "col_warehouse", "label": "Warehouse", "tier": 2, "group": "column", "title": "Warehouse location", "size": 12},
+
+    {"id": "col_product_id", "label": "Product ID", "tier": 3, "group": "column", "title": "Product identifier", "size": 12},
+    {"id": "col_product_name", "label": "Product Name", "tier": 3, "group": "column", "title": "Product display name", "size": 12},
+    {"id": "col_category", "label": "Category", "tier": 3, "group": "column", "title": "Product category", "size": 12},
+    {"id": "col_brand", "label": "Brand", "tier": 3, "group": "column", "title": "Product brand", "size": 12},
+    {"id": "col_asin", "label": "ASIN", "tier": 3, "group": "column", "title": "Amazon Standard ID Number", "size": 12},
+
+    {"id": "col_customer_id", "label": "Customer ID", "tier": 3, "group": "column", "title": "Customer identifier", "size": 12},
+    {"id": "col_customer_name", "label": "Customer Name", "tier": 3, "group": "column", "title": "Customer display name", "size": 12},
+    {"id": "col_segment", "label": "Segment", "tier": 3, "group": "column", "title": "Customer segment", "size": 12},
+    {"id": "col_lifetime_value", "label": "Lifetime Value", "tier": 3, "group": "column", "title": "Customer LTV", "size": 12},
+
+    {"id": "col_marketplace_id", "label": "Marketplace ID", "tier": 3, "group": "column", "title": "Marketplace identifier", "size": 12},
+    {"id": "col_marketplace_name", "label": "Marketplace Name", "tier": 3, "group": "column", "title": "Marketplace display name", "size": 12},
+    {"id": "col_region", "label": "Region", "tier": 3, "group": "column", "title": "Geographic region", "size": 12},
+
+    {"id": "col_date_key", "label": "Date Key", "tier": 3, "group": "column", "title": "Date dimension key", "size": 12},
+    {"id": "col_day", "label": "Day", "tier": 3, "group": "column", "title": "Day of month", "size": 12},
+    {"id": "col_month", "label": "Month", "tier": 3, "group": "column", "title": "Month of year", "size": 12},
+    {"id": "col_quarter", "label": "Quarter", "tier": 3, "group": "column", "title": "Fiscal quarter", "size": 12},
+    {"id": "col_year", "label": "Year", "tier": 3, "group": "column", "title": "Calendar year", "size": 12},
+
+    {"id": "measure_revenue", "label": "Revenue", "tier": 3, "group": "measure", "title": "Total revenue\nSum of order totals", "size": 18},
+    {"id": "measure_aov", "label": "AOV", "tier": 3, "group": "measure", "title": "Average Order Value\nRevenue / Order Count", "size": 18},
+    {"id": "measure_units_sold", "label": "Units Sold", "tier": 3, "group": "measure", "title": "Total units sold\nSum of quantities", "size": 18},
+    {"id": "measure_return_rate", "label": "Return Rate", "tier": 3, "group": "measure", "title": "Return percentage\nReturns / Orders", "size": 18},
+    {"id": "measure_acos", "label": "ACoS", "tier": 3, "group": "measure", "title": "Advertising Cost of Sales\nAd Spend / Revenue", "size": 18},
+    {"id": "measure_roas", "label": "ROAS", "tier": 3, "group": "measure", "title": "Return on Ad Spend\nRevenue / Ad Spend", "size": 18},
+    {"id": "measure_ctr", "label": "CTR", "tier": 3, "group": "measure", "title": "Click-Through Rate\nClicks / Impressions", "size": 18},
+    {"id": "measure_inventory_turnover", "label": "Inventory Turnover", "tier": 3, "group": "measure", "title": "Inventory efficiency\nCOGS / Avg Inventory", "size": 18},
+
+    {"id": "source_amazon", "label": "Amazon Seller Central", "tier": 4, "group": "source", "title": "Amazon marketplace data\nOrders, inventory, FBA, listings", "size": 25, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"},
+    {"id": "source_ebay", "label": "eBay", "tier": 4, "group": "source", "title": "eBay marketplace data\nListings, orders, sales", "size": 20, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg"},
+    {"id": "source_walmart", "label": "Walmart", "tier": 4, "group": "source", "title": "Walmart marketplace data\nOrders, inventory", "size": 20, "logo": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg"},
+    {"id": "source_sellercloud", "label": "SellerCloud", "tier": 4, "group": "source", "title": "SellerCloud ERP\nOrders, inventory, RMA, vendors\n14 Eclipse templates", "size": 25, "logo": "https://www.sellercloud.com/favicon.ico"},
+    {"id": "source_amazon_ads", "label": "Amazon Advertising", "tier": 4, "group": "source", "title": "Amazon Ads API\nSponsored Products, Brands, Display", "size": 22, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"},
+    {"id": "source_fba", "label": "FBA Reports", "tier": 4, "group": "source", "title": "Fulfillment by Amazon\nInventory, returns, fees", "size": 20},
+
+    {"id": "api_eclipse", "label": "Eclipse API", "tier": 5, "group": "api", "title": "Eclipse Connectors\n61 GEP templates\nCSV, REST, SQL Server", "size": 30},
+    {"id": "api_snowflake", "label": "Snowflake", "tier": 5, "group": "api", "title": "Cloud Data Warehouse\nGEP schema with 43 files\nStar schema models", "size": 30}
   ],
   "edges": [
     {"source": "hub", "target": "table_order", "type": "contains"},
@@ -42,6 +120,7 @@
     {"source": "hub", "target": "table_consolidation", "type": "contains"},
     {"source": "hub", "target": "table_returns", "type": "contains"},
     {"source": "hub", "target": "table_inventory", "type": "contains"},
+
     {"source": "table_order_line", "target": "table_order", "type": "references"},
     {"source": "table_order_line", "target": "table_product", "type": "references"},
     {"source": "table_order", "target": "table_customer", "type": "references"},
@@ -51,6 +130,86 @@
     {"source": "table_returns", "target": "table_order", "type": "references"},
     {"source": "table_inventory", "target": "table_product", "type": "references"},
     {"source": "table_consolidation", "target": "table_order", "type": "aggregates"},
-    {"source": "table_consolidation", "target": "table_order_line", "type": "aggregates"}
+    {"source": "table_consolidation", "target": "table_order_line", "type": "aggregates"},
+
+    {"source": "table_order", "target": "col_order_id", "type": "contains"},
+    {"source": "table_order", "target": "col_order_date", "type": "contains"},
+    {"source": "table_order", "target": "col_shipping_status", "type": "contains"},
+    {"source": "table_order", "target": "col_country", "type": "contains"},
+    {"source": "table_order", "target": "col_order_total", "type": "contains"},
+    {"source": "table_order", "target": "col_currency", "type": "contains"},
+
+    {"source": "table_order_line", "target": "col_line_id", "type": "contains"},
+    {"source": "table_order_line", "target": "col_quantity", "type": "contains"},
+    {"source": "table_order_line", "target": "col_unit_price", "type": "contains"},
+    {"source": "table_order_line", "target": "col_line_total", "type": "contains"},
+    {"source": "table_order_line", "target": "col_sku", "type": "contains"},
+
+    {"source": "table_campaign", "target": "col_campaign_id", "type": "contains"},
+    {"source": "table_campaign", "target": "col_campaign_name", "type": "contains"},
+    {"source": "table_campaign", "target": "col_ad_spend", "type": "contains"},
+    {"source": "table_campaign", "target": "col_impressions", "type": "contains"},
+    {"source": "table_campaign", "target": "col_clicks", "type": "contains"},
+
+    {"source": "table_returns", "target": "col_return_id", "type": "contains"},
+    {"source": "table_returns", "target": "col_return_reason", "type": "contains"},
+    {"source": "table_returns", "target": "col_return_date", "type": "contains"},
+    {"source": "table_returns", "target": "col_refund_amount", "type": "contains"},
+
+    {"source": "table_inventory", "target": "col_inventory_id", "type": "contains"},
+    {"source": "table_inventory", "target": "col_stock_level", "type": "contains"},
+    {"source": "table_inventory", "target": "col_reorder_point", "type": "contains"},
+    {"source": "table_inventory", "target": "col_warehouse", "type": "contains"},
+
+    {"source": "table_product", "target": "col_product_id", "type": "contains"},
+    {"source": "table_product", "target": "col_product_name", "type": "contains"},
+    {"source": "table_product", "target": "col_category", "type": "contains"},
+    {"source": "table_product", "target": "col_brand", "type": "contains"},
+    {"source": "table_product", "target": "col_asin", "type": "contains"},
+
+    {"source": "table_customer", "target": "col_customer_id", "type": "contains"},
+    {"source": "table_customer", "target": "col_customer_name", "type": "contains"},
+    {"source": "table_customer", "target": "col_segment", "type": "contains"},
+    {"source": "table_customer", "target": "col_lifetime_value", "type": "contains"},
+
+    {"source": "table_marketplace", "target": "col_marketplace_id", "type": "contains"},
+    {"source": "table_marketplace", "target": "col_marketplace_name", "type": "contains"},
+    {"source": "table_marketplace", "target": "col_region", "type": "contains"},
+
+    {"source": "table_date", "target": "col_date_key", "type": "contains"},
+    {"source": "table_date", "target": "col_day", "type": "contains"},
+    {"source": "table_date", "target": "col_month", "type": "contains"},
+    {"source": "table_date", "target": "col_quarter", "type": "contains"},
+    {"source": "table_date", "target": "col_year", "type": "contains"},
+
+    {"source": "col_order_total", "target": "measure_revenue", "type": "calculates"},
+    {"source": "col_order_total", "target": "measure_aov", "type": "calculates"},
+    {"source": "col_quantity", "target": "measure_units_sold", "type": "calculates"},
+    {"source": "col_quantity", "target": "measure_aov", "type": "calculates"},
+    {"source": "col_refund_amount", "target": "measure_return_rate", "type": "calculates"},
+    {"source": "col_ad_spend", "target": "measure_acos", "type": "calculates"},
+    {"source": "col_ad_spend", "target": "measure_roas", "type": "calculates"},
+    {"source": "col_impressions", "target": "measure_ctr", "type": "calculates"},
+    {"source": "col_clicks", "target": "measure_ctr", "type": "calculates"},
+    {"source": "col_stock_level", "target": "measure_inventory_turnover", "type": "calculates"},
+
+    {"source": "source_amazon", "target": "api_eclipse", "type": "feeds"},
+    {"source": "source_ebay", "target": "api_eclipse", "type": "feeds"},
+    {"source": "source_walmart", "target": "api_eclipse", "type": "feeds"},
+    {"source": "source_sellercloud", "target": "api_eclipse", "type": "feeds"},
+    {"source": "source_amazon_ads", "target": "api_eclipse", "type": "feeds"},
+    {"source": "source_fba", "target": "api_eclipse", "type": "feeds"},
+
+    {"source": "api_eclipse", "target": "api_snowflake", "type": "feeds"},
+
+    {"source": "api_snowflake", "target": "table_order", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_order_line", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_campaign", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_returns", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_inventory", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_product", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_customer", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_marketplace", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_date", "type": "feeds"}
   ]
 }
