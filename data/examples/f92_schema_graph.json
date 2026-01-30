@@ -156,38 +156,23 @@
     {"source": "table_spend", "target": "measure_video_quartiles", "type": "calculates"},
     {"source": "table_spend", "target": "measure_search_share", "type": "calculates"},
 
-    {"source": "source_google_ads", "target": "table_spend", "type": "feeds"},
-    {"source": "source_google_ads", "target": "table_campaign", "type": "feeds"},
-    {"source": "source_google_ads", "target": "table_platform", "type": "feeds"},
+    {"source": "source_google_ads", "target": "api_windsor", "type": "feeds"},
+    {"source": "source_linkedin", "target": "api_windsor", "type": "feeds"},
+    {"source": "source_microsoft", "target": "api_windsor", "type": "feeds"},
 
-    {"source": "source_meta", "target": "table_spend", "type": "feeds"},
-    {"source": "source_meta", "target": "table_campaign", "type": "feeds"},
+    {"source": "source_meta", "target": "source_smartsheet", "type": "feeds"},
+    {"source": "source_viant", "target": "api_snowflake", "type": "feeds"},
+    {"source": "source_tradedesk", "target": "api_snowflake", "type": "feeds"},
+    {"source": "source_dv360", "target": "api_snowflake", "type": "feeds"},
 
-    {"source": "source_linkedin", "target": "table_spend", "type": "feeds"},
-    {"source": "source_linkedin", "target": "table_campaign", "type": "feeds"},
+    {"source": "api_windsor", "target": "api_snowflake", "type": "feeds"},
+    {"source": "source_smartsheet", "target": "api_snowflake", "type": "feeds"},
 
-    {"source": "source_microsoft", "target": "table_spend", "type": "feeds"},
-    {"source": "source_microsoft", "target": "table_campaign", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_spend", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_campaign", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_platform", "type": "feeds"},
+    {"source": "api_snowflake", "target": "table_flight", "type": "feeds"},
 
-    {"source": "source_viant", "target": "table_spend", "type": "feeds"},
-    {"source": "source_viant", "target": "measure_reach", "type": "feeds"},
-    {"source": "source_viant", "target": "measure_frequency", "type": "feeds"},
-
-    {"source": "source_tradedesk", "target": "table_spend", "type": "feeds"},
-    {"source": "source_tradedesk", "target": "table_campaign", "type": "feeds"},
-
-    {"source": "source_dv360", "target": "table_spend", "type": "feeds"},
-    {"source": "source_dv360", "target": "table_campaign", "type": "feeds"},
-
-    {"source": "source_smartsheet", "target": "table_flight", "type": "feeds"},
-    {"source": "source_smartsheet", "target": "table_spend", "type": "feeds"},
-
-    {"source": "api_windsor", "target": "source_google_ads", "type": "feeds"},
-    {"source": "api_windsor", "target": "source_linkedin", "type": "feeds"},
-
-    {"source": "api_snowflake", "target": "source_viant", "type": "feeds"},
-    {"source": "api_snowflake", "target": "hub", "type": "feeds"},
-
-    {"source": "api_eclipse", "target": "hub", "type": "feeds"}
+    {"source": "hub", "target": "api_eclipse", "type": "feeds"}
   ]
 }
