@@ -2047,22 +2047,39 @@
         }
 
         function applyCylinderLayout() {
-            // Y-axis = time, circumference = category
+            // Y-axis = tier/time, circumference = category/group
             const nodes = getGraphNodes();
             if (nodes.length === 0) return;
 
+            // Check if we have dates or tiers to use for Y-axis
             const nodesWithDates = nodes.filter(n => n.createdAt);
-            if (nodesWithDates.length === 0) {
-                alert('Cylinder layout requires nodes with createdAt timestamps');
-                document.getElementById('layout-select').value = 'force';
-                return;
+            const nodesWithTiers = nodes.filter(n => typeof n.tier === 'number');
+
+            let useDate = nodesWithDates.length > nodes.length / 2;
+            let minY, maxY, getYValue;
+
+            if (useDate && nodesWithDates.length > 0) {
+                // Use dates for Y positioning
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
+                minY = Math.min(...dates);
+                maxY = Math.max(...dates);
+                getYValue = (node) => node.createdAt ? new Date(node.createdAt).getTime() : minY;
+            } else if (nodesWithTiers.length > 0) {
+                // Use tiers for Y positioning
+                const tiers = nodesWithTiers.map(n => n.tier);
+                minY = Math.min(...tiers);
+                maxY = Math.max(...tiers);
+                getYValue = (node) => typeof node.tier === 'number' ? node.tier : minY;
+            } else {
+                // Fallback: use node index
+                minY = 0;
+                maxY = nodes.length - 1;
+                getYValue = (node) => nodes.indexOf(node);
             }
 
-            const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
-            const minDate = Math.min(...dates);
-            const maxDate = Math.max(...dates);
-            const dateRange = maxDate - minDate || 1;
+            const yRange = maxY - minY || 1;
 
+            // Group nodes by their group property
             const groups = {};
             nodes.forEach(node => {
                 const group = node.group || 'default';
@@ -2071,16 +2088,21 @@
             });
 
             const totalGroups = Object.keys(groups).length;
-            const radius = 150;
-            const height = 400;
+            const radius = 200;
+            const height = 500;
 
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
-                const angle = (group.index / totalGroups) * Math.PI * 2;
+                // Spread nodes within their group segment
+                const nodeIndexInGroup = group.nodes.indexOf(node);
+                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
+                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
+                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
+                const angle = baseAngle + offsetAngle;
 
-                // Y position based on date
-                const nodeDate = node.createdAt ? new Date(node.createdAt).getTime() : minDate;
-                const yNorm = (nodeDate - minDate) / dateRange;
+                // Y position based on tier or date
+                const yValue = getYValue(node);
+                const yNorm = (yValue - minY) / yRange;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
