@@ -956,26 +956,22 @@
         let sidebarVisible = true;
         const highlightedNodes = new Set();
 
-        // Safe getter for graph data - handles edge cases
+        // Track current graph data ourselves since graphData() getter is unreliable
+        let currentGraphData = { nodes: [], links: [] };
+
         function getGraphNodes() {
-            if (!graph) return [];
-            try {
-                const data = graph.graphData();
-                return (data && data.nodes) ? data.nodes : [];
-            } catch (e) {
-                console.warn('Error getting graph nodes:', e);
-                return [];
-            }
+            return currentGraphData.nodes || [];
         }
 
         function getGraphLinks() {
-            if (!graph) return [];
-            try {
-                const data = graph.graphData();
-                return (data && data.links) ? data.links : [];
-            } catch (e) {
-                console.warn('Error getting graph links:', e);
-                return [];
+            return currentGraphData.links || [];
+        }
+
+        // Wrapper to set graph data and track it
+        function setGraphData(data) {
+            currentGraphData = data;
+            if (graph) {
+                graph.graphData(data);
             }
         }
 
@@ -1179,7 +1175,7 @@
                 countEl.textContent = '';
             }
 
-            graph.graphData({
+            setGraphData({
                 nodes: filteredNodes,
                 links: filteredLinks
             });
@@ -1241,6 +1237,8 @@
             const height = wrapper.offsetHeight;
 
             console.log('[Athena] Initializing ForceGraph3D');
+            // Initialize our tracking variable with the initial data
+            currentGraphData = graphData;
             graph = ForceGraph3D()(container)
                 .width(width)
                 .height(height)
@@ -1523,7 +1521,7 @@
                 return sourceId === node.id || targetId === node.id;
             });
 
-            graph.graphData({
+            setGraphData({
                 nodes: filteredNodes,
                 links: filteredLinks
             });
@@ -1966,7 +1964,7 @@
                 return filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId) && visibleEdgeTypes.has(link.edgeType);
             });
 
-            graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+            setGraphData({ nodes: filteredNodes, links: filteredLinks });
         }
 
         function toggleTimePlay() {
@@ -2021,9 +2019,10 @@
 
         // --- Update stats display ---
         function updateStats() {
-            const data = graph.graphData();
+            const nodes = getGraphNodes();
+            const links = getGraphLinks();
             const statsEl = document.getElementById('stats-display');
-            statsEl.textContent = `${data.nodes.length} nodes · ${data.links.length} edges`;
+            statsEl.textContent = `${nodes.length} nodes · ${links.length} edges`;
         }
 
         // --- Path highlighting (find shortest path between multi-selected nodes) ---
@@ -2245,7 +2244,7 @@
                 return visibleIds.has(sourceId) && visibleIds.has(targetId);
             });
 
-            graph.graphData({ nodes: visibleNodes, links: visibleLinks });
+            setGraphData({ nodes: visibleNodes, links: visibleLinks });
         }
 
         // --- Edge thickness by weight ---

@@ -1101,37 +1101,22 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let sidebarVisible = true;
         const highlightedNodes = new Set();
 
-        // Safe getter for graph data - handles edge cases
+        // Track current graph data ourselves since graphData() getter is unreliable
+        let currentGraphData = {{ nodes: [], links: [] }};
+
         function getGraphNodes() {{
-            if (!graph) {{
-                console.warn('[getGraphNodes] graph is null/undefined');
-                return [];
-            }}
-            try {{
-                const data = graph.graphData();
-                if (!data) {{
-                    console.warn('[getGraphNodes] graphData() returned:', data);
-                    return [];
-                }}
-                if (!data.nodes) {{
-                    console.warn('[getGraphNodes] data has no nodes. data:', data, 'keys:', Object.keys(data));
-                    return [];
-                }}
-                return data.nodes;
-            }} catch (e) {{
-                console.warn('[getGraphNodes] Error:', e);
-                return [];
-            }}
+            return currentGraphData.nodes || [];
         }}
 
         function getGraphLinks() {{
-            if (!graph) return [];
-            try {{
-                const data = graph.graphData();
-                return (data && data.links) ? data.links : [];
-            }} catch (e) {{
-                console.warn('Error getting graph links:', e);
-                return [];
+            return currentGraphData.links || [];
+        }}
+
+        // Wrapper to set graph data and track it
+        function setGraphData(data) {{
+            currentGraphData = data;
+            if (graph) {{
+                graph.graphData(data);
             }}
         }}
 
@@ -1335,7 +1320,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 countEl.textContent = '';
             }}
 
-            graph.graphData({{
+            setGraphData({{
                 nodes: filteredNodes,
                 links: filteredLinks
             }});
@@ -1397,6 +1382,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const height = wrapper.offsetHeight;
 
             console.log('[Athena] Initializing ForceGraph3D');
+            // Initialize our tracking variable with the initial data
+            currentGraphData = graphData;
             graph = ForceGraph3D()(container)
                 .width(width)
                 .height(height)
@@ -1679,7 +1666,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return sourceId === node.id || targetId === node.id;
             }});
 
-            graph.graphData({{
+            setGraphData({{
                 nodes: filteredNodes,
                 links: filteredLinks
             }});
@@ -2122,7 +2109,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId) && visibleEdgeTypes.has(link.edgeType);
             }});
 
-            graph.graphData({{ nodes: filteredNodes, links: filteredLinks }});
+            setGraphData({{ nodes: filteredNodes, links: filteredLinks }});
         }}
 
         function toggleTimePlay() {{
@@ -2402,7 +2389,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return visibleIds.has(sourceId) && visibleIds.has(targetId);
             }});
 
-            graph.graphData({{ nodes: visibleNodes, links: visibleLinks }});
+            setGraphData({{ nodes: visibleNodes, links: visibleLinks }});
         }}
 
         // --- Edge thickness by weight ---
