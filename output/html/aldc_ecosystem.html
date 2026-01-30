@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>ALDC Data Ecosystem</title>
     <link rel="icon" href="data:,">
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <style>
         * {
@@ -192,13 +193,96 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 85vh;
             width: 90%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             overflow: hidden;
+        }
+        .modal-section {
+            margin-bottom: 20px;
+        }
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .modal-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .modal-detail-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+        .modal-detail-item .detail-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .modal-detail-item .detail-value {
+            font-size: 13px;
+            color: #1a365d;
+            font-weight: 500;
+        }
+        .modal-connections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .modal-conn-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #2b6cb0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-conn-chip:hover {
+            background: #bee3f8;
+        }
+        .modal-conn-chip .conn-type {
+            font-size: 10px;
+            color: #666;
+            margin-left: 6px;
+        }
+        .modal-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 6px;
+        }
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+        }
+        .modal-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-top: 6px;
         }
         .modal-header {
             padding: 20px;
@@ -912,11 +996,28 @@
     <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2 id="modal-title">Memory Content</h2>
+                <div class="modal-header-content">
+                    <img id="modal-logo" class="modal-logo" src="" alt="" style="display:none;">
+                    <div>
+                        <h2 id="modal-title">Node Details</h2>
+                        <span id="modal-tier-badge" class="modal-tier-badge"></span>
+                    </div>
+                </div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="full-content" id="modal-content"></div>
+                <div class="modal-section">
+                    <div class="modal-section-title">Description</div>
+                    <div class="full-content" id="modal-content"></div>
+                </div>
+                <div class="modal-section" id="modal-details-section">
+                    <div class="modal-section-title">Details</div>
+                    <div class="modal-detail-grid" id="modal-details"></div>
+                </div>
+                <div class="modal-section" id="modal-connections-section">
+                    <div class="modal-section-title">Connected Nodes</div>
+                    <div class="modal-connections" id="modal-connections"></div>
+                </div>
             </div>
             <div class="modal-meta" id="modal-meta"></div>
         </div>
@@ -1291,13 +1392,103 @@
         function showFullContent() {
             if (!selectedNode) return;
 
+            // Set title and logo
             document.getElementById('modal-title').textContent = selectedNode.name;
-            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
-            document.getElementById('modal-meta').innerHTML = `
-                <span><span class="label">ID:</span> ${selectedNode.id}</span>
-                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            const modalLogo = document.getElementById('modal-logo');
+            if (selectedNode.logo) {
+                modalLogo.src = selectedNode.logo;
+                modalLogo.style.display = 'block';
+            } else {
+                modalLogo.style.display = 'none';
+            }
+
+            // Set tier badge
+            const tierBadge = document.getElementById('modal-tier-badge');
+            tierBadge.textContent = selectedNode.groupLabel || selectedNode.group;
+            tierBadge.style.background = selectedNode.color;
+
+            // Set description
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No description available.';
+
+            // Build details grid
+            const detailsGrid = document.getElementById('modal-details');
+            const detailsSection = document.getElementById('modal-details-section');
+            let detailsHtml = '';
+
+            // Add node type detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node Type</div>
+                    <div class="detail-value">${selectedNode.groupLabel || selectedNode.group}</div>
+                </div>
             `;
+
+            // Add tier detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Tier Level</div>
+                    <div class="detail-value">Tier ${selectedNode.tier}</div>
+                </div>
+            `;
+
+            // Add ID detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node ID</div>
+                    <div class="detail-value">${selectedNode.id}</div>
+                </div>
+            `;
+
+            // Add size/importance detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Relative Size</div>
+                    <div class="detail-value">${selectedNode.val || 20}</div>
+                </div>
+            `;
+
+            detailsGrid.innerHTML = detailsHtml;
+            detailsSection.style.display = detailsHtml ? 'block' : 'none';
+
+            // Build connections section
+            const connectionsEl = document.getElementById('modal-connections');
+            const connectionsSection = document.getElementById('modal-connections-section');
+            const connections = linksByNode[selectedNode.id] || [];
+
+            if (connections.length > 0) {
+                let connectionsHtml = '';
+                connections.forEach(conn => {
+                    const connNode = nodeMap[conn.nodeId];
+                    if (!connNode) return;
+                    connectionsHtml += `
+                        <span class="modal-conn-chip" onclick="navigateToNodeFromModal('${conn.nodeId}')">
+                            ${connNode.name}
+                            <span class="conn-type">${conn.relationType}</span>
+                        </span>
+                    `;
+                });
+                connectionsEl.innerHTML = connectionsHtml;
+                connectionsSection.style.display = 'block';
+            } else {
+                connectionsSection.style.display = 'none';
+            }
+
+            // Set footer meta
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">Full ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Group:</span> ${selectedNode.group}</span>
+                <span><span class="label">Connections:</span> ${connections.length}</span>
+            `;
+
             document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Navigate to node from modal and close modal
+        function navigateToNodeFromModal(nodeId) {
+            closeModal();
+            setTimeout(() => {
+                navigateToNode(nodeId);
+            }, 100);
         }
 
         // Close modal
@@ -1407,7 +1598,8 @@
 
             // Show/hide view full button based on content length
             const viewFullBtn = document.getElementById('view-full-btn');
-            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+            // Always show View Full Content button to access detailed popup
+            viewFullBtn.style.display = 'inline-block';
 
             // Show metadata
             const metaEl = document.getElementById('node-meta');
@@ -1664,17 +1856,14 @@
             document.getElementById('glow-toggle').classList.toggle('active', glowEnabled);
 
             if (glowEnabled) {
-                // Add bloom effect using post-processing
-                const renderer = graph.renderer();
-                const scene = graph.scene();
-                const camera = graph.camera();
-
-                // Note: Full bloom requires three.js post-processing libraries
-                // For now, we simulate glow with emissive materials
+                // Simulate glow with sprites around nodes
                 graph.nodeThreeObject(node => {
-                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                    if (typeof THREE === 'undefined') {
+                        console.warn('THREE.js not available for glow effect');
+                        return null;
+                    }
                     const size = Math.max(node.val / 5, 2) * 2;
-                    const geom = new THREE.SphereGeometry(size / 2);
+                    const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                     const material = new THREE.MeshBasicMaterial({
                         color: node.color,
                         transparent: true,
@@ -1684,40 +1873,62 @@
                     const mesh = new THREE.Mesh(geom, material);
 
                     // Add glow sprite
+                    const glowTexture = createGlowTexture(node.color);
                     const spriteMaterial = new THREE.SpriteMaterial({
-                        map: createGlowTexture(node.color),
+                        map: glowTexture,
                         transparent: true,
                         blending: THREE.AdditiveBlending,
-                        opacity: 0.6
+                        opacity: 0.5
                     });
                     const sprite = new THREE.Sprite(spriteMaterial);
-                    sprite.scale.set(size * 3, size * 3, 1);
+                    sprite.scale.set(size * 4, size * 4, 1);
                     mesh.add(sprite);
 
                     return mesh;
                 });
+                graph.nodeThreeObjectExtend(false);
             } else {
-                setNodeGeometry(currentGeometry);
+                // Reset to default rendering
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
             }
         }
 
         function createGlowTexture(color) {
             const canvas = document.createElement('canvas');
-            canvas.width = 64;
-            canvas.height = 64;
+            canvas.width = 128;
+            canvas.height = 128;
             const ctx = canvas.getContext('2d');
 
-            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            // Create radial gradient for glow effect
+            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
             gradient.addColorStop(0, color);
-            gradient.addColorStop(0.3, color + '80');
-            gradient.addColorStop(1, 'transparent');
+            gradient.addColorStop(0.2, color);
+            gradient.addColorStop(0.4, hexToRgba(color, 0.5));
+            gradient.addColorStop(0.7, hexToRgba(color, 0.2));
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 64, 64);
+            ctx.fillRect(0, 0, 128, 128);
 
-            const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+            if (typeof THREE === 'undefined') return null;
             const texture = new THREE.CanvasTexture(canvas);
             return texture;
+        }
+
+        function hexToRgba(hex, alpha) {
+            // Convert hex color to rgba
+            let r = 0, g = 0, b = 0;
+            if (hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            } else if (hex.length === 7) {
+                r = parseInt(hex.slice(1, 3), 16);
+                g = parseInt(hex.slice(3, 5), 16);
+                b = parseInt(hex.slice(5, 7), 16);
+            }
+            return `rgba(${r},${g},${b},${alpha})`;
         }
 
         // --- Edge particles ---
@@ -1842,22 +2053,39 @@
         }
 
         function applyCylinderLayout() {
-            // Y-axis = time, circumference = category
+            // Y-axis = tier/time, circumference = category/group
             const nodes = getGraphNodes();
             if (nodes.length === 0) return;
 
+            // Check if we have dates or tiers to use for Y-axis
             const nodesWithDates = nodes.filter(n => n.createdAt);
-            if (nodesWithDates.length === 0) {
-                alert('Cylinder layout requires nodes with createdAt timestamps');
-                document.getElementById('layout-select').value = 'force';
-                return;
+            const nodesWithTiers = nodes.filter(n => typeof n.tier === 'number');
+
+            let useDate = nodesWithDates.length > nodes.length / 2;
+            let minY, maxY, getYValue;
+
+            if (useDate && nodesWithDates.length > 0) {
+                // Use dates for Y positioning
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
+                minY = Math.min(...dates);
+                maxY = Math.max(...dates);
+                getYValue = (node) => node.createdAt ? new Date(node.createdAt).getTime() : minY;
+            } else if (nodesWithTiers.length > 0) {
+                // Use tiers for Y positioning
+                const tiers = nodesWithTiers.map(n => n.tier);
+                minY = Math.min(...tiers);
+                maxY = Math.max(...tiers);
+                getYValue = (node) => typeof node.tier === 'number' ? node.tier : minY;
+            } else {
+                // Fallback: use node index
+                minY = 0;
+                maxY = nodes.length - 1;
+                getYValue = (node) => nodes.indexOf(node);
             }
 
-            const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
-            const minDate = Math.min(...dates);
-            const maxDate = Math.max(...dates);
-            const dateRange = maxDate - minDate || 1;
+            const yRange = maxY - minY || 1;
 
+            // Group nodes by their group property
             const groups = {};
             nodes.forEach(node => {
                 const group = node.group || 'default';
@@ -1866,16 +2094,21 @@
             });
 
             const totalGroups = Object.keys(groups).length;
-            const radius = 150;
-            const height = 400;
+            const radius = 200;
+            const height = 500;
 
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
-                const angle = (group.index / totalGroups) * Math.PI * 2;
+                // Spread nodes within their group segment
+                const nodeIndexInGroup = group.nodes.indexOf(node);
+                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
+                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
+                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
+                const angle = baseAngle + offsetAngle;
 
-                // Y position based on date
-                const nodeDate = node.createdAt ? new Date(node.createdAt).getTime() : minDate;
-                const yNorm = (nodeDate - minDate) / dateRange;
+                // Y position based on tier or date
+                const yValue = getYValue(node);
+                const yNorm = (yValue - minY) / yRange;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
@@ -2161,14 +2394,17 @@
 
         // --- Pulsing recent nodes ---
         function enablePulsingNodes(dayThreshold = 7) {
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js not available for pulsing nodes');
+                return;
+            }
             const now = Date.now();
             const threshold = dayThreshold * 24 * 60 * 60 * 1000;
 
             graph.nodeThreeObject(node => {
-                const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
                 const size = Math.max(node.val / 5, 2) * 2;
 
-                const geom = new THREE.SphereGeometry(size / 2);
+                const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                 const material = new THREE.MeshLambertMaterial({
                     color: node.color,
                     transparent: true,
