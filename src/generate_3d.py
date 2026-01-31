@@ -2523,38 +2523,6 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             graph.nodeThreeObjectExtend(true);
         }}
 
-        // Logo texture loading with cache
-        const logoCache = new Map();
-        const logoLoadPromises = new Map();
-
-        async function loadLogoTexture(url) {{
-            if (logoCache.has(url)) {{
-                return logoCache.get(url);
-            }}
-            if (logoLoadPromises.has(url)) {{
-                return logoLoadPromises.get(url);
-            }}
-
-            const promise = new Promise((resolve) => {{
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = () => {{
-                    const texture = new THREE.Texture(img);
-                    texture.needsUpdate = true;
-                    logoCache.set(url, texture);
-                    resolve(texture);
-                }};
-                img.onerror = () => {{
-                    logoCache.set(url, null);
-                    resolve(null);
-                }};
-                img.src = url;
-            }});
-
-            logoLoadPromises.set(url, promise);
-            return promise;
-        }}
-
         function createLabelSprite(text, color, nodeSize) {{
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
