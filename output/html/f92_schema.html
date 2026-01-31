@@ -550,6 +550,45 @@
             color: #666;
             margin-left: 4px;
         }
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .view-mode-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .view-mode-btn {
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-mode-btn:first-of-type {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        .view-mode-btn:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+        .view-mode-btn.active {
+            background: #805ad5;
+            color: white;
+        }
+        .view-mode-btn:hover:not(.active) {
+            background: #f3e8ff;
+        }
+        .view-mode-hidden {
+            display: none !important;
+        }
         /* Extended Features - v2.0 Styles */
 
         /* Search bar */
@@ -833,6 +872,98 @@
         .toolbar-extended.hidden {
             display: none;
         }
+
+        /* Overlay styles */
+        .overlay-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .overlay-chip:hover {
+            background: #e0e0e0;
+        }
+        .overlay-chip.active {
+            border-width: 2px;
+        }
+        .overlay-chip.active[data-overlay="projects"] {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }
+        .overlay-chip.active[data-overlay="initiatives"] {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }
+        .overlay-chip.active[data-overlay="dashboards"] {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }
+        .overlay-chip .chip-icon {
+            margin-right: 4px;
+            font-size: 11px;
+        }
+        .overlay-chip .chip-count {
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+        .overlay-chip.active .chip-count {
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .overlay-info-panel.project {
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info-panel.initiative {
+            border-left: 4px solid #00ff88;
+        }
+        .overlay-info-panel.dashboard {
+            border-left: 4px solid #ff6b6b;
+        }
+        .overlay-info-panel h4 {
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .overlay-info-panel p {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .overlay-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }
+        .overlay-meta span {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -888,6 +1019,12 @@
                         <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section view-mode-section" id="view-mode-toggle">
+                    <span class="view-mode-label">View:</span>
+                    <button class="view-mode-btn active" id="btn-logical" onclick="setViewMode('logical')">Logical</button>
+                    <button class="view-mode-btn" id="btn-physical" onclick="setViewMode('physical')">Physical</button>
+                </div>
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
             <div id="toolbar-extended" class="toolbar-extended">
@@ -929,6 +1066,20 @@
                 <div class="toolbar-section effects-toggle">
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
@@ -981,6 +1132,7 @@
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -1019,9 +1171,13 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "hub", "name": "Activation Model", "description": "Fusion92 Analytics Dataset\n7 Tables, 56 Columns, 43 Measures\n25,278 campaign records\nCY2025 ongoing", "val": 60, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null}, {"id": "table_platform", "name": "Platform", "description": "Platform dimension table\nAd platforms and publishing networks\nCategorizes ad spend by platform", "val": 35, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_flight", "name": "Flight", "description": "Flight fact table\nCampaign flight periods and details\nMandatory fields for campaign tracking", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaigns\nLinks accounts, platforms, and spend", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_spend", "name": "Spend", "description": "Spend fact table\nAdvertising spend and metrics\nActual platform spend, clicks, impressions", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_date", "name": "Date (Action)", "description": "Date dimension\nAction/Event dates\nTime dimension for analysis", "val": 30, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_creative", "name": "Creative", "description": "Creative dimension table\nAd creatives and assets\nCreative units and messages", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_account", "name": "Account", "description": "Account dimension table\nClient accounts\nSonrava, CBOE, Rivers Casino, UM Ross, etc.", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_platform_id", "name": "Platform ID", "description": "Unique platform identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_platform_name", "name": "Platform Name", "description": "Google Ads, Meta, LinkedIn, Viant, etc.", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_channel", "name": "Channel", "description": "Ad Serving, CTV, Display, Social, Video", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_flight_id", "name": "Flight ID", "description": "Unique flight identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_flight_name", "name": "Flight Name", "description": "Campaign flight name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_flight_start", "name": "Start Date", "description": "Flight start date (mandatory)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_flight_end", "name": "End Date", "description": "Flight end date (mandatory)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_publisher", "name": "Publisher", "description": "Publisher name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_target_audience", "name": "Target Audience", "description": "Target audience definition", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_geo_targeting", "name": "Geo Targeting", "description": "City, State, Country, DMA, Zip, County", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_objective", "name": "Objective", "description": "Conversion, Drive Awareness, Lead Gen, Site Traffic", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_primary_kpi", "name": "Primary KPI", "description": "Primary key performance indicator", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_campaign_id", "name": "Campaign ID", "description": "Platform campaign identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_campaign_name", "name": "Campaign Name", "description": "Marketing campaign name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_campaign_type", "name": "Campaign Type", "description": "Campaign classification", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_budget", "name": "Budget", "description": "Campaign budget allocation", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_spend_actual", "name": "Actual Spend", "description": "actualSpendPlatform (currency)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_clicks", "name": "Clicks", "description": "Click count from platform", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_impressions", "name": "Impressions", "description": "Impression count from platform", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_conversions", "name": "Conversions", "description": "Conversion events tracked", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_video_views", "name": "Video Views", "description": "Video view count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_date", "name": "Date", "description": "Event/action date", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_year_name", "name": "Year Name", "description": "CY2025, etc.", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_creative_id", "name": "Creative ID", "description": "Creative asset identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_creative_unit", "name": "Creative Unit", "description": "Creative unit type", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_creative_message", "name": "Creative Message", "description": "Ad creative message content", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_account_name", "name": "Account Name", "description": "Client account name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_account_id", "name": "Account ID", "description": "Platform account identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_media_payer", "name": "Media Payer", "description": "Client or F92", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_roas", "name": "ROAS", "description": "Return on Ad Spend\nCalculated: Revenue / Spend", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_cpm", "name": "CPM", "description": "Cost Per Mille\nCalculated: (Spend / Impressions) \u00d7 1000", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_cpc", "name": "CPC", "description": "Cost Per Click\nCalculated: Spend / Clicks", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_ctr", "name": "CTR", "description": "Click-Through Rate\nCalculated: Clicks / Impressions", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_conv_rate", "name": "Conversion Rate", "description": "Calculated: Conversions / Clicks", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_frequency", "name": "Frequency", "description": "Average impression frequency per user", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_reach", "name": "Reach", "description": "Unique users reached", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_video_quartiles", "name": "Video Quartiles", "description": "25%, 50%, 75%, 100% completion rates", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_search_share", "name": "Search Imp Share", "description": "Search impression share metrics", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "source_google_ads", "name": "Google Ads", "description": "Google Ads API (Windsor)\nSearch, Display, Video, CM\nMin date: 2023-08-01", "val": 28, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.google.com&size=64", "createdAt": null}, {"id": "source_meta", "name": "Meta Ads", "description": "Facebook / Instagram\nVia Smartsheet entry", "val": 28, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://facebook.com&size=64", "createdAt": null}, {"id": "source_linkedin", "name": "LinkedIn Ads", "description": "LinkedIn Ads API (Windsor)\nMin date: 2024-01-01", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://linkedin.com&size=64", "createdAt": null}, {"id": "source_microsoft", "name": "Microsoft Ads", "description": "Microsoft/Bing Ads API\nDirect integration", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.microsoft.com&size=64", "createdAt": null}, {"id": "source_viant", "name": "Viant DSP", "description": "Viant DSP Reporting\nSnowflake connector\nReach & frequency data", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://viantinc.com&size=64", "createdAt": null}, {"id": "source_tradedesk", "name": "Trade Desk", "description": "The Trade Desk DSP\nProgrammatic buying", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://thetradedesk.com&size=64", "createdAt": null}, {"id": "source_dv360", "name": "DV360", "description": "Google Display & Video 360\nProgrammatic platform", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://marketingplatform.google.com&size=64", "createdAt": null}, {"id": "source_smartsheet", "name": "Smartsheet", "description": "Manual data entry\nFor platforms without APIs\nMeta, TikTok, Snapchat, etc.", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://smartsheet.com&size=64", "createdAt": null}, {"id": "api_windsor", "name": "Windsor AI", "description": "Windsor AI Connector\nUnified marketing data API\nGoogle, LinkedIn integrations", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null}, {"id": "api_snowflake", "name": "Snowflake", "description": "Snowflake Data Warehouse\nViant reach/frequency data\nCentral data storage", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null}, {"id": "api_eclipse", "name": "Eclipse API", "description": "Eclipse Unified API\nTransformed data access\nDashboard & reporting", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null}];
+        const nodesData = [{"id": "hub", "name": "Activation Model", "description": "Fusion92 Analytics Dataset\n7 Tables, 56 Columns, 43 Measures\n25,278 campaign records\nCY2025 ongoing", "val": 60, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_platform", "name": "Platform", "description": "Platform dimension table\nAd platforms and publishing networks\nCategorizes ad spend by platform", "val": 35, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_flight", "name": "Flight", "description": "Flight fact table\nCampaign flight periods and details\nMandatory fields for campaign tracking", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaigns\nLinks accounts, platforms, and spend", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_spend", "name": "Spend", "description": "Spend fact table\nAdvertising spend and metrics\nActual platform spend, clicks, impressions", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_date", "name": "Date (Action)", "description": "Date dimension\nAction/Event dates\nTime dimension for analysis", "val": 30, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_creative", "name": "Creative", "description": "Creative dimension table\nAd creatives and assets\nCreative units and messages", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_account", "name": "Account", "description": "Account dimension table\nClient accounts\nSonrava, CBOE, Rivers Casino, UM Ross, etc.", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_platform_id", "name": "Platform ID", "description": "Unique platform identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_platform_name", "name": "Platform Name", "description": "Google Ads, Meta, LinkedIn, Viant, etc.", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_channel", "name": "Channel", "description": "Ad Serving, CTV, Display, Social, Video", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_flight_id", "name": "Flight ID", "description": "Unique flight identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_flight_name", "name": "Flight Name", "description": "Campaign flight name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_flight_start", "name": "Start Date", "description": "Flight start date (mandatory)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_flight_end", "name": "End Date", "description": "Flight end date (mandatory)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_publisher", "name": "Publisher", "description": "Publisher name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_target_audience", "name": "Target Audience", "description": "Target audience definition", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_geo_targeting", "name": "Geo Targeting", "description": "City, State, Country, DMA, Zip, County", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_objective", "name": "Objective", "description": "Conversion, Drive Awareness, Lead Gen, Site Traffic", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_primary_kpi", "name": "Primary KPI", "description": "Primary key performance indicator", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_campaign_id", "name": "Campaign ID", "description": "Platform campaign identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_campaign_name", "name": "Campaign Name", "description": "Marketing campaign name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_campaign_type", "name": "Campaign Type", "description": "Campaign classification", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_budget", "name": "Budget", "description": "Campaign budget allocation", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_spend_actual", "name": "Actual Spend", "description": "actualSpendPlatform (currency)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_clicks", "name": "Clicks", "description": "Click count from platform", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_impressions", "name": "Impressions", "description": "Impression count from platform", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_conversions", "name": "Conversions", "description": "Conversion events tracked", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_video_views", "name": "Video Views", "description": "Video view count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_date", "name": "Date", "description": "Event/action date", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_year_name", "name": "Year Name", "description": "CY2025, etc.", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_creative_id", "name": "Creative ID", "description": "Creative asset identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_creative_unit", "name": "Creative Unit", "description": "Creative unit type", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_creative_message", "name": "Creative Message", "description": "Ad creative message content", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_account_name", "name": "Account Name", "description": "Client account name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_account_id", "name": "Account ID", "description": "Platform account identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_media_payer", "name": "Media Payer", "description": "Client or F92", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_roas", "name": "ROAS", "description": "Return on Ad Spend\nCalculated: Revenue / Spend", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_cpm", "name": "CPM", "description": "Cost Per Mille\nCalculated: (Spend / Impressions) \u00d7 1000", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_cpc", "name": "CPC", "description": "Cost Per Click\nCalculated: Spend / Clicks", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_ctr", "name": "CTR", "description": "Click-Through Rate\nCalculated: Clicks / Impressions", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_conv_rate", "name": "Conversion Rate", "description": "Calculated: Conversions / Clicks", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_frequency", "name": "Frequency", "description": "Average impression frequency per user", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_reach", "name": "Reach", "description": "Unique users reached", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_video_quartiles", "name": "Video Quartiles", "description": "25%, 50%, 75%, 100% completion rates", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_search_share", "name": "Search Imp Share", "description": "Search impression share metrics", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "source_google_ads", "name": "Google Ads", "description": "Google Ads API (Windsor)\nSearch, Display, Video, CM\nMin date: 2023-08-01", "val": 28, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.google.com&size=64", "createdAt": null, "physicalGroup": "google_cloud", "physicalGroupColor": "#4285f4", "physicalGroupLabel": "Google Cloud"}, {"id": "source_meta", "name": "Meta Ads", "description": "Facebook / Instagram\nVia Smartsheet entry", "val": 28, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://facebook.com&size=64", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_linkedin", "name": "LinkedIn Ads", "description": "LinkedIn Ads API (Windsor)\nMin date: 2024-01-01", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://linkedin.com&size=64", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_microsoft", "name": "Microsoft Ads", "description": "Microsoft/Bing Ads API\nDirect integration", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.microsoft.com&size=64", "createdAt": null, "physicalGroup": "microsoft_azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Microsoft Azure"}, {"id": "source_viant", "name": "Viant DSP", "description": "Viant DSP Reporting\nSnowflake connector\nReach & frequency data", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://viantinc.com&size=64", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_tradedesk", "name": "Trade Desk", "description": "The Trade Desk DSP\nProgrammatic buying", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://thetradedesk.com&size=64", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_dv360", "name": "DV360", "description": "Google Display & Video 360\nProgrammatic platform", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://marketingplatform.google.com&size=64", "createdAt": null, "physicalGroup": "google_cloud", "physicalGroupColor": "#4285f4", "physicalGroupLabel": "Google Cloud"}, {"id": "source_smartsheet", "name": "Smartsheet", "description": "Manual data entry\nFor platforms without APIs\nMeta, TikTok, Snapchat, etc.", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://smartsheet.com&size=64", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "api_windsor", "name": "Windsor AI", "description": "Windsor AI Connector\nUnified marketing data API\nGoogle, LinkedIn integrations", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "windsor_ai", "physicalGroupColor": "#6366f1", "physicalGroupLabel": "Windsor AI"}, {"id": "api_snowflake", "name": "Snowflake", "description": "Snowflake Data Warehouse\nViant reach/frequency data\nCentral data storage", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "api_eclipse", "name": "Eclipse API", "description": "Eclipse Unified API\nTransformed data access\nDashboard & reporting", "val": 20, "color": "#3182ce", "group": "api", "groupLabel": "API Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}];
         const linksData = [{"source": "hub", "target": "table_platform", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_flight", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_campaign", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_spend", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_creative", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_account", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "table_account", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_campaign", "target": "table_platform", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_flight", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_spend", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_spend", "target": "table_date", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_creative", "target": "table_campaign", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_platform", "target": "col_platform_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_platform", "target": "col_platform_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_platform", "target": "col_channel", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_flight_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_flight_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_flight_start", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_flight_end", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_publisher", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_target_audience", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_geo_targeting", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_objective", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_flight", "target": "col_primary_kpi", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_campaign_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_campaign_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_campaign_type", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_budget", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "col_spend_actual", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "col_clicks", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "col_impressions", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "col_conversions", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "col_video_views", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_year_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_creative", "target": "col_creative_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_creative", "target": "col_creative_unit", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_creative", "target": "col_creative_message", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_account", "target": "col_account_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_account", "target": "col_account_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_account", "target": "col_media_payer", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_spend", "target": "measure_roas", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_cpm", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_cpc", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_ctr", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_conv_rate", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_frequency", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_reach", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_video_quartiles", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_spend", "target": "measure_search_share", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "source_google_ads", "target": "api_windsor", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_linkedin", "target": "api_windsor", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_microsoft", "target": "api_windsor", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_meta", "target": "source_smartsheet", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_viant", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_tradedesk", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_dv360", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_windsor", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_smartsheet", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_spend", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_campaign", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_platform", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_flight", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "hub", "target": "api_eclipse", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}];
         const groupsData = {"hub": {"color": "#dd6b20", "label": "Dataset"}, "fact": {"color": "#1a365d", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "date": {"color": "#805ad5", "label": "Date Tables"}, "column": {"color": "#718096", "label": "Columns"}, "measure": {"color": "#e53e3e", "label": "Measures"}, "source": {"color": "#38a169", "label": "Data Sources"}, "api": {"color": "#3182ce", "label": "API Connectors"}};
+        const physicalGroupsData = {"snowflake": {"color": "#29b5e8", "label": "Snowflake"}, "windsor_ai": {"color": "#6366f1", "label": "Windsor AI"}, "external_saas": {"color": "#6b7280", "label": "External SaaS"}, "google_cloud": {"color": "#4285f4", "label": "Google Cloud"}, "microsoft_azure": {"color": "#0078d4", "label": "Microsoft Azure"}};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
 
         // Create node lookup map
         const nodeMap = {};
@@ -1052,6 +1208,95 @@
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = { projects: [], initiatives: [], dashboards: [] };
+        let activeOverlays = { projects: false, initiatives: false, dashboards: false };
+
+        // Load overlay data from API
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/initiatives').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/dashboards').catch(() => ({ json: () => ({ items: [] }) }))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            } catch (error) {
+                console.log('[Athena] Overlay API not available');
+            }
+        }
+
+        function toggleOverlay(overlayType) {
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${overlayType}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }
+
+        function getNodeOverlays(nodeId) {
+            const result = [];
+            if (activeOverlays.projects) {
+                overlayData.projects.forEach(p => {
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({ type: 'project', data: p });
+                });
+            }
+            if (activeOverlays.initiatives) {
+                overlayData.initiatives.forEach(i => {
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({ type: 'initiative', data: i });
+                });
+            }
+            if (activeOverlays.dashboards) {
+                overlayData.dashboards.forEach(d => {
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({ type: 'dashboard', data: d });
+                });
+            }
+            return result;
+        }
+
+        function updateGraphColors() {
+            if (!graph) return;
+            graph.nodeColor(node => {
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }
+                return node.color;
+            });
+        }
+
+        function renderOverlayInfo(nodeId) {
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            overlays.forEach(o => {
+                let html = '';
+                if (o.type === 'project') {
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${o.data.name}</h4><p>Status: ${o.data.status}</p><div class="overlay-meta"><span>Jira: ${o.data.jira_key || 'N/A'}</span><span>Hours: ${o.data.hours_spent || 0}</span><span>Due: ${o.data.due_date || 'TBD'}</span></div></div>`;
+                } else if (o.type === 'initiative') {
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${o.data.name}</h4><p>${o.data.dimension || ''} - ${o.data.status}</p></div>`;
+                } else if (o.type === 'dashboard') {
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${o.data.name}</h4><p>Client: ${o.data.client}</p></div>`;
+                }
+                container.innerHTML += html;
+            });
+        }
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = { nodes: [], links: [] };
@@ -1248,7 +1493,14 @@
         function applyFilters() {
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                } else {
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             });
@@ -1292,6 +1544,83 @@
             } else {
                 graph.numDimensions(3);
             }
+        }
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {
+                if (mode === 'physical' && node.physicalGroupColor) {
+                    node.color = node.physicalGroupColor;
+                } else {
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }
+            });
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {
+                graph.nodeColor(node => node.color);
+            }
+        }
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${groupInfo.color}"></span>${groupInfo.label}`;
+                    chip.addEventListener('click', function() {
+                        togglePhysicalGroupFilter(groupId, this);
+                    });
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                });
+            } else {
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }
+        }
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {
+            if (visiblePhysicalGroups.has(groupId)) {
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            } else {
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }
+            applyFilters();
         }
 
         // Toggle filter sections
@@ -1640,6 +1969,9 @@
                 };
                 connectionsList.appendChild(li);
             });
+
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
 
             // Update visuals - highlight connected, dim others
             graph

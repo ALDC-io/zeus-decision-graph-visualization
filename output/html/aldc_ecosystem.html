@@ -550,6 +550,45 @@
             color: #666;
             margin-left: 4px;
         }
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .view-mode-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .view-mode-btn {
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-mode-btn:first-of-type {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        .view-mode-btn:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+        .view-mode-btn.active {
+            background: #805ad5;
+            color: white;
+        }
+        .view-mode-btn:hover:not(.active) {
+            background: #f3e8ff;
+        }
+        .view-mode-hidden {
+            display: none !important;
+        }
         /* Extended Features - v2.0 Styles */
 
         /* Search bar */
@@ -833,6 +872,98 @@
         .toolbar-extended.hidden {
             display: none;
         }
+
+        /* Overlay styles */
+        .overlay-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .overlay-chip:hover {
+            background: #e0e0e0;
+        }
+        .overlay-chip.active {
+            border-width: 2px;
+        }
+        .overlay-chip.active[data-overlay="projects"] {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }
+        .overlay-chip.active[data-overlay="initiatives"] {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }
+        .overlay-chip.active[data-overlay="dashboards"] {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }
+        .overlay-chip .chip-icon {
+            margin-right: 4px;
+            font-size: 11px;
+        }
+        .overlay-chip .chip-count {
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+        .overlay-chip.active .chip-count {
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .overlay-info-panel.project {
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info-panel.initiative {
+            border-left: 4px solid #00ff88;
+        }
+        .overlay-info-panel.dashboard {
+            border-left: 4px solid #ff6b6b;
+        }
+        .overlay-info-panel h4 {
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .overlay-info-panel p {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .overlay-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }
+        .overlay-meta span {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -851,6 +982,8 @@
                         <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#1a365d"></span>Central Hub</span>
                         <span class="filter-chip active" data-group="source_external"><span class="chip-color" style="background:#3182ce"></span>External Data Sources</span>
                         <span class="filter-chip active" data-group="source_internal"><span class="chip-color" style="background:#2b6cb0"></span>Internal Sources</span>
+                        <span class="filter-chip active" data-group="source_feeds"><span class="chip-color" style="background:#9f7aea"></span>RSS & Research Feeds</span>
+                        <span class="filter-chip active" data-group="source_business"><span class="chip-color" style="background:#48bb78"></span>Business Integrations</span>
                         <span class="filter-chip active" data-group="ingestion"><span class="chip-color" style="background:#38a169"></span>Ingestion Layer</span>
                         <span class="filter-chip active" data-group="processing"><span class="chip-color" style="background:#d69e2e"></span>Processing & ETL</span>
                         <span class="filter-chip active" data-group="storage"><span class="chip-color" style="background:#805ad5"></span>Storage Layer</span>
@@ -894,6 +1027,12 @@
                         <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section view-mode-section" id="view-mode-toggle">
+                    <span class="view-mode-label">View:</span>
+                    <button class="view-mode-btn active" id="btn-logical" onclick="setViewMode('logical')">Logical</button>
+                    <button class="view-mode-btn" id="btn-physical" onclick="setViewMode('physical')">Physical</button>
+                </div>
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
             <div id="toolbar-extended" class="toolbar-extended">
@@ -935,6 +1074,24 @@
                 <div class="toolbar-section effects-toggle">
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
@@ -987,6 +1144,7 @@
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -1025,9 +1183,16 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "aldc_hub", "name": "ALDC Data Hub", "description": "Central data orchestration hub - Zeus Memory Federation, Eclipse Pipeline, and AI Intelligence layer", "val": 60, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": null}, {"id": "nextcloud", "name": "Nextcloud", "description": "Nextcloud file storage - 110+ files from J5 directory, supports PDF, DOCX, TXT, MD, XLS formats", "val": 25, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "avoma", "name": "Avoma", "description": "Meeting transcripts and AI-generated notes - speaker-by-speaker dialogue with timestamps", "val": 25, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "email_systems", "name": "Email Systems", "description": "Email ingestion service - customer communication and internal correspondence", "val": 22, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "web_scraper", "name": "Web Scraper", "description": "AI blogs, documentation, RSS feeds - batch processing with Voyage embeddings", "val": 22, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "slack", "name": "Slack", "description": "Slack message archival - thread mapping, presence tracking, webhook delivery", "val": 22, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "jira_confluence", "name": "Jira/Confluence", "description": "Atlassian integration - issue tracking and documentation via AtlassianClient", "val": 22, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "google_ads", "name": "Google Ads", "description": "Google Ads API via Windsor AI - campaigns, impressions, conversions, video metrics", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "meta_facebook", "name": "Meta/Facebook", "description": "Meta Ads - 12 templates for ad set insights, campaign performance across clients", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "amazon_seller", "name": "Amazon Seller", "description": "Amazon Seller Central - orders, inventory, FBA returns, listings, sales reports", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "sellercloud", "name": "SellerCloud", "description": "SellerCloud REST + SQL - orders, inventory, products, RMA, vendors (14 templates)", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "salesforce", "name": "Salesforce", "description": "CRM data - customer relationships, opportunities, activities", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "smartsheet", "name": "Smartsheet", "description": "Budget planning spreadsheets - flight management, spend tracking", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "trade_desk", "name": "Trade Desk", "description": "Trade Desk reporting - performance reports, unique impression tracking", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "viant_dsp", "name": "Viant DSP", "description": "Viant DSP - campaign performance, ROAS, reach frequency metrics", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "linkedin_ads", "name": "LinkedIn Ads", "description": "LinkedIn advertising - video social, professional audience targeting", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null}, {"id": "zeus_ingestion", "name": "Zeus Ingestion", "description": "BaseIngestionService - connection pooling, deduplication via external_id + content_hash, batch processing (100-item)", "val": 30, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null}, {"id": "eclipse_connectors", "name": "Eclipse Connectors", "description": "143 Eclipse templates across ALDC/F92/GEP - CSV, REST API, SQL Server, Snowflake connectors", "val": 30, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null}, {"id": "quickstart_api", "name": "quickstart-api", "description": "Python API client for ALDC Analytics Labs platform - dataset querying, field filtering, measure calculations", "val": 22, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null}, {"id": "avoma_ingestion", "name": "Avoma Ingestion", "description": "Full Avoma ingestion (926 lines) - transcripts, AI notes, action items, rate limiting with backoff", "val": 22, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null}, {"id": "nextcloud_scanner", "name": "Nextcloud J5 Scanner", "description": "Production cron job - periodic scanning of 110+ files from J5 shared directory", "val": 20, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null}, {"id": "voyage_embedder", "name": "Voyage Batch Embedder", "description": "Voyage-3 batch embeddings (1024-dim) - 33% cost savings, 1000 items/batch, async processing at 2 AM UTC", "val": 28, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "eclipse_etl", "name": "Eclipse ETL", "description": "Template-based extraction - partition schemes, merge strategies (insert/add/upsert), TTL management", "val": 28, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "quality_scorer", "name": "Quality Scorer", "description": "Content quality assessment - confidence scores, deduplication, metadata enrichment", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "entity_extractor", "name": "Entity Extractor", "description": "Business entity extraction - vendors, products, channels, metrics, time periods with schema mapping", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "dbt_pipelines", "name": "dbt Pipelines", "description": "Snowflake transformations - warehouse views, dimension tables, fact tables, scheduled tasks", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "leiden_clustering", "name": "Leiden Clustering", "description": "Memory clustering - k-NN graph (k=15), 385 L2 domains, 3,264 L1 topics, 50K+ memories", "val": 20, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null}, {"id": "postgresql_zeus", "name": "PostgreSQL (Zeus)", "description": "Zeus core database - 3.6M+ memories, pgvector embeddings (1024-dim), GIN text search, HNSW indexes", "val": 35, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null}, {"id": "snowflake_warehouse", "name": "Snowflake Warehouse", "description": "Cloud data warehouse - ALDC_ENG, FUSION_92, GEP schemas, star schema models, 89+ warehouse files", "val": 35, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null}, {"id": "cosmos_db", "name": "Cosmos DB", "description": "Eclipse configuration - task connections, LLM message trails, conversation storage", "val": 25, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null}, {"id": "redis_cache", "name": "Redis Cache", "description": "Query result caching - 60-second TTL stats cache, semantic similarity cache (40-60% hit rate)", "val": 20, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null}, {"id": "embedding_queue", "name": "Embedding Queue", "description": "Async processing queue - pending/processing/completed status tracking, batch audit trail", "val": 18, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null}, {"id": "anthropic_claude", "name": "Anthropic Claude", "description": "claude-sonnet-4-20250514 - business insights, SQL generation, meeting analysis, max 4096 tokens", "val": 30, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "voyage_ai", "name": "Voyage AI", "description": "voyage-3.5 embeddings - 1024 dimensions, 2000 RPM, 8M TPM, batch API for cost optimization", "val": 28, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "openai_gpt", "name": "OpenAI GPT", "description": "gpt-3.5-turbo-16k - SQL generation, Assistants API, schema context for Snowflake queries", "val": 25, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "bge_embeddings", "name": "BGE Embeddings", "description": "BGE-M3 alternative embeddings - 1024 dimensions, local deployment option", "val": 20, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "langchain_agent", "name": "LangChain Agent", "description": "HybridEclipseAgent - tool calling, conversation history, data cache, context compression", "val": 25, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "voyage_rerank", "name": "Voyage Rerank", "description": "voyage-rerank-2 - cross-encoder reranking, +13.89% accuracy improvement, ~14ms additional latency", "val": 20, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null}, {"id": "zeus_api", "name": "Zeus Memory API", "description": "FastAPI server (21,039 lines) - /api/store, /api/search, /api/memory, hybrid search (125ms latency)", "val": 30, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null}, {"id": "eclipse_api", "name": "Eclipse API", "description": "Data analytics API - dataset queries, field/measure selection, row/column/array formats", "val": 28, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null}, {"id": "athena_api", "name": "Athena API", "description": "Progressive loading API - /api/overview, /api/l2/{id}, /api/l1/{id}, semantic zoom endpoints", "val": 25, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null}, {"id": "mcp_server", "name": "MCP Server", "description": "17 MCP tools - remember, search, recall, create_task, record_decision, notion_sync", "val": 22, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null}, {"id": "oauth_azure", "name": "OAuth Azure AD", "description": "Azure Entra ID integration - /authorize, /callback, /token, user impersonation", "val": 20, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null}, {"id": "athena_viz", "name": "Athena Visualization", "description": "3D force graphs - 7 visualizations, 2,480-line generator, radial/force/spherical layouts", "val": 30, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "atlas_workspace", "name": "Atlas Workspace", "description": "Document workspace - semantic zoom, Sigma.js 2D graphs, markdown editor, Zeus Console", "val": 28, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "eclipse_chat", "name": "Eclipse Chat", "description": "Natural language analytics - query classification, multi-step orchestration, visualization engine", "val": 28, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "powerbi_dashboards", "name": "Power BI Dashboards", "description": "Client reporting - data model integration, capacity provider, workspace impersonation", "val": 25, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "claude_code", "name": "Claude Code", "description": "CCE development - @remember, @search commands, Zeus MCP integration, project management", "val": 25, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "slack_webhooks", "name": "Slack Webhooks", "description": "Team notifications - alerts for F92, Navira, task assignments, status updates", "val": 20, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null}, {"id": "fusion92_client", "name": "Fusion92", "description": "47 Eclipse templates, 37 Snowflake files, 12 connections - Google/Meta/LinkedIn/Trade Desk/Viant advertising", "val": 28, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null}, {"id": "gep_client", "name": "GEP/Navira", "description": "61 Eclipse templates, 43 Snowflake files, 15 connections - Amazon, SellerCloud e-commerce", "val": 28, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null}, {"id": "aldc_eng", "name": "ALDC Engineering", "description": "35 Eclipse templates, 9 Snowflake files, 5 connections - internal operations monitoring", "val": 22, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null}];
-        const linksData = [{"source": "nextcloud", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "email_systems", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "web_scraper", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "slack", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "jira_confluence", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "google_ads", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "meta_facebook", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "amazon_seller", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "sellercloud", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "salesforce", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "smartsheet", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "trade_desk", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "viant_dsp", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "linkedin_ads", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma", "target": "avoma_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma_ingestion", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "email_systems", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "web_scraper", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "slack", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud", "target": "nextcloud_scanner", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud_scanner", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "eclipse_connectors", "target": "eclipse_etl", "color": "#d69e2e", "width": 2, "relationType": "Transformation", "edgeType": "transform"}, {"source": "quickstart_api", "target": "eclipse_etl", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_ingestion", "target": "embedding_queue", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_ingestion", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "embedding_queue", "target": "voyage_embedder", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "voyage_embedder", "target": "voyage_ai", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "voyage_ai", "target": "voyage_embedder", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}, {"source": "voyage_embedder", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_ingestion", "target": "quality_scorer", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "quality_scorer", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_etl", "target": "dbt_pipelines", "color": "#d69e2e", "width": 2, "relationType": "Transformation", "edgeType": "transform"}, {"source": "dbt_pipelines", "target": "snowflake_warehouse", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_etl", "target": "cosmos_db", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_chat", "target": "entity_extractor", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "entity_extractor", "target": "eclipse_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "postgresql_zeus", "target": "leiden_clustering", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "leiden_clustering", "target": "athena_api", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "postgresql_zeus", "target": "zeus_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "zeus_api", "target": "redis_cache", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_api", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_api", "target": "voyage_rerank", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "snowflake_warehouse", "target": "eclipse_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "eclipse_api", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "eclipse_api", "target": "openai_gpt", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "eclipse_api", "target": "langchain_agent", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "langchain_agent", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "langchain_agent", "target": "zeus_api", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_api", "target": "mcp_server", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "oauth_azure", "target": "zeus_api", "color": "#718096", "width": 1, "relationType": "Configures", "edgeType": "configures"}, {"source": "athena_api", "target": "athena_viz", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "zeus_api", "target": "atlas_workspace", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "eclipse_chat", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "snowflake_warehouse", "target": "powerbi_dashboards", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "mcp_server", "target": "claude_code", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "zeus_api", "target": "slack_webhooks", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "fusion92_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "gep_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "aldc_eng", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "powerbi_dashboards", "target": "fusion92_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "powerbi_dashboards", "target": "gep_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "athena_viz", "target": "atlas_workspace", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "bge_embeddings", "target": "postgresql_zeus", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}, {"source": "voyage_ai", "target": "zeus_api", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}];
-        const groupsData = {"hub": {"color": "#1a365d", "label": "Central Hub"}, "source_external": {"color": "#3182ce", "label": "External Data Sources"}, "source_internal": {"color": "#2b6cb0", "label": "Internal Sources"}, "ingestion": {"color": "#38a169", "label": "Ingestion Layer"}, "processing": {"color": "#d69e2e", "label": "Processing & ETL"}, "storage": {"color": "#805ad5", "label": "Storage Layer"}, "ai_model": {"color": "#e53e3e", "label": "AI/ML Models"}, "api": {"color": "#319795", "label": "APIs & Services"}, "consumption": {"color": "#dd6b20", "label": "Consumption Layer"}, "client": {"color": "#667eea", "label": "Client Systems"}};
+        const nodesData = [{"id": "aldc_hub", "name": "ALDC Data Hub", "description": "Central data orchestration hub - Zeus Memory Federation, Eclipse Pipeline, and AI Intelligence layer", "val": 60, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "nextcloud", "name": "Nextcloud", "description": "Nextcloud file storage - 110+ files from J5 directory, supports PDF, DOCX, TXT, MD, XLS formats", "val": 25, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "on_prem", "physicalGroupColor": "#059669", "physicalGroupLabel": "On-Premises"}, {"id": "avoma", "name": "Avoma", "description": "Meeting transcripts and AI-generated notes - speaker-by-speaker dialogue with timestamps", "val": 25, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "email_systems", "name": "Email Systems", "description": "Email ingestion service - customer communication and internal correspondence", "val": 22, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "web_scraper", "name": "Web Scraper", "description": "AI blogs, documentation, RSS feeds - batch processing with Voyage embeddings", "val": 22, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "slack", "name": "Slack", "description": "Slack message archival - thread mapping, presence tracking, webhook delivery", "val": 22, "color": "#2b6cb0", "group": "source_internal", "groupLabel": "Internal Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "jira_confluence", "name": "Jira/Confluence", "description": "Atlassian integration - issue tracking and documentation via AtlassianClient", "val": 22, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "google_ads", "name": "Google Ads", "description": "Google Ads API via Windsor AI - campaigns, impressions, conversions, video metrics", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "meta_facebook", "name": "Meta/Facebook", "description": "Meta Ads - 12 templates for ad set insights, campaign performance across clients", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "amazon_seller", "name": "Amazon Seller", "description": "Amazon Seller Central - orders, inventory, FBA returns, listings, sales reports", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "sellercloud", "name": "SellerCloud", "description": "SellerCloud REST + SQL - orders, inventory, products, RMA, vendors (14 templates)", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "salesforce", "name": "Salesforce", "description": "CRM data - customer relationships, opportunities, activities", "val": 20, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "smartsheet", "name": "Smartsheet", "description": "Budget planning spreadsheets - flight management, spend tracking", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "trade_desk", "name": "Trade Desk", "description": "Trade Desk reporting - performance reports, unique impression tracking", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "viant_dsp", "name": "Viant DSP", "description": "Viant DSP - campaign performance, ROAS, reach frequency metrics", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "linkedin_ads", "name": "LinkedIn Ads", "description": "LinkedIn advertising - video social, professional audience targeting", "val": 18, "color": "#3182ce", "group": "source_external", "groupLabel": "External Data Sources", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "hubspot_crm", "name": "HubSpot CRM", "description": "HubSpot integration - deals, contacts, companies, sales pipeline data", "val": 22, "color": "#48bb78", "group": "source_business", "groupLabel": "Business Integrations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "quickbooks", "name": "QuickBooks", "description": "QuickBooks financial data - profitability analysis, revenue tracking", "val": 20, "color": "#48bb78", "group": "source_business", "groupLabel": "Business Integrations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "notion", "name": "Notion", "description": "Notion workspace - database pages, notes, documentation sync", "val": 20, "color": "#48bb78", "group": "source_business", "groupLabel": "Business Integrations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "rss_hacker_news", "name": "Hacker News", "description": "Hacker News RSS - tech news aggregation, startup discussions", "val": 16, "color": "#9f7aea", "group": "source_feeds", "groupLabel": "RSS & Research Feeds", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "rss_tech_news", "name": "Tech News Feeds", "description": "The Verge, Wired, Ars Technica, TechCrunch AI - technology journalism", "val": 18, "color": "#9f7aea", "group": "source_feeds", "groupLabel": "RSS & Research Feeds", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "arxiv_papers", "name": "arXiv Papers", "description": "arXiv academic papers - AI, ML, CS research preprints", "val": 18, "color": "#9f7aea", "group": "source_feeds", "groupLabel": "RSS & Research Feeds", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "competitor_tracking", "name": "Competitor Sites", "description": "26 competitor platforms - Databricks, Snowflake, Pinecone, LangChain, LlamaIndex, etc.", "val": 20, "color": "#9f7aea", "group": "source_feeds", "groupLabel": "RSS & Research Feeds", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "zeus_ingestion", "name": "Zeus Ingestion", "description": "BaseIngestionService - connection pooling, deduplication via external_id + content_hash, batch processing (100-item)", "val": 30, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "eclipse_connectors", "name": "Eclipse Connectors", "description": "143 Eclipse templates across ALDC/F92/GEP - CSV, REST API, SQL Server, Snowflake connectors", "val": 30, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "quickstart_api", "name": "quickstart-api", "description": "Python API client for ALDC Analytics Labs platform - dataset querying, field filtering, measure calculations", "val": 22, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "avoma_ingestion", "name": "Avoma Ingestion", "description": "Full Avoma ingestion (926 lines) - transcripts, AI notes, action items, rate limiting with backoff", "val": 22, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "nextcloud_scanner", "name": "Nextcloud J5 Scanner", "description": "Production cron job - periodic scanning of 110+ files from J5 shared directory", "val": 20, "color": "#38a169", "group": "ingestion", "groupLabel": "Ingestion Layer", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "voyage_embedder", "name": "Voyage Batch Embedder", "description": "Voyage-3 batch embeddings (1024-dim) - 33% cost savings, 1000 items/batch, async processing at 2 AM UTC", "val": 28, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "eclipse_etl", "name": "Eclipse ETL", "description": "Template-based extraction - partition schemes, merge strategies (insert/add/upsert), TTL management", "val": 28, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "quality_scorer", "name": "Quality Scorer", "description": "Content quality assessment - confidence scores, deduplication, metadata enrichment", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "entity_extractor", "name": "Entity Extractor", "description": "Business entity extraction - vendors, products, channels, metrics, time periods with schema mapping", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "dbt_pipelines", "name": "dbt Pipelines", "description": "Snowflake transformations - warehouse views, dimension tables, fact tables, scheduled tasks", "val": 22, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "leiden_clustering", "name": "Leiden Clustering", "description": "Memory clustering - k-NN graph (k=15), 385 L2 domains, 3,264 L1 topics, 50K+ memories", "val": 20, "color": "#d69e2e", "group": "processing", "groupLabel": "Processing & ETL", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "postgresql_zeus", "name": "PostgreSQL (Zeus)", "description": "Zeus core database - 3.6M+ memories, pgvector embeddings (1024-dim), GIN text search, HNSW indexes", "val": 35, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "snowflake_warehouse", "name": "Snowflake Warehouse", "description": "Cloud data warehouse - ALDC_ENG, FUSION_92, GEP schemas, star schema models, 89+ warehouse files", "val": 35, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "cosmos_db", "name": "Cosmos DB", "description": "Eclipse configuration - task connections, LLM message trails, conversation storage", "val": 25, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "redis_cache", "name": "Redis Cache", "description": "Query result caching - 60-second TTL stats cache, semantic similarity cache (40-60% hit rate)", "val": 20, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "embedding_queue", "name": "Embedding Queue", "description": "Async processing queue - pending/processing/completed status tracking, batch audit trail", "val": 18, "color": "#805ad5", "group": "storage", "groupLabel": "Storage Layer", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "anthropic_claude", "name": "Anthropic Claude", "description": "claude-sonnet-4-20250514 - business insights, SQL generation, meeting analysis, max 4096 tokens", "val": 30, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "anthropic", "physicalGroupColor": "#d97706", "physicalGroupLabel": "Anthropic AI"}, {"id": "voyage_ai", "name": "Voyage AI", "description": "voyage-3.5 embeddings - 1024 dimensions, 2000 RPM, 8M TPM, batch API for cost optimization", "val": 28, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "voyage", "physicalGroupColor": "#8b5cf6", "physicalGroupLabel": "Voyage AI"}, {"id": "openai_gpt", "name": "OpenAI GPT", "description": "gpt-3.5-turbo-16k - SQL generation, Assistants API, schema context for Snowflake queries", "val": 25, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "openai", "physicalGroupColor": "#10a37f", "physicalGroupLabel": "OpenAI"}, {"id": "bge_embeddings", "name": "BGE Embeddings", "description": "BGE-M3 alternative embeddings - 1024 dimensions, local deployment option", "val": 20, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "langchain_agent", "name": "LangChain Agent", "description": "HybridEclipseAgent - tool calling, conversation history, data cache, context compression", "val": 25, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "voyage_rerank", "name": "Voyage Rerank", "description": "voyage-rerank-2 - cross-encoder reranking, +13.89% accuracy improvement, ~14ms additional latency", "val": 20, "color": "#e53e3e", "group": "ai_model", "groupLabel": "AI/ML Models", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "voyage", "physicalGroupColor": "#8b5cf6", "physicalGroupLabel": "Voyage AI"}, {"id": "zeus_api", "name": "Zeus Memory API", "description": "FastAPI server (21,039 lines) - /api/store, /api/search, /api/memory, hybrid search (125ms latency)", "val": 30, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "eclipse_api", "name": "Eclipse API", "description": "Data analytics API - dataset queries, field/measure selection, row/column/array formats", "val": 28, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "athena_api", "name": "Athena API", "description": "Progressive loading API - /api/overview, /api/l2/{id}, /api/l1/{id}, semantic zoom endpoints", "val": 25, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "mcp_server", "name": "MCP Server", "description": "17 MCP tools - remember, search, recall, create_task, record_decision, notion_sync", "val": 22, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "oauth_azure", "name": "OAuth Azure AD", "description": "Azure Entra ID integration - /authorize, /callback, /token, user impersonation", "val": 20, "color": "#319795", "group": "api", "groupLabel": "APIs & Services", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "athena_viz", "name": "Athena Visualization", "description": "3D force graphs - 7 visualizations, 2,480-line generator, radial/force/spherical layouts", "val": 30, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "atlas_workspace", "name": "Atlas Workspace", "description": "Document workspace - semantic zoom, Sigma.js 2D graphs, markdown editor, Zeus Console", "val": 28, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "eclipse_chat", "name": "Eclipse Chat", "description": "Natural language analytics - query classification, multi-step orchestration, visualization engine", "val": 28, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "powerbi_dashboards", "name": "Power BI Dashboards", "description": "Client reporting - data model integration, capacity provider, workspace impersonation", "val": 25, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "claude_code", "name": "Claude Code", "description": "CCE development - @remember, @search commands, Zeus MCP integration, project management", "val": 25, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "on_prem", "physicalGroupColor": "#059669", "physicalGroupLabel": "On-Premises"}, {"id": "slack_webhooks", "name": "Slack Webhooks", "description": "Team notifications - alerts for F92, Navira, task assignments, status updates", "val": 20, "color": "#dd6b20", "group": "consumption", "groupLabel": "Consumption Layer", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "fusion92_client", "name": "Fusion92", "description": "47 Eclipse templates, 37 Snowflake files, 12 connections - Google/Meta/LinkedIn/Trade Desk/Viant advertising", "val": 28, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "client_infra", "physicalGroupColor": "#667eea", "physicalGroupLabel": "Client Infrastructure"}, {"id": "gep_client", "name": "GEP/Navira", "description": "61 Eclipse templates, 43 Snowflake files, 15 connections - Amazon, SellerCloud e-commerce", "val": 28, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "client_infra", "physicalGroupColor": "#667eea", "physicalGroupLabel": "Client Infrastructure"}, {"id": "aldc_eng", "name": "ALDC Engineering", "description": "35 Eclipse templates, 9 Snowflake files, 5 connections - internal operations monitoring", "val": 22, "color": "#667eea", "group": "client", "groupLabel": "Client Systems", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}];
+        const linksData = [{"source": "nextcloud", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "email_systems", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "web_scraper", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "slack", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "jira_confluence", "target": "aldc_hub", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "google_ads", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "meta_facebook", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "amazon_seller", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "sellercloud", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "salesforce", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "smartsheet", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "trade_desk", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "viant_dsp", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "linkedin_ads", "target": "eclipse_connectors", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma", "target": "avoma_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "avoma_ingestion", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "email_systems", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "web_scraper", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "slack", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud", "target": "nextcloud_scanner", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "nextcloud_scanner", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "hubspot_crm", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "quickbooks", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "notion", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "rss_hacker_news", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "rss_tech_news", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "arxiv_papers", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "competitor_tracking", "target": "zeus_ingestion", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "eclipse_connectors", "target": "eclipse_etl", "color": "#d69e2e", "width": 2, "relationType": "Transformation", "edgeType": "transform"}, {"source": "quickstart_api", "target": "eclipse_etl", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_ingestion", "target": "embedding_queue", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_ingestion", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "embedding_queue", "target": "voyage_embedder", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "voyage_embedder", "target": "voyage_ai", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "voyage_ai", "target": "voyage_embedder", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}, {"source": "voyage_embedder", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_ingestion", "target": "quality_scorer", "color": "#3182ce", "width": 3, "relationType": "Data Flow", "edgeType": "data_flow"}, {"source": "quality_scorer", "target": "postgresql_zeus", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_etl", "target": "dbt_pipelines", "color": "#d69e2e", "width": 2, "relationType": "Transformation", "edgeType": "transform"}, {"source": "dbt_pipelines", "target": "snowflake_warehouse", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_etl", "target": "cosmos_db", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "eclipse_chat", "target": "entity_extractor", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "entity_extractor", "target": "eclipse_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "postgresql_zeus", "target": "leiden_clustering", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "leiden_clustering", "target": "athena_api", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "postgresql_zeus", "target": "zeus_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "zeus_api", "target": "redis_cache", "color": "#e53e3e", "width": 2, "relationType": "Stores Data", "edgeType": "stores"}, {"source": "zeus_api", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_api", "target": "voyage_rerank", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "snowflake_warehouse", "target": "eclipse_api", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "eclipse_api", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "eclipse_api", "target": "openai_gpt", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "eclipse_api", "target": "langchain_agent", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "langchain_agent", "target": "anthropic_claude", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "langchain_agent", "target": "zeus_api", "color": "#38a169", "width": 2, "relationType": "API Call", "edgeType": "api_call"}, {"source": "zeus_api", "target": "mcp_server", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "oauth_azure", "target": "zeus_api", "color": "#718096", "width": 1, "relationType": "Configures", "edgeType": "configures"}, {"source": "athena_api", "target": "athena_viz", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "zeus_api", "target": "atlas_workspace", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "eclipse_chat", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "snowflake_warehouse", "target": "powerbi_dashboards", "color": "#319795", "width": 1.5, "relationType": "Queries", "edgeType": "queries"}, {"source": "mcp_server", "target": "claude_code", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "zeus_api", "target": "slack_webhooks", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "fusion92_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "gep_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "eclipse_api", "target": "aldc_eng", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "powerbi_dashboards", "target": "fusion92_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "powerbi_dashboards", "target": "gep_client", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "athena_viz", "target": "atlas_workspace", "color": "#dd6b20", "width": 1.5, "relationType": "Serves", "edgeType": "serves"}, {"source": "bge_embeddings", "target": "postgresql_zeus", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}, {"source": "voyage_ai", "target": "zeus_api", "color": "#805ad5", "width": 2, "relationType": "Embedding Generation", "edgeType": "embedding"}];
+        const groupsData = {"hub": {"color": "#1a365d", "label": "Central Hub"}, "source_external": {"color": "#3182ce", "label": "External Data Sources"}, "source_internal": {"color": "#2b6cb0", "label": "Internal Sources"}, "source_feeds": {"color": "#9f7aea", "label": "RSS & Research Feeds"}, "source_business": {"color": "#48bb78", "label": "Business Integrations"}, "ingestion": {"color": "#38a169", "label": "Ingestion Layer"}, "processing": {"color": "#d69e2e", "label": "Processing & ETL"}, "storage": {"color": "#805ad5", "label": "Storage Layer"}, "ai_model": {"color": "#e53e3e", "label": "AI/ML Models"}, "api": {"color": "#319795", "label": "APIs & Services"}, "consumption": {"color": "#dd6b20", "label": "Consumption Layer"}, "client": {"color": "#667eea", "label": "Client Systems"}};
+        const physicalGroupsData = {"azure": {"color": "#0078d4", "label": "Azure Cloud"}, "snowflake": {"color": "#29b5e8", "label": "Snowflake"}, "external_saas": {"color": "#6b7280", "label": "External SaaS"}, "anthropic": {"color": "#d97706", "label": "Anthropic AI"}, "openai": {"color": "#10a37f", "label": "OpenAI"}, "voyage": {"color": "#8b5cf6", "label": "Voyage AI"}, "on_prem": {"color": "#059669", "label": "On-Premises"}, "cloudflare": {"color": "#f38020", "label": "Cloudflare"}, "client_infra": {"color": "#667eea", "label": "Client Infrastructure"}};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
+
+        // Theme state (dark or light)
+        let currentTheme = 'dark';
 
         // Create node lookup map
         const nodeMap = {};
@@ -1058,6 +1223,95 @@
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = { projects: [], initiatives: [], dashboards: [] };
+        let activeOverlays = { projects: false, initiatives: false, dashboards: false };
+
+        // Load overlay data from API
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/initiatives').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/dashboards').catch(() => ({ json: () => ({ items: [] }) }))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            } catch (error) {
+                console.log('[Athena] Overlay API not available');
+            }
+        }
+
+        function toggleOverlay(overlayType) {
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${overlayType}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }
+
+        function getNodeOverlays(nodeId) {
+            const result = [];
+            if (activeOverlays.projects) {
+                overlayData.projects.forEach(p => {
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({ type: 'project', data: p });
+                });
+            }
+            if (activeOverlays.initiatives) {
+                overlayData.initiatives.forEach(i => {
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({ type: 'initiative', data: i });
+                });
+            }
+            if (activeOverlays.dashboards) {
+                overlayData.dashboards.forEach(d => {
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({ type: 'dashboard', data: d });
+                });
+            }
+            return result;
+        }
+
+        function updateGraphColors() {
+            if (!graph) return;
+            graph.nodeColor(node => {
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }
+                return node.color;
+            });
+        }
+
+        function renderOverlayInfo(nodeId) {
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            overlays.forEach(o => {
+                let html = '';
+                if (o.type === 'project') {
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${o.data.name}</h4><p>Status: ${o.data.status}</p><div class="overlay-meta"><span>Jira: ${o.data.jira_key || 'N/A'}</span><span>Hours: ${o.data.hours_spent || 0}</span><span>Due: ${o.data.due_date || 'TBD'}</span></div></div>`;
+                } else if (o.type === 'initiative') {
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${o.data.name}</h4><p>${o.data.dimension || ''} - ${o.data.status}</p></div>`;
+                } else if (o.type === 'dashboard') {
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${o.data.name}</h4><p>Client: ${o.data.client}</p></div>`;
+                }
+                container.innerHTML += html;
+            });
+        }
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = { nodes: [], links: [] };
@@ -1254,7 +1508,14 @@
         function applyFilters() {
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                } else {
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             });
@@ -1298,6 +1559,83 @@
             } else {
                 graph.numDimensions(3);
             }
+        }
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {
+                if (mode === 'physical' && node.physicalGroupColor) {
+                    node.color = node.physicalGroupColor;
+                } else {
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }
+            });
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {
+                graph.nodeColor(node => node.color);
+            }
+        }
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${groupInfo.color}"></span>${groupInfo.label}`;
+                    chip.addEventListener('click', function() {
+                        togglePhysicalGroupFilter(groupId, this);
+                    });
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                });
+            } else {
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }
+        }
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {
+            if (visiblePhysicalGroups.has(groupId)) {
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            } else {
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }
+            applyFilters();
         }
 
         // Toggle filter sections
@@ -1647,6 +1985,9 @@
                 connectionsList.appendChild(li);
             });
 
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
+
             // Update visuals - highlight connected, dim others
             graph
                 .nodeColor(n => highlightedNodes.has(n.id) ? n.color : '#333333')
@@ -1931,6 +2272,7 @@
             return `rgba(${r},${g},${b},${alpha})`;
         }
 
+
         // --- Edge particles ---
         function toggleParticles() {
             particlesEnabled = !particlesEnabled;
@@ -1955,6 +2297,60 @@
                 graph.nodeLabel(node => node.name);
             } else {
                 graph.nodeLabel(null);
+            }
+        }
+
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const body = document.body;
+            const container = document.getElementById('container');
+            const sidebar = document.getElementById('sidebar');
+            const toolbar = document.getElementById('toolbar');
+
+            if (currentTheme === 'light') {
+                // Light mode
+                body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    sidebar.style.color = '#1a202c';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(255, 255, 255, 0.9)';
+                    toolbar.style.color = '#1a202c';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#f0f4f8');
+                }
+            } else {
+                // Dark mode (default)
+                body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(15, 23, 42, 0.95)';
+                    sidebar.style.color = '#e2e8f0';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                    toolbar.style.color = '#e2e8f0';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#0a0a14');
+                }
+            }
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder') {
+                clearTierPlatforms();
+                applyCylinderLayout();
             }
         }
 
@@ -2129,23 +2525,41 @@
                 const scene = graph.scene();
                 const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
+                // Ring colors for different tiers
+                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
+
                 sortedTiers.forEach((tierValue, index) => {
                     const yNorm = (tierValue - minY) / yRange;
                     const yPos = (yNorm - 0.5) * height;
+                    const ringColor = ringColors[index % ringColors.length];
 
-                    // Create ring geometry
-                    const ringGeom = new THREE.RingGeometry(radius - 10, radius + 60, 64);
-                    const ringMat = new THREE.MeshBasicMaterial({
-                        color: 0x3182ce,
+                    // Create 3D torus ring for depth
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 3;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
                         transparent: true,
-                        opacity: 0.06,
-                        side: THREE.DoubleSide
+                        opacity: currentTheme === 'light' ? 0.5 : 0.7
                     });
-                    const ring = new THREE.Mesh(ringGeom, ringMat);
-                    ring.rotation.x = Math.PI / 2; // Lay flat
-                    ring.position.y = yPos;
-                    scene.add(ring);
-                    tierPlatforms.push(ring);
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
+
+                    // Add outer glow ring
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
 
                     // Create tier label
                     const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;

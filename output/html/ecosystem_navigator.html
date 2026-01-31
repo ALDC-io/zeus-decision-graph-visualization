@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ALDC Ecosystem Navigator - Multi-Scale Semantic Zoom</title>
+    <link rel="icon" href="data:,">
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="//unpkg.com/3d-force-graph"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a1a;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        #graph-wrapper {
+            flex: 1;
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+        #graph {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Breadcrumb Navigation */
+        #breadcrumb {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(26, 54, 93, 0.95);
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .breadcrumb-item {
+            color: #a0aec0;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .breadcrumb-item:hover {
+            color: #fff;
+        }
+        .breadcrumb-item.current {
+            color: #63b3ed;
+            font-weight: 600;
+        }
+        .breadcrumb-separator {
+            color: #4a5568;
+            font-size: 12px;
+        }
+
+        /* Overlay Control Panel */
+        #overlay-panel {
+            position: absolute;
+            top: 15px;
+            right: 370px;
+            z-index: 100;
+            background: rgba(26, 54, 93, 0.95);
+            border-radius: 8px;
+            padding: 12px;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        #overlay-panel h3 {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .overlay-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .overlay-toggle:last-child {
+            border-bottom: none;
+        }
+        .overlay-toggle input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .overlay-toggle label {
+            color: #e2e8f0;
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+        .overlay-badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+        .overlay-count {
+            color: #718096;
+            font-size: 11px;
+        }
+
+        /* Zoom Controls */
+        #zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(26, 54, 93, 0.95);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .zoom-btn:hover {
+            background: rgba(49, 130, 206, 0.95);
+        }
+        .zoom-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: 350px;
+            min-width: 350px;
+            background: #ffffff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Level Indicator */
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 12px;
+        }
+        .level-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+        }
+        .level-dot.active {
+            background: #63b3ed;
+        }
+        .level-dot.current {
+            background: #48bb78;
+            box-shadow: 0 0 8px #48bb78;
+        }
+
+        #info-panel {
+            padding: 20px;
+            flex: 1;
+        }
+        .info-placeholder {
+            color: #666;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .node-info {
+            display: none;
+        }
+        .node-info.active {
+            display: block;
+        }
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .node-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a365d;
+        }
+        .node-group {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .group-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+        .node-description {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Expandable Node Indicator */
+        .expand-indicator {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .expand-indicator:hover {
+            transform: scale(1.02);
+        }
+        .expand-indicator h4 {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .expand-indicator p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        .children-preview {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .preview-stat {
+            font-size: 11px;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Project/Initiative Overlay Panel */
+        .overlay-info {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info.initiative {
+            border-left-color: #00ff88;
+        }
+        .overlay-info.dashboard {
+            border-left-color: #ff6b6b;
+        }
+        .overlay-info h4 {
+            font-size: 13px;
+            color: #1a365d;
+            margin-bottom: 6px;
+        }
+        .overlay-info p {
+            font-size: 12px;
+            color: #666;
+        }
+        .overlay-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Connections Section */
+        .connections-section {
+            margin-top: 20px;
+        }
+        .connections-section h4 {
+            font-size: 13px;
+            color: #1a365d;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: #f7fafc;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .connection-item:hover {
+            background: #edf2f7;
+        }
+        .connection-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+        .connection-name {
+            font-size: 13px;
+            color: #333;
+            flex: 1;
+        }
+        .connection-type {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        /* Legend */
+        #legend {
+            padding: 15px 20px;
+            border-top: 1px solid #e0e0e0;
+            background: #f7fafc;
+        }
+        #legend h4 {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #555;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Node glow for overlays */
+        .node-halo {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="graph-wrapper">
+            <div id="graph"></div>
+
+            <!-- Breadcrumb Navigation -->
+            <div id="breadcrumb">
+                <span class="breadcrumb-item current" data-level="ecosystem">Ecosystem</span>
+            </div>
+
+            <!-- Overlay Control Panel -->
+            <div id="overlay-panel">
+                <h3>Overlays</h3>
+                <div class="overlay-toggle">
+                    <input type="checkbox" id="overlay-projects">
+                    <label for="overlay-projects">
+                        <span class="overlay-badge" style="background: #ffd700;"></span>
+                        Projects
+                    </label>
+                    <span class="overlay-count" id="projects-count">0</span>
+                </div>
+                <div class="overlay-toggle">
+                    <input type="checkbox" id="overlay-initiatives">
+                    <label for="overlay-initiatives">
+                        <span class="overlay-badge" style="background: #00ff88;"></span>
+                        Initiatives
+                    </label>
+                    <span class="overlay-count" id="initiatives-count">0</span>
+                </div>
+                <div class="overlay-toggle">
+                    <input type="checkbox" id="overlay-dashboards">
+                    <label for="overlay-dashboards">
+                        <span class="overlay-badge" style="background: #ff6b6b;"></span>
+                        Dashboards
+                    </label>
+                    <span class="overlay-count" id="dashboards-count">0</span>
+                </div>
+            </div>
+
+            <!-- Zoom Controls -->
+            <div id="zoom-controls">
+                <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out (to parent level)" disabled>&#8593;</button>
+                <button class="zoom-btn" id="zoom-in-btn" title="Zoom In (double-click node)" disabled>&#8595;</button>
+                <button class="zoom-btn" id="zoom-reset-btn" title="Reset View">&#8634;</button>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <div class="header">
+                <h1>ALDC Ecosystem Navigator</h1>
+                <p>Multi-Scale Semantic Zoom</p>
+                <div class="level-indicator">
+                    <div class="level-dot current" title="Ecosystem"></div>
+                    <div class="level-dot" title="Client"></div>
+                    <div class="level-dot" title="Schema"></div>
+                    <div class="level-dot" title="Element"></div>
+                </div>
+            </div>
+
+            <div id="info-panel">
+                <div class="info-placeholder" id="placeholder">
+                    <p><strong>Click a node</strong> to see details</p>
+                    <p style="font-size: 12px; margin-top: 10px;">Double-click expandable nodes to zoom in</p>
+                    <p style="font-size: 11px; margin-top: 5px; color: #888;">Toggle overlays to see projects, initiatives, and dashboards</p>
+                </div>
+
+                <div class="node-info" id="node-details">
+                    <div class="node-header">
+                        <div>
+                            <div class="node-title" id="detail-name">Node Name</div>
+                            <div class="node-group">
+                                <span class="group-color" id="detail-color"></span>
+                                <span id="detail-group">Group</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="expand-section" style="display: none;">
+                        <div class="expand-indicator" onclick="zoomIntoNode()">
+                            <h4>&#128269; Click to Drill Down</h4>
+                            <p id="expand-description">Explore detailed schema</p>
+                            <div class="children-preview" id="children-preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="node-description" id="detail-description"></div>
+
+                    <div id="overlay-details"></div>
+
+                    <div class="connections-section">
+                        <h4>&#128279; Connections</h4>
+                        <div id="connections-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="legend">
+                <h4>Node Types</h4>
+                <div class="legend-grid" id="legend-items"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let graphData = null;
+        let graph = null;
+        let selectedNode = null;
+        let navigationStack = ['ecosystem'];
+        let overlayData = {
+            projects: [],
+            initiatives: [],
+            dashboards: []
+        };
+        let activeOverlays = {
+            projects: false,
+            initiatives: false,
+            dashboards: false
+        };
+
+        // Colors for groups
+        const groupColors = {};
+
+        // Initialize
+        async function init() {
+            await loadGraphData('ecosystem');
+            await loadOverlayData();
+            setupEventListeners();
+            renderGraph();
+        }
+
+        // Load graph data from API
+        async function loadGraphData(level, nodeId = null) {
+            try {
+                let url = `/api/navigator/graph?level=${level}`;
+                if (nodeId) url += `&node_id=${nodeId}`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+                graphData = data.graph;
+
+                // Extract group colors
+                Object.entries(graphData.groups || {}).forEach(([id, info]) => {
+                    groupColors[id] = info.color;
+                });
+
+                updateLegend();
+                updateBreadcrumb();
+
+            } catch (error) {
+                console.error('Failed to load graph data:', error);
+            }
+        }
+
+        // Load overlay data
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects'),
+                    fetch('/api/overlays/initiatives'),
+                    fetch('/api/overlays/dashboards')
+                ]);
+
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+
+                // Update counts
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+
+            } catch (error) {
+                console.error('Failed to load overlay data:', error);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Overlay toggles
+            document.getElementById('overlay-projects').addEventListener('change', (e) => {
+                activeOverlays.projects = e.target.checked;
+                updateNodeStyles();
+            });
+            document.getElementById('overlay-initiatives').addEventListener('change', (e) => {
+                activeOverlays.initiatives = e.target.checked;
+                updateNodeStyles();
+            });
+            document.getElementById('overlay-dashboards').addEventListener('change', (e) => {
+                activeOverlays.dashboards = e.target.checked;
+                updateNodeStyles();
+            });
+
+            // Zoom controls
+            document.getElementById('zoom-out-btn').addEventListener('click', zoomOut);
+            document.getElementById('zoom-reset-btn').addEventListener('click', resetView);
+        }
+
+        // Render the 3D force graph
+        function renderGraph() {
+            if (!graphData) return;
+
+            const container = document.getElementById('graph');
+            container.innerHTML = '';
+
+            // Prepare nodes with overlay highlighting
+            const nodes = graphData.nodes.map(node => ({
+                ...node,
+                name: node.label,
+                val: node.size || 20,
+                color: groupColors[node.group] || '#888888',
+                hasOverlay: getNodeOverlays(node.id).length > 0
+            }));
+
+            // Prepare links
+            const links = graphData.edges.map(edge => ({
+                source: edge.source,
+                target: edge.target,
+                type: edge.type,
+                color: graphData.edge_types?.[edge.type]?.color || '#888888',
+                width: graphData.edge_types?.[edge.type]?.width || 1
+            }));
+
+            graph = ForceGraph3D()(container)
+                .graphData({ nodes, links })
+                .nodeLabel(node => `${node.name}${node.expandable ? ' (expandable)' : ''}`)
+                .nodeVal(node => node.val)
+                .nodeColor(node => {
+                    const overlays = getNodeOverlays(node.id);
+                    if (activeOverlays.projects && overlays.some(o => o.type === 'project')) {
+                        return '#ffd700';
+                    }
+                    if (activeOverlays.initiatives && overlays.some(o => o.type === 'initiative')) {
+                        return '#00ff88';
+                    }
+                    if (activeOverlays.dashboards && overlays.some(o => o.type === 'dashboard')) {
+                        return '#ff6b6b';
+                    }
+                    return node.color;
+                })
+                .nodeOpacity(0.9)
+                .linkColor(link => link.color)
+                .linkWidth(link => link.width)
+                .linkOpacity(0.6)
+                .linkDirectionalParticles(link => link.type === 'data_flow' ? 2 : 0)
+                .linkDirectionalParticleWidth(2)
+                .linkDirectionalParticleSpeed(0.005)
+                .backgroundColor('#0a0a1a')
+                .onNodeClick(node => selectNode(node))
+                .onNodeRightClick(node => {
+                    if (node.expandable) {
+                        zoomIntoNode(node);
+                    }
+                })
+                .onNodeDblClick(node => {
+                    if (node.expandable) {
+                        zoomIntoNode(node);
+                    }
+                });
+
+            // Position nodes by tier in 3D space
+            graph.d3Force('charge').strength(-100);
+            graph.d3Force('link').distance(link => 60);
+
+            // Initial camera position
+            setTimeout(() => {
+                graph.cameraPosition({ x: 0, y: 0, z: 500 });
+            }, 500);
+        }
+
+        // Get overlays affecting a node
+        function getNodeOverlays(nodeId) {
+            const result = [];
+
+            overlayData.projects.forEach(project => {
+                if (project.affected_nodes?.includes(nodeId)) {
+                    result.push({ type: 'project', data: project });
+                }
+            });
+
+            overlayData.initiatives.forEach(initiative => {
+                if (initiative.affected_nodes?.includes(nodeId)) {
+                    result.push({ type: 'initiative', data: initiative });
+                }
+            });
+
+            overlayData.dashboards.forEach(dashboard => {
+                if (dashboard.data_sources?.includes(nodeId)) {
+                    result.push({ type: 'dashboard', data: dashboard });
+                }
+            });
+
+            return result;
+        }
+
+        // Update node styles when overlays change
+        function updateNodeStyles() {
+            if (!graph) return;
+            graph.nodeColor(graph.nodeColor()); // Trigger re-render
+        }
+
+        // Select a node and show details
+        function selectNode(node) {
+            selectedNode = node;
+
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('node-details').classList.add('active');
+
+            document.getElementById('detail-name').textContent = node.name || node.label;
+            document.getElementById('detail-color').style.background = node.color;
+            document.getElementById('detail-group').textContent = graphData.groups?.[node.group]?.label || node.group;
+            document.getElementById('detail-description').textContent = node.title || node.description || 'No description available';
+
+            // Show expand section if node is expandable
+            const expandSection = document.getElementById('expand-section');
+            if (node.expandable) {
+                expandSection.style.display = 'block';
+                document.getElementById('expand-description').textContent =
+                    `Explore ${node.name} data schema`;
+
+                // Show children preview if available
+                const previewContainer = document.getElementById('children-preview');
+                previewContainer.innerHTML = '';
+                if (node.children_preview) {
+                    Object.entries(node.children_preview).forEach(([key, value]) => {
+                        previewContainer.innerHTML += `<span class="preview-stat">${value} ${key}</span>`;
+                    });
+                }
+
+                document.getElementById('zoom-in-btn').disabled = false;
+            } else {
+                expandSection.style.display = 'none';
+                document.getElementById('zoom-in-btn').disabled = true;
+            }
+
+            // Show overlay details
+            const overlayDetails = document.getElementById('overlay-details');
+            overlayDetails.innerHTML = '';
+
+            const nodeOverlays = getNodeOverlays(node.id);
+            nodeOverlays.forEach(overlay => {
+                let html = '';
+                if (overlay.type === 'project') {
+                    html = `
+                        <div class="overlay-info">
+                            <h4>&#128203; ${overlay.data.name}</h4>
+                            <p>Status: ${overlay.data.status}</p>
+                            <div class="overlay-meta">
+                                <span>Jira: ${overlay.data.jira_key || 'N/A'}</span>
+                                <span>Hours: ${overlay.data.hours_spent || 0}</span>
+                                <span>Due: ${overlay.data.due_date || 'TBD'}</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (overlay.type === 'initiative') {
+                    html = `
+                        <div class="overlay-info initiative">
+                            <h4>&#127919; ${overlay.data.name}</h4>
+                            <p>${overlay.data.dimension} - ${overlay.data.status}</p>
+                            ${overlay.data.metrics ? `
+                                <div class="overlay-meta">
+                                    <span>Baseline: ${overlay.data.metrics.baseline}</span>
+                                    <span>Current: ${overlay.data.metrics.current}</span>
+                                    <span>Target: ${overlay.data.metrics.target}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else if (overlay.type === 'dashboard') {
+                    html = `
+                        <div class="overlay-info dashboard">
+                            <h4>&#128202; ${overlay.data.name}</h4>
+                            <p>Client: ${overlay.data.client}</p>
+                            <div class="overlay-meta">
+                                <span>Refresh: ${overlay.data.refresh_frequency}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                overlayDetails.innerHTML += html;
+            });
+
+            // Show connections
+            renderConnections(node);
+        }
+
+        // Render connections for selected node
+        function renderConnections(node) {
+            const container = document.getElementById('connections-list');
+            container.innerHTML = '';
+
+            if (!graphData) return;
+
+            // Find incoming and outgoing edges
+            const incoming = graphData.edges.filter(e => e.target === node.id);
+            const outgoing = graphData.edges.filter(e => e.source === node.id);
+
+            const connections = [
+                ...incoming.map(e => ({ nodeId: e.source, type: e.type, direction: 'from' })),
+                ...outgoing.map(e => ({ nodeId: e.target, type: e.type, direction: 'to' }))
+            ];
+
+            connections.forEach(conn => {
+                const targetNode = graphData.nodes.find(n => n.id === conn.nodeId);
+                if (!targetNode) return;
+
+                const edgeStyle = graphData.edge_types?.[conn.type] || {};
+
+                container.innerHTML += `
+                    <div class="connection-item" onclick="navigateToNode('${conn.nodeId}')">
+                        <span class="connection-color" style="background: ${groupColors[targetNode.group] || '#888'}"></span>
+                        <span class="connection-name">${targetNode.label}</span>
+                        <span class="connection-type">${conn.direction} (${edgeStyle.label || conn.type})</span>
+                    </div>
+                `;
+            });
+
+            if (connections.length === 0) {
+                container.innerHTML = '<p style="color: #888; font-size: 12px; padding: 10px;">No connections</p>';
+            }
+        }
+
+        // Navigate to a connected node
+        function navigateToNode(nodeId) {
+            const node = graphData.nodes.find(n => n.id === nodeId);
+            if (node && graph) {
+                // Focus camera on node
+                const distance = 150;
+                graph.cameraPosition(
+                    { x: node.x, y: node.y, z: node.z + distance },
+                    node,
+                    1000
+                );
+
+                // Select the node
+                setTimeout(() => selectNode(node), 500);
+            }
+        }
+
+        // Zoom into an expandable node
+        async function zoomIntoNode(node = selectedNode) {
+            if (!node || !node.expandable) return;
+
+            // Get zoom target info
+            const response = await fetch(`/api/zoom-targets/${node.id}`);
+            const zoomInfo = await response.json();
+
+            if (zoomInfo.can_zoom && zoomInfo.target_endpoint) {
+                // Navigate to the detailed view
+                window.location.href = zoomInfo.target_endpoint;
+            } else if (zoomInfo.can_zoom) {
+                // Load sub-graph in place
+                navigationStack.push(node.id);
+                await loadGraphData('client', node.id);
+                renderGraph();
+                updateZoomControls();
+            }
+        }
+
+        // Zoom out to parent level
+        async function zoomOut() {
+            if (navigationStack.length <= 1) return;
+
+            navigationStack.pop();
+            const parentLevel = navigationStack[navigationStack.length - 1];
+
+            if (parentLevel === 'ecosystem') {
+                await loadGraphData('ecosystem');
+            } else {
+                await loadGraphData('client', parentLevel);
+            }
+
+            renderGraph();
+            updateZoomControls();
+        }
+
+        // Reset view to ecosystem level
+        async function resetView() {
+            navigationStack = ['ecosystem'];
+            await loadGraphData('ecosystem');
+            renderGraph();
+            updateZoomControls();
+
+            // Reset camera
+            if (graph) {
+                graph.cameraPosition({ x: 0, y: 0, z: 500 }, null, 1000);
+            }
+        }
+
+        // Update zoom control states
+        function updateZoomControls() {
+            document.getElementById('zoom-out-btn').disabled = navigationStack.length <= 1;
+        }
+
+        // Update breadcrumb navigation
+        function updateBreadcrumb() {
+            const container = document.getElementById('breadcrumb');
+            container.innerHTML = '';
+
+            navigationStack.forEach((level, index) => {
+                if (index > 0) {
+                    container.innerHTML += '<span class="breadcrumb-separator">&gt;</span>';
+                }
+
+                const isCurrent = index === navigationStack.length - 1;
+                const label = level === 'ecosystem' ? 'Ecosystem' :
+                    graphData?.nodes?.find(n => n.id === level)?.label || level;
+
+                container.innerHTML += `
+                    <span class="breadcrumb-item ${isCurrent ? 'current' : ''}"
+                          data-level="${level}"
+                          onclick="navigateToBreadcrumb(${index})">
+                        ${label}
+                    </span>
+                `;
+            });
+
+            // Update level indicator dots
+            const dots = document.querySelectorAll('.level-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active', 'current');
+                if (i < navigationStack.length - 1) {
+                    dot.classList.add('active');
+                } else if (i === navigationStack.length - 1) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        // Navigate via breadcrumb
+        async function navigateToBreadcrumb(index) {
+            if (index === navigationStack.length - 1) return;
+
+            // Trim navigation stack
+            navigationStack = navigationStack.slice(0, index + 1);
+
+            const level = navigationStack[navigationStack.length - 1];
+            if (level === 'ecosystem') {
+                await loadGraphData('ecosystem');
+            } else {
+                await loadGraphData('client', level);
+            }
+
+            renderGraph();
+            updateZoomControls();
+        }
+
+        // Update legend
+        function updateLegend() {
+            const container = document.getElementById('legend-items');
+            container.innerHTML = '';
+
+            Object.entries(graphData?.groups || {}).forEach(([id, info]) => {
+                container.innerHTML += `
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: ${info.color}"></span>
+                        <span>${info.label}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

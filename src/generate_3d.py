@@ -60,6 +60,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     # Get group info for legend
     groups = data.get("groups", {})
 
+    # Get physical groups if available (for Logical/Physical view toggle)
+    physical_groups = data.get("physical_groups", {})
+
     # Prepare nodes JSON with 3D positions based on tier
     nodes_list = []
     tier_counts = {}  # Track count per tier for positioning
@@ -69,6 +72,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         group = node.get("group", "default")
         tier = node.get("tier", 0)
         group_info = groups.get(group, {"color": "#888888", "label": group})
+
+        # Get physical group info if available
+        physical_group = node.get("physical_group", "")
+        physical_group_info = physical_groups.get(physical_group, {"color": "#888888", "label": physical_group}) if physical_group else None
 
         # Count nodes per tier
         if tier not in tier_counts:
@@ -86,6 +93,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             "tier": tier,
             "logo": node.get("logo", ""),
             "createdAt": node.get("created_at"),
+            "physicalGroup": physical_group,
+            "physicalGroupColor": physical_group_info.get("color", "#888888") if physical_group_info else None,
+            "physicalGroupLabel": physical_group_info.get("label", physical_group) if physical_group_info else None,
         })
 
     # Prepare links JSON with relationship type labels
@@ -139,7 +149,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     nodes_json = json.dumps(nodes_list)
     links_json = json.dumps(links_list)
     groups_json = json.dumps(groups)
+    physical_groups_json = json.dumps(physical_groups)
     edge_styles_json = json.dumps(edge_styles)
+
+    # Check if physical groups are available for the view toggle
+    has_physical_groups = bool(physical_groups) and any(n.get("physical_group") for n in data["nodes"])
 
     # Generate node filter chips
     node_chips_html = ""
@@ -155,6 +169,16 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         color = style.get("color", "#888888")
         label = style.get("label", edge_type)
         edge_chips_html += f'''<span class="filter-chip active" data-edge-type="{edge_type}"><span class="chip-color" style="background:{color}"></span>{label}</span>\n                        '''
+
+    # Generate view mode toggle (only if physical groups exist)
+    view_mode_toggle_html = ""
+    if has_physical_groups:
+        view_mode_toggle_html = '''<div class="toolbar-divider"></div>
+                <div class="toolbar-section view-mode-section" id="view-mode-toggle">
+                    <span class="view-mode-label">View:</span>
+                    <button class="view-mode-btn active" id="btn-logical" onclick="setViewMode('logical')">Logical</button>
+                    <button class="view-mode-btn" id="btn-physical" onclick="setViewMode('physical')">Physical</button>
+                </div>'''
 
     # Get description from metadata
     description = data.get("metadata", {}).get("description", "Click a node to explore")
@@ -711,6 +735,45 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             color: #666;
             margin-left: 4px;
         }}
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }}
+        .view-mode-label {{
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }}
+        .view-mode-btn {{
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        .view-mode-btn:first-of-type {{
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }}
+        .view-mode-btn:last-of-type {{
+            border-radius: 0 4px 4px 0;
+        }}
+        .view-mode-btn.active {{
+            background: #805ad5;
+            color: white;
+        }}
+        .view-mode-btn:hover:not(.active) {{
+            background: #f3e8ff;
+        }}
+        .view-mode-hidden {{
+            display: none !important;
+        }}
         /* Extended Features - v2.0 Styles */
 
         /* Search bar */
@@ -994,6 +1057,98 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .toolbar-extended.hidden {{
             display: none;
         }}
+
+        /* Overlay styles */
+        .overlay-chip {{
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }}
+        .overlay-chip:hover {{
+            background: #e0e0e0;
+        }}
+        .overlay-chip.active {{
+            border-width: 2px;
+        }}
+        .overlay-chip.active[data-overlay="projects"] {{
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }}
+        .overlay-chip.active[data-overlay="initiatives"] {{
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }}
+        .overlay-chip.active[data-overlay="dashboards"] {{
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }}
+        .overlay-chip .chip-icon {{
+            margin-right: 4px;
+            font-size: 11px;
+        }}
+        .overlay-chip .chip-count {{
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }}
+        .overlay-chip.active .chip-count {{
+            background: rgba(0,0,0,0.15);
+        }}
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {{
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }}
+        .overlay-info-panel.project {{
+            border-left: 4px solid #ffd700;
+        }}
+        .overlay-info-panel.initiative {{
+            border-left: 4px solid #00ff88;
+        }}
+        .overlay-info-panel.dashboard {{
+            border-left: 4px solid #ff6b6b;
+        }}
+        .overlay-info-panel h4 {{
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+        .overlay-info-panel p {{
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }}
+        .overlay-meta {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }}
+        .overlay-meta span {{
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }}
     </style>
 </head>
 <body>
@@ -1037,6 +1192,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                         <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
+                {view_mode_toggle_html}
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
             <div id="toolbar-extended" class="toolbar-extended">
@@ -1078,6 +1234,24 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 <div class="toolbar-section effects-toggle">
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
@@ -1130,6 +1304,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -1171,6 +1346,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         const nodesData = {nodes_json};
         const linksData = {links_json};
         const groupsData = {groups_json};
+        const physicalGroupsData = {physical_groups_json};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
+
+        // Theme state (dark or light)
+        let currentTheme = 'dark';
 
         // Create node lookup map
         const nodeMap = {{}};
@@ -1201,6 +1383,95 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = {{ projects: [], initiatives: [], dashboards: [] }};
+        let activeOverlays = {{ projects: false, initiatives: false, dashboards: false }};
+
+        // Load overlay data from API
+        async function loadOverlayData() {{
+            try {{
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({{ json: () => ({{ items: [] }}) }})),
+                    fetch('/api/overlays/initiatives').catch(() => ({{ json: () => ({{ items: [] }}) }})),
+                    fetch('/api/overlays/dashboards').catch(() => ({{ json: () => ({{ items: [] }}) }}))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            }} catch (error) {{
+                console.log('[Athena] Overlay API not available');
+            }}
+        }}
+
+        function toggleOverlay(overlayType) {{
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${{overlayType}}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }}
+
+        function getNodeOverlays(nodeId) {{
+            const result = [];
+            if (activeOverlays.projects) {{
+                overlayData.projects.forEach(p => {{
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({{ type: 'project', data: p }});
+                }});
+            }}
+            if (activeOverlays.initiatives) {{
+                overlayData.initiatives.forEach(i => {{
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({{ type: 'initiative', data: i }});
+                }});
+            }}
+            if (activeOverlays.dashboards) {{
+                overlayData.dashboards.forEach(d => {{
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({{ type: 'dashboard', data: d }});
+                }});
+            }}
+            return result;
+        }}
+
+        function updateGraphColors() {{
+            if (!graph) return;
+            graph.nodeColor(node => {{
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {{
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }}
+                return node.color;
+            }});
+        }}
+
+        function renderOverlayInfo(nodeId) {{
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) {{ container.style.display = 'none'; return; }}
+            container.style.display = 'block';
+            overlays.forEach(o => {{
+                let html = '';
+                if (o.type === 'project') {{
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${{o.data.name}}</h4><p>Status: ${{o.data.status}}</p><div class="overlay-meta"><span>Jira: ${{o.data.jira_key || 'N/A'}}</span><span>Hours: ${{o.data.hours_spent || 0}}</span><span>Due: ${{o.data.due_date || 'TBD'}}</span></div></div>`;
+                }} else if (o.type === 'initiative') {{
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${{o.data.name}}</h4><p>${{o.data.dimension || ''}} - ${{o.data.status}}</p></div>`;
+                }} else if (o.type === 'dashboard') {{
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${{o.data.name}}</h4><p>Client: ${{o.data.client}}</p></div>`;
+                }}
+                container.innerHTML += html;
+            }});
+        }}
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = {{ nodes: [], links: [] }};
@@ -1397,7 +1668,14 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         function applyFilters() {{
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {{
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {{
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                }} else {{
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }}
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             }});
@@ -1441,6 +1719,83 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }} else {{
                 graph.numDimensions(3);
             }}
+        }}
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {{
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {{
+                if (mode === 'physical' && node.physicalGroupColor) {{
+                    node.color = node.physicalGroupColor;
+                }} else {{
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }}
+            }});
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {{
+                graph.nodeColor(node => node.color);
+            }}
+        }}
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {{
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {{
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {{
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${{groupInfo.color}}"></span>${{groupInfo.label}}`;
+                    chip.addEventListener('click', function() {{
+                        togglePhysicalGroupFilter(groupId, this);
+                    }});
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                }});
+            }} else {{
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }}
+        }}
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {{
+            if (visiblePhysicalGroups.has(groupId)) {{
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            }} else {{
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }}
+            applyFilters();
         }}
 
         // Toggle filter sections
@@ -1790,6 +2145,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 connectionsList.appendChild(li);
             }});
 
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
+
             // Update visuals - highlight connected, dim others
             graph
                 .nodeColor(n => highlightedNodes.has(n.id) ? n.color : '#333333')
@@ -2074,6 +2432,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             return `rgba(${{r}},${{g}},${{b}},${{alpha}})`;
         }}
 
+
         // --- Edge particles ---
         function toggleParticles() {{
             particlesEnabled = !particlesEnabled;
@@ -2098,6 +2457,60 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 graph.nodeLabel(node => node.name);
             }} else {{
                 graph.nodeLabel(null);
+            }}
+        }}
+
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {{
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }}
+
+        function applyTheme() {{
+            const body = document.body;
+            const container = document.getElementById('container');
+            const sidebar = document.getElementById('sidebar');
+            const toolbar = document.getElementById('toolbar');
+
+            if (currentTheme === 'light') {{
+                // Light mode
+                body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {{
+                    sidebar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    sidebar.style.color = '#1a202c';
+                }}
+                if (toolbar) {{
+                    toolbar.style.background = 'rgba(255, 255, 255, 0.9)';
+                    toolbar.style.color = '#1a202c';
+                }}
+                // Update graph background
+                if (graph && graph.backgroundColor) {{
+                    graph.backgroundColor('#f0f4f8');
+                }}
+            }} else {{
+                // Dark mode (default)
+                body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {{
+                    sidebar.style.background = 'rgba(15, 23, 42, 0.95)';
+                    sidebar.style.color = '#e2e8f0';
+                }}
+                if (toolbar) {{
+                    toolbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                    toolbar.style.color = '#e2e8f0';
+                }}
+                // Update graph background
+                if (graph && graph.backgroundColor) {{
+                    graph.backgroundColor('#0a0a14');
+                }}
+            }}
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder') {{
+                clearTierPlatforms();
+                applyCylinderLayout();
             }}
         }}
 
@@ -2272,23 +2685,41 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const scene = graph.scene();
                 const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
+                // Ring colors for different tiers
+                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
+
                 sortedTiers.forEach((tierValue, index) => {{
                     const yNorm = (tierValue - minY) / yRange;
                     const yPos = (yNorm - 0.5) * height;
+                    const ringColor = ringColors[index % ringColors.length];
 
-                    // Create ring geometry
-                    const ringGeom = new THREE.RingGeometry(radius - 10, radius + 60, 64);
-                    const ringMat = new THREE.MeshBasicMaterial({{
-                        color: 0x3182ce,
+                    // Create 3D torus ring for depth
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 3;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({{
+                        color: ringColor,
                         transparent: true,
-                        opacity: 0.06,
-                        side: THREE.DoubleSide
+                        opacity: currentTheme === 'light' ? 0.5 : 0.7
                     }});
-                    const ring = new THREE.Mesh(ringGeom, ringMat);
-                    ring.rotation.x = Math.PI / 2; // Lay flat
-                    ring.position.y = yPos;
-                    scene.add(ring);
-                    tierPlatforms.push(ring);
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
+
+                    // Add outer glow ring
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({{
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                    }});
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
 
                     // Create tier label
                     const labelText = tierLabels[tierValue] || `Tier ${{tierValue}}`;

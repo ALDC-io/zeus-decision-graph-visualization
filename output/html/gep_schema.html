@@ -550,6 +550,45 @@
             color: #666;
             margin-left: 4px;
         }
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .view-mode-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .view-mode-btn {
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-mode-btn:first-of-type {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        .view-mode-btn:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+        .view-mode-btn.active {
+            background: #805ad5;
+            color: white;
+        }
+        .view-mode-btn:hover:not(.active) {
+            background: #f3e8ff;
+        }
+        .view-mode-hidden {
+            display: none !important;
+        }
         /* Extended Features - v2.0 Styles */
 
         /* Search bar */
@@ -833,6 +872,98 @@
         .toolbar-extended.hidden {
             display: none;
         }
+
+        /* Overlay styles */
+        .overlay-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .overlay-chip:hover {
+            background: #e0e0e0;
+        }
+        .overlay-chip.active {
+            border-width: 2px;
+        }
+        .overlay-chip.active[data-overlay="projects"] {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }
+        .overlay-chip.active[data-overlay="initiatives"] {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }
+        .overlay-chip.active[data-overlay="dashboards"] {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }
+        .overlay-chip .chip-icon {
+            margin-right: 4px;
+            font-size: 11px;
+        }
+        .overlay-chip .chip-count {
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+        .overlay-chip.active .chip-count {
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .overlay-info-panel.project {
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info-panel.initiative {
+            border-left: 4px solid #00ff88;
+        }
+        .overlay-info-panel.dashboard {
+            border-left: 4px solid #ff6b6b;
+        }
+        .overlay-info-panel h4 {
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .overlay-info-panel p {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .overlay-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }
+        .overlay-meta span {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -890,6 +1021,12 @@
                         <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section view-mode-section" id="view-mode-toggle">
+                    <span class="view-mode-label">View:</span>
+                    <button class="view-mode-btn active" id="btn-logical" onclick="setViewMode('logical')">Logical</button>
+                    <button class="view-mode-btn" id="btn-physical" onclick="setViewMode('physical')">Physical</button>
+                </div>
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
             <div id="toolbar-extended" class="toolbar-extended">
@@ -931,6 +1068,20 @@
                 <div class="toolbar-section effects-toggle">
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
@@ -983,6 +1134,7 @@
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -1021,9 +1173,13 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "hub", "name": "GEP/Navira Data Model", "description": "Global Export Platform Analytics\nRebranded to Navira Dec 2025\n10 Tables, 79 Columns", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null}, {"id": "table_order", "name": "Order", "description": "Order fact table\nCustomer orders with shipping, status, country", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_order_line", "name": "Order Line", "description": "Order Line fact table\nLine item details, quantities, amounts", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaign tracking", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_returns", "name": "Returns", "description": "Returns fact table\nReturn transactions", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_inventory", "name": "Inventory", "description": "Inventory fact table\nStock levels and movements", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_date", "name": "Date", "description": "Date dimension\nStandard date hierarchy", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_marketplace", "name": "Marketplace", "description": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_product", "name": "Product", "description": "Product dimension\nProduct catalog and attributes", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_customer", "name": "Customer", "description": "Customer dimension\nCustomer demographics and segments", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_consolidation", "name": "Consolidation", "description": "Consolidation table\nAggregated metrics", "val": 25, "color": "#e53e3e", "group": "consolidation", "groupLabel": "Consolidation Tables", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_order_id", "name": "Order ID", "description": "Primary key for orders", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_order_date", "name": "Order Date", "description": "Date of order placement", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_shipping_status", "name": "Shipping Status", "description": "Current shipping state", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_country", "name": "Country", "description": "Destination country", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_order_total", "name": "Order Total", "description": "Total order amount", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_currency", "name": "Currency", "description": "Order currency code", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_line_id", "name": "Line ID", "description": "Order line item identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_quantity", "name": "Quantity", "description": "Quantity ordered", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_unit_price", "name": "Unit Price", "description": "Price per unit", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_line_total", "name": "Line Total", "description": "Total for line item", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_sku", "name": "SKU", "description": "Product stock keeping unit", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_campaign_id", "name": "Campaign ID", "description": "Campaign identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_campaign_name", "name": "Campaign Name", "description": "Campaign display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_ad_spend", "name": "Ad Spend", "description": "Advertising expenditure", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_impressions", "name": "Impressions", "description": "Ad impressions count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_clicks", "name": "Clicks", "description": "Ad clicks count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_return_id", "name": "Return ID", "description": "Return transaction ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_return_reason", "name": "Return Reason", "description": "Reason for return", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_return_date", "name": "Return Date", "description": "Date of return", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_refund_amount", "name": "Refund Amount", "description": "Amount refunded", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_inventory_id", "name": "Inventory ID", "description": "Inventory record ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_stock_level", "name": "Stock Level", "description": "Current stock quantity", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_reorder_point", "name": "Reorder Point", "description": "Threshold for reordering", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_warehouse", "name": "Warehouse", "description": "Warehouse location", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null}, {"id": "col_product_id", "name": "Product ID", "description": "Product identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_product_name", "name": "Product Name", "description": "Product display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_category", "name": "Category", "description": "Product category", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_brand", "name": "Brand", "description": "Product brand", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_asin", "name": "ASIN", "description": "Amazon Standard ID Number", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_customer_id", "name": "Customer ID", "description": "Customer identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_customer_name", "name": "Customer Name", "description": "Customer display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_segment", "name": "Segment", "description": "Customer segment", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_lifetime_value", "name": "Lifetime Value", "description": "Customer LTV", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_marketplace_id", "name": "Marketplace ID", "description": "Marketplace identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_marketplace_name", "name": "Marketplace Name", "description": "Marketplace display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_region", "name": "Region", "description": "Geographic region", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_date_key", "name": "Date Key", "description": "Date dimension key", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_day", "name": "Day", "description": "Day of month", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_month", "name": "Month", "description": "Month of year", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_quarter", "name": "Quarter", "description": "Fiscal quarter", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "col_year", "name": "Year", "description": "Calendar year", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_revenue", "name": "Revenue", "description": "Total revenue\nSum of order totals", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_aov", "name": "AOV", "description": "Average Order Value\nRevenue / Order Count", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_units_sold", "name": "Units Sold", "description": "Total units sold\nSum of quantities", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_return_rate", "name": "Return Rate", "description": "Return percentage\nReturns / Orders", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_acos", "name": "ACoS", "description": "Advertising Cost of Sales\nAd Spend / Revenue", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_roas", "name": "ROAS", "description": "Return on Ad Spend\nRevenue / Ad Spend", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_ctr", "name": "CTR", "description": "Click-Through Rate\nClicks / Impressions", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "measure_inventory_turnover", "name": "Inventory Turnover", "description": "Inventory efficiency\nCOGS / Avg Inventory", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null}, {"id": "source_amazon", "name": "Amazon Seller Central", "description": "Amazon marketplace data\nOrders, inventory, FBA, listings", "val": 25, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "createdAt": null}, {"id": "source_ebay", "name": "eBay", "description": "eBay marketplace data\nListings, orders, sales", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg", "createdAt": null}, {"id": "source_walmart", "name": "Walmart", "description": "Walmart marketplace data\nOrders, inventory", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg", "createdAt": null}, {"id": "source_sellercloud", "name": "SellerCloud", "description": "SellerCloud ERP\nOrders, inventory, RMA, vendors\n14 Eclipse templates", "val": 25, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://www.sellercloud.com/favicon.ico", "createdAt": null}, {"id": "source_amazon_ads", "name": "Amazon Advertising", "description": "Amazon Ads API\nSponsored Products, Brands, Display", "val": 22, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "createdAt": null}, {"id": "source_fba", "name": "FBA Reports", "description": "Fulfillment by Amazon\nInventory, returns, fees", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "", "createdAt": null}, {"id": "api_eclipse", "name": "Eclipse API", "description": "Eclipse Connectors\n61 GEP templates\nCSV, REST, SQL Server", "val": 30, "color": "#9f7aea", "group": "api", "groupLabel": "API Connectors", "tier": 5, "logo": "", "createdAt": null}, {"id": "api_snowflake", "name": "Snowflake", "description": "Cloud Data Warehouse\nGEP schema with 43 files\nStar schema models", "val": 30, "color": "#9f7aea", "group": "api", "groupLabel": "API Connectors", "tier": 5, "logo": "", "createdAt": null}];
+        const nodesData = [{"id": "hub", "name": "GEP/Navira Data Model", "description": "Global Export Platform Analytics\nRebranded to Navira Dec 2025\n10 Tables, 79 Columns", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_order", "name": "Order", "description": "Order fact table\nCustomer orders with shipping, status, country", "val": 40, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_order_line", "name": "Order Line", "description": "Order Line fact table\nLine item details, quantities, amounts", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_campaign", "name": "Campaign", "description": "Campaign fact table\nMarketing campaign tracking", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_returns", "name": "Returns", "description": "Returns fact table\nReturn transactions", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_inventory", "name": "Inventory", "description": "Inventory fact table\nStock levels and movements", "val": 25, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_date", "name": "Date", "description": "Date dimension\nStandard date hierarchy", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_marketplace", "name": "Marketplace", "description": "Marketplace dimension\nSales channels (Amazon, eBay, etc.)", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_product", "name": "Product", "description": "Product dimension\nProduct catalog and attributes", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_customer", "name": "Customer", "description": "Customer dimension\nCustomer demographics and segments", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_consolidation", "name": "Consolidation", "description": "Consolidation table\nAggregated metrics", "val": 25, "color": "#e53e3e", "group": "consolidation", "groupLabel": "Consolidation Tables", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_order_id", "name": "Order ID", "description": "Primary key for orders", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_order_date", "name": "Order Date", "description": "Date of order placement", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_shipping_status", "name": "Shipping Status", "description": "Current shipping state", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_country", "name": "Country", "description": "Destination country", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_order_total", "name": "Order Total", "description": "Total order amount", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_currency", "name": "Currency", "description": "Order currency code", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_line_id", "name": "Line ID", "description": "Order line item identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_quantity", "name": "Quantity", "description": "Quantity ordered", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_unit_price", "name": "Unit Price", "description": "Price per unit", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_line_total", "name": "Line Total", "description": "Total for line item", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_sku", "name": "SKU", "description": "Product stock keeping unit", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_campaign_id", "name": "Campaign ID", "description": "Campaign identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_campaign_name", "name": "Campaign Name", "description": "Campaign display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_ad_spend", "name": "Ad Spend", "description": "Advertising expenditure", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_impressions", "name": "Impressions", "description": "Ad impressions count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_clicks", "name": "Clicks", "description": "Ad clicks count", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_return_id", "name": "Return ID", "description": "Return transaction ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_return_reason", "name": "Return Reason", "description": "Reason for return", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_return_date", "name": "Return Date", "description": "Date of return", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_refund_amount", "name": "Refund Amount", "description": "Amount refunded", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_inventory_id", "name": "Inventory ID", "description": "Inventory record ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_stock_level", "name": "Stock Level", "description": "Current stock quantity", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_reorder_point", "name": "Reorder Point", "description": "Threshold for reordering", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_warehouse", "name": "Warehouse", "description": "Warehouse location", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_product_id", "name": "Product ID", "description": "Product identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_product_name", "name": "Product Name", "description": "Product display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_category", "name": "Category", "description": "Product category", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_brand", "name": "Brand", "description": "Product brand", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_asin", "name": "ASIN", "description": "Amazon Standard ID Number", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_customer_id", "name": "Customer ID", "description": "Customer identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_customer_name", "name": "Customer Name", "description": "Customer display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_segment", "name": "Segment", "description": "Customer segment", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_lifetime_value", "name": "Lifetime Value", "description": "Customer LTV", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_marketplace_id", "name": "Marketplace ID", "description": "Marketplace identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_marketplace_name", "name": "Marketplace Name", "description": "Marketplace display name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_region", "name": "Region", "description": "Geographic region", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_date_key", "name": "Date Key", "description": "Date dimension key", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_day", "name": "Day", "description": "Day of month", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_month", "name": "Month", "description": "Month of year", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_quarter", "name": "Quarter", "description": "Fiscal quarter", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_year", "name": "Year", "description": "Calendar year", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_revenue", "name": "Revenue", "description": "Total revenue\nSum of order totals", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_aov", "name": "AOV", "description": "Average Order Value\nRevenue / Order Count", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_units_sold", "name": "Units Sold", "description": "Total units sold\nSum of quantities", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_return_rate", "name": "Return Rate", "description": "Return percentage\nReturns / Orders", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_acos", "name": "ACoS", "description": "Advertising Cost of Sales\nAd Spend / Revenue", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_roas", "name": "ROAS", "description": "Return on Ad Spend\nRevenue / Ad Spend", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_ctr", "name": "CTR", "description": "Click-Through Rate\nClicks / Impressions", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_inventory_turnover", "name": "Inventory Turnover", "description": "Inventory efficiency\nCOGS / Avg Inventory", "val": 18, "color": "#d69e2e", "group": "measure", "groupLabel": "Measures", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "source_amazon", "name": "Amazon Seller Central", "description": "Amazon marketplace data\nOrders, inventory, FBA, listings", "val": 25, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "createdAt": null, "physicalGroup": "amazon_aws", "physicalGroupColor": "#ff9900", "physicalGroupLabel": "Amazon AWS"}, {"id": "source_ebay", "name": "eBay", "description": "eBay marketplace data\nListings, orders, sales", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_walmart", "name": "Walmart", "description": "Walmart marketplace data\nOrders, inventory", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_sellercloud", "name": "SellerCloud", "description": "SellerCloud ERP\nOrders, inventory, RMA, vendors\n14 Eclipse templates", "val": 25, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://www.sellercloud.com/favicon.ico", "createdAt": null, "physicalGroup": "external_saas", "physicalGroupColor": "#6b7280", "physicalGroupLabel": "External SaaS"}, {"id": "source_amazon_ads", "name": "Amazon Advertising", "description": "Amazon Ads API\nSponsored Products, Brands, Display", "val": 22, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "createdAt": null, "physicalGroup": "amazon_aws", "physicalGroupColor": "#ff9900", "physicalGroupLabel": "Amazon AWS"}, {"id": "source_fba", "name": "FBA Reports", "description": "Fulfillment by Amazon\nInventory, returns, fees", "val": 20, "color": "#00a67d", "group": "source", "groupLabel": "Data Sources", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "amazon_aws", "physicalGroupColor": "#ff9900", "physicalGroupLabel": "Amazon AWS"}, {"id": "api_eclipse", "name": "Eclipse API", "description": "Eclipse Connectors\n61 GEP templates\nCSV, REST, SQL Server", "val": 30, "color": "#9f7aea", "group": "api", "groupLabel": "API Connectors", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "eclipse", "physicalGroupColor": "#6366f1", "physicalGroupLabel": "Eclipse Cloud"}, {"id": "api_snowflake", "name": "Snowflake", "description": "Cloud Data Warehouse\nGEP schema with 43 files\nStar schema models", "val": 30, "color": "#9f7aea", "group": "api", "groupLabel": "API Connectors", "tier": 5, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}];
         const linksData = [{"source": "hub", "target": "table_order", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_order_line", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_campaign", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_marketplace", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_product", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_customer", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_consolidation", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_returns", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_inventory", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "table_order", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order_line", "target": "table_product", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_customer", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_marketplace", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_order", "target": "table_date", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_campaign", "target": "table_marketplace", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_returns", "target": "table_order", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_inventory", "target": "table_product", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_consolidation", "target": "table_order", "color": "#38a169", "width": 2, "relationType": "Aggregates", "edgeType": "aggregates"}, {"source": "table_consolidation", "target": "table_order_line", "color": "#38a169", "width": 2, "relationType": "Aggregates", "edgeType": "aggregates"}, {"source": "table_order", "target": "col_order_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order", "target": "col_order_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order", "target": "col_shipping_status", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order", "target": "col_country", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order", "target": "col_order_total", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order", "target": "col_currency", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "col_line_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "col_quantity", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "col_unit_price", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "col_line_total", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_order_line", "target": "col_sku", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_campaign_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_campaign_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_ad_spend", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_impressions", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_campaign", "target": "col_clicks", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_returns", "target": "col_return_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_returns", "target": "col_return_reason", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_returns", "target": "col_return_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_returns", "target": "col_refund_amount", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_inventory", "target": "col_inventory_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_inventory", "target": "col_stock_level", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_inventory", "target": "col_reorder_point", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_inventory", "target": "col_warehouse", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_product", "target": "col_product_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_product", "target": "col_product_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_product", "target": "col_category", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_product", "target": "col_brand", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_product", "target": "col_asin", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_customer", "target": "col_customer_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_customer", "target": "col_customer_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_customer", "target": "col_segment", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_customer", "target": "col_lifetime_value", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_marketplace", "target": "col_marketplace_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_marketplace", "target": "col_marketplace_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_marketplace", "target": "col_region", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_date_key", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_day", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_month", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_quarter", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_date", "target": "col_year", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "col_order_total", "target": "measure_revenue", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_order_total", "target": "measure_aov", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_quantity", "target": "measure_units_sold", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_quantity", "target": "measure_aov", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_refund_amount", "target": "measure_return_rate", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_ad_spend", "target": "measure_acos", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_ad_spend", "target": "measure_roas", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_impressions", "target": "measure_ctr", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_clicks", "target": "measure_ctr", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "col_stock_level", "target": "measure_inventory_turnover", "color": "#d69e2e", "width": 2, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "source_amazon", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "source_ebay", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "source_walmart", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "source_sellercloud", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "source_amazon_ads", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "source_fba", "target": "api_eclipse", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_eclipse", "target": "api_snowflake", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_order", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_order_line", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_campaign", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_returns", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_inventory", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_product", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_customer", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_marketplace", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_date", "color": "#00a67d", "width": 2, "relationType": "Feeds", "edgeType": "feeds"}];
         const groupsData = {"hub": {"color": "#dd6b20", "label": "Dataset"}, "fact": {"color": "#1a365d", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "date": {"color": "#805ad5", "label": "Date Tables"}, "consolidation": {"color": "#e53e3e", "label": "Consolidation Tables"}, "column": {"color": "#718096", "label": "Columns"}, "measure": {"color": "#d69e2e", "label": "Measures"}, "source": {"color": "#00a67d", "label": "Data Sources"}, "api": {"color": "#9f7aea", "label": "API Connectors"}};
+        const physicalGroupsData = {"snowflake": {"color": "#29b5e8", "label": "Snowflake"}, "amazon_aws": {"color": "#ff9900", "label": "Amazon AWS"}, "external_saas": {"color": "#6b7280", "label": "External SaaS"}, "eclipse": {"color": "#6366f1", "label": "Eclipse Cloud"}};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
 
         // Create node lookup map
         const nodeMap = {};
@@ -1054,6 +1210,95 @@
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = { projects: [], initiatives: [], dashboards: [] };
+        let activeOverlays = { projects: false, initiatives: false, dashboards: false };
+
+        // Load overlay data from API
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/initiatives').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/dashboards').catch(() => ({ json: () => ({ items: [] }) }))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            } catch (error) {
+                console.log('[Athena] Overlay API not available');
+            }
+        }
+
+        function toggleOverlay(overlayType) {
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${overlayType}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }
+
+        function getNodeOverlays(nodeId) {
+            const result = [];
+            if (activeOverlays.projects) {
+                overlayData.projects.forEach(p => {
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({ type: 'project', data: p });
+                });
+            }
+            if (activeOverlays.initiatives) {
+                overlayData.initiatives.forEach(i => {
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({ type: 'initiative', data: i });
+                });
+            }
+            if (activeOverlays.dashboards) {
+                overlayData.dashboards.forEach(d => {
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({ type: 'dashboard', data: d });
+                });
+            }
+            return result;
+        }
+
+        function updateGraphColors() {
+            if (!graph) return;
+            graph.nodeColor(node => {
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }
+                return node.color;
+            });
+        }
+
+        function renderOverlayInfo(nodeId) {
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            overlays.forEach(o => {
+                let html = '';
+                if (o.type === 'project') {
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${o.data.name}</h4><p>Status: ${o.data.status}</p><div class="overlay-meta"><span>Jira: ${o.data.jira_key || 'N/A'}</span><span>Hours: ${o.data.hours_spent || 0}</span><span>Due: ${o.data.due_date || 'TBD'}</span></div></div>`;
+                } else if (o.type === 'initiative') {
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${o.data.name}</h4><p>${o.data.dimension || ''} - ${o.data.status}</p></div>`;
+                } else if (o.type === 'dashboard') {
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${o.data.name}</h4><p>Client: ${o.data.client}</p></div>`;
+                }
+                container.innerHTML += html;
+            });
+        }
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = { nodes: [], links: [] };
@@ -1250,7 +1495,14 @@
         function applyFilters() {
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                } else {
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             });
@@ -1294,6 +1546,83 @@
             } else {
                 graph.numDimensions(3);
             }
+        }
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {
+                if (mode === 'physical' && node.physicalGroupColor) {
+                    node.color = node.physicalGroupColor;
+                } else {
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }
+            });
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {
+                graph.nodeColor(node => node.color);
+            }
+        }
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${groupInfo.color}"></span>${groupInfo.label}`;
+                    chip.addEventListener('click', function() {
+                        togglePhysicalGroupFilter(groupId, this);
+                    });
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                });
+            } else {
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }
+        }
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {
+            if (visiblePhysicalGroups.has(groupId)) {
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            } else {
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }
+            applyFilters();
         }
 
         // Toggle filter sections
@@ -1642,6 +1971,9 @@
                 };
                 connectionsList.appendChild(li);
             });
+
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
 
             // Update visuals - highlight connected, dim others
             graph
