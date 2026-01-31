@@ -2346,45 +2346,69 @@
                 const group = new THREE.Group();
                 const size = Math.max(node.val / 5, 3) * 2;
 
-                // Create main sphere
-                const sphereGeom = new THREE.SphereGeometry(size, 16, 16);
-                const sphereMat = new THREE.MeshLambertMaterial({
-                    color: node.color,
-                    transparent: true,
-                    opacity: 0.9
-                });
-                const sphere = new THREE.Mesh(sphereGeom, sphereMat);
-                group.add(sphere);
-
-                // Create text label sprite (always facing camera)
+                // Create text label sprite below node (always facing camera)
                 const labelSprite = createLabelSprite(node.name, node.color, size);
-                labelSprite.position.set(0, -size - 8, 0);
+                labelSprite.position.set(0, -size - 10, 0);
                 group.add(labelSprite);
 
-                // Try to load logo if available
+                // Create the node visual - either logo cube or colored sphere with initials
                 if (node.logo) {
+                    // Create a 3D box (cube) as the node - logo will be applied to faces
+                    const boxSize = size * 1.5;
+                    const boxGeom = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+
+                    // Create placeholder material while logo loads
+                    const placeholderMat = new THREE.MeshLambertMaterial({
+                        color: node.color,
+                        transparent: true,
+                        opacity: 0.8
+                    });
+                    const box = new THREE.Mesh(boxGeom, placeholderMat);
+                    box.userData.isLogoBox = true;
+                    group.add(box);
+
+                    // Add subtle glow effect behind the box
+                    const glowGeom = new THREE.SphereGeometry(boxSize * 0.9, 16, 16);
+                    const glowMat = new THREE.MeshBasicMaterial({
+                        color: node.color,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    const glow = new THREE.Mesh(glowGeom, glowMat);
+                    group.add(glow);
+
+                    // Load logo and apply to all faces of the cube
                     loadLogoTexture(node.logo).then(texture => {
                         if (texture) {
-                            const logoSprite = new THREE.Sprite(
-                                new THREE.SpriteMaterial({
-                                    map: texture,
-                                    transparent: true
-                                })
-                            );
-                            const logoSize = size * 1.8;
-                            logoSprite.scale.set(logoSize, logoSize, 1);
-                            logoSprite.position.set(0, 0, 0);
-                            group.add(logoSprite);
-
-                            // Make sphere slightly transparent when logo loads
-                            sphereMat.opacity = 0.3;
+                            // Create materials array for each face of the cube (6 faces)
+                            const logoMat = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                transparent: true,
+                                side: THREE.DoubleSide
+                            });
+                            // Apply same logo to all faces
+                            box.material = [logoMat, logoMat, logoMat, logoMat, logoMat, logoMat];
+                            box.material.needsUpdate = true;
                         }
                     });
+
+                    // Add slow rotation animation to logo boxes
+                    box.userData.rotationSpeed = 0.005 + Math.random() * 0.005;
                 } else {
-                    // No logo - add initials sprite
+                    // No logo - create sphere with initials
+                    const sphereGeom = new THREE.SphereGeometry(size, 16, 16);
+                    const sphereMat = new THREE.MeshLambertMaterial({
+                        color: node.color,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+                    const sphere = new THREE.Mesh(sphereGeom, sphereMat);
+                    group.add(sphere);
+
+                    // Add initials sprite on top of sphere
                     const initials = getInitials(node.name);
                     const initialsSprite = createInitialsSprite(initials, node.color, size);
-                    initialsSprite.position.set(0, 0, 0);
+                    initialsSprite.position.set(0, 0, size * 0.1);
                     group.add(initialsSprite);
                 }
 
@@ -2392,6 +2416,30 @@
             });
 
             graph.nodeThreeObjectExtend(false);
+
+            // Start animation loop for rotating logo cubes
+            if (!window.logoRotationActive) {
+                window.logoRotationActive = true;
+                function animateLogos() {
+                    if (!logoLabelsEnabled) {
+                        window.logoRotationActive = false;
+                        return;
+                    }
+                    const nodes = graph.graphData().nodes;
+                    nodes.forEach(node => {
+                        const obj = graph.scene().getObjectByProperty('__data', node);
+                        if (obj && obj.children) {
+                            obj.children.forEach(child => {
+                                if (child.userData && child.userData.isLogoBox) {
+                                    child.rotation.y += child.userData.rotationSpeed || 0.005;
+                                }
+                            });
+                        }
+                    });
+                    requestAnimationFrame(animateLogos);
+                }
+                animateLogos();
+            }
         }
 
         function createLabelSprite(text, color, nodeSize) {
