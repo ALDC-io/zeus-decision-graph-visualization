@@ -2511,38 +2511,15 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return;
             }}
 
-            // Add label sprite below each node, and logo sprite if available
-            // Use nodeThreeObjectExtend(true) to ADD to existing nodes, not replace
+            // Just add a label sprite below each node - no groups, keep it simple
             graph.nodeThreeObject(node => {{
                 const size = Math.max(node.val / 5, 3) * 2;
-                const group = new THREE.Group();
-
-                // Create label sprite below node
                 const labelSprite = createLabelSprite(node.name, node.color, size);
                 labelSprite.position.set(0, -size - 8, 0);
-                group.add(labelSprite);
-
-                // If node has logo, load and display it as a sprite above the node
-                if (node.logo) {{
-                    loadLogoTexture(node.logo).then(texture => {{
-                        if (texture) {{
-                            const logoMat = new THREE.SpriteMaterial({{
-                                map: texture,
-                                transparent: true
-                            }});
-                            const logoSprite = new THREE.Sprite(logoMat);
-                            const logoSize = size * 2;
-                            logoSprite.scale.set(logoSize, logoSize, 1);
-                            logoSprite.position.set(0, size + 4, 0);
-                            group.add(logoSprite);
-                        }}
-                    }});
-                }}
-
-                return group;
+                return labelSprite;
             }});
 
-            // IMPORTANT: extend=true adds our object to existing node, doesn't replace
+            // extend=true adds our sprite to existing node, doesn't replace
             graph.nodeThreeObjectExtend(true);
         }}
 
