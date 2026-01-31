@@ -2,8 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ALDC Internal Data Schema</title>
+    <title>ALDC Internal Engineering Schema</title>
     <link rel="icon" href="data:,">
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <style>
         * {
@@ -192,13 +193,96 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 85vh;
             width: 90%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             overflow: hidden;
+        }
+        .modal-section {
+            margin-bottom: 20px;
+        }
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .modal-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .modal-detail-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+        .modal-detail-item .detail-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .modal-detail-item .detail-value {
+            font-size: 13px;
+            color: #1a365d;
+            font-weight: 500;
+        }
+        .modal-connections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .modal-conn-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #2b6cb0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-conn-chip:hover {
+            background: #bee3f8;
+        }
+        .modal-conn-chip .conn-type {
+            font-size: 10px;
+            color: #666;
+            margin-left: 6px;
+        }
+        .modal-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 6px;
+        }
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+        }
+        .modal-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-top: 6px;
         }
         .modal-header {
             padding: 20px;
@@ -465,6 +549,45 @@
             font-size: 10px;
             color: #666;
             margin-left: 4px;
+        }
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .view-mode-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .view-mode-btn {
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-mode-btn:first-of-type {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        .view-mode-btn:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+        .view-mode-btn.active {
+            background: #805ad5;
+            color: white;
+        }
+        .view-mode-btn:hover:not(.active) {
+            background: #f3e8ff;
+        }
+        .view-mode-hidden {
+            display: none !important;
         }
         /* Extended Features - v2.0 Styles */
 
@@ -749,6 +872,98 @@
         .toolbar-extended.hidden {
             display: none;
         }
+
+        /* Overlay styles */
+        .overlay-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .overlay-chip:hover {
+            background: #e0e0e0;
+        }
+        .overlay-chip.active {
+            border-width: 2px;
+        }
+        .overlay-chip.active[data-overlay="projects"] {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }
+        .overlay-chip.active[data-overlay="initiatives"] {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }
+        .overlay-chip.active[data-overlay="dashboards"] {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }
+        .overlay-chip .chip-icon {
+            margin-right: 4px;
+            font-size: 11px;
+        }
+        .overlay-chip .chip-count {
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+        .overlay-chip.active .chip-count {
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .overlay-info-panel.project {
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info-panel.initiative {
+            border-left: 4px solid #00ff88;
+        }
+        .overlay-info-panel.dashboard {
+            border-left: 4px solid #ff6b6b;
+        }
+        .overlay-info-panel h4 {
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .overlay-info-panel p {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .overlay-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }
+        .overlay-meta span {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -764,11 +979,15 @@
                 <div class="toolbar-section">
                     <span class="toolbar-label collapsed" onclick="toggleFilterSection('nodes')">Nodes <span class="arrow">▼</span></span>
                     <div class="filter-group collapsed" id="nodes-filters">
-                        <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#dd6b20"></span>Dataset</span>
-                        <span class="filter-chip active" data-group="fact"><span class="chip-color" style="background:#1a365d"></span>Fact Tables</span>
+                        <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#1a365d"></span>Dataset</span>
+                        <span class="filter-chip active" data-group="fact"><span class="chip-color" style="background:#2b6cb0"></span>Fact Tables</span>
                         <span class="filter-chip active" data-group="dimension"><span class="chip-color" style="background:#2f855a"></span>Dimension Tables</span>
-                        <span class="filter-chip active" data-group="date"><span class="chip-color" style="background:#805ad5"></span>Date Tables</span>
-                        <span class="filter-chip active" data-group="metadata"><span class="chip-color" style="background:#e53e3e"></span>Metadata Tables</span>
+                        <span class="filter-chip active" data-group="operational"><span class="chip-color" style="background:#805ad5"></span>Operational Tables</span>
+                        <span class="filter-chip active" data-group="log"><span class="chip-color" style="background:#d69e2e"></span>Log Tables</span>
+                        <span class="filter-chip active" data-group="column"><span class="chip-color" style="background:#718096"></span>Columns</span>
+                        <span class="filter-chip active" data-group="measure"><span class="chip-color" style="background:#e53e3e"></span>Measures</span>
+                        <span class="filter-chip active" data-group="source"><span class="chip-color" style="background:#38a169"></span>Data Sources</span>
+                        <span class="filter-chip active" data-group="api"><span class="chip-color" style="background:#3182ce"></span>APIs & Connectors</span>
                         
                         <button class="mini-btn" onclick="toggleAllNodes()">Toggle</button>
                     </div>
@@ -777,7 +996,10 @@
                 <div class="toolbar-section">
                     <span class="toolbar-label collapsed" onclick="toggleFilterSection('edges')">Edges <span class="arrow">▼</span></span>
                     <div class="filter-group collapsed" id="edges-filters">
+                        <span class="filter-chip active" data-edge-type="calculates"><span class="chip-color" style="background:#e53e3e"></span>Calculates</span>
                         <span class="filter-chip active" data-edge-type="contains"><span class="chip-color" style="background:#718096"></span>Contains</span>
+                        <span class="filter-chip active" data-edge-type="feeds"><span class="chip-color" style="background:#38a169"></span>Feeds Data</span>
+                        <span class="filter-chip active" data-edge-type="logs"><span class="chip-color" style="background:#d69e2e"></span>Logs</span>
                         <span class="filter-chip active" data-edge-type="references"><span class="chip-color" style="background:#3182ce"></span>References</span>
                         
                         <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
@@ -798,6 +1020,12 @@
                         <input type="date" id="date-to" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
                         <span id="date-count" class="date-count"></span>
                     </div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section view-mode-section" id="view-mode-toggle">
+                    <span class="view-mode-label">View:</span>
+                    <button class="view-mode-btn active" id="btn-logical" onclick="setViewMode('logical')">Logical</button>
+                    <button class="view-mode-btn" id="btn-physical" onclick="setViewMode('physical')">Physical</button>
                 </div>
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
@@ -841,6 +1069,24 @@
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
                 <span id="selection-count" class="selection-count">0 selected</span>
@@ -870,8 +1116,8 @@
         <button id="sidebar-toggle" onclick="toggleSidebar()">◀</button>
         <div id="sidebar">
             <div class="header">
-                <h1>ALDC Internal Data Schema</h1>
-                <p>Schema visualization for ALDC Operations Model - 12 tables, 98 columns, 80 measures</p>
+                <h1>ALDC Internal Engineering Schema</h1>
+                <p>Complete data model - 12 tables, 85+ columns, 15 measures, Eclipse operations monitoring</p>
             </div>
             <div id="info-panel">
                 <div class="info-placeholder" id="placeholder">
@@ -892,6 +1138,7 @@
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -901,11 +1148,28 @@
     <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2 id="modal-title">Memory Content</h2>
+                <div class="modal-header-content">
+                    <img id="modal-logo" class="modal-logo" src="" alt="" style="display:none;">
+                    <div>
+                        <h2 id="modal-title">Node Details</h2>
+                        <span id="modal-tier-badge" class="modal-tier-badge"></span>
+                    </div>
+                </div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="full-content" id="modal-content"></div>
+                <div class="modal-section">
+                    <div class="modal-section-title">Description</div>
+                    <div class="full-content" id="modal-content"></div>
+                </div>
+                <div class="modal-section" id="modal-details-section">
+                    <div class="modal-section-title">Details</div>
+                    <div class="modal-detail-grid" id="modal-details"></div>
+                </div>
+                <div class="modal-section" id="modal-connections-section">
+                    <div class="modal-section-title">Connected Nodes</div>
+                    <div class="modal-connections" id="modal-connections"></div>
+                </div>
             </div>
             <div class="modal-meta" id="modal-meta"></div>
         </div>
@@ -913,9 +1177,16 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "hub", "name": "ALDC Operations Model", "description": "ALDC Internal Analytics Dataset\n12 Tables, 98 Columns, 80 Measures", "val": 50, "color": "#dd6b20", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null}, {"id": "table_worker", "name": "Worker", "description": "Worker dimension table\nEmployee/Contractor records", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_labour", "name": "Labour", "description": "Labour fact table\nTime and effort tracking", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_jobcode", "name": "Jobcode", "description": "Jobcode dimension table\nProject codes and categories", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_plan", "name": "Plan", "description": "Plan fact table\nResource planning data", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_date_work", "name": "Date (Work)", "description": "Date dimension\nWork dates", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_date_invoice", "name": "Date (Invoice)", "description": "Date dimension\nInvoice dates", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_service_item", "name": "Service Item", "description": "Service Item dimension\nService catalog items", "val": 25, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_service_revenue", "name": "Service Revenue", "description": "Service Revenue fact table\nRevenue tracking", "val": 35, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_date_start", "name": "Date (Start)", "description": "Date dimension\nProject start dates", "val": 25, "color": "#805ad5", "group": "date", "groupLabel": "Date Tables", "tier": 2, "logo": "", "createdAt": null}, {"id": "table_invoice", "name": "Invoice", "description": "Invoice fact table\nClient invoices", "val": 30, "color": "#1a365d", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null}, {"id": "table_report_metadata", "name": "Report Metadata", "description": "Report metadata\nReporting configuration", "val": 20, "color": "#e53e3e", "group": "metadata", "groupLabel": "Metadata Tables", "tier": 3, "logo": "", "createdAt": null}, {"id": "table_account", "name": "Account", "description": "Account dimension\nClient accounts", "val": 30, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 2, "logo": "", "createdAt": null}];
-        const linksData = [{"source": "hub", "target": "table_worker", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_labour", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_jobcode", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_plan", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date_work", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date_invoice", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_service_item", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_service_revenue", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_date_start", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_invoice", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_report_metadata", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_account", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_labour", "target": "table_worker", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_labour", "target": "table_jobcode", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_labour", "target": "table_date_work", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_plan", "target": "table_jobcode", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_plan", "target": "table_worker", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_service_revenue", "target": "table_account", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_service_revenue", "target": "table_service_item", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_invoice", "target": "table_account", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_invoice", "target": "table_date_invoice", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}];
-        const groupsData = {"hub": {"color": "#dd6b20", "label": "Dataset"}, "fact": {"color": "#1a365d", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "date": {"color": "#805ad5", "label": "Date Tables"}, "metadata": {"color": "#e53e3e", "label": "Metadata Tables"}};
+        const nodesData = [{"id": "hub", "name": "ALDC Engineering", "description": "ALDC Internal Operations Dataset\n12 Tables, 85+ Columns, 15 Measures\nEclipse platform monitoring\nAzure infrastructure metrics", "val": 60, "color": "#1a365d", "group": "hub", "groupLabel": "Dataset", "tier": 0, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_dim_account", "name": "DIM_ACCOUNT", "description": "Account dimension table\nTenant configurations and metadata\nBilling, timezone, region settings", "val": 35, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_dim_date", "name": "DIM_DATE", "description": "Date dimension table\nFiscal calendars, period calculations\nTime intelligence support", "val": 35, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_dim_template", "name": "DIM_TEMPLATE", "description": "Work template dimension\nConnector and retry metadata\nMerge strategies and status", "val": 35, "color": "#2f855a", "group": "dimension", "groupLabel": "Dimension Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_fct_performance", "name": "FCT_PERFORMANCE", "description": "Schedule performance fact table\nExecution metrics, duration, status\nBytes and rowcount tracking", "val": 40, "color": "#2b6cb0", "group": "fact", "groupLabel": "Fact Tables", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "table_schedule", "name": "SCHEDULE", "description": "Current schedule executions\nEclipse job orchestration\nPartition: datetime_window (1 day)", "val": 30, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_session", "name": "SESSION", "description": "Execution sessions\nCreated during schedule runs\nPartition: datetime_window (1 day)", "val": 30, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_session_event", "name": "SESSION_EVENT", "description": "Session event log\nGranular execution events\nPartition: datetime_window (1 day)", "val": 28, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_work_template", "name": "WORK_TEMPLATE", "description": "Work extraction templates\nRetry policies, merge strategies\nPartition: datetime_window (30 days)", "val": 30, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_work_partition", "name": "WORK_PARTITION", "description": "Parallel processing partitions\nWork distribution management\nPartition: datetime_window (3 days)", "val": 25, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_work_queue", "name": "WORK_QUEUE", "description": "Work queue management\nJob scheduling and prioritization\nPartition: datetime_window (2 days)", "val": 25, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_work_connection", "name": "WORK_CONNECTION", "description": "Connection configurations\nData source credentials and settings", "val": 25, "color": "#805ad5", "group": "operational", "groupLabel": "Operational Tables", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_log_work_pick", "name": "LOG_WORK_PICK", "description": "Work pick operations log\nModule: work, Location: work_pick\nRetention: 2 days", "val": 22, "color": "#d69e2e", "group": "log", "groupLabel": "Log Tables", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_log_work_scan", "name": "LOG_WORK_SCAN", "description": "Work scan operations log\nModule: work, Location: work_scan\nRetention: 2 days", "val": 22, "color": "#d69e2e", "group": "log", "groupLabel": "Log Tables", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_log_task_scan", "name": "LOG_TASK_SCAN", "description": "Task scan operations log\nModule: task, Location: task_scan\nRetention: 2 days", "val": 22, "color": "#d69e2e", "group": "log", "groupLabel": "Log Tables", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "table_log_warehouse", "name": "LOG_WAREHOUSE", "description": "Warehouse query log\nModule: warehouse, Location: warehouse_query\nRetention: 2 days", "val": 22, "color": "#d69e2e", "group": "log", "groupLabel": "Log Tables", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_account_id", "name": "account_id", "description": "Unique account identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_account_key", "name": "account_key", "description": "SHA2 hash of account ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_short_code", "name": "short_code", "description": "Account code (e.g., ALDC_ENG)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_full_name", "name": "full_name", "description": "Account full name", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_billing_status", "name": "billing_status", "description": "Billing status (active/inactive)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_region", "name": "region", "description": "AWS/Azure region (canada_central)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_master_timezone", "name": "master_timezone", "description": "Master timezone (America/Vancouver)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_currency", "name": "currency", "description": "Billing currency (CAD/USD)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_date", "name": "date", "description": "Calendar date", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_date_key", "name": "date_key", "description": "SHA2 hash of date", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_day_name", "name": "day_name", "description": "Day name (Monday, Tuesday...)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_year_name", "name": "year_name", "description": "Year format (CY2026)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_quarter_name", "name": "quarter_name", "description": "Quarter format (Q1 2026)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_month_name", "name": "month_name", "description": "Month format (January 2026)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_week_name", "name": "week_name", "description": "Week format (Week 5 2026)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_fiscal_year", "name": "fiscal_year", "description": "Fiscal year (FY26)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_template_id", "name": "template_id", "description": "Work template identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_template_key", "name": "template_key", "description": "SHA2 hash of template ID", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_topic", "name": "topic", "description": "Topic name (ECLIPSE_PROD1C01)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_connector", "name": "connector", "description": "Connector type (cosmosdb_v1, rest_api)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_status", "name": "status", "description": "Status (active/inactive)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_retry_default", "name": "retry_default", "description": "Default retry interval (seconds)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_merge_strategy", "name": "merge_strategy", "description": "Merge strategy (insert/upsert/full)", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_start_datetime", "name": "start_datetime", "description": "Execution start timestamp", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_duration_seconds", "name": "duration_seconds", "description": "Total execution duration", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_session_count", "name": "session_count", "description": "Number of sessions created", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_bytes", "name": "bytes", "description": "Total bytes processed", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_rowcount", "name": "rowcount", "description": "Total rows processed", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_hostname", "name": "hostname", "description": "Container/execution host", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_thread_id", "name": "thread_id", "description": "Thread identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "col_schedule_id", "name": "schedule_id", "description": "Schedule identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_session_id", "name": "session_id", "description": "Session identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_partition_id", "name": "partition_id", "description": "Partition identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_queue_id", "name": "queue_id", "description": "Queue identifier", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_connection_id", "name": "connection_id", "description": "Connection reference", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_datetimestamp_utc", "name": "datetimestamp_utc", "description": "UTC epoch timestamp", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "col_execution_comment", "name": "execution_comment", "description": "Execution notes/comments", "val": 12, "color": "#718096", "group": "column", "groupLabel": "Columns", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "measure_avg_duration", "name": "Avg Duration", "description": "Average execution duration\nCalculated: AVG(duration_seconds)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_total_bytes", "name": "Total Bytes", "description": "Total bytes processed\nCalculated: SUM(bytes)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_total_rows", "name": "Total Rows", "description": "Total rows processed\nCalculated: SUM(rowcount)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_schedule_count", "name": "Schedule Count", "description": "Number of schedules\nCalculated: COUNT(schedule_id)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_success_rate", "name": "Success Rate", "description": "Execution success rate\nCalculated: success / total", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_throughput", "name": "Throughput", "description": "Bytes per second\nCalculated: bytes / duration", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_session_avg", "name": "Avg Sessions", "description": "Average sessions per schedule\nCalculated: AVG(session_count)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_hourly_duration", "name": "Hourly Duration", "description": "Total duration per hour\nAggregated: SUM(duration_seconds)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "measure_hourly_count", "name": "Hourly Count", "description": "Schedules per hour\nAggregated: COUNT(schedule)", "val": 15, "color": "#e53e3e", "group": "measure", "groupLabel": "Measures", "tier": 4, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "source_cosmosdb", "name": "CosmosDB Prod", "description": "Eclipse Production CosmosDB\nHost: aldcprodcsdb1c01.documents.azure.com\nDatabase: core", "val": 30, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://azure.microsoft.com&size=64", "createdAt": null, "physicalGroup": "cosmosdb", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure CosmosDB"}, {"id": "source_sql_supplement", "name": "SQL Supplement", "description": "Time Calendar SQL Server\nShared time dimension\nFiscal calendar support", "val": 25, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://microsoft.com&size=64", "createdAt": null, "physicalGroup": "sql_server", "physicalGroupColor": "#cc2927", "physicalGroupLabel": "SQL Server"}, {"id": "source_azure_metrics", "name": "Azure Metrics", "description": "Azure Monitor Metrics API\nCosmosDB, Storage, Web, Network\nPostgreSQL performance data", "val": 28, "color": "#38a169", "group": "source", "groupLabel": "Data Sources", "tier": 2, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://azure.microsoft.com&size=64", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "api_galactica", "name": "Galactica ETL", "description": "Galactica ETL Pipeline\nExtraction, transformation, loading\nScheduled data refresh", "val": 22, "color": "#3182ce", "group": "api", "groupLabel": "APIs & Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "api_eclipse", "name": "Eclipse API", "description": "Eclipse Unified API\nData access layer\nDashboard integration", "val": 22, "color": "#3182ce", "group": "api", "groupLabel": "APIs & Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}, {"id": "api_snowflake", "name": "Snowflake", "description": "Snowflake Data Warehouse\nSecure views, star schema\nCentral analytics storage", "val": 22, "color": "#3182ce", "group": "api", "groupLabel": "APIs & Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "snowflake", "physicalGroupColor": "#29b5e8", "physicalGroupLabel": "Snowflake"}, {"id": "api_data_dict", "name": "Data Dictionary API", "description": "ALDC Data Dictionary API\nSchema documentation\nGitHub: loribeck1000/aldc-internal-api", "val": 22, "color": "#3182ce", "group": "api", "groupLabel": "APIs & Connectors", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "azure", "physicalGroupColor": "#0078d4", "physicalGroupLabel": "Azure Cloud"}];
+        const linksData = [{"source": "hub", "target": "table_dim_account", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_dim_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_dim_template", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "hub", "target": "table_fct_performance", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "table_dim_account", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_fct_performance", "target": "table_dim_date", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_fct_performance", "target": "table_dim_template", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_schedule", "target": "table_session", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_session", "target": "table_session_event", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_work_template", "target": "table_schedule", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_work_template", "target": "table_work_partition", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_schedule", "target": "table_work_queue", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_work_template", "target": "table_work_connection", "color": "#3182ce", "width": 2, "relationType": "References", "edgeType": "references"}, {"source": "table_dim_account", "target": "col_account_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_account_key", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_short_code", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_full_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_billing_status", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_region", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_master_timezone", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_account", "target": "col_currency", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_date", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_date_key", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_day_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_year_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_quarter_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_month_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_week_name", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_date", "target": "col_fiscal_year", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_template_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_template_key", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_topic", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_connector", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_status", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_retry_default", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_dim_template", "target": "col_merge_strategy", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_start_datetime", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_duration_seconds", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_session_count", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_bytes", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_rowcount", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_hostname", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_fct_performance", "target": "col_thread_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_schedule", "target": "col_schedule_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_session", "target": "col_session_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_work_partition", "target": "col_partition_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_work_queue", "target": "col_queue_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_work_connection", "target": "col_connection_id", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_schedule", "target": "col_datetimestamp_utc", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_schedule", "target": "col_execution_comment", "color": "#718096", "width": 2, "relationType": "Contains", "edgeType": "contains"}, {"source": "table_schedule", "target": "table_log_work_pick", "color": "#d69e2e", "width": 1.5, "relationType": "Logs", "edgeType": "logs"}, {"source": "table_schedule", "target": "table_log_work_scan", "color": "#d69e2e", "width": 1.5, "relationType": "Logs", "edgeType": "logs"}, {"source": "table_work_template", "target": "table_log_task_scan", "color": "#d69e2e", "width": 1.5, "relationType": "Logs", "edgeType": "logs"}, {"source": "table_fct_performance", "target": "table_log_warehouse", "color": "#d69e2e", "width": 1.5, "relationType": "Logs", "edgeType": "logs"}, {"source": "table_fct_performance", "target": "measure_avg_duration", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_total_bytes", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_total_rows", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_schedule_count", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_success_rate", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_throughput", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_session_avg", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_hourly_duration", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "table_fct_performance", "target": "measure_hourly_count", "color": "#e53e3e", "width": 1.5, "relationType": "Calculates", "edgeType": "calculates"}, {"source": "source_cosmosdb", "target": "api_galactica", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_sql_supplement", "target": "api_galactica", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_azure_metrics", "target": "api_galactica", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_galactica", "target": "api_snowflake", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_dim_account", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_dim_date", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_dim_template", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "api_snowflake", "target": "table_fct_performance", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_schedule", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_session", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_session_event", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_work_template", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_work_partition", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_work_queue", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "source_cosmosdb", "target": "table_work_connection", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "hub", "target": "api_eclipse", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}, {"source": "hub", "target": "api_data_dict", "color": "#38a169", "width": 3, "relationType": "Feeds Data", "edgeType": "feeds"}];
+        const groupsData = {"hub": {"color": "#1a365d", "label": "Dataset"}, "fact": {"color": "#2b6cb0", "label": "Fact Tables"}, "dimension": {"color": "#2f855a", "label": "Dimension Tables"}, "operational": {"color": "#805ad5", "label": "Operational Tables"}, "log": {"color": "#d69e2e", "label": "Log Tables"}, "column": {"color": "#718096", "label": "Columns"}, "measure": {"color": "#e53e3e", "label": "Measures"}, "source": {"color": "#38a169", "label": "Data Sources"}, "api": {"color": "#3182ce", "label": "APIs & Connectors"}};
+        const physicalGroupsData = {"snowflake": {"color": "#29b5e8", "label": "Snowflake"}, "cosmosdb": {"color": "#0078d4", "label": "Azure CosmosDB"}, "azure": {"color": "#0078d4", "label": "Azure Cloud"}, "sql_server": {"color": "#cc2927", "label": "SQL Server"}};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
+
+        // Theme state (dark or light)
+        let currentTheme = 'dark';
 
         // Create node lookup map
         const nodeMap = {};
@@ -946,6 +1217,95 @@
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = { projects: [], initiatives: [], dashboards: [] };
+        let activeOverlays = { projects: false, initiatives: false, dashboards: false };
+
+        // Load overlay data from API
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/initiatives').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/dashboards').catch(() => ({ json: () => ({ items: [] }) }))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            } catch (error) {
+                console.log('[Athena] Overlay API not available');
+            }
+        }
+
+        function toggleOverlay(overlayType) {
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${overlayType}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }
+
+        function getNodeOverlays(nodeId) {
+            const result = [];
+            if (activeOverlays.projects) {
+                overlayData.projects.forEach(p => {
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({ type: 'project', data: p });
+                });
+            }
+            if (activeOverlays.initiatives) {
+                overlayData.initiatives.forEach(i => {
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({ type: 'initiative', data: i });
+                });
+            }
+            if (activeOverlays.dashboards) {
+                overlayData.dashboards.forEach(d => {
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({ type: 'dashboard', data: d });
+                });
+            }
+            return result;
+        }
+
+        function updateGraphColors() {
+            if (!graph) return;
+            graph.nodeColor(node => {
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }
+                return node.color;
+            });
+        }
+
+        function renderOverlayInfo(nodeId) {
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            overlays.forEach(o => {
+                let html = '';
+                if (o.type === 'project') {
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${o.data.name}</h4><p>Status: ${o.data.status}</p><div class="overlay-meta"><span>Jira: ${o.data.jira_key || 'N/A'}</span><span>Hours: ${o.data.hours_spent || 0}</span><span>Due: ${o.data.due_date || 'TBD'}</span></div></div>`;
+                } else if (o.type === 'initiative') {
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${o.data.name}</h4><p>${o.data.dimension || ''} - ${o.data.status}</p></div>`;
+                } else if (o.type === 'dashboard') {
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${o.data.name}</h4><p>Client: ${o.data.client}</p></div>`;
+                }
+                container.innerHTML += html;
+            });
+        }
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = { nodes: [], links: [] };
@@ -1142,7 +1502,14 @@
         function applyFilters() {
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                } else {
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             });
@@ -1186,6 +1553,83 @@
             } else {
                 graph.numDimensions(3);
             }
+        }
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {
+                if (mode === 'physical' && node.physicalGroupColor) {
+                    node.color = node.physicalGroupColor;
+                } else {
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }
+            });
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {
+                graph.nodeColor(node => node.color);
+            }
+        }
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${groupInfo.color}"></span>${groupInfo.label}`;
+                    chip.addEventListener('click', function() {
+                        togglePhysicalGroupFilter(groupId, this);
+                    });
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                });
+            } else {
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }
+        }
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {
+            if (visiblePhysicalGroups.has(groupId)) {
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            } else {
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }
+            applyFilters();
         }
 
         // Toggle filter sections
@@ -1280,13 +1724,103 @@
         function showFullContent() {
             if (!selectedNode) return;
 
+            // Set title and logo
             document.getElementById('modal-title').textContent = selectedNode.name;
-            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
-            document.getElementById('modal-meta').innerHTML = `
-                <span><span class="label">ID:</span> ${selectedNode.id}</span>
-                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            const modalLogo = document.getElementById('modal-logo');
+            if (selectedNode.logo) {
+                modalLogo.src = selectedNode.logo;
+                modalLogo.style.display = 'block';
+            } else {
+                modalLogo.style.display = 'none';
+            }
+
+            // Set tier badge
+            const tierBadge = document.getElementById('modal-tier-badge');
+            tierBadge.textContent = selectedNode.groupLabel || selectedNode.group;
+            tierBadge.style.background = selectedNode.color;
+
+            // Set description
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No description available.';
+
+            // Build details grid
+            const detailsGrid = document.getElementById('modal-details');
+            const detailsSection = document.getElementById('modal-details-section');
+            let detailsHtml = '';
+
+            // Add node type detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node Type</div>
+                    <div class="detail-value">${selectedNode.groupLabel || selectedNode.group}</div>
+                </div>
             `;
+
+            // Add tier detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Tier Level</div>
+                    <div class="detail-value">Tier ${selectedNode.tier}</div>
+                </div>
+            `;
+
+            // Add ID detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node ID</div>
+                    <div class="detail-value">${selectedNode.id}</div>
+                </div>
+            `;
+
+            // Add size/importance detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Relative Size</div>
+                    <div class="detail-value">${selectedNode.val || 20}</div>
+                </div>
+            `;
+
+            detailsGrid.innerHTML = detailsHtml;
+            detailsSection.style.display = detailsHtml ? 'block' : 'none';
+
+            // Build connections section
+            const connectionsEl = document.getElementById('modal-connections');
+            const connectionsSection = document.getElementById('modal-connections-section');
+            const connections = linksByNode[selectedNode.id] || [];
+
+            if (connections.length > 0) {
+                let connectionsHtml = '';
+                connections.forEach(conn => {
+                    const connNode = nodeMap[conn.nodeId];
+                    if (!connNode) return;
+                    connectionsHtml += `
+                        <span class="modal-conn-chip" onclick="navigateToNodeFromModal('${conn.nodeId}')">
+                            ${connNode.name}
+                            <span class="conn-type">${conn.relationType}</span>
+                        </span>
+                    `;
+                });
+                connectionsEl.innerHTML = connectionsHtml;
+                connectionsSection.style.display = 'block';
+            } else {
+                connectionsSection.style.display = 'none';
+            }
+
+            // Set footer meta
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">Full ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Group:</span> ${selectedNode.group}</span>
+                <span><span class="label">Connections:</span> ${connections.length}</span>
+            `;
+
             document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Navigate to node from modal and close modal
+        function navigateToNodeFromModal(nodeId) {
+            closeModal();
+            setTimeout(() => {
+                navigateToNode(nodeId);
+            }, 100);
         }
 
         // Close modal
@@ -1396,7 +1930,8 @@
 
             // Show/hide view full button based on content length
             const viewFullBtn = document.getElementById('view-full-btn');
-            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+            // Always show View Full Content button to access detailed popup
+            viewFullBtn.style.display = 'inline-block';
 
             // Show metadata
             const metaEl = document.getElementById('node-meta');
@@ -1443,6 +1978,9 @@
                 };
                 connectionsList.appendChild(li);
             });
+
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
 
             // Update visuals - highlight connected, dim others
             graph
@@ -1653,17 +2191,14 @@
             document.getElementById('glow-toggle').classList.toggle('active', glowEnabled);
 
             if (glowEnabled) {
-                // Add bloom effect using post-processing
-                const renderer = graph.renderer();
-                const scene = graph.scene();
-                const camera = graph.camera();
-
-                // Note: Full bloom requires three.js post-processing libraries
-                // For now, we simulate glow with emissive materials
+                // Simulate glow with sprites around nodes
                 graph.nodeThreeObject(node => {
-                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                    if (typeof THREE === 'undefined') {
+                        console.warn('THREE.js not available for glow effect');
+                        return null;
+                    }
                     const size = Math.max(node.val / 5, 2) * 2;
-                    const geom = new THREE.SphereGeometry(size / 2);
+                    const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                     const material = new THREE.MeshBasicMaterial({
                         color: node.color,
                         transparent: true,
@@ -1673,41 +2208,64 @@
                     const mesh = new THREE.Mesh(geom, material);
 
                     // Add glow sprite
+                    const glowTexture = createGlowTexture(node.color);
                     const spriteMaterial = new THREE.SpriteMaterial({
-                        map: createGlowTexture(node.color),
+                        map: glowTexture,
                         transparent: true,
                         blending: THREE.AdditiveBlending,
-                        opacity: 0.6
+                        opacity: 0.5
                     });
                     const sprite = new THREE.Sprite(spriteMaterial);
-                    sprite.scale.set(size * 3, size * 3, 1);
+                    sprite.scale.set(size * 4, size * 4, 1);
                     mesh.add(sprite);
 
                     return mesh;
                 });
+                graph.nodeThreeObjectExtend(false);
             } else {
-                setNodeGeometry(currentGeometry);
+                // Reset to default rendering
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
             }
         }
 
         function createGlowTexture(color) {
             const canvas = document.createElement('canvas');
-            canvas.width = 64;
-            canvas.height = 64;
+            canvas.width = 128;
+            canvas.height = 128;
             const ctx = canvas.getContext('2d');
 
-            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            // Create radial gradient for glow effect
+            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
             gradient.addColorStop(0, color);
-            gradient.addColorStop(0.3, color + '80');
-            gradient.addColorStop(1, 'transparent');
+            gradient.addColorStop(0.2, color);
+            gradient.addColorStop(0.4, hexToRgba(color, 0.5));
+            gradient.addColorStop(0.7, hexToRgba(color, 0.2));
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 64, 64);
+            ctx.fillRect(0, 0, 128, 128);
 
-            const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+            if (typeof THREE === 'undefined') return null;
             const texture = new THREE.CanvasTexture(canvas);
             return texture;
         }
+
+        function hexToRgba(hex, alpha) {
+            // Convert hex color to rgba
+            let r = 0, g = 0, b = 0;
+            if (hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            } else if (hex.length === 7) {
+                r = parseInt(hex.slice(1, 3), 16);
+                g = parseInt(hex.slice(3, 5), 16);
+                b = parseInt(hex.slice(5, 7), 16);
+            }
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
 
         // --- Edge particles ---
         function toggleParticles() {
@@ -1736,9 +2294,68 @@
             }
         }
 
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const body = document.body;
+            const container = document.getElementById('container');
+            const sidebar = document.getElementById('sidebar');
+            const toolbar = document.getElementById('toolbar');
+
+            if (currentTheme === 'light') {
+                // Light mode
+                body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    sidebar.style.color = '#1a202c';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(255, 255, 255, 0.9)';
+                    toolbar.style.color = '#1a202c';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#f0f4f8');
+                }
+            } else {
+                // Dark mode (default)
+                body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(15, 23, 42, 0.95)';
+                    sidebar.style.color = '#e2e8f0';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                    toolbar.style.color = '#e2e8f0';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#0a0a14');
+                }
+            }
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder') {
+                clearTierPlatforms();
+                applyCylinderLayout();
+            }
+        }
+
         // --- Layout variations ---
         function changeLayout() {
             currentLayout = document.getElementById('layout-select').value;
+
+            // Clear tier platforms when switching away from cylinder
+            if (currentLayout !== 'cylinder') {
+                clearTierPlatforms();
+            }
 
             switch(currentLayout) {
                 case 'force':
@@ -1830,23 +2447,55 @@
             setTimeout(() => graph.zoomToFit(500), 100);
         }
 
+        // Track tier platform meshes for cleanup
+        let tierPlatforms = [];
+
         function applyCylinderLayout() {
-            // Y-axis = time, circumference = category
+            // Y-axis = tier/time, circumference = category/group
             const nodes = getGraphNodes();
             if (nodes.length === 0) return;
 
+            // Clean up existing tier platforms
+            clearTierPlatforms();
+
+            // Check if we have dates or tiers to use for Y-axis
             const nodesWithDates = nodes.filter(n => n.createdAt);
-            if (nodesWithDates.length === 0) {
-                alert('Cylinder layout requires nodes with createdAt timestamps');
-                document.getElementById('layout-select').value = 'force';
-                return;
+            const nodesWithTiers = nodes.filter(n => typeof n.tier === 'number');
+
+            let useDate = nodesWithDates.length > nodes.length / 2;
+            let minY, maxY, getYValue;
+            let tierLabels = {};
+
+            if (useDate && nodesWithDates.length > 0) {
+                // Use dates for Y positioning
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
+                minY = Math.min(...dates);
+                maxY = Math.max(...dates);
+                getYValue = (node) => node.createdAt ? new Date(node.createdAt).getTime() : minY;
+            } else if (nodesWithTiers.length > 0) {
+                // Use tiers for Y positioning
+                const tiers = nodesWithTiers.map(n => n.tier);
+                minY = Math.min(...tiers);
+                maxY = Math.max(...tiers);
+                getYValue = (node) => typeof node.tier === 'number' ? node.tier : minY;
+
+                // Build tier labels from groupsData
+                nodes.forEach(node => {
+                    const tier = node.tier;
+                    if (typeof tier === 'number' && !tierLabels[tier]) {
+                        tierLabels[tier] = node.groupLabel || node.group || `Tier ${tier}`;
+                    }
+                });
+            } else {
+                // Fallback: use node index
+                minY = 0;
+                maxY = nodes.length - 1;
+                getYValue = (node) => nodes.indexOf(node);
             }
 
-            const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
-            const minDate = Math.min(...dates);
-            const maxDate = Math.max(...dates);
-            const dateRange = maxDate - minDate || 1;
+            const yRange = maxY - minY || 1;
 
+            // Group nodes by their group property
             const groups = {};
             nodes.forEach(node => {
                 const group = node.group || 'default';
@@ -1855,16 +2504,99 @@
             });
 
             const totalGroups = Object.keys(groups).length;
-            const radius = 150;
-            const height = 400;
+            const radius = 200;
+            const height = 500;
+
+            // Collect unique tiers for platform creation
+            const uniqueTiers = new Set();
+            nodes.forEach(node => {
+                const yValue = getYValue(node);
+                uniqueTiers.add(yValue);
+            });
+
+            // Create tier platforms (rings with labels)
+            if (typeof THREE !== 'undefined') {
+                const scene = graph.scene();
+                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
+
+                // Ring colors for different tiers
+                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
+
+                sortedTiers.forEach((tierValue, index) => {
+                    const yNorm = (tierValue - minY) / yRange;
+                    const yPos = (yNorm - 0.5) * height;
+                    const ringColor = ringColors[index % ringColors.length];
+
+                    // Create 3D torus ring for depth
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 3;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.5 : 0.7
+                    });
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
+
+                    // Add outer glow ring
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
+
+                    // Create tier label
+                    const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
 
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
-                const angle = (group.index / totalGroups) * Math.PI * 2;
+                // Spread nodes within their group segment
+                const nodeIndexInGroup = group.nodes.indexOf(node);
+                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
+                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
+                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
+                const angle = baseAngle + offsetAngle;
 
-                // Y position based on date
-                const nodeDate = node.createdAt ? new Date(node.createdAt).getTime() : minDate;
-                const yNorm = (nodeDate - minDate) / dateRange;
+                // Y position based on tier or date
+                const yValue = getYValue(node);
+                const yNorm = (yValue - minY) / yRange;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
@@ -1873,6 +2605,20 @@
 
             graph.d3ReheatSimulation();
             setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        function clearTierPlatforms() {
+            if (typeof THREE === 'undefined') return;
+            const scene = graph.scene();
+            tierPlatforms.forEach(obj => {
+                scene.remove(obj);
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (obj.material.map) obj.material.map.dispose();
+                    obj.material.dispose();
+                }
+            });
+            tierPlatforms = [];
         }
 
         // --- Multi-select with shift-click ---
@@ -2150,14 +2896,17 @@
 
         // --- Pulsing recent nodes ---
         function enablePulsingNodes(dayThreshold = 7) {
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js not available for pulsing nodes');
+                return;
+            }
             const now = Date.now();
             const threshold = dayThreshold * 24 * 60 * 60 * 1000;
 
             graph.nodeThreeObject(node => {
-                const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
                 const size = Math.max(node.val / 5, 2) * 2;
 
-                const geom = new THREE.SphereGeometry(size / 2);
+                const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                 const material = new THREE.MeshLambertMaterial({
                     color: node.color,
                     transparent: true,
