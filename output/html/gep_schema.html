@@ -1069,6 +1069,14 @@
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Rings</span>
+                    <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Overlays -->
                 <div class="toolbar-section">
@@ -1180,6 +1188,9 @@
 
         // View mode state (logical or physical)
         let currentViewMode = 'logical';
+
+        // Theme state (dark or light)
+        let currentTheme = 'dark';
 
         // Create node lookup map
         const nodeMap = {};
@@ -2093,6 +2104,7 @@
         let glowEnabled = false;
         let particlesEnabled = false;
         let labelsEnabled = true;
+        let ringsEnabled = true;
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
@@ -2259,6 +2271,7 @@
             return `rgba(${r},${g},${b},${alpha})`;
         }
 
+
         // --- Edge particles ---
         function toggleParticles() {
             particlesEnabled = !particlesEnabled;
@@ -2283,6 +2296,77 @@
                 graph.nodeLabel(node => node.name);
             } else {
                 graph.nodeLabel(null);
+            }
+        }
+
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const body = document.body;
+            const container = document.getElementById('container');
+            const sidebar = document.getElementById('sidebar');
+            const toolbar = document.getElementById('toolbar');
+
+            if (currentTheme === 'light') {
+                // Light mode
+                body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    sidebar.style.color = '#1a202c';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(255, 255, 255, 0.9)';
+                    toolbar.style.color = '#1a202c';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#f0f4f8');
+                }
+            } else {
+                // Dark mode (default)
+                body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(15, 23, 42, 0.95)';
+                    sidebar.style.color = '#e2e8f0';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                    toolbar.style.color = '#e2e8f0';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#0a0a14');
+                }
+            }
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder' && ringsEnabled) {
+                clearTierPlatforms();
+                applyCylinderLayout();
+            }
+        }
+
+        // --- Rings toggle (for cylinder layout) ---
+        function toggleRings() {
+            ringsEnabled = !ringsEnabled;
+            document.getElementById('rings-toggle').classList.toggle('active', ringsEnabled);
+
+            if (currentLayout === 'cylinder') {
+                if (ringsEnabled) {
+                    // Re-apply cylinder layout to recreate rings
+                    clearTierPlatforms();
+                    applyCylinderLayout();
+                } else {
+                    // Just clear the rings, keep node positions
+                    clearTierPlatforms();
+                }
             }
         }
 
@@ -2452,28 +2536,46 @@
                 uniqueTiers.add(yValue);
             });
 
-            // Create tier platforms (rings with labels)
-            if (typeof THREE !== 'undefined') {
+            // Create tier platforms (rings with labels) - only if rings are enabled
+            if (typeof THREE !== 'undefined' && ringsEnabled) {
                 const scene = graph.scene();
                 const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
+
+                // Ring colors for different tiers
+                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
 
                 sortedTiers.forEach((tierValue, index) => {
                     const yNorm = (tierValue - minY) / yRange;
                     const yPos = (yNorm - 0.5) * height;
+                    const ringColor = ringColors[index % ringColors.length];
 
-                    // Create ring geometry
-                    const ringGeom = new THREE.RingGeometry(radius - 10, radius + 60, 64);
-                    const ringMat = new THREE.MeshBasicMaterial({
-                        color: 0x3182ce,
+                    // Create 3D torus ring for depth
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 3;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
                         transparent: true,
-                        opacity: 0.06,
-                        side: THREE.DoubleSide
+                        opacity: currentTheme === 'light' ? 0.5 : 0.7
                     });
-                    const ring = new THREE.Mesh(ringGeom, ringMat);
-                    ring.rotation.x = Math.PI / 2; // Lay flat
-                    ring.position.y = yPos;
-                    scene.add(ring);
-                    tierPlatforms.push(ring);
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
+
+                    // Add outer glow ring
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
 
                     // Create tier label
                     const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
