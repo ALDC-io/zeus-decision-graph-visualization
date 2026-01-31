@@ -2342,20 +2342,71 @@
                 return;
             }
 
-            // Simple approach: just add a label sprite below each node
+            // Add label sprite below each node, and logo sprite if available
             // Use nodeThreeObjectExtend(true) to ADD to existing nodes, not replace
             graph.nodeThreeObject(node => {
                 const size = Math.max(node.val / 5, 3) * 2;
+                const group = new THREE.Group();
 
-                // Create a simple label sprite
+                // Create label sprite below node
                 const labelSprite = createLabelSprite(node.name, node.color, size);
                 labelSprite.position.set(0, -size - 8, 0);
+                group.add(labelSprite);
 
-                return labelSprite;
+                // If node has logo, load and display it as a sprite above the node
+                if (node.logo) {
+                    loadLogoTexture(node.logo).then(texture => {
+                        if (texture) {
+                            const logoMat = new THREE.SpriteMaterial({
+                                map: texture,
+                                transparent: true
+                            });
+                            const logoSprite = new THREE.Sprite(logoMat);
+                            const logoSize = size * 2;
+                            logoSprite.scale.set(logoSize, logoSize, 1);
+                            logoSprite.position.set(0, size + 4, 0);
+                            group.add(logoSprite);
+                        }
+                    });
+                }
+
+                return group;
             });
 
             // IMPORTANT: extend=true adds our object to existing node, doesn't replace
             graph.nodeThreeObjectExtend(true);
+        }
+
+        // Logo texture loading with cache
+        const logoCache = new Map();
+        const logoLoadPromises = new Map();
+
+        async function loadLogoTexture(url) {
+            if (logoCache.has(url)) {
+                return logoCache.get(url);
+            }
+            if (logoLoadPromises.has(url)) {
+                return logoLoadPromises.get(url);
+            }
+
+            const promise = new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const texture = new THREE.Texture(img);
+                    texture.needsUpdate = true;
+                    logoCache.set(url, texture);
+                    resolve(texture);
+                };
+                img.onerror = () => {
+                    logoCache.set(url, null);
+                    resolve(null);
+                };
+                img.src = url;
+            });
+
+            logoLoadPromises.set(url, promise);
+            return promise;
         }
 
         function createLabelSprite(text, color, nodeSize) {
