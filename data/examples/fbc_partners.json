@@ -7,232 +7,66 @@
     "updated": "2026-01-28"
   },
   "nodes": [
-    {
-      "id": "fbc",
-      "label": "Food Banks Canada",
-      "tier": 0,
-      "group": "hub",
-      "title": "Central hub coordinating 5,500+ food banks across Canada",
-      "size": 50
-    },
-    {
-      "id": "rcc",
-      "label": "Retail Council of Canada",
-      "tier": 1,
-      "group": "tier1",
-      "title": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.",
-      "size": 30
-    },
-    {
-      "id": "fhcp",
-      "label": "Food, Health & Consumer Products of Canada",
-      "tier": 1,
-      "group": "tier1",
-      "title": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.",
-      "size": 30
-    },
-    {
-      "id": "fbcan",
-      "label": "Food & Beverage Canada",
-      "tier": 1,
-      "group": "tier1",
-      "title": "Represents 1,850+ food and beverage manufacturers through six regional associations.",
-      "size": 30
-    },
-    {
-      "id": "cpma",
-      "label": "Canadian Produce Marketing Association",
-      "tier": 1,
-      "group": "tier1",
-      "title": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.",
-      "size": 30
-    },
-    {
-      "id": "restcan",
-      "label": "Restaurants Canada",
-      "tier": 1,
-      "group": "tier1",
-      "title": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.",
-      "size": 30
-    },
-    {
-      "id": "cfig",
-      "label": "Canadian Federation of Independent Grocers",
-      "tier": 1,
-      "group": "tier1",
-      "title": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.",
-      "size": 30
-    },
-    {
-      "id": "wholesale",
-      "label": "Wholesale Food Distributors & Brokers",
-      "tier": 1,
-      "group": "tier1",
-      "title": "Bridging manufacturers and retailers with procurement and logistics",
-      "size": 30
-    },
-    {
-      "id": "sustainability",
-      "label": "Food Retailers' Sustainability Groups",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Coalitions aligning supply chain with corporate sustainability goals",
-      "size": 20
-    },
-    {
-      "id": "packaging",
-      "label": "Packaging Industry Associations",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Packaging technology and materials science for shelf life and transport",
-      "size": 20
-    },
-    {
-      "id": "coldchain_tech",
-      "label": "Cold Chain Technology Innovators",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Temperature monitoring, traceability, AI-powered logistics",
-      "size": 20
-    },
-    {
-      "id": "health_canada",
-      "label": "Food Safety & Regulatory Agencies",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Health Canada and partners - food safety regulations and compliance",
-      "size": 20
-    },
-    {
-      "id": "municipal_eda",
-      "label": "Municipal & Regional Economic Development",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Infrastructure development, workforce training, supply chain funding",
-      "size": 20
-    },
-    {
-      "id": "indigenous_edc",
-      "label": "Indigenous Economic Development Corps",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Indigenous perspectives in procurement and food sovereignty",
-      "size": 20
-    },
-    {
-      "id": "tech_platforms",
-      "label": "Supply Chain Technology Platforms",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Inventory management, procurement collaboration, supply-demand matching",
-      "size": 20
-    },
-    {
-      "id": "philanthropy",
-      "label": "Philanthropic Foundations & Impact Investors",
-      "tier": 2,
-      "group": "tier2",
-      "title": "Catalytic funding for procurement infrastructure and food security",
-      "size": 20
-    },
-    {
-      "id": "cta",
-      "label": "Canadian Trucking Alliance",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Transportation networks, regulatory compliance, last-mile delivery",
-      "size": 15
-    },
-    {
-      "id": "ccca",
-      "label": "Canadian Cold Chain Association",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Refrigerated warehousing, temperature control, perishable handling",
-      "size": 15
-    },
-    {
-      "id": "aafc",
-      "label": "Agriculture & Agri-Food Canada",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Research institutions, pilot projects, warehouse automation",
-      "size": 15
-    },
-    {
-      "id": "cfa",
-      "label": "Canadian Federation of Agriculture",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Linking producers to food banks, fresh food supply chain pilots",
-      "size": 15
-    },
-    {
-      "id": "supply_councils",
-      "label": "Supply Chain Sector Councils",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Warehousing, packaging, reverse logistics, materials handling",
-      "size": 15
-    },
-    {
-      "id": "indigenous_food",
-      "label": "Indigenous Food Networks",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Culturally appropriate procurement and Indigenous food systems",
-      "size": 15
-    },
-    {
-      "id": "foodservice_dist",
-      "label": "National Foodservice Distributors",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Sysco, Gordon Food Service - volume procurement and warehousing",
-      "size": 15
-    },
-    {
-      "id": "food_policy",
-      "label": "Government Food Policy Councils",
-      "tier": 3,
-      "group": "tier3",
-      "title": "Regulatory guidance, procurement compliance, infrastructure funding",
-      "size": 15
-    },
+    {"id": "fbc", "label": "Food Banks Canada", "tier": 0, "group": "hub", "title": "Central hub coordinating 5,500+ food banks across Canada", "size": 50, "created_at": "1985-01-01T00:00:00Z"},
+    {"id": "rcc", "label": "Retail Council of Canada", "tier": 1, "group": "tier1", "title": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "size": 30, "created_at": "1963-01-01T00:00:00Z"},
+    {"id": "fhcp", "label": "Food, Health & Consumer Products of Canada", "tier": 1, "group": "tier1", "title": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "size": 30, "created_at": "1985-01-01T00:00:00Z"},
+    {"id": "fbcan", "label": "Food & Beverage Canada", "tier": 1, "group": "tier1", "title": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "size": 30, "created_at": "2015-01-01T00:00:00Z"},
+    {"id": "cpma", "label": "Canadian Produce Marketing Association", "tier": 1, "group": "tier1", "title": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "size": 30, "created_at": "1925-01-01T00:00:00Z"},
+    {"id": "restcan", "label": "Restaurants Canada", "tier": 1, "group": "tier1", "title": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "size": 30, "created_at": "1944-01-01T00:00:00Z"},
+    {"id": "cfig", "label": "Canadian Federation of Independent Grocers", "tier": 1, "group": "tier1", "title": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "size": 30, "created_at": "1962-01-01T00:00:00Z"},
+    {"id": "wholesale", "label": "Wholesale Food Distributors & Brokers", "tier": 1, "group": "tier1", "title": "Bridging manufacturers and retailers with procurement and logistics", "size": 30, "created_at": "1970-01-01T00:00:00Z"},
 
-    {"id": "loblaw", "label": "Loblaw Companies", "tier": 4, "group": "member_retail", "title": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128"},
-    {"id": "sobeys", "label": "Sobeys Inc.", "tier": 4, "group": "member_retail", "title": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128"},
-    {"id": "metro", "label": "Metro Inc.", "tier": 4, "group": "member_retail", "title": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128"},
-    {"id": "costco", "label": "Costco Wholesale Canada", "tier": 4, "group": "member_retail", "title": "Membership warehouse club with bulk groceries and merchandise across Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128"},
-    {"id": "walmart_ca", "label": "Walmart Canada", "tier": 4, "group": "member_retail", "title": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128"},
-    {"id": "fedcoop", "label": "Federated Co-operatives", "tier": 4, "group": "member_retail", "title": "Western Canadian co-operative grocery and retail operator.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128"},
-    {"id": "pattison", "label": "Pattison Food Group", "tier": 4, "group": "member_retail", "title": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128"},
+    {"id": "sustainability", "label": "Food Retailers' Sustainability Groups", "tier": 2, "group": "tier2", "title": "Coalitions aligning supply chain with corporate sustainability goals", "size": 20, "created_at": "2015-06-01T00:00:00Z"},
+    {"id": "packaging", "label": "Packaging Industry Associations", "tier": 2, "group": "tier2", "title": "Packaging technology and materials science for shelf life and transport", "size": 20, "created_at": "1980-01-01T00:00:00Z"},
+    {"id": "coldchain_tech", "label": "Cold Chain Technology Innovators", "tier": 2, "group": "tier2", "title": "Temperature monitoring, traceability, AI-powered logistics", "size": 20, "created_at": "2018-01-01T00:00:00Z"},
+    {"id": "health_canada", "label": "Food Safety & Regulatory Agencies", "tier": 2, "group": "tier2", "title": "Health Canada and partners - food safety regulations and compliance", "size": 20, "created_at": "1919-01-01T00:00:00Z"},
+    {"id": "municipal_eda", "label": "Municipal & Regional Economic Development", "tier": 2, "group": "tier2", "title": "Infrastructure development, workforce training, supply chain funding", "size": 20, "created_at": "2000-01-01T00:00:00Z"},
+    {"id": "indigenous_edc", "label": "Indigenous Economic Development Corps", "tier": 2, "group": "tier2", "title": "Indigenous perspectives in procurement and food sovereignty", "size": 20, "created_at": "2010-01-01T00:00:00Z"},
+    {"id": "tech_platforms", "label": "Supply Chain Technology Platforms", "tier": 2, "group": "tier2", "title": "Inventory management, procurement collaboration, supply-demand matching", "size": 20, "created_at": "2016-01-01T00:00:00Z"},
+    {"id": "philanthropy", "label": "Philanthropic Foundations & Impact Investors", "tier": 2, "group": "tier2", "title": "Catalytic funding for procurement infrastructure and food security", "size": 20, "created_at": "2005-01-01T00:00:00Z"},
 
-    {"id": "nestle", "label": "Nestlé Canada", "tier": 4, "group": "member_mfg", "title": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128"},
-    {"id": "pepsico", "label": "PepsiCo Canada", "tier": 4, "group": "member_mfg", "title": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128"},
-    {"id": "kraft", "label": "Kraft Heinz Canada", "tier": 4, "group": "member_mfg", "title": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128"},
-    {"id": "mondelez", "label": "Mondelēz Canada", "tier": 4, "group": "member_mfg", "title": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128"},
-    {"id": "unilever", "label": "Unilever Canada", "tier": 4, "group": "member_mfg", "title": "Consumer goods manufacturer - food, ice cream, personal care products.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128"},
-    {"id": "generalmills", "label": "General Mills Canada", "tier": 4, "group": "member_mfg", "title": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128"},
-    {"id": "danone", "label": "Danone Canada", "tier": 4, "group": "member_mfg", "title": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128"},
-    {"id": "cocacola", "label": "Coca-Cola Canada", "tier": 4, "group": "member_mfg", "title": "Beverages manufacturer and distributor across Canada.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128"},
+    {"id": "cta", "label": "Canadian Trucking Alliance", "tier": 3, "group": "tier3", "title": "Transportation networks, regulatory compliance, last-mile delivery", "size": 15, "created_at": "1937-01-01T00:00:00Z"},
+    {"id": "ccca", "label": "Canadian Cold Chain Association", "tier": 3, "group": "tier3", "title": "Refrigerated warehousing, temperature control, perishable handling", "size": 15, "created_at": "2012-01-01T00:00:00Z"},
+    {"id": "aafc", "label": "Agriculture & Agri-Food Canada", "tier": 3, "group": "tier3", "title": "Research institutions, pilot projects, warehouse automation", "size": 15, "created_at": "1868-01-01T00:00:00Z"},
+    {"id": "cfa", "label": "Canadian Federation of Agriculture", "tier": 3, "group": "tier3", "title": "Linking producers to food banks, fresh food supply chain pilots", "size": 15, "created_at": "1935-01-01T00:00:00Z"},
+    {"id": "supply_councils", "label": "Supply Chain Sector Councils", "tier": 3, "group": "tier3", "title": "Warehousing, packaging, reverse logistics, materials handling", "size": 15, "created_at": "1995-01-01T00:00:00Z"},
+    {"id": "indigenous_food", "label": "Indigenous Food Networks", "tier": 3, "group": "tier3", "title": "Culturally appropriate procurement and Indigenous food systems", "size": 15, "created_at": "2015-01-01T00:00:00Z"},
+    {"id": "foodservice_dist", "label": "National Foodservice Distributors", "tier": 3, "group": "tier3", "title": "Sysco, Gordon Food Service - volume procurement and warehousing", "size": 15, "created_at": "1969-01-01T00:00:00Z"},
+    {"id": "food_policy", "label": "Government Food Policy Councils", "tier": 3, "group": "tier3", "title": "Regulatory guidance, procurement compliance, infrastructure funding", "size": 15, "created_at": "2019-01-01T00:00:00Z"},
 
-    {"id": "dole", "label": "Dole Food Company", "tier": 4, "group": "member_produce", "title": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128"},
-    {"id": "driscolls", "label": "Driscoll's", "tier": 4, "group": "member_produce", "title": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128"},
-    {"id": "mastronardi", "label": "Mastronardi Produce", "tier": 4, "group": "member_produce", "title": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128"},
-    {"id": "mucci", "label": "Mucci Farms", "tier": 4, "group": "member_produce", "title": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128"},
-    {"id": "naturefresh", "label": "Nature Fresh Farms", "tier": 4, "group": "member_produce", "title": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128"},
-    {"id": "redsun", "label": "Red Sun Farms", "tier": 4, "group": "member_produce", "title": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128"},
+    {"id": "loblaw", "label": "Loblaw Companies", "tier": 4, "group": "member_retail", "title": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "created_at": "1919-01-01T00:00:00Z"},
+    {"id": "sobeys", "label": "Sobeys Inc.", "tier": 4, "group": "member_retail", "title": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "created_at": "1907-01-01T00:00:00Z"},
+    {"id": "metro", "label": "Metro Inc.", "tier": 4, "group": "member_retail", "title": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "created_at": "1947-01-01T00:00:00Z"},
+    {"id": "costco", "label": "Costco Wholesale Canada", "tier": 4, "group": "member_retail", "title": "Membership warehouse club with bulk groceries and merchandise across Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "created_at": "1985-01-01T00:00:00Z"},
+    {"id": "walmart_ca", "label": "Walmart Canada", "tier": 4, "group": "member_retail", "title": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "created_at": "1994-01-01T00:00:00Z"},
+    {"id": "fedcoop", "label": "Federated Co-operatives", "tier": 4, "group": "member_retail", "title": "Western Canadian co-operative grocery and retail operator.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "created_at": "1928-01-01T00:00:00Z"},
+    {"id": "pattison", "label": "Pattison Food Group", "tier": 4, "group": "member_retail", "title": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "created_at": "1915-01-01T00:00:00Z"},
 
-    {"id": "rbi", "label": "Restaurant Brands International", "tier": 4, "group": "member_restaurant", "title": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128"},
-    {"id": "recipe", "label": "Recipe Unlimited", "tier": 4, "group": "member_restaurant", "title": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128"},
-    {"id": "mty", "label": "MTY Food Group", "tier": 4, "group": "member_restaurant", "title": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128"},
-    {"id": "mcdonalds_ca", "label": "McDonald's Canada", "tier": 4, "group": "member_restaurant", "title": "1,400+ restaurants across Canada. Major quick-service chain.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128"},
-    {"id": "starbucks_ca", "label": "Starbucks Canada", "tier": 4, "group": "member_restaurant", "title": "Coffee chain with extensive Canadian operations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128"},
-    {"id": "aw_ca", "label": "A&W Canada", "tier": 4, "group": "member_restaurant", "title": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128"},
+    {"id": "nestle", "label": "Nestlé Canada", "tier": 4, "group": "member_mfg", "title": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "created_at": "1866-01-01T00:00:00Z"},
+    {"id": "pepsico", "label": "PepsiCo Canada", "tier": 4, "group": "member_mfg", "title": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "created_at": "1965-01-01T00:00:00Z"},
+    {"id": "kraft", "label": "Kraft Heinz Canada", "tier": 4, "group": "member_mfg", "title": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "created_at": "2015-07-02T00:00:00Z"},
+    {"id": "mondelez", "label": "Mondelēz Canada", "tier": 4, "group": "member_mfg", "title": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "created_at": "2012-10-01T00:00:00Z"},
+    {"id": "unilever", "label": "Unilever Canada", "tier": 4, "group": "member_mfg", "title": "Consumer goods manufacturer - food, ice cream, personal care products.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "created_at": "1929-01-01T00:00:00Z"},
+    {"id": "generalmills", "label": "General Mills Canada", "tier": 4, "group": "member_mfg", "title": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "created_at": "1866-01-01T00:00:00Z"},
+    {"id": "danone", "label": "Danone Canada", "tier": 4, "group": "member_mfg", "title": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "created_at": "1919-01-01T00:00:00Z"},
+    {"id": "cocacola", "label": "Coca-Cola Canada", "tier": 4, "group": "member_mfg", "title": "Beverages manufacturer and distributor across Canada.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "created_at": "1886-01-01T00:00:00Z"},
 
-    {"id": "sysco_ca", "label": "Sysco Canada", "tier": 4, "group": "member_dist", "title": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128"},
-    {"id": "gfs", "label": "Gordon Food Service", "tier": 4, "group": "member_dist", "title": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128"}
+    {"id": "dole", "label": "Dole Food Company", "tier": 4, "group": "member_produce", "title": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "created_at": "1851-01-01T00:00:00Z"},
+    {"id": "driscolls", "label": "Driscoll's", "tier": 4, "group": "member_produce", "title": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "created_at": "1904-01-01T00:00:00Z"},
+    {"id": "mastronardi", "label": "Mastronardi Produce", "tier": 4, "group": "member_produce", "title": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "created_at": "1954-01-01T00:00:00Z"},
+    {"id": "mucci", "label": "Mucci Farms", "tier": 4, "group": "member_produce", "title": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "created_at": "1970-01-01T00:00:00Z"},
+    {"id": "naturefresh", "label": "Nature Fresh Farms", "tier": 4, "group": "member_produce", "title": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "created_at": "1999-01-01T00:00:00Z"},
+    {"id": "redsun", "label": "Red Sun Farms", "tier": 4, "group": "member_produce", "title": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "created_at": "2000-01-01T00:00:00Z"},
+
+    {"id": "rbi", "label": "Restaurant Brands International", "tier": 4, "group": "member_restaurant", "title": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "created_at": "2014-12-12T00:00:00Z"},
+    {"id": "recipe", "label": "Recipe Unlimited", "tier": 4, "group": "member_restaurant", "title": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "created_at": "1883-01-01T00:00:00Z"},
+    {"id": "mty", "label": "MTY Food Group", "tier": 4, "group": "member_restaurant", "title": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "created_at": "1979-01-01T00:00:00Z"},
+    {"id": "mcdonalds_ca", "label": "McDonald's Canada", "tier": 4, "group": "member_restaurant", "title": "1,400+ restaurants across Canada. Major quick-service chain.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "created_at": "1967-01-01T00:00:00Z"},
+    {"id": "starbucks_ca", "label": "Starbucks Canada", "tier": 4, "group": "member_restaurant", "title": "Coffee chain with extensive Canadian operations.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "created_at": "1987-01-01T00:00:00Z"},
+    {"id": "aw_ca", "label": "A&W Canada", "tier": 4, "group": "member_restaurant", "title": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "created_at": "1956-01-01T00:00:00Z"},
+
+    {"id": "sysco_ca", "label": "Sysco Canada", "tier": 4, "group": "member_dist", "title": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "created_at": "1969-01-01T00:00:00Z"},
+    {"id": "gfs", "label": "Gordon Food Service", "tier": 4, "group": "member_dist", "title": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "created_at": "1897-01-01T00:00:00Z"}
   ],
   "edges": [
     {"source": "fbc", "target": "rcc", "type": "strategic_partner"},
