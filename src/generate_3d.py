@@ -1894,8 +1894,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 graph.width(newWidth).height(newHeight);
             }});
 
-            // Logo rendering disabled - causes nodes to disappear
-            // TODO: Fix nodeThreeObject implementation
+            // Apply labels after graph is ready
+            setTimeout(() => {{
+                if (logoLabelsEnabled) {{
+                    applyLogoLabelRendering();
+                }}
+            }}, 500);
         }}
 
         // Show full content in modal
@@ -2279,7 +2283,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let particlesEnabled = false;
         let labelsEnabled = true;
         let ringsEnabled = true;
-        let logoLabelsEnabled = false;  // Disabled - nodeThreeObject causes nodes to disappear
+        let logoLabelsEnabled = true;  // Re-enabled with simpler implementation
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
@@ -2507,109 +2511,20 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return;
             }}
 
+            // Simple approach: just add a label sprite below each node
+            // Use nodeThreeObjectExtend(true) to ADD to existing nodes, not replace
             graph.nodeThreeObject(node => {{
-                const group = new THREE.Group();
                 const size = Math.max(node.val / 5, 3) * 2;
 
-                // Create the node visual - either logo cube or colored sphere with initials
-                if (node.logo) {{
-                    // Create a 3D box (cube) as the node - logo will be applied to faces
-                    const boxSize = size * 1.5;
-                    const boxGeom = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
-
-                    // Create placeholder material while logo loads (MeshBasicMaterial doesn't need light)
-                    const placeholderMat = new THREE.MeshBasicMaterial({{
-                        color: node.color,
-                        transparent: true,
-                        opacity: 0.9
-                    }});
-                    const box = new THREE.Mesh(boxGeom, placeholderMat);
-                    box.userData.isLogoBox = true;
-                    group.add(box);
-
-                    // Add subtle glow effect behind the box
-                    const glowGeom = new THREE.SphereGeometry(boxSize * 0.9, 16, 16);
-                    const glowMat = new THREE.MeshBasicMaterial({{
-                        color: node.color,
-                        transparent: true,
-                        opacity: 0.25
-                    }});
-                    const glow = new THREE.Mesh(glowGeom, glowMat);
-                    group.add(glow);
-
-                    // Load logo and apply to all faces of the cube
-                    loadLogoTexture(node.logo).then(texture => {{
-                        if (texture) {{
-                            // Create materials array for each face of the cube (6 faces)
-                            const logoMat = new THREE.MeshBasicMaterial({{
-                                map: texture,
-                                transparent: true,
-                                side: THREE.DoubleSide
-                            }});
-                            // Apply same logo to all faces
-                            box.material = [logoMat, logoMat, logoMat, logoMat, logoMat, logoMat];
-                        }}
-                    }});
-
-                    // Add slow rotation animation to logo boxes
-                    box.userData.rotationSpeed = 0.005 + Math.random() * 0.005;
-                }} else {{
-                    // No logo - create sphere with initials (MeshBasicMaterial doesn't need light)
-                    const sphereGeom = new THREE.SphereGeometry(size, 16, 16);
-                    const sphereMat = new THREE.MeshBasicMaterial({{
-                        color: node.color,
-                        transparent: true,
-                        opacity: 0.9
-                    }});
-                    const sphere = new THREE.Mesh(sphereGeom, sphereMat);
-                    group.add(sphere);
-
-                    // Add initials sprite on top of sphere
-                    const initials = getInitials(node.name);
-                    const initialsSprite = createInitialsSprite(initials, node.color, size);
-                    initialsSprite.position.set(0, 0, size * 0.1);
-                    group.add(initialsSprite);
-                }}
-
-                // Create text label sprite below node (always facing camera)
+                // Create a simple label sprite
                 const labelSprite = createLabelSprite(node.name, node.color, size);
-                labelSprite.position.set(0, -size - 10, 0);
-                group.add(labelSprite);
+                labelSprite.position.set(0, -size - 8, 0);
 
-                return group;
+                return labelSprite;
             }});
 
-            graph.nodeThreeObjectExtend(false);
-
-            // Start animation loop for rotating logo cubes
-            if (!window.logoRotationActive) {{
-                window.logoRotationActive = true;
-                function animateLogos() {{
-                    if (!logoLabelsEnabled) {{
-                        window.logoRotationActive = false;
-                        return;
-                    }}
-                    try {{
-                        const graphData = graph.graphData();
-                        if (graphData && graphData.nodes) {{
-                            graphData.nodes.forEach(node => {{
-                                const obj = graph.scene().getObjectByProperty('__data', node);
-                                if (obj && obj.children) {{
-                                    obj.children.forEach(child => {{
-                                        if (child.userData && child.userData.isLogoBox) {{
-                                            child.rotation.y += child.userData.rotationSpeed || 0.005;
-                                        }}
-                                    }});
-                                }}
-                            }});
-                        }}
-                    }} catch (e) {{
-                        // Ignore errors during animation
-                    }}
-                    requestAnimationFrame(animateLogos);
-                }}
-                animateLogos();
-            }}
+            // IMPORTANT: extend=true adds our object to existing node, doesn't replace
+            graph.nodeThreeObjectExtend(true);
         }}
 
         function createLabelSprite(text, color, nodeSize) {{
