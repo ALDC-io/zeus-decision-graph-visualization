@@ -1243,6 +1243,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     <span class="toggle-label">Rings</span>
                     <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Logos</span>
+                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Overlays -->
                 <div class="toolbar-section">
@@ -1888,6 +1892,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const newHeight = wrapper.offsetHeight;
                 graph.width(newWidth).height(newHeight);
             }});
+
+            // Apply logo+label rendering if enabled (after graph is ready)
+            setTimeout(() => {{
+                if (logoLabelsEnabled) {{
+                    applyLogoLabelRendering();
+                }}
+            }}, 500);
         }}
 
         // Show full content in modal
@@ -2271,10 +2282,23 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let particlesEnabled = false;
         let labelsEnabled = true;
         let ringsEnabled = true;
+        let logoLabelsEnabled = true;  // Logo + label on nodes
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
         let timeSliderValue = 100;
+
+        // --- Logo/image cache for performance ---
+        const logoCache = new Map();
+        const logoLoadPromises = new Map();
+
+        // --- Stage groupings for cylinder layout ---
+        const stageGroups = {{
+            'outputs': {{ label: 'Reporting & Dashboards', tiers: [0], color: '#2f855a' }},
+            'management': {{ label: 'Account & Operations', tiers: [1, 2], color: '#3182ce' }},
+            'processing': {{ label: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e' }},
+            'execution': {{ label: 'DSPs & Platforms', tiers: [4, 5], color: '#9f7aea' }}
+        }};
 
         // --- Search functionality ---
         let searchTimeout = null;
@@ -2463,6 +2487,187 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }} else {{
                 graph.nodeLabel(null);
             }}
+        }}
+
+        // --- Logo + Label node rendering ---
+        function toggleLogoLabels() {{
+            logoLabelsEnabled = !logoLabelsEnabled;
+            const toggle = document.getElementById('logo-labels-toggle');
+            if (toggle) toggle.classList.toggle('active', logoLabelsEnabled);
+
+            if (logoLabelsEnabled) {{
+                applyLogoLabelRendering();
+            }} else {{
+                // Reset to default spheres
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
+            }}
+        }}
+
+        function applyLogoLabelRendering() {{
+            if (typeof THREE === 'undefined') {{
+                console.warn('THREE.js not available for logo+label rendering');
+                return;
+            }}
+
+            graph.nodeThreeObject(node => {{
+                const group = new THREE.Group();
+                const size = Math.max(node.val / 5, 3) * 2;
+
+                // Create main sphere
+                const sphereGeom = new THREE.SphereGeometry(size, 16, 16);
+                const sphereMat = new THREE.MeshLambertMaterial({{
+                    color: node.color,
+                    transparent: true,
+                    opacity: 0.9
+                }});
+                const sphere = new THREE.Mesh(sphereGeom, sphereMat);
+                group.add(sphere);
+
+                // Create text label sprite (always facing camera)
+                const labelSprite = createLabelSprite(node.name, node.color, size);
+                labelSprite.position.set(0, -size - 8, 0);
+                group.add(labelSprite);
+
+                // Try to load logo if available
+                if (node.logo) {{
+                    loadLogoTexture(node.logo).then(texture => {{
+                        if (texture) {{
+                            const logoSprite = new THREE.Sprite(
+                                new THREE.SpriteMaterial({{
+                                    map: texture,
+                                    transparent: true
+                                }})
+                            );
+                            const logoSize = size * 1.8;
+                            logoSprite.scale.set(logoSize, logoSize, 1);
+                            logoSprite.position.set(0, 0, 0);
+                            group.add(logoSprite);
+
+                            // Make sphere slightly transparent when logo loads
+                            sphereMat.opacity = 0.3;
+                        }}
+                    }});
+                }} else {{
+                    // No logo - add initials sprite
+                    const initials = getInitials(node.name);
+                    const initialsSprite = createInitialsSprite(initials, node.color, size);
+                    initialsSprite.position.set(0, 0, 0);
+                    group.add(initialsSprite);
+                }}
+
+                return group;
+            }});
+
+            graph.nodeThreeObjectExtend(false);
+        }}
+
+        function createLabelSprite(text, color, nodeSize) {{
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 64;
+
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            const textWidth = ctx.measureText(text).width;
+            ctx.roundRect(10, 16, canvas.width - 20, 32, 6);
+            ctx.fill();
+
+            // Text
+            ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Truncate if too long
+            let displayText = text;
+            if (ctx.measureText(text).width > canvas.width - 30) {{
+                while (ctx.measureText(displayText + '...').width > canvas.width - 30 && displayText.length > 0) {{
+                    displayText = displayText.slice(0, -1);
+                }}
+                displayText += '...';
+            }}
+            ctx.fillText(displayText, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({{
+                map: texture,
+                transparent: true
+            }});
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 4, nodeSize, 1);
+            return sprite;
+        }}
+
+        function createInitialsSprite(initials, bgColor, size) {{
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 128;
+
+            // Circle background
+            ctx.beginPath();
+            ctx.arc(64, 64, 60, 0, Math.PI * 2);
+            ctx.fillStyle = bgColor;
+            ctx.fill();
+
+            // Initials text
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 64, 68);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({{
+                map: texture,
+                transparent: true
+            }});
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(size * 2, size * 2, 1);
+            return sprite;
+        }}
+
+        function getInitials(name) {{
+            // Extract initials from name
+            const words = name.split(/[\s\-\/]+/).filter(w => w.length > 0);
+            if (words.length === 1) {{
+                return words[0].substring(0, 2).toUpperCase();
+            }}
+            return words.slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }}
+
+        async function loadLogoTexture(url) {{
+            // Check cache first
+            if (logoCache.has(url)) {{
+                return logoCache.get(url);
+            }}
+
+            // Check if already loading
+            if (logoLoadPromises.has(url)) {{
+                return logoLoadPromises.get(url);
+            }}
+
+            // Start loading
+            const promise = new Promise((resolve) => {{
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {{
+                    const texture = new THREE.Texture(img);
+                    texture.needsUpdate = true;
+                    logoCache.set(url, texture);
+                    resolve(texture);
+                }};
+                img.onerror = () => {{
+                    logoCache.set(url, null);
+                    resolve(null);
+                }};
+                img.src = url;
+            }});
+
+            logoLoadPromises.set(url, promise);
+            return promise;
         }}
 
         // --- Theme toggle (light/dark mode) ---
@@ -2695,34 +2900,31 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const radius = 200;
             const height = 500;
 
-            // Collect unique tiers for platform creation
-            const uniqueTiers = new Set();
-            nodes.forEach(node => {{
-                const yValue = getYValue(node);
-                uniqueTiers.add(yValue);
-            }});
+            // Define stage-based rings (fewer, more meaningful than tier-by-tier)
+            // Group tiers into workflow stages
+            const stageDefinitions = [
+                {{ name: 'Reporting & Dashboards', tiers: [0], color: '#2f855a', yPos: -0.45 }},
+                {{ name: 'Operations & Management', tiers: [1, 2], color: '#3182ce', yPos: -0.15 }},
+                {{ name: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e', yPos: 0.15 }},
+                {{ name: 'Execution & Platforms', tiers: [4, 5], color: '#9f7aea', yPos: 0.45 }}
+            ];
 
-            // Create tier platforms (rings with labels) - only if rings are enabled
+            // Create stage-based platforms (rings with labels) - only if rings are enabled
             if (typeof THREE !== 'undefined' && ringsEnabled) {{
                 const scene = graph.scene();
-                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
-                // Ring colors for different tiers
-                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
-
-                sortedTiers.forEach((tierValue, index) => {{
-                    const yNorm = (tierValue - minY) / yRange;
-                    const yPos = (yNorm - 0.5) * height;
-                    const ringColor = ringColors[index % ringColors.length];
+                stageDefinitions.forEach((stage, index) => {{
+                    const yPos = stage.yPos * height;
+                    const ringColor = stage.color;
 
                     // Create 3D torus ring for depth
                     const torusRadius = radius + 30;
-                    const tubeRadius = 3;
+                    const tubeRadius = 4;
                     const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
                     const torusMat = new THREE.MeshBasicMaterial({{
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.5 : 0.7
+                        opacity: currentTheme === 'light' ? 0.6 : 0.8
                     }});
                     const torus = new THREE.Mesh(torusGeom, torusMat);
                     torus.rotation.x = Math.PI / 2;
@@ -2731,11 +2933,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     tierPlatforms.push(torus);
 
                     // Add outer glow ring
-                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 4, 16, 100);
                     const glowTorusMat = new THREE.MeshBasicMaterial({{
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                        opacity: currentTheme === 'light' ? 0.2 : 0.3
                     }});
                     const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
                     glowTorus.rotation.x = Math.PI / 2;
@@ -2743,8 +2945,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     scene.add(glowTorus);
                     tierPlatforms.push(glowTorus);
 
-                    // Create tier label
-                    const labelText = tierLabels[tierValue] || `Tier ${{tierValue}}`;
+                    // Create stage label
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.width = 512;
@@ -2753,25 +2954,33 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     ctx.fillStyle = 'rgba(0, 0, 0, 0)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
                     ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+                    ctx.fillText(stage.name, canvas.width / 2, canvas.height / 2);
 
                     const texture = new THREE.CanvasTexture(canvas);
                     const spriteMat = new THREE.SpriteMaterial({{
                         map: texture,
                         transparent: true,
-                        opacity: 0.9
+                        opacity: 0.95
                     }});
                     const sprite = new THREE.Sprite(spriteMat);
-                    sprite.scale.set(150, 20, 1);
-                    sprite.position.set(radius + 80, yPos, 0);
+                    sprite.scale.set(180, 24, 1);
+                    sprite.position.set(radius + 100, yPos, 0);
                     scene.add(sprite);
                     tierPlatforms.push(sprite);
                 }});
             }}
+
+            // Map tiers to stage Y positions for node placement
+            const tierToStageY = {{}};
+            stageDefinitions.forEach(stage => {{
+                stage.tiers.forEach(tier => {{
+                    tierToStageY[tier] = stage.yPos;
+                }});
+            }});
 
             nodes.forEach(node => {{
                 const group = groups[node.group || 'default'];
@@ -2782,13 +2991,15 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
                 const angle = baseAngle + offsetAngle;
 
-                // Y position based on tier or date
-                const yValue = getYValue(node);
-                const yNorm = (yValue - minY) / yRange;
+                // Y position based on stage (mapped from tier) with small offset for separation
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
+                // Add small random offset within stage band for visual separation
+                const tierOffset = (tier % 2 === 0 ? 0.02 : -0.02) + (Math.random() - 0.5) * 0.04;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
-                node.fy = (yNorm - 0.5) * height;
+                node.fy = (stageY + tierOffset) * height;
             }});
 
             graph.d3ReheatSimulation();
