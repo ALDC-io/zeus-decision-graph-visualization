@@ -189,9 +189,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     <meta charset="utf-8">
     <title>{title}</title>
     <link rel="icon" href="data:,">
-    <!-- 3d-force-graph with three-spritetext (exposes THREE) -->
-    <script src="//unpkg.com/three-spritetext@1.9.5/dist/three-spritetext.min.js"></script>
-    <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+    <!-- Load THREE.js first, then defer 3d-force-graph so it uses our THREE instance -->
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script defer src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {{
             margin: 0;
@@ -3463,10 +3463,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }};
         }}
 
-        // Initialize
-        initGraph();
-        checkEmbedMode();
-        initExtendedFeatures();
+        // Initialize after all scripts (including deferred ones) are loaded
+        window.addEventListener('load', function() {{
+            initGraph();
+            checkEmbedMode();
+            initExtendedFeatures();
+        }});
     </script>
 </body>
 </html>'''
