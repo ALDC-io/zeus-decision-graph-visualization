@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>Athena Data Flow - F92 DAX AI Ecosystem</title>
     <link rel="icon" href="data:,">
-    <!-- 3d-force-graph (bundles THREE.js internally) -->
+    <!-- 3d-force-graph with three-spritetext (exposes THREE) -->
+    <script src="//unpkg.com/three-spritetext@1.9.5/dist/three-spritetext.min.js"></script>
     <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {
@@ -2132,8 +2133,8 @@
         let glowEnabled = false;
         let particlesEnabled = false;
         let labelsEnabled = true;
-        let ringsEnabled = false;  // Disabled by default - requires THREE.js
-        let logoLabelsEnabled = false;  // Disabled - requires separate THREE.js which conflicts
+        let ringsEnabled = true;
+        let logoLabelsEnabled = true;
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
