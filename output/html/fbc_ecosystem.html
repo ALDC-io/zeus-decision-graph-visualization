@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Food Banks Canada - Partner Ecosystem</title>
     <link rel="icon" href="data:,">
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <style>
         * {
@@ -192,13 +193,96 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 85vh;
             width: 90%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             overflow: hidden;
+        }
+        .modal-section {
+            margin-bottom: 20px;
+        }
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .modal-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .modal-detail-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+        .modal-detail-item .detail-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .modal-detail-item .detail-value {
+            font-size: 13px;
+            color: #1a365d;
+            font-weight: 500;
+        }
+        .modal-connections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .modal-conn-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #2b6cb0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-conn-chip:hover {
+            background: #bee3f8;
+        }
+        .modal-conn-chip .conn-type {
+            font-size: 10px;
+            color: #666;
+            margin-left: 6px;
+        }
+        .modal-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 6px;
+        }
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+        }
+        .modal-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-top: 6px;
         }
         .modal-header {
             padding: 20px;
@@ -465,6 +549,45 @@
             font-size: 10px;
             color: #666;
             margin-left: 4px;
+        }
+        /* View Mode Toggle (Logical/Physical) */
+        .view-mode-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .view-mode-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .view-mode-btn {
+            padding: 3px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-mode-btn:first-of-type {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        .view-mode-btn:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+        .view-mode-btn.active {
+            background: #805ad5;
+            color: white;
+        }
+        .view-mode-btn:hover:not(.active) {
+            background: #f3e8ff;
+        }
+        .view-mode-hidden {
+            display: none !important;
         }
         /* Extended Features - v2.0 Styles */
 
@@ -749,6 +872,98 @@
         .toolbar-extended.hidden {
             display: none;
         }
+
+        /* Overlay styles */
+        .overlay-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .overlay-chip:hover {
+            background: #e0e0e0;
+        }
+        .overlay-chip.active {
+            border-width: 2px;
+        }
+        .overlay-chip.active[data-overlay="projects"] {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #8b6914;
+        }
+        .overlay-chip.active[data-overlay="initiatives"] {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #006633;
+        }
+        .overlay-chip.active[data-overlay="dashboards"] {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #8b0000;
+        }
+        .overlay-chip .chip-icon {
+            margin-right: 4px;
+            font-size: 11px;
+        }
+        .overlay-chip .chip-count {
+            margin-left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+        .overlay-chip.active .chip-count {
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Overlay info in sidebar */
+        .overlay-info-panel {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .overlay-info-panel.project {
+            border-left: 4px solid #ffd700;
+        }
+        .overlay-info-panel.initiative {
+            border-left: 4px solid #00ff88;
+        }
+        .overlay-info-panel.dashboard {
+            border-left: 4px solid #ff6b6b;
+        }
+        .overlay-info-panel h4 {
+            font-size: 12px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .overlay-info-panel p {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .overlay-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #888;
+        }
+        .overlay-meta span {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -808,6 +1023,7 @@
                         <span id="date-count" class="date-count"></span>
                     </div>
                 </div>
+                
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
             <div id="toolbar-extended" class="toolbar-extended">
@@ -849,6 +1065,24 @@
                 <div class="toolbar-section effects-toggle">
                     <span class="toggle-label">Labels</span>
                     <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Overlays -->
+                <div class="toolbar-section">
+                    <span class="toolbar-label" style="background: transparent; cursor: default;">Overlays:</span>
+                    <span class="overlay-chip" data-overlay="projects" onclick="toggleOverlay('projects')">
+                        <span class="chip-icon">&#128203;</span>Projects<span class="chip-count" id="projects-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="initiatives" onclick="toggleOverlay('initiatives')">
+                        <span class="chip-icon">&#127919;</span>Initiatives<span class="chip-count" id="initiatives-count">0</span>
+                    </span>
+                    <span class="overlay-chip" data-overlay="dashboards" onclick="toggleOverlay('dashboards')">
+                        <span class="chip-icon">&#128202;</span>Dashboards<span class="chip-count" id="dashboards-count">0</span>
+                    </span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
@@ -901,6 +1135,7 @@
                     <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
+                    <div id="overlay-info-container" style="margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -910,11 +1145,28 @@
     <div class="modal-overlay" id="content-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2 id="modal-title">Memory Content</h2>
+                <div class="modal-header-content">
+                    <img id="modal-logo" class="modal-logo" src="" alt="" style="display:none;">
+                    <div>
+                        <h2 id="modal-title">Node Details</h2>
+                        <span id="modal-tier-badge" class="modal-tier-badge"></span>
+                    </div>
+                </div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="full-content" id="modal-content"></div>
+                <div class="modal-section">
+                    <div class="modal-section-title">Description</div>
+                    <div class="full-content" id="modal-content"></div>
+                </div>
+                <div class="modal-section" id="modal-details-section">
+                    <div class="modal-section-title">Details</div>
+                    <div class="modal-detail-grid" id="modal-details"></div>
+                </div>
+                <div class="modal-section" id="modal-connections-section">
+                    <div class="modal-section-title">Connected Nodes</div>
+                    <div class="modal-connections" id="modal-connections"></div>
+                </div>
             </div>
             <div class="modal-meta" id="modal-meta"></div>
         </div>
@@ -922,9 +1174,16 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": null}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "createdAt": null}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "createdAt": null}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "createdAt": null}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "createdAt": null}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "createdAt": null}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "createdAt": null}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "createdAt": null}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "createdAt": null}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "createdAt": null}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "createdAt": null}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "createdAt": null}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "createdAt": null}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "createdAt": null}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "createdAt": null}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "createdAt": null}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "createdAt": null}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "createdAt": null}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "createdAt": null}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "createdAt": null}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "createdAt": null}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "createdAt": null}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "createdAt": null}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "createdAt": null}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "createdAt": null}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "createdAt": null}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "createdAt": null}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "createdAt": null}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "createdAt": null}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "createdAt": null}];
+        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "createdAt": null, "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}];
         const linksData = [{"source": "fbc", "target": "rcc", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fhcp", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fbcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cpma", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "restcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cfig", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "wholesale", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "sustainability", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "packaging", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "coldchain_tech", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "health_canada", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "municipal_eda", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "indigenous_edc", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "tech_platforms", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "philanthropy", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "cta", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "ccca", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "aafc", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "cfa", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "supply_councils", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "indigenous_food", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "foodservice_dist", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "food_policy", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "rcc", "target": "sustainability", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "cfig", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "packaging", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "health_canada", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "ccca", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "restcan", "target": "foodservice_dist", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "cta", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "supply_councils", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "indigenous_edc", "target": "indigenous_food", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "tech_platforms", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "municipal_eda", "target": "food_policy", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "aafc", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "loblaw", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "sobeys", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "metro", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "costco", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "walmart_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "pattison", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "nestle", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "pepsico", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "kraft", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "mondelez", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "unilever", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "generalmills", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "danone", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "cocacola", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "dole", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "driscolls", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mastronardi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mucci", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "naturefresh", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "redsun", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "rbi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "recipe", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mty", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mcdonalds_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "starbucks_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "aw_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fbc", "target": "loblaw", "color": "#888888", "width": 1, "relationType": "direct_partner", "edgeType": "direct_partner"}, {"source": "loblaw", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "loblaw", "target": "kraft", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "pepsico", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "metro", "target": "danone", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "costco", "target": "mastronardi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "rbi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "recipe", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "gfs", "target": "mty", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}];
         const groupsData = {"hub": {"color": "#1a365d", "label": "Central Hub"}, "tier1": {"color": "#2f855a", "label": "Tier 1: Core Industry Associations"}, "tier2": {"color": "#3182ce", "label": "Tier 2: Broader & Emerging Partners"}, "tier3": {"color": "#805ad5", "label": "Tier 3: Specialized SMEs"}, "member_retail": {"color": "#e53e3e", "label": "Member: Major Retailers"}, "member_mfg": {"color": "#dd6b20", "label": "Member: Food Manufacturers"}, "member_produce": {"color": "#38a169", "label": "Member: Produce Companies"}, "member_restaurant": {"color": "#d69e2e", "label": "Member: Restaurant Chains"}, "member_dist": {"color": "#319795", "label": "Member: Distributors"}};
+        const physicalGroupsData = {};
+
+        // View mode state (logical or physical)
+        let currentViewMode = 'logical';
+
+        // Theme state (dark or light)
+        let currentTheme = 'dark';
 
         // Create node lookup map
         const nodeMap = {};
@@ -955,6 +1214,95 @@
         let selectedNode = null;
         let sidebarVisible = true;
         const highlightedNodes = new Set();
+
+        // Overlay state
+        let overlayData = { projects: [], initiatives: [], dashboards: [] };
+        let activeOverlays = { projects: false, initiatives: false, dashboards: false };
+
+        // Load overlay data from API
+        async function loadOverlayData() {
+            try {
+                const [projectsRes, initiativesRes, dashboardsRes] = await Promise.all([
+                    fetch('/api/overlays/projects').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/initiatives').catch(() => ({ json: () => ({ items: [] }) })),
+                    fetch('/api/overlays/dashboards').catch(() => ({ json: () => ({ items: [] }) }))
+                ]);
+                const projects = await projectsRes.json();
+                const initiatives = await initiativesRes.json();
+                const dashboards = await dashboardsRes.json();
+                overlayData.projects = projects.items || [];
+                overlayData.initiatives = initiatives.items || [];
+                overlayData.dashboards = dashboards.items || [];
+                document.getElementById('projects-count').textContent = overlayData.projects.length;
+                document.getElementById('initiatives-count').textContent = overlayData.initiatives.length;
+                document.getElementById('dashboards-count').textContent = overlayData.dashboards.length;
+                console.log('[Athena] Overlay data loaded:', overlayData.projects.length, 'projects');
+            } catch (error) {
+                console.log('[Athena] Overlay API not available');
+            }
+        }
+
+        function toggleOverlay(overlayType) {
+            activeOverlays[overlayType] = !activeOverlays[overlayType];
+            const chip = document.querySelector(`.overlay-chip[data-overlay="${overlayType}"]`);
+            if (chip) chip.classList.toggle('active', activeOverlays[overlayType]);
+            updateGraphColors();
+        }
+
+        function getNodeOverlays(nodeId) {
+            const result = [];
+            if (activeOverlays.projects) {
+                overlayData.projects.forEach(p => {
+                    if (p.affected_nodes && p.affected_nodes.includes(nodeId)) result.push({ type: 'project', data: p });
+                });
+            }
+            if (activeOverlays.initiatives) {
+                overlayData.initiatives.forEach(i => {
+                    if (i.affected_nodes && i.affected_nodes.includes(nodeId)) result.push({ type: 'initiative', data: i });
+                });
+            }
+            if (activeOverlays.dashboards) {
+                overlayData.dashboards.forEach(d => {
+                    if (d.data_sources && d.data_sources.includes(nodeId)) result.push({ type: 'dashboard', data: d });
+                });
+            }
+            return result;
+        }
+
+        function updateGraphColors() {
+            if (!graph) return;
+            graph.nodeColor(node => {
+                const overlays = getNodeOverlays(node.id);
+                if (overlays.length > 0) {
+                    if (overlays.some(o => o.type === 'project')) return '#ffd700';
+                    if (overlays.some(o => o.type === 'initiative')) return '#00ff88';
+                    if (overlays.some(o => o.type === 'dashboard')) return '#ff6b6b';
+                }
+                return node.color;
+            });
+        }
+
+        function renderOverlayInfo(nodeId) {
+            const container = document.getElementById('overlay-info-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const overlays = getNodeOverlays(nodeId);
+            if (overlays.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            overlays.forEach(o => {
+                let html = '';
+                if (o.type === 'project') {
+                    html = `<div class="overlay-info-panel project"><h4>&#128203; ${o.data.name}</h4><p>Status: ${o.data.status}</p><div class="overlay-meta"><span>Jira: ${o.data.jira_key || 'N/A'}</span><span>Hours: ${o.data.hours_spent || 0}</span><span>Due: ${o.data.due_date || 'TBD'}</span></div></div>`;
+                } else if (o.type === 'initiative') {
+                    html = `<div class="overlay-info-panel initiative"><h4>&#127919; ${o.data.name}</h4><p>${o.data.dimension || ''} - ${o.data.status}</p></div>`;
+                } else if (o.type === 'dashboard') {
+                    html = `<div class="overlay-info-panel dashboard"><h4>&#128202; ${o.data.name}</h4><p>Client: ${o.data.client}</p></div>`;
+                }
+                container.innerHTML += html;
+            });
+        }
+
+        loadOverlayData();
 
         // Track current graph data ourselves since graphData() getter is unreliable
         let currentGraphData = { nodes: [], links: [] };
@@ -1151,7 +1499,14 @@
         function applyFilters() {
             // Filter nodes by group AND date
             const filteredNodes = nodesData.filter(node => {
-                const groupVisible = visibleGroups.has(node.group);
+                let groupVisible;
+                if (currentViewMode === 'physical' && node.physicalGroup) {
+                    // In physical view mode, filter by physical groups
+                    groupVisible = visiblePhysicalGroups.has(node.physicalGroup);
+                } else {
+                    // In logical view mode, filter by logical groups
+                    groupVisible = visibleGroups.has(node.group);
+                }
                 const dateVisible = nodePassesDateFilter(node);
                 return groupVisible && dateVisible;
             });
@@ -1195,6 +1550,83 @@
             } else {
                 graph.numDimensions(3);
             }
+        }
+
+        // View mode toggle (Logical/Physical)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const logicalBtn = document.getElementById('btn-logical');
+            const physicalBtn = document.getElementById('btn-physical');
+            if (logicalBtn) logicalBtn.classList.toggle('active', mode === 'logical');
+            if (physicalBtn) physicalBtn.classList.toggle('active', mode === 'physical');
+
+            // Update node colors based on view mode
+            const nodes = getGraphNodes();
+            nodes.forEach(node => {
+                if (mode === 'physical' && node.physicalGroupColor) {
+                    node.color = node.physicalGroupColor;
+                } else {
+                    // Restore original logical color from groupsData
+                    const groupInfo = groupsData[node.group];
+                    node.color = groupInfo ? groupInfo.color : '#888888';
+                }
+            });
+
+            // Update filter chips visibility and content
+            updateFilterChipsForViewMode(mode);
+
+            // Re-render the graph
+            if (graph) {
+                graph.nodeColor(node => node.color);
+            }
+        }
+
+        // Update filter chips based on view mode
+        function updateFilterChipsForViewMode(mode) {
+            const nodesFiltersContainer = document.getElementById('nodes-filters');
+            if (!nodesFiltersContainer) return;
+
+            // Get existing chips
+            const existingChips = nodesFiltersContainer.querySelectorAll('.filter-chip[data-group]');
+            const toggleBtn = nodesFiltersContainer.querySelector('.mini-btn');
+
+            if (mode === 'physical' && Object.keys(physicalGroupsData).length > 0) {
+                // Hide logical chips, show physical chips
+                existingChips.forEach(chip => chip.classList.add('view-mode-hidden'));
+
+                // Remove any existing physical chips
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+
+                // Create physical group chips
+                Object.entries(physicalGroupsData).forEach(([groupId, groupInfo]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'filter-chip active';
+                    chip.dataset.physicalGroup = groupId;
+                    chip.innerHTML = `<span class="chip-color" style="background:${groupInfo.color}"></span>${groupInfo.label}`;
+                    chip.addEventListener('click', function() {
+                        togglePhysicalGroupFilter(groupId, this);
+                    });
+                    nodesFiltersContainer.insertBefore(chip, toggleBtn);
+                });
+            } else {
+                // Show logical chips, hide physical chips
+                existingChips.forEach(chip => chip.classList.remove('view-mode-hidden'));
+                nodesFiltersContainer.querySelectorAll('.filter-chip[data-physical-group]').forEach(c => c.remove());
+            }
+        }
+
+        // Track visible physical groups
+        const visiblePhysicalGroups = new Set(Object.keys(physicalGroupsData));
+
+        function togglePhysicalGroupFilter(groupId, chip) {
+            if (visiblePhysicalGroups.has(groupId)) {
+                visiblePhysicalGroups.delete(groupId);
+                chip.classList.remove('active');
+            } else {
+                visiblePhysicalGroups.add(groupId);
+                chip.classList.add('active');
+            }
+            applyFilters();
         }
 
         // Toggle filter sections
@@ -1289,13 +1721,103 @@
         function showFullContent() {
             if (!selectedNode) return;
 
+            // Set title and logo
             document.getElementById('modal-title').textContent = selectedNode.name;
-            document.getElementById('modal-content').textContent = selectedNode.description || 'No content available.';
-            document.getElementById('modal-meta').innerHTML = `
-                <span><span class="label">ID:</span> ${selectedNode.id}</span>
-                <span><span class="label">Type:</span> ${selectedNode.groupLabel || selectedNode.group}</span>
+            const modalLogo = document.getElementById('modal-logo');
+            if (selectedNode.logo) {
+                modalLogo.src = selectedNode.logo;
+                modalLogo.style.display = 'block';
+            } else {
+                modalLogo.style.display = 'none';
+            }
+
+            // Set tier badge
+            const tierBadge = document.getElementById('modal-tier-badge');
+            tierBadge.textContent = selectedNode.groupLabel || selectedNode.group;
+            tierBadge.style.background = selectedNode.color;
+
+            // Set description
+            document.getElementById('modal-content').textContent = selectedNode.description || 'No description available.';
+
+            // Build details grid
+            const detailsGrid = document.getElementById('modal-details');
+            const detailsSection = document.getElementById('modal-details-section');
+            let detailsHtml = '';
+
+            // Add node type detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node Type</div>
+                    <div class="detail-value">${selectedNode.groupLabel || selectedNode.group}</div>
+                </div>
             `;
+
+            // Add tier detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Tier Level</div>
+                    <div class="detail-value">Tier ${selectedNode.tier}</div>
+                </div>
+            `;
+
+            // Add ID detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Node ID</div>
+                    <div class="detail-value">${selectedNode.id}</div>
+                </div>
+            `;
+
+            // Add size/importance detail
+            detailsHtml += `
+                <div class="modal-detail-item">
+                    <div class="detail-label">Relative Size</div>
+                    <div class="detail-value">${selectedNode.val || 20}</div>
+                </div>
+            `;
+
+            detailsGrid.innerHTML = detailsHtml;
+            detailsSection.style.display = detailsHtml ? 'block' : 'none';
+
+            // Build connections section
+            const connectionsEl = document.getElementById('modal-connections');
+            const connectionsSection = document.getElementById('modal-connections-section');
+            const connections = linksByNode[selectedNode.id] || [];
+
+            if (connections.length > 0) {
+                let connectionsHtml = '';
+                connections.forEach(conn => {
+                    const connNode = nodeMap[conn.nodeId];
+                    if (!connNode) return;
+                    connectionsHtml += `
+                        <span class="modal-conn-chip" onclick="navigateToNodeFromModal('${conn.nodeId}')">
+                            ${connNode.name}
+                            <span class="conn-type">${conn.relationType}</span>
+                        </span>
+                    `;
+                });
+                connectionsEl.innerHTML = connectionsHtml;
+                connectionsSection.style.display = 'block';
+            } else {
+                connectionsSection.style.display = 'none';
+            }
+
+            // Set footer meta
+            document.getElementById('modal-meta').innerHTML = `
+                <span><span class="label">Full ID:</span> ${selectedNode.id}</span>
+                <span><span class="label">Group:</span> ${selectedNode.group}</span>
+                <span><span class="label">Connections:</span> ${connections.length}</span>
+            `;
+
             document.getElementById('content-modal').classList.add('active');
+        }
+
+        // Navigate to node from modal and close modal
+        function navigateToNodeFromModal(nodeId) {
+            closeModal();
+            setTimeout(() => {
+                navigateToNode(nodeId);
+            }, 100);
         }
 
         // Close modal
@@ -1405,7 +1927,8 @@
 
             // Show/hide view full button based on content length
             const viewFullBtn = document.getElementById('view-full-btn');
-            viewFullBtn.style.display = (node.description && node.description.length > 100) ? 'inline-block' : 'none';
+            // Always show View Full Content button to access detailed popup
+            viewFullBtn.style.display = 'inline-block';
 
             // Show metadata
             const metaEl = document.getElementById('node-meta');
@@ -1452,6 +1975,9 @@
                 };
                 connectionsList.appendChild(li);
             });
+
+            // Render overlay info for this node
+            renderOverlayInfo(node.id);
 
             // Update visuals - highlight connected, dim others
             graph
@@ -1662,17 +2188,14 @@
             document.getElementById('glow-toggle').classList.toggle('active', glowEnabled);
 
             if (glowEnabled) {
-                // Add bloom effect using post-processing
-                const renderer = graph.renderer();
-                const scene = graph.scene();
-                const camera = graph.camera();
-
-                // Note: Full bloom requires three.js post-processing libraries
-                // For now, we simulate glow with emissive materials
+                // Simulate glow with sprites around nodes
                 graph.nodeThreeObject(node => {
-                    const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+                    if (typeof THREE === 'undefined') {
+                        console.warn('THREE.js not available for glow effect');
+                        return null;
+                    }
                     const size = Math.max(node.val / 5, 2) * 2;
-                    const geom = new THREE.SphereGeometry(size / 2);
+                    const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                     const material = new THREE.MeshBasicMaterial({
                         color: node.color,
                         transparent: true,
@@ -1682,41 +2205,64 @@
                     const mesh = new THREE.Mesh(geom, material);
 
                     // Add glow sprite
+                    const glowTexture = createGlowTexture(node.color);
                     const spriteMaterial = new THREE.SpriteMaterial({
-                        map: createGlowTexture(node.color),
+                        map: glowTexture,
                         transparent: true,
                         blending: THREE.AdditiveBlending,
-                        opacity: 0.6
+                        opacity: 0.5
                     });
                     const sprite = new THREE.Sprite(spriteMaterial);
-                    sprite.scale.set(size * 3, size * 3, 1);
+                    sprite.scale.set(size * 4, size * 4, 1);
                     mesh.add(sprite);
 
                     return mesh;
                 });
+                graph.nodeThreeObjectExtend(false);
             } else {
-                setNodeGeometry(currentGeometry);
+                // Reset to default rendering
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
             }
         }
 
         function createGlowTexture(color) {
             const canvas = document.createElement('canvas');
-            canvas.width = 64;
-            canvas.height = 64;
+            canvas.width = 128;
+            canvas.height = 128;
             const ctx = canvas.getContext('2d');
 
-            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            // Create radial gradient for glow effect
+            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
             gradient.addColorStop(0, color);
-            gradient.addColorStop(0.3, color + '80');
-            gradient.addColorStop(1, 'transparent');
+            gradient.addColorStop(0.2, color);
+            gradient.addColorStop(0.4, hexToRgba(color, 0.5));
+            gradient.addColorStop(0.7, hexToRgba(color, 0.2));
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 64, 64);
+            ctx.fillRect(0, 0, 128, 128);
 
-            const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
+            if (typeof THREE === 'undefined') return null;
             const texture = new THREE.CanvasTexture(canvas);
             return texture;
         }
+
+        function hexToRgba(hex, alpha) {
+            // Convert hex color to rgba
+            let r = 0, g = 0, b = 0;
+            if (hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            } else if (hex.length === 7) {
+                r = parseInt(hex.slice(1, 3), 16);
+                g = parseInt(hex.slice(3, 5), 16);
+                b = parseInt(hex.slice(5, 7), 16);
+            }
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
 
         // --- Edge particles ---
         function toggleParticles() {
@@ -1745,9 +2291,68 @@
             }
         }
 
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const body = document.body;
+            const container = document.getElementById('container');
+            const sidebar = document.getElementById('sidebar');
+            const toolbar = document.getElementById('toolbar');
+
+            if (currentTheme === 'light') {
+                // Light mode
+                body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    sidebar.style.color = '#1a202c';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(255, 255, 255, 0.9)';
+                    toolbar.style.color = '#1a202c';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#f0f4f8');
+                }
+            } else {
+                // Dark mode (default)
+                body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                if (container) container.style.background = 'transparent';
+                if (sidebar) {
+                    sidebar.style.background = 'rgba(15, 23, 42, 0.95)';
+                    sidebar.style.color = '#e2e8f0';
+                }
+                if (toolbar) {
+                    toolbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                    toolbar.style.color = '#e2e8f0';
+                }
+                // Update graph background
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#0a0a14');
+                }
+            }
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder') {
+                clearTierPlatforms();
+                applyCylinderLayout();
+            }
+        }
+
         // --- Layout variations ---
         function changeLayout() {
             currentLayout = document.getElementById('layout-select').value;
+
+            // Clear tier platforms when switching away from cylinder
+            if (currentLayout !== 'cylinder') {
+                clearTierPlatforms();
+            }
 
             switch(currentLayout) {
                 case 'force':
@@ -1839,23 +2444,55 @@
             setTimeout(() => graph.zoomToFit(500), 100);
         }
 
+        // Track tier platform meshes for cleanup
+        let tierPlatforms = [];
+
         function applyCylinderLayout() {
-            // Y-axis = time, circumference = category
+            // Y-axis = tier/time, circumference = category/group
             const nodes = getGraphNodes();
             if (nodes.length === 0) return;
 
+            // Clean up existing tier platforms
+            clearTierPlatforms();
+
+            // Check if we have dates or tiers to use for Y-axis
             const nodesWithDates = nodes.filter(n => n.createdAt);
-            if (nodesWithDates.length === 0) {
-                alert('Cylinder layout requires nodes with createdAt timestamps');
-                document.getElementById('layout-select').value = 'force';
-                return;
+            const nodesWithTiers = nodes.filter(n => typeof n.tier === 'number');
+
+            let useDate = nodesWithDates.length > nodes.length / 2;
+            let minY, maxY, getYValue;
+            let tierLabels = {};
+
+            if (useDate && nodesWithDates.length > 0) {
+                // Use dates for Y positioning
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
+                minY = Math.min(...dates);
+                maxY = Math.max(...dates);
+                getYValue = (node) => node.createdAt ? new Date(node.createdAt).getTime() : minY;
+            } else if (nodesWithTiers.length > 0) {
+                // Use tiers for Y positioning
+                const tiers = nodesWithTiers.map(n => n.tier);
+                minY = Math.min(...tiers);
+                maxY = Math.max(...tiers);
+                getYValue = (node) => typeof node.tier === 'number' ? node.tier : minY;
+
+                // Build tier labels from groupsData
+                nodes.forEach(node => {
+                    const tier = node.tier;
+                    if (typeof tier === 'number' && !tierLabels[tier]) {
+                        tierLabels[tier] = node.groupLabel || node.group || `Tier ${tier}`;
+                    }
+                });
+            } else {
+                // Fallback: use node index
+                minY = 0;
+                maxY = nodes.length - 1;
+                getYValue = (node) => nodes.indexOf(node);
             }
 
-            const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime());
-            const minDate = Math.min(...dates);
-            const maxDate = Math.max(...dates);
-            const dateRange = maxDate - minDate || 1;
+            const yRange = maxY - minY || 1;
 
+            // Group nodes by their group property
             const groups = {};
             nodes.forEach(node => {
                 const group = node.group || 'default';
@@ -1864,16 +2501,99 @@
             });
 
             const totalGroups = Object.keys(groups).length;
-            const radius = 150;
-            const height = 400;
+            const radius = 200;
+            const height = 500;
+
+            // Collect unique tiers for platform creation
+            const uniqueTiers = new Set();
+            nodes.forEach(node => {
+                const yValue = getYValue(node);
+                uniqueTiers.add(yValue);
+            });
+
+            // Create tier platforms (rings with labels)
+            if (typeof THREE !== 'undefined') {
+                const scene = graph.scene();
+                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
+
+                // Ring colors for different tiers
+                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
+
+                sortedTiers.forEach((tierValue, index) => {
+                    const yNorm = (tierValue - minY) / yRange;
+                    const yPos = (yNorm - 0.5) * height;
+                    const ringColor = ringColors[index % ringColors.length];
+
+                    // Create 3D torus ring for depth
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 3;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.5 : 0.7
+                    });
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
+
+                    // Add outer glow ring
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
+
+                    // Create tier label
+                    const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
 
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
-                const angle = (group.index / totalGroups) * Math.PI * 2;
+                // Spread nodes within their group segment
+                const nodeIndexInGroup = group.nodes.indexOf(node);
+                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
+                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
+                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
+                const angle = baseAngle + offsetAngle;
 
-                // Y position based on date
-                const nodeDate = node.createdAt ? new Date(node.createdAt).getTime() : minDate;
-                const yNorm = (nodeDate - minDate) / dateRange;
+                // Y position based on tier or date
+                const yValue = getYValue(node);
+                const yNorm = (yValue - minY) / yRange;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
@@ -1882,6 +2602,20 @@
 
             graph.d3ReheatSimulation();
             setTimeout(() => graph.zoomToFit(500), 100);
+        }
+
+        function clearTierPlatforms() {
+            if (typeof THREE === 'undefined') return;
+            const scene = graph.scene();
+            tierPlatforms.forEach(obj => {
+                scene.remove(obj);
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (obj.material.map) obj.material.map.dispose();
+                    obj.material.dispose();
+                }
+            });
+            tierPlatforms = [];
         }
 
         // --- Multi-select with shift-click ---
@@ -2159,14 +2893,17 @@
 
         // --- Pulsing recent nodes ---
         function enablePulsingNodes(dayThreshold = 7) {
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js not available for pulsing nodes');
+                return;
+            }
             const now = Date.now();
             const threshold = dayThreshold * 24 * 60 * 60 * 1000;
 
             graph.nodeThreeObject(node => {
-                const THREE = window.THREE || graph.scene().constructor.__proto__.constructor;
                 const size = Math.max(node.val / 5, 2) * 2;
 
-                const geom = new THREE.SphereGeometry(size / 2);
+                const geom = new THREE.SphereGeometry(size / 2, 16, 16);
                 const material = new THREE.MeshLambertMaterial({
                     color: node.color,
                     transparent: true,
