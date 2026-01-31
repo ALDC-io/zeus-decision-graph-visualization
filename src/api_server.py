@@ -155,6 +155,7 @@ async def root():
         {"name": "ALDC Data Ecosystem", "path": "/viz/ecosystem", "description": "Complete data lineage from sources through transformations to AI/ML consumption"},
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
+        {"name": "Athena Data Flow", "path": "/viz/dataflow", "description": "End-to-end F92 DAX AI workflow: Account Management to Reporting with Eclipse as Data Foundation"},
         {"name": "Fusion92 Flightcheck", "path": "/viz/flightcheck", "description": "DAX AI data flow for media planning, activation, and flight management"},
         {"name": "Fusion92 Schema", "path": "/viz/f92", "description": "Data schema for Fusion92 Activation Model"},
         {"name": "ALDC Internal Schema", "path": "/viz/aldc", "description": "Data schema for ALDC Operations Model"},
@@ -343,6 +344,16 @@ async def viz_gep():
     if html_file.exists():
         return FileResponse(html_file, media_type="text/html")
     raise HTTPException(status_code=404, detail="GEP visualization not found")
+
+
+@app.get("/viz/dataflow")
+async def viz_dataflow():
+    """Serve the Athena Data Flow visualization - F92 DAX AI end-to-end workflow."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "athena_data_flow.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Athena Data Flow visualization not found")
 
 
 @app.get("/api")
