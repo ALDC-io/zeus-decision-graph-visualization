@@ -1894,12 +1894,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 graph.width(newWidth).height(newHeight);
             }});
 
-            // Apply logo+label rendering if enabled (after graph is ready)
-            setTimeout(() => {{
-                if (logoLabelsEnabled) {{
-                    applyLogoLabelRendering();
-                }}
-            }}, 500);
+            // Logo rendering disabled - causes nodes to disappear
+            // TODO: Fix nodeThreeObject implementation
         }}
 
         // Show full content in modal
@@ -2283,7 +2279,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let particlesEnabled = false;
         let labelsEnabled = true;
         let ringsEnabled = true;
-        let logoLabelsEnabled = true;
+        let logoLabelsEnabled = false;  // Disabled - nodeThreeObject causes nodes to disappear
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
