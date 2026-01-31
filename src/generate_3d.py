@@ -1239,6 +1239,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     <span class="toggle-label">Light</span>
                     <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Rings</span>
+                    <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Overlays -->
                 <div class="toolbar-section">
@@ -2266,6 +2270,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         let glowEnabled = false;
         let particlesEnabled = false;
         let labelsEnabled = true;
+        let ringsEnabled = true;
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
@@ -2508,9 +2513,26 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}
 
             // Refresh cylinder layout to update ring opacities
-            if (currentLayout === 'cylinder') {{
+            if (currentLayout === 'cylinder' && ringsEnabled) {{
                 clearTierPlatforms();
                 applyCylinderLayout();
+            }}
+        }}
+
+        // --- Rings toggle (for cylinder layout) ---
+        function toggleRings() {{
+            ringsEnabled = !ringsEnabled;
+            document.getElementById('rings-toggle').classList.toggle('active', ringsEnabled);
+
+            if (currentLayout === 'cylinder') {{
+                if (ringsEnabled) {{
+                    // Re-apply cylinder layout to recreate rings
+                    clearTierPlatforms();
+                    applyCylinderLayout();
+                }} else {{
+                    // Just clear the rings, keep node positions
+                    clearTierPlatforms();
+                }}
             }}
         }}
 
@@ -2680,8 +2702,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 uniqueTiers.add(yValue);
             }});
 
-            // Create tier platforms (rings with labels)
-            if (typeof THREE !== 'undefined') {{
+            // Create tier platforms (rings with labels) - only if rings are enabled
+            if (typeof THREE !== 'undefined' && ringsEnabled) {{
                 const scene = graph.scene();
                 const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
