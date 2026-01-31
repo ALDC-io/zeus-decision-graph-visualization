@@ -189,8 +189,8 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     <meta charset="utf-8">
     <title>{title}</title>
     <link rel="icon" href="data:,">
-    <!-- Import THREE.js first for custom objects, then 3d-force-graph -->
-    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <!-- THREE.js and 3d-force-graph - use same THREE version that 3d-force-graph expects -->
+    <script src="//unpkg.com/three@0.169.0/build/three.min.js"></script>
     <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {{
@@ -2583,7 +2583,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return group;
             }});
 
-            graph.nodeThreeObjectExtend(false);
+            graph.nodeThreeObjectExtend(true);
 
             // Start animation loop for rotating logo cubes
             if (!window.logoRotationActive) {{
