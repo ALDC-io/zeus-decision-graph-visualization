@@ -2585,9 +2585,6 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
             graph.nodeThreeObjectExtend(false);
 
-            // Refresh the graph to apply new node objects
-            graph.refresh();
-
             // Start animation loop for rotating logo cubes
             if (!window.logoRotationActive) {{
                 window.logoRotationActive = true;
@@ -2820,11 +2817,6 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 case 'cylinder':
                     applyCylinderLayout();
                     break;
-            }}
-
-            // Reapply logo rendering after layout change if enabled
-            if (logoLabelsEnabled) {{
-                setTimeout(() => applyLogoLabelRendering(), 100);
             }}
         }}
 
