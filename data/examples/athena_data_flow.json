@@ -1,0 +1,441 @@
+{
+  "metadata": {
+    "title": "Athena Data Flow - F92 DAX AI Ecosystem",
+    "description": "End-to-end data architecture for Fusion92's media planning, activation, and financial management workflow",
+    "source": "F92 DAX AI Map",
+    "created": "2026-01-30",
+    "updated": "2026-01-30",
+    "owner": "Fusion92 / ALDC",
+    "architect": "ALDC Engineering"
+  },
+  "groups": {
+    "business_reviews": {"color": "#2f855a", "label": "Business Reviews"},
+    "account_mgmt": {"color": "#3182ce", "label": "Account Management"},
+    "inputs": {"color": "#805ad5", "label": "Data Inputs"},
+    "audience": {"color": "#d69e2e", "label": "Audience Creation"},
+    "media_planning": {"color": "#e53e3e", "label": "Media Planning"},
+    "activation": {"color": "#00b5d8", "label": "Activation"},
+    "dsp": {"color": "#9f7aea", "label": "Demand-Side Platforms"},
+    "platforms": {"color": "#ed64a6", "label": "Digital Media Platforms"},
+    "operations": {"color": "#1a365d", "label": "Flight Management"},
+    "finance": {"color": "#319795", "label": "Financial Management"},
+    "reporting": {"color": "#38a169", "label": "Internal Reporting"},
+    "foundation": {"color": "#dd6b20", "label": "Data Foundation"}
+  },
+  "edge_types": {
+    "provide_inputs": {"color": "#805ad5", "width": 2, "label": "Provide Inputs"},
+    "contains": {"color": "#a0aec0", "width": 1, "label": "Contains"},
+    "ingest_govern": {"color": "#dd6b20", "width": 3, "label": "Ingest / Govern"},
+    "source": {"color": "#38a169", "width": 1.5, "label": "Source"},
+    "audience_workflows": {"color": "#d69e2e", "width": 2, "label": "Audience Workflows"},
+    "publish_segments": {"color": "#d69e2e", "width": 2, "label": "Publish Segments"},
+    "curated_inputs": {"color": "#dd6b20", "width": 3, "label": "Curated Inputs"},
+    "plan_activation": {"color": "#e53e3e", "width": 3, "label": "Plan to Activation"},
+    "manage": {"color": "#00b5d8", "width": 2, "label": "Manage"},
+    "execute_dsp": {"color": "#9f7aea", "width": 2, "label": "Execute via DSPs"},
+    "includes": {"color": "#718096", "width": 1, "label": "Includes"},
+    "buy_inventory": {"color": "#ed64a6", "width": 2, "label": "Buy Inventory"},
+    "handoff_ops": {"color": "#1a365d", "width": 2, "label": "Hand-off / Ops"},
+    "workflow": {"color": "#1a365d", "width": 1.5, "label": "Workflow"},
+    "spend_reconciliation": {"color": "#319795", "width": 2, "label": "Spend & Reconciliation"},
+    "system_of_record": {"color": "#319795", "width": 1.5, "label": "System of Record"},
+    "business_review_metrics": {"color": "#2f855a", "width": 3, "label": "Business Review Metrics"},
+    "pacing_spend_context": {"color": "#1a365d", "width": 2, "label": "Pacing/Spend Context"},
+    "finance_rollup": {"color": "#319795", "width": 2, "label": "Finance Rollup"},
+    "internal_reporting_metrics": {"color": "#38a169", "width": 3, "label": "Internal Reporting Metrics"},
+    "ops_rollup": {"color": "#1a365d", "width": 2, "label": "Ops Rollup"},
+    "manage_relationship": {"color": "#3182ce", "width": 2, "label": "Manage Relationship"},
+    "deliver_reviews": {"color": "#2f855a", "width": 2, "label": "Deliver Reviews"},
+    "monitor_internally": {"color": "#38a169", "width": 2, "label": "Monitor Internally"}
+  },
+  "nodes": [
+    {
+      "id": "client_dashboard",
+      "label": "Client Dashboard",
+      "tier": 0,
+      "group": "business_reviews",
+      "title": "Client Dashboard (Monthly/Quarterly Business Reviews)\nClient-facing reporting output used in monthly/quarterly business reviews.",
+      "size": 50,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://tableau.com&size=128",
+      "created_at": "2023-01-01T00:00:00Z"
+    },
+    {
+      "id": "account_mgmt_f92",
+      "label": "Account Management (Fusion92)",
+      "tier": 1,
+      "group": "account_mgmt",
+      "title": "Fusion92 Account Management\nFusion92 account team coordinating planning, execution, and reporting with clients.",
+      "size": 35,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://fusion92.com&size=128",
+      "created_at": "1999-01-01T00:00:00Z"
+    },
+    {
+      "id": "clients",
+      "label": "Clients",
+      "tier": 1,
+      "group": "account_mgmt",
+      "title": "Client Stakeholders\nClient stakeholders consuming dashboards, providing inputs, and approving plans.",
+      "size": 30,
+      "created_at": "2020-01-01T00:00:00Z"
+    },
+    {
+      "id": "client_data",
+      "label": "Client Data",
+      "tier": 2,
+      "group": "inputs",
+      "title": "Client Data\nClient-provided datasets (e.g., Sales/No Sales, Marketing Leads).",
+      "size": 28,
+      "created_at": "2021-01-01T00:00:00Z"
+    },
+    {
+      "id": "client_sales_no_sales",
+      "label": "Sales / No Sales",
+      "tier": 3,
+      "group": "inputs",
+      "title": "Sales Performance Data\nOutcome data used to evaluate conversion performance.",
+      "size": 22,
+      "created_at": "2021-01-01T00:00:00Z"
+    },
+    {
+      "id": "client_marketing_leads",
+      "label": "Marketing Leads",
+      "tier": 3,
+      "group": "inputs",
+      "title": "Marketing Leads\nLead and funnel metrics used for targeting and measurement.",
+      "size": 22,
+      "created_at": "2021-01-01T00:00:00Z"
+    },
+    {
+      "id": "audience_creation",
+      "label": "Customer Audience Creation",
+      "tier": 2,
+      "group": "audience",
+      "title": "Customer Audience Creation\nTools used to construct addressable audiences and segments.",
+      "size": 30,
+      "created_at": "2022-01-01T00:00:00Z"
+    },
+    {
+      "id": "alteryx",
+      "label": "Alteryx",
+      "tier": 3,
+      "group": "audience",
+      "title": "Alteryx Analytics Platform\nData prep/ETL workflows supporting audience creation.",
+      "size": 25,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://alteryx.com&size=128",
+      "created_at": "1997-01-01T00:00:00Z"
+    },
+    {
+      "id": "trak",
+      "label": "TRAK",
+      "tier": 3,
+      "group": "audience",
+      "title": "TRAK Audience Platform\nAudience/segment tooling shown in the reference diagram.",
+      "size": 25,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://trak.io&size=128",
+      "created_at": "2018-01-01T00:00:00Z"
+    },
+    {
+      "id": "consumer_data_systems",
+      "label": "Consumer Data Systems",
+      "tier": 2,
+      "group": "inputs",
+      "title": "Consumer Data Systems\nThird-party consumer identity/attributes powering segmentation.",
+      "size": 28,
+      "created_at": "2020-01-01T00:00:00Z"
+    },
+    {
+      "id": "experian",
+      "label": "Experian",
+      "tier": 3,
+      "group": "inputs",
+      "title": "Experian Marketing Services\nThird-party consumer data provider.",
+      "size": 22,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://experian.com&size=128",
+      "created_at": "1980-01-01T00:00:00Z"
+    },
+    {
+      "id": "acxiom",
+      "label": "Acxiom",
+      "tier": 3,
+      "group": "inputs",
+      "title": "Acxiom Data Services\nThird-party consumer data provider.",
+      "size": 22,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://acxiom.com&size=128",
+      "created_at": "1969-01-01T00:00:00Z"
+    },
+    {
+      "id": "ai_media_planning",
+      "label": "Media Planning (AI Media Planning Tool)",
+      "tier": 2,
+      "group": "media_planning",
+      "title": "AI Media Planning Tool\nCentral planning surface producing plans, mixes, and targets (MMM/MTA inputs implied).",
+      "size": 35,
+      "created_at": "2022-06-01T00:00:00Z"
+    },
+    {
+      "id": "activation_tracking",
+      "label": "Activation Tracking",
+      "tier": 3,
+      "group": "activation",
+      "title": "Activation Tracking\nExecution tracking and campaign-level instrumentation.",
+      "size": 28,
+      "created_at": "2022-06-01T00:00:00Z"
+    },
+    {
+      "id": "campaign_manager",
+      "label": "Campaign Manager",
+      "tier": 3,
+      "group": "activation",
+      "title": "Google Campaign Manager 360\nSystem managing campaign objects and tracking activation.",
+      "size": 28,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://marketingplatform.google.com&size=128",
+      "created_at": "2012-01-01T00:00:00Z"
+    },
+    {
+      "id": "dsps",
+      "label": "Demand-Side Platforms (DSPs)",
+      "tier": 3,
+      "group": "dsp",
+      "title": "Demand-Side Platforms\nProgrammatic buying platforms used to execute the media plan.",
+      "size": 30,
+      "created_at": "2015-01-01T00:00:00Z"
+    },
+    {
+      "id": "beeswax",
+      "label": "Beeswax",
+      "tier": 4,
+      "group": "dsp",
+      "title": "Beeswax DSP\nDSP shown in the reference diagram.",
+      "size": 20,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://beeswax.com&size=128",
+      "created_at": "2014-01-01T00:00:00Z"
+    },
+    {
+      "id": "viant",
+      "label": "Viant",
+      "tier": 4,
+      "group": "dsp",
+      "title": "Viant Adelphic DSP\nDSP shown in the reference diagram.",
+      "size": 20,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://viantinc.com&size=128",
+      "created_at": "2010-01-01T00:00:00Z"
+    },
+    {
+      "id": "dv360",
+      "label": "Google Display & Video 360 (DV360)",
+      "tier": 4,
+      "group": "dsp",
+      "title": "Google DV360\nGoogle programmatic DSP (DV360).",
+      "size": 22,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://marketingplatform.google.com&size=128",
+      "created_at": "2018-07-24T00:00:00Z"
+    },
+    {
+      "id": "ttd",
+      "label": "The Trade Desk",
+      "tier": 4,
+      "group": "dsp",
+      "title": "The Trade Desk DSP\nDSP shown in the reference diagram.",
+      "size": 22,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://thetradedesk.com&size=128",
+      "created_at": "2009-01-01T00:00:00Z"
+    },
+    {
+      "id": "digital_media_platforms",
+      "label": "Digital Media Platforms",
+      "tier": 4,
+      "group": "platforms",
+      "title": "Digital Media Platforms\nPublishers and ad platforms receiving budgets/targeting and returning performance signals.",
+      "size": 30,
+      "created_at": "2015-01-01T00:00:00Z"
+    },
+    {
+      "id": "meta",
+      "label": "Meta",
+      "tier": 5,
+      "group": "platforms",
+      "title": "Meta Advertising\nPlatform shown in the reference diagram.",
+      "size": 18,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://meta.com&size=128",
+      "created_at": "2004-02-04T00:00:00Z"
+    },
+    {
+      "id": "tiktok",
+      "label": "TikTok Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "TikTok Advertising\nPlatform shown in the reference diagram.",
+      "size": 18,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://tiktok.com&size=128",
+      "created_at": "2016-09-01T00:00:00Z"
+    },
+    {
+      "id": "google_ads",
+      "label": "Google Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "Google Ads Platform\nPlatform shown in the reference diagram.",
+      "size": 20,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.google.com&size=128",
+      "created_at": "2000-10-23T00:00:00Z"
+    },
+    {
+      "id": "linkedin",
+      "label": "LinkedIn Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "LinkedIn Advertising\nPlatform shown in the reference diagram.",
+      "size": 18,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://linkedin.com&size=128",
+      "created_at": "2003-05-05T00:00:00Z"
+    },
+    {
+      "id": "bing",
+      "label": "Bing Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "Microsoft Advertising\nPlatform shown in the reference diagram.",
+      "size": 16,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ads.microsoft.com&size=128",
+      "created_at": "2006-01-01T00:00:00Z"
+    },
+    {
+      "id": "pinterest",
+      "label": "Pinterest Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "Pinterest Advertising\nPlatform shown in the reference diagram.",
+      "size": 16,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://pinterest.com&size=128",
+      "created_at": "2010-03-01T00:00:00Z"
+    },
+    {
+      "id": "snapchat",
+      "label": "Snapchat Ads",
+      "tier": 5,
+      "group": "platforms",
+      "title": "Snapchat Advertising\nPlatform shown in the reference diagram.",
+      "size": 16,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://snapchat.com&size=128",
+      "created_at": "2011-09-01T00:00:00Z"
+    },
+    {
+      "id": "flight_mgmt",
+      "label": "Flight Management (Media Management Tool)",
+      "tier": 2,
+      "group": "operations",
+      "title": "Flight Management\nApprovals + Budget Tracking; operational control over flights and pacing.",
+      "size": 35,
+      "created_at": "2023-06-01T00:00:00Z"
+    },
+    {
+      "id": "approvals",
+      "label": "Approvals",
+      "tier": 3,
+      "group": "operations",
+      "title": "Approvals Workflow\nApproval workflow for plans, budgets, and changes.",
+      "size": 22,
+      "created_at": "2023-06-01T00:00:00Z"
+    },
+    {
+      "id": "budget_tracking",
+      "label": "Budget Tracking",
+      "tier": 3,
+      "group": "operations",
+      "title": "Budget Tracking\nTracks spend, pacing, and budget allocations.",
+      "size": 22,
+      "created_at": "2023-06-01T00:00:00Z"
+    },
+    {
+      "id": "financial_mgmt",
+      "label": "Financial Management",
+      "tier": 2,
+      "group": "finance",
+      "title": "Financial Management\nFinancial source-of-truth for invoices, POs, and reconciliations.",
+      "size": 35,
+      "created_at": "2020-01-01T00:00:00Z"
+    },
+    {
+      "id": "netsuite",
+      "label": "NetSuite",
+      "tier": 3,
+      "group": "finance",
+      "title": "Oracle NetSuite ERP\nERP used for financial management in the reference diagram.",
+      "size": 28,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://netsuite.com&size=128",
+      "created_at": "1998-01-01T00:00:00Z"
+    },
+    {
+      "id": "f92_dashboard",
+      "label": "F92 Dashboard (Internal Reporting)",
+      "tier": 0,
+      "group": "reporting",
+      "title": "F92 Internal Dashboard\nInternal reporting dashboard for Fusion92 stakeholders.",
+      "size": 50,
+      "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://fusion92.com&size=128",
+      "created_at": "2023-01-01T00:00:00Z"
+    },
+    {
+      "id": "eclipse",
+      "label": "Eclipse (Data Foundation)",
+      "tier": 1,
+      "group": "foundation",
+      "title": "Eclipse Data Foundation\nFoundational layer: data consistency / governed definitions / curated schema (system-of-record for meaning).",
+      "size": 60,
+      "logo": "https://aldc.io/favicon.ico",
+      "created_at": "2022-06-01T00:00:00Z"
+    }
+  ],
+  "edges": [
+    {"source": "clients", "target": "client_data", "type": "provide_inputs"},
+    {"source": "client_data", "target": "client_sales_no_sales", "type": "contains"},
+    {"source": "client_data", "target": "client_marketing_leads", "type": "contains"},
+
+    {"source": "client_data", "target": "eclipse", "type": "ingest_govern"},
+    {"source": "consumer_data_systems", "target": "eclipse", "type": "ingest_govern"},
+    {"source": "experian", "target": "consumer_data_systems", "type": "source"},
+    {"source": "acxiom", "target": "consumer_data_systems", "type": "source"},
+
+    {"source": "alteryx", "target": "audience_creation", "type": "audience_workflows"},
+    {"source": "trak", "target": "audience_creation", "type": "audience_workflows"},
+    {"source": "audience_creation", "target": "eclipse", "type": "publish_segments"},
+
+    {"source": "eclipse", "target": "ai_media_planning", "type": "curated_inputs"},
+    {"source": "ai_media_planning", "target": "activation_tracking", "type": "plan_activation"},
+    {"source": "activation_tracking", "target": "campaign_manager", "type": "manage"},
+
+    {"source": "activation_tracking", "target": "dsps", "type": "execute_dsp"},
+    {"source": "dsps", "target": "beeswax", "type": "includes"},
+    {"source": "dsps", "target": "viant", "type": "includes"},
+    {"source": "dsps", "target": "dv360", "type": "includes"},
+    {"source": "dsps", "target": "ttd", "type": "includes"},
+
+    {"source": "dsps", "target": "digital_media_platforms", "type": "buy_inventory"},
+    {"source": "digital_media_platforms", "target": "meta", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "tiktok", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "google_ads", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "linkedin", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "bing", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "pinterest", "type": "includes"},
+    {"source": "digital_media_platforms", "target": "snapchat", "type": "includes"},
+
+    {"source": "ai_media_planning", "target": "flight_mgmt", "type": "handoff_ops"},
+    {"source": "flight_mgmt", "target": "approvals", "type": "workflow"},
+    {"source": "flight_mgmt", "target": "budget_tracking", "type": "workflow"},
+
+    {"source": "flight_mgmt", "target": "financial_mgmt", "type": "spend_reconciliation"},
+    {"source": "financial_mgmt", "target": "netsuite", "type": "system_of_record"},
+
+    {"source": "eclipse", "target": "client_dashboard", "type": "business_review_metrics"},
+    {"source": "flight_mgmt", "target": "client_dashboard", "type": "pacing_spend_context"},
+    {"source": "financial_mgmt", "target": "client_dashboard", "type": "finance_rollup"},
+
+    {"source": "eclipse", "target": "f92_dashboard", "type": "internal_reporting_metrics"},
+    {"source": "flight_mgmt", "target": "f92_dashboard", "type": "ops_rollup"},
+    {"source": "financial_mgmt", "target": "f92_dashboard", "type": "finance_rollup"},
+
+    {"source": "account_mgmt_f92", "target": "clients", "type": "manage_relationship"},
+    {"source": "account_mgmt_f92", "target": "client_dashboard", "type": "deliver_reviews"},
+    {"source": "account_mgmt_f92", "target": "f92_dashboard", "type": "monitor_internally"}
+  ]
+}
