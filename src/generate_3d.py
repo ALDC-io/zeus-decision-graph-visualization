@@ -189,9 +189,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     <meta charset="utf-8">
     <title>{title}</title>
     <link rel="icon" href="data:,">
-    <!-- Load THREE.js first, then defer 3d-force-graph so it uses our THREE instance -->
+    <!-- Load THREE.js first, then 3d-force-graph will use the global THREE -->
     <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <script defer src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+    <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {{
             margin: 0;
@@ -2583,7 +2583,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 return group;
             }});
 
-            graph.nodeThreeObjectExtend(true);
+            graph.nodeThreeObjectExtend(false);
 
             // Start animation loop for rotating logo cubes
             if (!window.logoRotationActive) {{
@@ -3463,12 +3463,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }};
         }}
 
-        // Initialize after all scripts (including deferred ones) are loaded
-        window.addEventListener('load', function() {{
-            initGraph();
-            checkEmbedMode();
-            initExtendedFeatures();
-        }});
+        // Initialize
+        initGraph();
+        checkEmbedMode();
+        initExtendedFeatures();
     </script>
 </body>
 </html>'''
