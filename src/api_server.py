@@ -155,6 +155,7 @@ async def root():
         {"name": "ALDC Data Ecosystem", "path": "/viz/ecosystem", "description": "Complete data lineage from sources through transformations to AI/ML consumption"},
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
+        {"name": "Fusion92 Flightcheck", "path": "/viz/flightcheck", "description": "DAX AI data flow for media planning, activation, and flight management"},
         {"name": "Fusion92 Schema", "path": "/viz/f92", "description": "Data schema for Fusion92 Activation Model"},
         {"name": "ALDC Internal Schema", "path": "/viz/aldc", "description": "Data schema for ALDC Operations Model"},
         {"name": "GEP Schema", "path": "/viz/gep", "description": "Data schema for Global Export Platform"},
@@ -312,6 +313,16 @@ async def viz_f92():
     if html_file.exists():
         return FileResponse(html_file, media_type="text/html")
     raise HTTPException(status_code=404, detail="F92 visualization not found")
+
+
+@app.get("/viz/flightcheck")
+async def viz_flightcheck():
+    """Serve the Fusion92 Flightcheck DAX AI visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "f92_flightcheck.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Flightcheck visualization not found")
 
 
 @app.get("/viz/aldc")
