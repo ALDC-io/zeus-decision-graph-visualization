@@ -2575,6 +2575,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             if (logoUrl) {{
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
+
+                // Use CORS proxy for external URLs that don't support CORS
+                let proxiedUrl = logoUrl;
+                if (logoUrl.includes('gstatic.com') || logoUrl.includes('google.com/s2/favicons')) {{
+                    proxiedUrl = 'https://corsproxy.io/?' + encodeURIComponent(logoUrl);
+                }}
+
                 img.onload = () => {{
                     // Redraw background circle to cover initials
                     ctx.beginPath();
@@ -2601,11 +2608,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     console.log('Logo loaded for:', name);
                 }};
                 img.onerror = (e) => {{
-                    console.warn('Failed to load logo for', name, ':', logoUrl, e);
+                    console.warn('Failed to load logo for', name, ':', proxiedUrl, e);
                     // Initials already drawn, just update texture
                     texture.needsUpdate = true;
                 }};
-                img.src = logoUrl;
+                img.src = proxiedUrl;
             }} else {{
                 texture.needsUpdate = true;
             }}
