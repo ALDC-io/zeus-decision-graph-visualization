@@ -2409,8 +2409,12 @@
 
                 // Use CORS proxy for external URLs that don't support CORS
                 let proxiedUrl = logoUrl;
-                if (logoUrl.includes('gstatic.com') || logoUrl.includes('google.com/s2/favicons')) {
-                    proxiedUrl = 'https://corsproxy.io/?' + encodeURIComponent(logoUrl);
+                const needsProxy = logoUrl.includes('gstatic.com') ||
+                                   logoUrl.includes('google.com/s2/favicons') ||
+                                   logoUrl.includes('aldc.io');
+                if (needsProxy) {
+                    // Use allorigins as CORS proxy (returns raw content)
+                    proxiedUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(logoUrl);
                 }
 
                 img.onload = () => {
