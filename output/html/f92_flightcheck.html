@@ -2394,11 +2394,25 @@
             const sprite = new THREE.Sprite(spriteMat);
             sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
 
-            // Load logo async and redraw
+            // Always draw initials first as fallback
+            const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 64, 60);
+
+            // If logo URL provided, try to load and overlay it
             if (logoUrl) {
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = () => {
+                    // Redraw background circle to cover initials
+                    ctx.beginPath();
+                    ctx.arc(64, 60, 50, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+
                     // Draw logo in center of circle
                     ctx.save();
                     ctx.beginPath();
@@ -2406,17 +2420,24 @@
                     ctx.clip();
                     ctx.drawImage(img, 24, 20, 80, 80);
                     ctx.restore();
+
+                    // Redraw border
+                    ctx.beginPath();
+                    ctx.arc(64, 60, 50, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    texture.needsUpdate = true;
+                    console.log('Logo loaded for:', name);
+                };
+                img.onerror = (e) => {
+                    console.warn('Failed to load logo for', name, ':', logoUrl, e);
+                    // Initials already drawn, just update texture
                     texture.needsUpdate = true;
                 };
                 img.src = logoUrl;
             } else {
-                // No logo - draw initials
-                const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
-                ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(initials, 64, 60);
                 texture.needsUpdate = true;
             }
 
