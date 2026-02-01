@@ -2342,16 +2342,85 @@
                 return;
             }
 
-            // Just add a label sprite below each node - no groups, keep it simple
+            // Create a sprite that contains both logo and label
+            // Using extend=false to REPLACE the default sphere with our custom sprite
             graph.nodeThreeObject(node => {
                 const size = Math.max(node.val / 5, 3) * 2;
-                const labelSprite = createLabelSprite(node.name, node.color, size);
-                labelSprite.position.set(0, -size - 8, 0);
-                return labelSprite;
+
+                // Create a combined sprite with logo (if available) and label
+                const sprite = createLogoLabelSprite(node.name, node.color, node.logo, size);
+                return sprite;
             });
 
-            // extend=true adds our sprite to existing node, doesn't replace
-            graph.nodeThreeObjectExtend(true);
+            // extend=false replaces the default sphere entirely
+            graph.nodeThreeObjectExtend(false);
+        }
+
+        // Create a single sprite with logo and label combined
+        function createLogoLabelSprite(name, color, logoUrl, nodeSize) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 160;  // Taller to fit logo + label
+
+            // Draw colored circle as node background
+            ctx.beginPath();
+            ctx.arc(64, 60, 50, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw label below
+            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            // Truncate text if too long
+            let displayText = name;
+            while (ctx.measureText(displayText).width > 120 && displayText.length > 3) {
+                displayText = displayText.slice(0, -4) + '...';
+            }
+            ctx.fillText(displayText, 64, 120);
+
+            // If logo URL provided, load it and update the sprite
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
+
+            // Load logo async and redraw
+            if (logoUrl) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    // Draw logo in center of circle
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(64, 60, 40, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(img, 24, 20, 80, 80);
+                    ctx.restore();
+                    texture.needsUpdate = true;
+                };
+                img.src = logoUrl;
+            } else {
+                // No logo - draw initials
+                const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+                ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(initials, 64, 60);
+                texture.needsUpdate = true;
+            }
+
+            return sprite;
         }
 
         function createLabelSprite(text, color, nodeSize) {
