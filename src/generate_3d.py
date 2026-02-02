@@ -2527,13 +2527,15 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
         // Create a single sprite with logo and label combined
         // Default icons for nodes without logos (by group/category)
+        // Default icons using Google Material Icons (reliable, consistent style)
+        // These are base64 SVG data URIs for guaranteed loading
         const defaultIcons = {{
-            'output': 'https://cdn-icons-png.flaticon.com/128/2920/2920277.png',  // report/chart icon
-            'account': 'https://cdn-icons-png.flaticon.com/128/1077/1077063.png',  // users icon
-            'client_data': 'https://cdn-icons-png.flaticon.com/128/2620/2620513.png',  // database icon
-            'media_planning': 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png',  // planning/calendar icon
-            'flight': 'https://cdn-icons-png.flaticon.com/128/4213/4213732.png',  // rocket/launch icon
-            'default': 'https://cdn-icons-png.flaticon.com/128/1160/1160358.png'  // generic node icon
+            'output': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234CAF50"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>'),
+            'account': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232196F3"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>'),
+            'client_data': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF9800"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4zm0 2c3.87 0 6 1.5 6 2s-2.13 2-6 2-6-1.5-6-2 2.13-2 6-2zm6 12c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17zm0-5c0 .5-2.13 2-6 2s-6-1.5-6-2V9.77c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V12z"/></svg>'),
+            'media_planning': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%239C27B0"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>'),
+            'flight': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23F44336"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'),
+            'default': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23607D8B"><circle cx="12" cy="12" r="8"/></svg>')
         }};
 
         function createLogoLabelSprite(name, color, logoUrl, nodeSize, group) {{
@@ -2612,24 +2614,21 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 }}
 
                 img.onload = () => {{
-                    // Clear the canvas and make background transparent
+                    // Clear the canvas completely for transparent background
                     ctx.clearRect(0, 0, 128, 110);
 
-                    // Draw logo filling the circle area (no background color)
+                    // Draw logo directly without background (fully transparent)
                     ctx.save();
                     ctx.beginPath();
                     ctx.arc(64, 60, 48, 0, Math.PI * 2);
                     ctx.clip();
-                    // Draw white background for transparency in logos
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fill();
                     ctx.drawImage(img, 16, 12, 96, 96);
                     ctx.restore();
 
                     // Draw subtle border ring
                     ctx.beginPath();
                     ctx.arc(64, 60, 50, 0, Math.PI * 2);
-                    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
                     ctx.lineWidth = 2;
                     ctx.stroke();
 
