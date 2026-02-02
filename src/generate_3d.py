@@ -2571,10 +2571,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const texture = new THREE.CanvasTexture(canvas);
             const spriteMat = new THREE.SpriteMaterial({{
                 map: texture,
-                transparent: true
+                transparent: true,
+                depthTest: false,  // Disable depth testing so sprites always render on top
+                depthWrite: false
             }});
             const sprite = new THREE.Sprite(spriteMat);
             sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
+            sprite.renderOrder = 1000;  // High render order ensures sprites render after edges
 
             // Draw colored circle as fallback (will be covered by logo if loaded)
             ctx.beginPath();
