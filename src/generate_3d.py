@@ -2576,14 +2576,16 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
 
-                // Use CORS proxy for external URLs that don't support CORS
+                // Use weserv.nl image proxy for CORS support
+                // weserv.nl is a dedicated image proxy with proper CORS headers
                 let proxiedUrl = logoUrl;
-                const needsProxy = logoUrl.includes('gstatic.com') ||
-                                   logoUrl.includes('google.com/s2/favicons') ||
-                                   logoUrl.includes('aldc.io');
-                if (needsProxy) {{
-                    // Use allorigins as CORS proxy (returns raw content)
-                    proxiedUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(logoUrl);
+                try {{
+                    const urlObj = new URL(logoUrl);
+                    // Remove protocol and use weserv.nl proxy
+                    const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                    proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
+                }} catch (e) {{
+                    console.warn('Invalid logo URL:', logoUrl);
                 }}
 
                 img.onload = () => {{
