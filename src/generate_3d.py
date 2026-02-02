@@ -2541,31 +2541,25 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         function createLogoLabelSprite(name, color, logoUrl, nodeSize, group) {{
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = 128;
-            canvas.height = 160;  // Taller to fit logo + label
+            // Higher resolution for crisp logos
+            canvas.width = 256;
+            canvas.height = 320;
 
-            // Start with transparent background (no colored circle initially)
+            // Start with fully transparent background
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw subtle border ring only
-            ctx.beginPath();
-            ctx.arc(64, 60, 50, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            // Draw label below
-            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, sans-serif';
+            // Draw label below (scaled for higher res canvas)
+            ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
 
             // Truncate text if too long
             let displayText = name;
-            while (ctx.measureText(displayText).width > 120 && displayText.length > 3) {{
+            while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {{
                 displayText = displayText.slice(0, -4) + '...';
             }}
-            ctx.fillText(displayText, 64, 120);
+            ctx.fillText(displayText, 128, 240);
 
             // If logo URL provided, load it and update the sprite
             const texture = new THREE.CanvasTexture(canvas);
@@ -2580,18 +2574,19 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             sprite.renderOrder = 1000;  // High render order ensures sprites render after edges
 
             // Draw colored circle as fallback (will be covered by logo if loaded)
+            // Scaled for 256x320 canvas (center at 128, 120)
             ctx.beginPath();
-            ctx.arc(64, 60, 48, 0, Math.PI * 2);
+            ctx.arc(128, 120, 96, 0, Math.PI * 2);
             ctx.fillStyle = color;
             ctx.fill();
 
             // Draw initials as fallback
             const initials = name.split(/[\\s\\-\\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
-            ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(initials, 64, 60);
+            ctx.fillText(initials, 128, 120);
 
             // Determine the logo URL to use (provided or default based on group)
             let finalLogoUrl = logoUrl;
@@ -2618,23 +2613,17 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 }}
 
                 img.onload = () => {{
-                    // Clear the canvas completely for transparent background
-                    ctx.clearRect(0, 0, 128, 110);
+                    // Clear the logo area for transparent background
+                    ctx.clearRect(0, 0, 256, 220);
 
-                    // Draw logo directly without background (fully transparent)
+                    // Draw logo directly without background or border (fully transparent)
+                    // Scaled for 256x320 canvas
                     ctx.save();
                     ctx.beginPath();
-                    ctx.arc(64, 60, 48, 0, Math.PI * 2);
+                    ctx.arc(128, 120, 96, 0, Math.PI * 2);
                     ctx.clip();
-                    ctx.drawImage(img, 16, 12, 96, 96);
+                    ctx.drawImage(img, 32, 24, 192, 192);
                     ctx.restore();
-
-                    // Draw subtle border ring
-                    ctx.beginPath();
-                    ctx.arc(64, 60, 50, 0, Math.PI * 2);
-                    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
 
                     texture.needsUpdate = true;
                     console.log('Logo loaded for:', name);
