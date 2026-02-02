@@ -2517,7 +2517,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const size = Math.max(node.val / 5, 3) * 2;
 
                 // Create a combined sprite with logo (if available) and label
-                const sprite = createLogoLabelSprite(node.name, node.color, node.logo, size);
+                const sprite = createLogoLabelSprite(node.name, node.color, node.logo, size, node.group);
                 return sprite;
             }});
 
@@ -2526,17 +2526,28 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         }}
 
         // Create a single sprite with logo and label combined
-        function createLogoLabelSprite(name, color, logoUrl, nodeSize) {{
+        // Default icons for nodes without logos (by group/category)
+        const defaultIcons = {{
+            'output': 'https://cdn-icons-png.flaticon.com/128/2920/2920277.png',  // report/chart icon
+            'account': 'https://cdn-icons-png.flaticon.com/128/1077/1077063.png',  // users icon
+            'client_data': 'https://cdn-icons-png.flaticon.com/128/2620/2620513.png',  // database icon
+            'media_planning': 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png',  // planning/calendar icon
+            'flight': 'https://cdn-icons-png.flaticon.com/128/4213/4213732.png',  // rocket/launch icon
+            'default': 'https://cdn-icons-png.flaticon.com/128/1160/1160358.png'  // generic node icon
+        }};
+
+        function createLogoLabelSprite(name, color, logoUrl, nodeSize, group) {{
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 128;
             canvas.height = 160;  // Taller to fit logo + label
 
-            // Draw colored circle as node background
+            // Start with transparent background (no colored circle initially)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw subtle border ring only
             ctx.beginPath();
             ctx.arc(64, 60, 50, 0, Math.PI * 2);
-            ctx.fillStyle = color;
-            ctx.fill();
             ctx.strokeStyle = 'rgba(255,255,255,0.3)';
             ctx.lineWidth = 3;
             ctx.stroke();
@@ -2563,51 +2574,63 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const sprite = new THREE.Sprite(spriteMat);
             sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
 
-            // Always draw initials first as fallback
-            const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            // Draw colored circle as fallback (will be covered by logo if loaded)
+            ctx.beginPath();
+            ctx.arc(64, 60, 48, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Draw initials as fallback
+            const initials = name.split(/[\\s\\-\\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
             ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(initials, 64, 60);
 
-            // If logo URL provided, try to load and overlay it
-            if (logoUrl) {{
+            // Determine the logo URL to use (provided or default based on group)
+            let finalLogoUrl = logoUrl;
+            if (!logoUrl && group) {{
+                finalLogoUrl = defaultIcons[group] || defaultIcons['default'];
+            }}
+
+            // If we have a logo URL, try to load and overlay it
+            if (finalLogoUrl) {{
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
 
                 // Use weserv.nl image proxy for CORS support
                 // weserv.nl is a dedicated image proxy with proper CORS headers
-                let proxiedUrl = logoUrl;
+                let proxiedUrl = finalLogoUrl;
                 try {{
-                    const urlObj = new URL(logoUrl);
+                    const urlObj = new URL(finalLogoUrl);
                     // Remove protocol and use weserv.nl proxy
                     const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
                     proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
                 }} catch (e) {{
-                    console.warn('Invalid logo URL:', logoUrl);
+                    console.warn('Invalid logo URL:', finalLogoUrl);
                 }}
 
                 img.onload = () => {{
-                    // Redraw background circle to cover initials
-                    ctx.beginPath();
-                    ctx.arc(64, 60, 50, 0, Math.PI * 2);
-                    ctx.fillStyle = color;
-                    ctx.fill();
+                    // Clear the canvas and make background transparent
+                    ctx.clearRect(0, 0, 128, 110);
 
-                    // Draw logo in center of circle
+                    // Draw logo filling the circle area (no background color)
                     ctx.save();
                     ctx.beginPath();
-                    ctx.arc(64, 60, 40, 0, Math.PI * 2);
+                    ctx.arc(64, 60, 48, 0, Math.PI * 2);
                     ctx.clip();
-                    ctx.drawImage(img, 24, 20, 80, 80);
+                    // Draw white background for transparency in logos
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.drawImage(img, 16, 12, 96, 96);
                     ctx.restore();
 
-                    // Redraw border
+                    // Draw subtle border ring
                     ctx.beginPath();
                     ctx.arc(64, 60, 50, 0, Math.PI * 2);
-                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                    ctx.lineWidth = 2;
                     ctx.stroke();
 
                     texture.needsUpdate = true;
