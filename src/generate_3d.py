@@ -2604,16 +2604,17 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
 
-                // Use weserv.nl image proxy for CORS support
-                // weserv.nl is a dedicated image proxy with proper CORS headers
+                // Use weserv.nl image proxy for CORS support (but not for data URIs)
                 let proxiedUrl = finalLogoUrl;
-                try {{
-                    const urlObj = new URL(finalLogoUrl);
-                    // Remove protocol and use weserv.nl proxy
-                    const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
-                    proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
-                }} catch (e) {{
-                    console.warn('Invalid logo URL:', finalLogoUrl);
+                if (!finalLogoUrl.startsWith('data:')) {{
+                    try {{
+                        const urlObj = new URL(finalLogoUrl);
+                        // Remove protocol and use weserv.nl proxy
+                        const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                        proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
+                    }} catch (e) {{
+                        console.warn('Invalid logo URL:', finalLogoUrl);
+                    }}
                 }}
 
                 img.onload = () => {{
