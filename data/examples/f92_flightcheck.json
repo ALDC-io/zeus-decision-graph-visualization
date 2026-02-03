@@ -30,7 +30,7 @@
     "activates": {"color": "#e53e3e", "width": 2, "label": "Activates"}
   },
   "nodes": [
-    {"id": "eclipse", "label": "Eclipse", "tier": 0, "group": "hub", "title": "ALDC Eclipse Platform\nCentral data orchestration\nETL, storage, and analytics", "size": 60, "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon.png?v=3", "created_at": "2022-06-01T00:00:00Z"},
+    {"id": "eclipse", "label": "Eclipse", "tier": 0, "group": "hub", "title": "ALDC Eclipse Platform\nCentral data orchestration\nETL, storage, and analytics", "size": 60, "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon.png?v=4", "created_at": "2022-06-01T00:00:00Z"},
 
     {"id": "mqbr", "label": "Monthly/Quarterly Business Reviews", "tier": 1, "group": "output", "title": "Client-facing performance dashboards\nMonthly and quarterly reporting\nROI and campaign insights", "size": 35, "created_at": "2023-01-01T00:00:00Z"},
     {"id": "internal_reporting", "label": "Internal Reporting", "tier": 1, "group": "output", "title": "Internal analytics dashboards\nOperational metrics\nTeam performance tracking", "size": 35, "created_at": "2023-01-01T00:00:00Z"},
