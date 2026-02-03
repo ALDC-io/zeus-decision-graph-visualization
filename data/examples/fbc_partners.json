@@ -7,7 +7,7 @@
     "updated": "2026-01-28"
   },
   "nodes": [
-    {"id": "fbc", "label": "Food Banks Canada", "tier": 0, "group": "hub", "title": "Central hub coordinating 5,500+ food banks across Canada", "size": 50, "created_at": "1985-01-01T00:00:00Z"},
+    {"id": "fbc", "label": "Food Banks Canada", "tier": 0, "group": "hub", "title": "Central hub coordinating 5,500+ food banks across Canada", "size": 50, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodbankscanada.ca&size=128", "created_at": "1985-01-01T00:00:00Z"},
     {"id": "rcc", "label": "Retail Council of Canada", "tier": 1, "group": "tier1", "title": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "size": 30, "created_at": "1963-01-01T00:00:00Z"},
     {"id": "fhcp", "label": "Food, Health & Consumer Products of Canada", "tier": 1, "group": "tier1", "title": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "size": 30, "created_at": "1985-01-01T00:00:00Z"},
     {"id": "fbcan", "label": "Food & Beverage Canada", "tier": 1, "group": "tier1", "title": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "size": 30, "created_at": "2015-01-01T00:00:00Z"},
