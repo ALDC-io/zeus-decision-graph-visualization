@@ -292,7 +292,15 @@ async def viz_fbc():
     static_dir = get_static_dir()
     html_file = static_dir / "fbc_ecosystem.html"
     if html_file.exists():
-        return FileResponse(html_file, media_type="text/html")
+        return FileResponse(
+            html_file,
+            media_type="text/html",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
     raise HTTPException(status_code=404, detail="FBC visualization not found")
 
 
