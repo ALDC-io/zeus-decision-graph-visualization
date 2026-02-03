@@ -29,6 +29,25 @@
 
     {"id": "georgia_main", "label": "Georgia Main Food Group", "tier": 4, "group": "member_retail", "title": "BC-based independent grocery retailer operating IGA, AG Foods, and other banners. Key FoodMesh partner for food rescue.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://georgiamainfoodgroup.ca&size=128", "created_at": "1980-01-01T00:00:00Z"},
 
+    {"id": "nzwc", "label": "National Zero Waste Council", "tier": 2, "group": "tier2", "title": "Coalition of governments, businesses, and NGOs working to advance waste prevention in Canada. Original launcher of Love Food Hate Waste Canada in 2018.", "size": 20, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://nzwc.ca&size=128", "created_at": "2013-01-01T00:00:00Z"},
+    {"id": "metro_vancouver", "label": "Metro Vancouver", "tier": 3, "group": "tier3", "title": "Regional district federation of 21 municipalities, one electoral area, and one Treaty First Nation. Founding member of NZWC.", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://metrovancouver.org&size=128", "created_at": "1967-01-01T00:00:00Z"},
+    {"id": "fcm", "label": "Federation of Canadian Municipalities", "tier": 3, "group": "tier3", "title": "National voice of local governments, representing over 2,000 municipalities. Founding member of National Zero Waste Council.", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://fcm.ca&size=128", "created_at": "1901-01-01T00:00:00Z"},
+
+    {"id": "mvrfrn", "label": "Metro Vancouver Regional Food Recovery Network", "tier": 3, "group": "foodmesh_network", "title": "FoodMesh-managed food recovery network connecting businesses with surplus food to charities in Metro Vancouver region.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodmesh.ca&size=128", "created_at": "2018-01-01T00:00:00Z"},
+    {"id": "fvfrn", "label": "Fraser Valley Food Recovery Network", "tier": 3, "group": "foodmesh_network", "title": "FoodMesh-managed food recovery network serving the Fraser Valley region of BC.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodmesh.ca&size=128", "created_at": "2019-01-01T00:00:00Z"},
+    {"id": "nofrn", "label": "North Okanagan Regional Food Recovery Network", "tier": 3, "group": "foodmesh_network", "title": "FoodMesh-managed food recovery network serving the North Okanagan region of BC.", "size": 12, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodmesh.ca&size=128", "created_at": "2020-01-01T00:00:00Z"},
+
+    {"id": "saveonfoods", "label": "Save-On-Foods", "tier": 4, "group": "foodmesh_retail", "title": "Western Canadian grocery chain with 180+ locations. Part of Pattison Food Group. Key FoodMesh retail partner for food rescue.", "size": 10, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://saveonfoods.com&size=128", "created_at": "1915-01-01T00:00:00Z"},
+    {"id": "urbanfare", "label": "Urban Fare", "tier": 4, "group": "foodmesh_retail", "title": "Premium urban grocery stores in Vancouver. Part of Pattison Food Group. FoodMesh partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://urbanfare.com&size=128", "created_at": "2001-01-01T00:00:00Z"},
+    {"id": "freshst", "label": "Fresh St. Market", "tier": 4, "group": "foodmesh_retail", "title": "Premium grocery stores in BC. Part of Pattison Food Group. Featured FoodMesh case study - 3 million meals donated.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://freshstmarket.com&size=128", "created_at": "2013-01-01T00:00:00Z"},
+    {"id": "qualityfoods", "label": "Quality Foods", "tier": 4, "group": "foodmesh_retail", "title": "Vancouver Island grocery chain with 14 locations. Part of Pattison Food Group. FoodMesh partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://qualityfoods.com&size=128", "created_at": "1982-01-01T00:00:00Z"},
+    {"id": "iga_bc", "label": "IGA (BC)", "tier": 4, "group": "foodmesh_retail", "title": "Independent grocery stores in BC operated by Georgia Main Food Group. FoodMesh food rescue partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://iga.net&size=128", "created_at": "1926-01-01T00:00:00Z"},
+    {"id": "agfoods", "label": "AG Foods", "tier": 4, "group": "foodmesh_retail", "title": "Community grocery stores across rural BC. Part of Georgia Main Food Group. FoodMesh partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://agfoods.com&size=128", "created_at": "1980-01-01T00:00:00Z"},
+    {"id": "nesters", "label": "Nesters Market", "tier": 4, "group": "foodmesh_retail", "title": "Community-focused grocery stores in BC. FoodMesh food rescue partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://nestersmarket.com&size=128", "created_at": "1988-01-01T00:00:00Z"},
+    {"id": "meinhardts", "label": "Meinhardt Fine Foods", "tier": 4, "group": "foodmesh_retail", "title": "Specialty gourmet grocery store in Vancouver. FoodMesh food rescue partner.", "size": 8, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://meinhardt.com&size=128", "created_at": "1996-01-01T00:00:00Z"},
+
+    {"id": "bcorp", "label": "B Lab / B Corp", "tier": 3, "group": "tier3", "title": "Global nonprofit certifying companies meeting high standards of social and environmental performance. FoodMesh is B Corp certified.", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://bcorporation.net&size=128", "created_at": "2006-01-01T00:00:00Z"},
+
     {"id": "cta", "label": "Canadian Trucking Alliance", "tier": 3, "group": "tier3", "title": "Transportation networks, regulatory compliance, last-mile delivery", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://cantruck.ca&size=128", "created_at": "1937-01-01T00:00:00Z"},
     {"id": "ccca", "label": "Canadian Cold Chain Association", "tier": 3, "group": "tier3", "title": "Refrigerated warehousing, temperature control, perishable handling", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://coldchaincanada.com&size=128", "created_at": "2012-01-01T00:00:00Z"},
     {"id": "aafc", "label": "Agriculture & Agri-Food Canada", "tier": 3, "group": "tier3", "title": "Research institutions, pilot projects, warehouse automation", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://agr.gc.ca&size=128", "created_at": "1868-01-01T00:00:00Z"},
@@ -174,7 +193,48 @@
 
     {"source": "sysco_ca", "target": "rbi", "type": "supply_chain"},
     {"source": "sysco_ca", "target": "recipe", "type": "supply_chain"},
-    {"source": "gfs", "target": "mty", "type": "supply_chain"}
+    {"source": "gfs", "target": "mty", "type": "supply_chain"},
+
+    {"source": "fbc", "target": "nzwc", "type": "emerging_partner"},
+    {"source": "nzwc", "target": "lfhw", "type": "founded"},
+    {"source": "nzwc", "target": "metro_vancouver", "type": "founding_member"},
+    {"source": "nzwc", "target": "fcm", "type": "founding_member"},
+    {"source": "nzwc", "target": "sustainability", "type": "collaboration"},
+    {"source": "lfhw", "target": "nzwc", "type": "collaboration"},
+    {"source": "foodmesh", "target": "lfhw", "type": "manages"},
+    {"source": "foodmesh", "target": "bcorp", "type": "certified_by"},
+
+    {"source": "foodmesh", "target": "mvrfrn", "type": "operates"},
+    {"source": "foodmesh", "target": "fvfrn", "type": "operates"},
+    {"source": "foodmesh", "target": "nofrn", "type": "operates"},
+    {"source": "mvrfrn", "target": "metro_vancouver", "type": "serves_region"},
+    {"source": "fvfrn", "target": "municipal_eda", "type": "serves_region"},
+    {"source": "nofrn", "target": "municipal_eda", "type": "serves_region"},
+
+    {"source": "foodmesh", "target": "saveonfoods", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "urbanfare", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "freshst", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "qualityfoods", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "iga_bc", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "agfoods", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "nesters", "type": "food_rescue"},
+    {"source": "foodmesh", "target": "meinhardts", "type": "food_rescue"},
+
+    {"source": "pattison", "target": "saveonfoods", "type": "owns"},
+    {"source": "pattison", "target": "urbanfare", "type": "owns"},
+    {"source": "pattison", "target": "freshst", "type": "owns"},
+    {"source": "pattison", "target": "qualityfoods", "type": "owns"},
+    {"source": "georgia_main", "target": "iga_bc", "type": "owns"},
+    {"source": "georgia_main", "target": "agfoods", "type": "owns"},
+
+    {"source": "mvrfrn", "target": "saveonfoods", "type": "receives_from"},
+    {"source": "mvrfrn", "target": "urbanfare", "type": "receives_from"},
+    {"source": "mvrfrn", "target": "freshst", "type": "receives_from"},
+    {"source": "mvrfrn", "target": "iga_bc", "type": "receives_from"},
+    {"source": "mvrfrn", "target": "nesters", "type": "receives_from"},
+    {"source": "mvrfrn", "target": "meinhardts", "type": "receives_from"},
+    {"source": "fvfrn", "target": "saveonfoods", "type": "receives_from"},
+    {"source": "nofrn", "target": "qualityfoods", "type": "receives_from"}
   ],
   "groups": {
     "hub": {"color": "#1a365d", "label": "Central Hub"},
@@ -185,6 +245,8 @@
     "member_mfg": {"color": "#dd6b20", "label": "Member: Food Manufacturers"},
     "member_produce": {"color": "#38a169", "label": "Member: Produce Companies"},
     "member_restaurant": {"color": "#d69e2e", "label": "Member: Restaurant Chains"},
-    "member_dist": {"color": "#319795", "label": "Member: Distributors"}
+    "member_dist": {"color": "#319795", "label": "Member: Distributors"},
+    "foodmesh_network": {"color": "#48bb78", "label": "FoodMesh: Regional Networks"},
+    "foodmesh_retail": {"color": "#68d391", "label": "FoodMesh: Retail Partners"}
   }
 }
