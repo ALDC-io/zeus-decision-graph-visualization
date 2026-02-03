@@ -23,6 +23,7 @@
     {"id": "municipal_eda", "label": "Municipal & Regional Economic Development", "tier": 2, "group": "tier2", "title": "Infrastructure development, workforce training, supply chain funding", "size": 20, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://edac.ca&size=128", "created_at": "2000-01-01T00:00:00Z"},
     {"id": "indigenous_edc", "label": "Indigenous Economic Development Corps", "tier": 2, "group": "tier2", "title": "Indigenous perspectives in procurement and food sovereignty", "size": 20, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://nacca.ca&size=128", "created_at": "2010-01-01T00:00:00Z"},
     {"id": "tech_platforms", "label": "Supply Chain Technology Platforms", "tier": 2, "group": "tier2", "title": "Inventory management, procurement collaboration, supply-demand matching", "size": 20, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://supplychaincanada.com&size=128", "created_at": "2016-01-01T00:00:00Z"},
+    {"id": "foodmesh", "label": "FoodMesh", "tier": 2, "group": "tier2", "title": "Food rescue technology platform connecting businesses with surplus food to charities and food banks. Reduces food waste while addressing food insecurity.", "size": 22, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodmesh.ca&size=128", "created_at": "2016-01-01T00:00:00Z"},
     {"id": "philanthropy", "label": "Philanthropic Foundations & Impact Investors", "tier": 2, "group": "tier2", "title": "Catalytic funding for procurement infrastructure and food security", "size": 20, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://communityfoundations.ca&size=128", "created_at": "2005-01-01T00:00:00Z"},
 
     {"id": "cta", "label": "Canadian Trucking Alliance", "tier": 3, "group": "tier3", "title": "Transportation networks, regulatory compliance, last-mile delivery", "size": 15, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://cantruck.ca&size=128", "created_at": "1937-01-01T00:00:00Z"},
@@ -84,6 +85,7 @@
     {"source": "fbc", "target": "municipal_eda", "type": "emerging_partner"},
     {"source": "fbc", "target": "indigenous_edc", "type": "emerging_partner"},
     {"source": "fbc", "target": "tech_platforms", "type": "emerging_partner"},
+    {"source": "fbc", "target": "foodmesh", "type": "emerging_partner"},
     {"source": "fbc", "target": "philanthropy", "type": "emerging_partner"},
 
     {"source": "fbc", "target": "cta", "type": "sme_expert"},
@@ -109,6 +111,13 @@
     {"source": "tech_platforms", "target": "coldchain_tech", "type": "collaboration"},
     {"source": "municipal_eda", "target": "food_policy", "type": "collaboration"},
     {"source": "aafc", "target": "cfa", "type": "collaboration"},
+    {"source": "foodmesh", "target": "tech_platforms", "type": "collaboration"},
+    {"source": "foodmesh", "target": "sustainability", "type": "collaboration"},
+    {"source": "foodmesh", "target": "loblaw", "type": "collaboration"},
+    {"source": "foodmesh", "target": "sobeys", "type": "collaboration"},
+    {"source": "foodmesh", "target": "metro", "type": "collaboration"},
+    {"source": "foodmesh", "target": "sysco_ca", "type": "collaboration"},
+    {"source": "foodmesh", "target": "restcan", "type": "collaboration"},
 
     {"source": "rcc", "target": "loblaw", "type": "member"},
     {"source": "rcc", "target": "sobeys", "type": "member"},
