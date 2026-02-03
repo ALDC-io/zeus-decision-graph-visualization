@@ -187,6 +187,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>{title}</title>
     <link rel="icon" href="data:,">
     <!-- Load THREE.js first, then 3d-force-graph will use the global THREE -->
