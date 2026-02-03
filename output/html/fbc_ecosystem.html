@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <title>Food Banks Canada - Partner Ecosystem</title>
     <link rel="icon" href="data:,">
+    <!-- Load THREE.js first, then 3d-force-graph will use the global THREE -->
     <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <script src="//unpkg.com/3d-force-graph"></script>
+    <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -1074,6 +1075,10 @@
                     <span class="toggle-label">Rings</span>
                     <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Logos</span>
+                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Overlays -->
                 <div class="toolbar-section">
@@ -1178,7 +1183,7 @@
 
     <script>
         // Data
-        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1963-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "2015-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1925-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1944-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1962-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1970-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2015-06-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "1980-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2018-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2000-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2010-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2016-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2005-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1937-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2012-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1868-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1935-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1995-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2015-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1969-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2019-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "createdAt": "1907-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "createdAt": "1947-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "createdAt": "1994-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "createdAt": "1928-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "createdAt": "1915-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "createdAt": "1866-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "createdAt": "1965-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "createdAt": "2015-07-02T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "createdAt": "2012-10-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "createdAt": "1929-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "createdAt": "1866-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "createdAt": "1886-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "createdAt": "1851-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "createdAt": "1904-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "createdAt": "1954-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "createdAt": "1970-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "createdAt": "1999-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "createdAt": "2000-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "createdAt": "2014-12-12T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "createdAt": "1883-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "createdAt": "1979-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "createdAt": "1967-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "createdAt": "1987-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "createdAt": "1956-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "createdAt": "1969-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "createdAt": "1897-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}];
+        const nodesData = [{"id": "fbc", "name": "Food Banks Canada", "description": "Central hub coordinating 5,500+ food banks across Canada", "val": 50, "color": "#1a365d", "group": "hub", "groupLabel": "Central Hub", "tier": 0, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://foodbankscanada.ca&size=128", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rcc", "name": "Retail Council of Canada", "description": "Canada's foremost retail sector organization - grocery, convenience, pharmacy, general merchandise retailers. Represents 54,000+ storefronts and 95% of the grocery market.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1963-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fhcp", "name": "Food, Health & Consumer Products of Canada", "description": "National voice for food, health, and consumer product manufacturers. Represents 6,500+ manufacturing sites across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fbcan", "name": "Food & Beverage Canada", "description": "Represents 1,850+ food and beverage manufacturers through six regional associations.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "2015-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cpma", "name": "Canadian Produce Marketing Association", "description": "1,200+ members responsible for 90% of fresh fruit and vegetable sales in Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1925-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "restcan", "name": "Restaurants Canada", "description": "Almost 30,000 members across Canada's foodservice sector - restaurants, caterers, hospitality.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1944-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfig", "name": "Canadian Federation of Independent Grocers", "description": "Represents 4,000+ independent, franchised, and specialty grocery retailers across Canada.", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1962-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "wholesale", "name": "Wholesale Food Distributors & Brokers", "description": "Bridging manufacturers and retailers with procurement and logistics", "val": 30, "color": "#2f855a", "group": "tier1", "groupLabel": "Tier 1: Core Industry Associations", "tier": 1, "logo": "", "createdAt": "1970-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sustainability", "name": "Food Retailers' Sustainability Groups", "description": "Coalitions aligning supply chain with corporate sustainability goals", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2015-06-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "packaging", "name": "Packaging Industry Associations", "description": "Packaging technology and materials science for shelf life and transport", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "1980-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "coldchain_tech", "name": "Cold Chain Technology Innovators", "description": "Temperature monitoring, traceability, AI-powered logistics", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2018-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "health_canada", "name": "Food Safety & Regulatory Agencies", "description": "Health Canada and partners - food safety regulations and compliance", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "municipal_eda", "name": "Municipal & Regional Economic Development", "description": "Infrastructure development, workforce training, supply chain funding", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2000-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_edc", "name": "Indigenous Economic Development Corps", "description": "Indigenous perspectives in procurement and food sovereignty", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2010-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "tech_platforms", "name": "Supply Chain Technology Platforms", "description": "Inventory management, procurement collaboration, supply-demand matching", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2016-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "philanthropy", "name": "Philanthropic Foundations & Impact Investors", "description": "Catalytic funding for procurement infrastructure and food security", "val": 20, "color": "#3182ce", "group": "tier2", "groupLabel": "Tier 2: Broader & Emerging Partners", "tier": 2, "logo": "", "createdAt": "2005-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cta", "name": "Canadian Trucking Alliance", "description": "Transportation networks, regulatory compliance, last-mile delivery", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1937-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "ccca", "name": "Canadian Cold Chain Association", "description": "Refrigerated warehousing, temperature control, perishable handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2012-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aafc", "name": "Agriculture & Agri-Food Canada", "description": "Research institutions, pilot projects, warehouse automation", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1868-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cfa", "name": "Canadian Federation of Agriculture", "description": "Linking producers to food banks, fresh food supply chain pilots", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1935-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "supply_councils", "name": "Supply Chain Sector Councils", "description": "Warehousing, packaging, reverse logistics, materials handling", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1995-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "indigenous_food", "name": "Indigenous Food Networks", "description": "Culturally appropriate procurement and Indigenous food systems", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2015-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "foodservice_dist", "name": "National Foodservice Distributors", "description": "Sysco, Gordon Food Service - volume procurement and warehousing", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "1969-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "food_policy", "name": "Government Food Policy Councils", "description": "Regulatory guidance, procurement compliance, infrastructure funding", "val": 15, "color": "#805ad5", "group": "tier3", "groupLabel": "Tier 3: Specialized SMEs", "tier": 3, "logo": "", "createdAt": "2019-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "loblaw", "name": "Loblaw Companies", "description": "Canada's largest grocery retailer - Loblaws, Zehrs, Maxi, Real Canadian Superstore, No Frills. Major food bank donation partner.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://loblaw.ca&size=128", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sobeys", "name": "Sobeys Inc.", "description": "Major national grocer - Sobeys, IGA, Foodland, FreshCo, Safeway. Atlantic Canada headquarters.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sobeys.com&size=128", "createdAt": "1907-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "metro", "name": "Metro Inc.", "description": "Major Ontario/Quebec grocer - Metro, Food Basics, Super C. Over $18B annual revenue.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://metro.ca&size=128", "createdAt": "1947-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "costco", "name": "Costco Wholesale Canada", "description": "Membership warehouse club with bulk groceries and merchandise across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://costco.com&size=128", "createdAt": "1985-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "walmart_ca", "name": "Walmart Canada", "description": "Discount retailer with extensive grocery offerings, 400+ stores across Canada.", "val": 12, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://walmart.com&size=128", "createdAt": "1994-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "fedcoop", "name": "Federated Co-operatives", "description": "Western Canadian co-operative grocery and retail operator.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://fcl.crs&size=128", "createdAt": "1928-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pattison", "name": "Pattison Food Group", "description": "Western Canada's leading independent grocer - Save-On-Foods, Buy-Low Foods, Choices Markets. ~300 locations.", "val": 10, "color": "#e53e3e", "group": "member_retail", "groupLabel": "Member: Major Retailers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://saveonfoods.com&size=128", "createdAt": "1915-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "nestle", "name": "Nestl\u00e9 Canada", "description": "Global food and beverage manufacturer - coffee, confectionery, dairy, pet food. Major Canadian operations.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://nestle.com&size=128", "createdAt": "1866-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "pepsico", "name": "PepsiCo Canada", "description": "Major snacks (Frito-Lay) and beverages producer with Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pepsico.com&size=128", "createdAt": "1965-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "kraft", "name": "Kraft Heinz Canada", "description": "Major packaged foods - Kraft Dinner, Heinz ketchup, Philadelphia cream cheese.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kraftheinzcompany.com&size=128", "createdAt": "2015-07-02T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mondelez", "name": "Mondel\u0113z Canada", "description": "Global snacking company - Oreo, Cadbury, Christie crackers. Canadian manufacturing.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mondelezinternational.com&size=128", "createdAt": "2012-10-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "unilever", "name": "Unilever Canada", "description": "Consumer goods manufacturer - food, ice cream, personal care products.", "val": 12, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unilever.com&size=128", "createdAt": "1929-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "generalmills", "name": "General Mills Canada", "description": "Cereals, snacks, baking products - Cheerios, Nature Valley, Betty Crocker.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://generalmills.com&size=128", "createdAt": "1866-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "danone", "name": "Danone Canada", "description": "Dairy and plant-based products - yogurt, Oikos, Silk, Activia.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://danone.com&size=128", "createdAt": "1919-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "cocacola", "name": "Coca-Cola Canada", "description": "Beverages manufacturer and distributor across Canada.", "val": 10, "color": "#dd6b20", "group": "member_mfg", "groupLabel": "Member: Food Manufacturers", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://coca-cola.com&size=128", "createdAt": "1886-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "dole", "name": "Dole Food Company", "description": "Major global produce distributor - fresh fruits, vegetables, salads. Canadian operations.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dole.com&size=128", "createdAt": "1851-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "driscolls", "name": "Driscoll's", "description": "Leading berry grower and distributor - strawberries, blueberries, raspberries.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://driscolls.com&size=128", "createdAt": "1904-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mastronardi", "name": "Mastronardi Produce", "description": "Large Canadian greenhouse produce grower - SUNSET brand tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sunsetgrown.com&size=128", "createdAt": "1954-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mucci", "name": "Mucci Farms", "description": "Canadian greenhouse produce grower - tomatoes, peppers, cucumbers. Kingsville, Ontario.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://muccifarms.com&size=128", "createdAt": "1970-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "naturefresh", "name": "Nature Fresh Farms", "description": "Greenhouse produce grower in Leamington, Ontario - tomatoes, peppers, cucumbers.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://naturefresh.ca&size=128", "createdAt": "1999-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "redsun", "name": "Red Sun Farms", "description": "Ontario-based greenhouse vegetable grower with operations in Canada, US, Mexico.", "val": 10, "color": "#38a169", "group": "member_produce", "groupLabel": "Member: Produce Companies", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://redsunfarms.com&size=128", "createdAt": "2000-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "rbi", "name": "Restaurant Brands International", "description": "Operates Tim Hortons (5,700+ locations), Burger King, Popeyes, Firehouse Subs in Canada.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://rbi.com&size=128", "createdAt": "2014-12-12T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "recipe", "name": "Recipe Unlimited", "description": "Canada's largest full-service restaurant company - Swiss Chalet, Harvey's, The Keg, Montana's. 1,200+ locations.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://recipeunlimited.com&size=128", "createdAt": "1883-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mty", "name": "MTY Food Group", "description": "70+ restaurant brands, 7,000+ locations - Thai Express, Tiki-Ming, Cultures, Scores.", "val": 12, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mtygroup.com&size=128", "createdAt": "1979-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "mcdonalds_ca", "name": "McDonald's Canada", "description": "1,400+ restaurants across Canada. Major quick-service chain.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mcdonalds.com&size=128", "createdAt": "1967-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "starbucks_ca", "name": "Starbucks Canada", "description": "Coffee chain with extensive Canadian operations.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://starbucks.com&size=128", "createdAt": "1987-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "aw_ca", "name": "A&W Canada", "description": "Canadian-owned quick-service chain, 1,000+ locations. Known for beef raised without hormones.", "val": 10, "color": "#d69e2e", "group": "member_restaurant", "groupLabel": "Member: Restaurant Chains", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://aw.ca&size=128", "createdAt": "1956-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "sysco_ca", "name": "Sysco Canada", "description": "Leading foodservice distributor with branches coast-to-coast. Supplies restaurants, hospitals, schools.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sysco.com&size=128", "createdAt": "1969-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}, {"id": "gfs", "name": "Gordon Food Service", "description": "Major foodservice distributor - 125+ years experience. Family-operated, North America's largest.", "val": 12, "color": "#319795", "group": "member_dist", "groupLabel": "Member: Distributors", "tier": 4, "logo": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://gfs.com&size=128", "createdAt": "1897-01-01T00:00:00Z", "physicalGroup": "", "physicalGroupColor": null, "physicalGroupLabel": null}];
         const linksData = [{"source": "fbc", "target": "rcc", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fhcp", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "fbcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cpma", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "restcan", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "cfig", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "wholesale", "color": "#2f855a", "width": 3, "relationType": "Strategic Partner", "edgeType": "strategic_partner"}, {"source": "fbc", "target": "sustainability", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "packaging", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "coldchain_tech", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "health_canada", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "municipal_eda", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "indigenous_edc", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "tech_platforms", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "philanthropy", "color": "#3182ce", "width": 2, "relationType": "Emerging Partner", "edgeType": "emerging_partner"}, {"source": "fbc", "target": "cta", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "ccca", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "aafc", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "cfa", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "supply_councils", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "indigenous_food", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "foodservice_dist", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "fbc", "target": "food_policy", "color": "#888888", "width": 1, "relationType": "sme_expert", "edgeType": "sme_expert"}, {"source": "rcc", "target": "sustainability", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "cfig", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "packaging", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "fhcp", "target": "health_canada", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "ccca", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "cpma", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "restcan", "target": "foodservice_dist", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "cta", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "wholesale", "target": "supply_councils", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "indigenous_edc", "target": "indigenous_food", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "tech_platforms", "target": "coldchain_tech", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "municipal_eda", "target": "food_policy", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "aafc", "target": "cfa", "color": "#a0aec0", "width": 1, "relationType": "Collaboration", "edgeType": "collaboration"}, {"source": "rcc", "target": "loblaw", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "sobeys", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "metro", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "costco", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "walmart_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "rcc", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "pattison", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cfig", "target": "fedcoop", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "nestle", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "pepsico", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "kraft", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "mondelez", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "unilever", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "generalmills", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "danone", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fhcp", "target": "cocacola", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "dole", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "driscolls", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mastronardi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "mucci", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "naturefresh", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "cpma", "target": "redsun", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "rbi", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "recipe", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mty", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "mcdonalds_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "starbucks_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "restcan", "target": "aw_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "foodservice_dist", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "sysco_ca", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "wholesale", "target": "gfs", "color": "#718096", "width": 1, "relationType": "Member", "edgeType": "member"}, {"source": "fbc", "target": "loblaw", "color": "#888888", "width": 1, "relationType": "direct_partner", "edgeType": "direct_partner"}, {"source": "loblaw", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "loblaw", "target": "kraft", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "nestle", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sobeys", "target": "pepsico", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "metro", "target": "danone", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "costco", "target": "mastronardi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "rbi", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "sysco_ca", "target": "recipe", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}, {"source": "gfs", "target": "mty", "color": "#888888", "width": 1, "relationType": "supply_chain", "edgeType": "supply_chain"}];
         const groupsData = {"hub": {"color": "#1a365d", "label": "Central Hub"}, "tier1": {"color": "#2f855a", "label": "Tier 1: Core Industry Associations"}, "tier2": {"color": "#3182ce", "label": "Tier 2: Broader & Emerging Partners"}, "tier3": {"color": "#805ad5", "label": "Tier 3: Specialized SMEs"}, "member_retail": {"color": "#e53e3e", "label": "Member: Major Retailers"}, "member_mfg": {"color": "#dd6b20", "label": "Member: Food Manufacturers"}, "member_produce": {"color": "#38a169", "label": "Member: Produce Companies"}, "member_restaurant": {"color": "#d69e2e", "label": "Member: Restaurant Chains"}, "member_dist": {"color": "#319795", "label": "Member: Distributors"}};
         const physicalGroupsData = {};
@@ -1719,6 +1724,13 @@
                 const newHeight = wrapper.offsetHeight;
                 graph.width(newWidth).height(newHeight);
             });
+
+            // Apply labels after graph is ready
+            setTimeout(() => {
+                if (logoLabelsEnabled) {
+                    applyLogoLabelRendering();
+                }
+            }, 500);
         }
 
         // Show full content in modal
@@ -2102,10 +2114,23 @@
         let particlesEnabled = false;
         let labelsEnabled = true;
         let ringsEnabled = true;
+        let logoLabelsEnabled = true;  // Re-enabled with simpler implementation
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
         let timeSliderValue = 100;
+
+        // --- Logo/image cache for performance ---
+        const logoCache = new Map();
+        const logoLoadPromises = new Map();
+
+        // --- Stage groupings for cylinder layout ---
+        const stageGroups = {
+            'outputs': { label: 'Reporting & Dashboards', tiers: [0], color: '#2f855a' },
+            'management': { label: 'Account & Operations', tiers: [1, 2], color: '#3182ce' },
+            'processing': { label: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e' },
+            'execution': { label: 'DSPs & Platforms', tiers: [4, 5], color: '#9f7aea' }
+        };
 
         // --- Search functionality ---
         let searchTimeout = null;
@@ -2294,6 +2319,272 @@
             } else {
                 graph.nodeLabel(null);
             }
+        }
+
+        // --- Logo + Label node rendering ---
+        function toggleLogoLabels() {
+            logoLabelsEnabled = !logoLabelsEnabled;
+            const toggle = document.getElementById('logo-labels-toggle');
+            if (toggle) toggle.classList.toggle('active', logoLabelsEnabled);
+
+            if (logoLabelsEnabled) {
+                applyLogoLabelRendering();
+            } else {
+                // Reset to default spheres
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
+            }
+        }
+
+        function applyLogoLabelRendering() {
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js not available for logo+label rendering');
+                return;
+            }
+
+            // Create a sprite that contains both logo and label
+            // Using extend=false to REPLACE the default sphere with our custom sprite
+            graph.nodeThreeObject(node => {
+                const size = Math.max(node.val / 5, 3) * 2;
+
+                // Create a combined sprite with logo (if available) and label
+                const sprite = createLogoLabelSprite(node.name, node.color, node.logo, size, node.group);
+                return sprite;
+            });
+
+            // extend=false replaces the default sphere entirely
+            graph.nodeThreeObjectExtend(false);
+        }
+
+        // Create a single sprite with logo and label combined
+        // Default icons for nodes without logos (by group/category)
+        // Default icons using Google Material Icons (reliable, consistent style)
+        // These are base64 SVG data URIs for guaranteed loading
+        const defaultIcons = {
+            'hub': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#dd6b20"/><stop offset="100%" stop-color="#c05621"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#g)"/><path d="M25 30h50v8H35v12h35v8H35v12h40v8H25z" fill="white"/></svg>'),
+            'output': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>'),
+            'account': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>'),
+            'client_data': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4zm0 2c3.87 0 6 1.5 6 2s-2.13 2-6 2-6-1.5-6-2 2.13-2 6-2zm6 12c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17zm0-5c0 .5-2.13 2-6 2s-6-1.5-6-2V9.77c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V12z"/></svg>'),
+            'audience': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58C.48 14.9 0 15.62 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85-.85-.37-1.79-.58-2.78-.58-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/></svg>'),
+            'consumer_data': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>'),
+            'media_planning': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>'),
+            'activation': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/></svg>'),
+            'dsp': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>'),
+            'digital_media': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg>'),
+            'flight': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'),
+            'finance': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>'),
+            'default': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><circle cx="12" cy="12" r="8"/></svg>')
+        };
+
+        function createLogoLabelSprite(name, color, logoUrl, nodeSize, group) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            // Higher resolution for crisp logos
+            canvas.width = 256;
+            canvas.height = 320;
+
+            // Start with fully transparent background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw label below (scaled for higher res canvas)
+            ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            // Truncate text if too long
+            let displayText = name;
+            while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
+                displayText = displayText.slice(0, -4) + '...';
+            }
+            ctx.fillText(displayText, 128, 240);
+
+            // If logo URL provided, load it and update the sprite
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false,  // Disable depth testing so sprites always render on top
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
+            sprite.renderOrder = 1000;  // High render order ensures sprites render after edges
+
+            // Draw colored circle as fallback (will be covered by logo if loaded)
+            // Scaled for 256x320 canvas (center at 128, 120)
+            ctx.beginPath();
+            ctx.arc(128, 120, 96, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Draw initials as fallback
+            const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 128, 120);
+
+            // Determine the logo URL to use (provided or default based on group)
+            let finalLogoUrl = logoUrl;
+            if (!logoUrl && group) {
+                finalLogoUrl = defaultIcons[group] || defaultIcons['default'];
+            }
+
+            // If we have a logo URL, try to load and overlay it
+            if (finalLogoUrl) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                // Use weserv.nl image proxy for CORS support (but not for data URIs)
+                let proxiedUrl = finalLogoUrl;
+                if (!finalLogoUrl.startsWith('data:')) {
+                    try {
+                        const urlObj = new URL(finalLogoUrl);
+                        // Remove protocol and use weserv.nl proxy
+                        const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                        proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
+                    } catch (e) {
+                        console.warn('Invalid logo URL:', finalLogoUrl);
+                    }
+                }
+
+                img.onload = () => {
+                    // Clear the logo area for transparent background
+                    ctx.clearRect(0, 0, 256, 220);
+
+                    // Draw logo directly without background or border (fully transparent)
+                    // Scaled for 256x320 canvas
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(128, 120, 96, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(img, 32, 24, 192, 192);
+                    ctx.restore();
+
+                    texture.needsUpdate = true;
+                    console.log('Logo loaded for:', name);
+                };
+                img.onerror = (e) => {
+                    console.warn('Failed to load logo for', name, ':', proxiedUrl, e);
+                    // Initials already drawn, just update texture
+                    texture.needsUpdate = true;
+                };
+                img.src = proxiedUrl;
+            } else {
+                texture.needsUpdate = true;
+            }
+
+            return sprite;
+        }
+
+        function createLabelSprite(text, color, nodeSize) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 64;
+
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            const textWidth = ctx.measureText(text).width;
+            ctx.roundRect(10, 16, canvas.width - 20, 32, 6);
+            ctx.fill();
+
+            // Text
+            ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Truncate if too long
+            let displayText = text;
+            if (ctx.measureText(text).width > canvas.width - 30) {
+                while (ctx.measureText(displayText + '...').width > canvas.width - 30 && displayText.length > 0) {
+                    displayText = displayText.slice(0, -1);
+                }
+                displayText += '...';
+            }
+            ctx.fillText(displayText, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 4, nodeSize, 1);
+            return sprite;
+        }
+
+        function createInitialsSprite(initials, bgColor, size) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 128;
+
+            // Circle background
+            ctx.beginPath();
+            ctx.arc(64, 64, 60, 0, Math.PI * 2);
+            ctx.fillStyle = bgColor;
+            ctx.fill();
+
+            // Initials text
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 64, 68);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(size * 2, size * 2, 1);
+            return sprite;
+        }
+
+        function getInitials(name) {
+            // Extract initials from name
+            const words = name.split(/[\s\-\/]+/).filter(w => w.length > 0);
+            if (words.length === 1) {
+                return words[0].substring(0, 2).toUpperCase();
+            }
+            return words.slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+
+        async function loadLogoTexture(url) {
+            // Check cache first
+            if (logoCache.has(url)) {
+                return logoCache.get(url);
+            }
+
+            // Check if already loading
+            if (logoLoadPromises.has(url)) {
+                return logoLoadPromises.get(url);
+            }
+
+            // Start loading
+            const promise = new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const texture = new THREE.Texture(img);
+                    texture.needsUpdate = true;
+                    logoCache.set(url, texture);
+                    resolve(texture);
+                };
+                img.onerror = () => {
+                    logoCache.set(url, null);
+                    resolve(null);
+                };
+                img.src = url;
+            });
+
+            logoLoadPromises.set(url, promise);
+            return promise;
         }
 
         // --- Theme toggle (light/dark mode) ---
@@ -2526,34 +2817,31 @@
             const radius = 200;
             const height = 500;
 
-            // Collect unique tiers for platform creation
-            const uniqueTiers = new Set();
-            nodes.forEach(node => {
-                const yValue = getYValue(node);
-                uniqueTiers.add(yValue);
-            });
+            // Define stage-based rings (fewer, more meaningful than tier-by-tier)
+            // Group tiers into workflow stages
+            const stageDefinitions = [
+                { name: 'Reporting & Dashboards', tiers: [0], color: '#2f855a', yPos: -0.45 },
+                { name: 'Operations & Management', tiers: [1, 2], color: '#3182ce', yPos: -0.15 },
+                { name: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e', yPos: 0.15 },
+                { name: 'Execution & Platforms', tiers: [4, 5], color: '#9f7aea', yPos: 0.45 }
+            ];
 
-            // Create tier platforms (rings with labels) - only if rings are enabled
+            // Create stage-based platforms (rings with labels) - only if rings are enabled
             if (typeof THREE !== 'undefined' && ringsEnabled) {
                 const scene = graph.scene();
-                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
-                // Ring colors for different tiers
-                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
-
-                sortedTiers.forEach((tierValue, index) => {
-                    const yNorm = (tierValue - minY) / yRange;
-                    const yPos = (yNorm - 0.5) * height;
-                    const ringColor = ringColors[index % ringColors.length];
+                stageDefinitions.forEach((stage, index) => {
+                    const yPos = stage.yPos * height;
+                    const ringColor = stage.color;
 
                     // Create 3D torus ring for depth
                     const torusRadius = radius + 30;
-                    const tubeRadius = 3;
+                    const tubeRadius = 4;
                     const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
                     const torusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.5 : 0.7
+                        opacity: currentTheme === 'light' ? 0.6 : 0.8
                     });
                     const torus = new THREE.Mesh(torusGeom, torusMat);
                     torus.rotation.x = Math.PI / 2;
@@ -2562,11 +2850,11 @@
                     tierPlatforms.push(torus);
 
                     // Add outer glow ring
-                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 4, 16, 100);
                     const glowTorusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                        opacity: currentTheme === 'light' ? 0.2 : 0.3
                     });
                     const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
                     glowTorus.rotation.x = Math.PI / 2;
@@ -2574,8 +2862,7 @@
                     scene.add(glowTorus);
                     tierPlatforms.push(glowTorus);
 
-                    // Create tier label
-                    const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
+                    // Create stage label
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.width = 512;
@@ -2584,25 +2871,33 @@
                     ctx.fillStyle = 'rgba(0, 0, 0, 0)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
                     ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+                    ctx.fillText(stage.name, canvas.width / 2, canvas.height / 2);
 
                     const texture = new THREE.CanvasTexture(canvas);
                     const spriteMat = new THREE.SpriteMaterial({
                         map: texture,
                         transparent: true,
-                        opacity: 0.9
+                        opacity: 0.95
                     });
                     const sprite = new THREE.Sprite(spriteMat);
-                    sprite.scale.set(150, 20, 1);
-                    sprite.position.set(radius + 80, yPos, 0);
+                    sprite.scale.set(180, 24, 1);
+                    sprite.position.set(radius + 100, yPos, 0);
                     scene.add(sprite);
                     tierPlatforms.push(sprite);
                 });
             }
+
+            // Map tiers to stage Y positions for node placement
+            const tierToStageY = {};
+            stageDefinitions.forEach(stage => {
+                stage.tiers.forEach(tier => {
+                    tierToStageY[tier] = stage.yPos;
+                });
+            });
 
             nodes.forEach(node => {
                 const group = groups[node.group || 'default'];
@@ -2613,13 +2908,15 @@
                 const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
                 const angle = baseAngle + offsetAngle;
 
-                // Y position based on tier or date
-                const yValue = getYValue(node);
-                const yNorm = (yValue - minY) / yRange;
+                // Y position based on stage (mapped from tier) with small offset for separation
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
+                // Add small random offset within stage band for visual separation
+                const tierOffset = (tier % 2 === 0 ? 0.02 : -0.02) + (Math.random() - 0.5) * 0.04;
 
                 node.fx = Math.cos(angle) * radius;
                 node.fz = Math.sin(angle) * radius;
-                node.fy = (yNorm - 0.5) * height;
+                node.fy = (stageY + tierOffset) * height;
             });
 
             graph.d3ReheatSimulation();
