@@ -2986,14 +2986,35 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             const radius = 200;
             const height = 500;
 
-            // Define stage-based rings (fewer, more meaningful than tier-by-tier)
-            // Group tiers into workflow stages
-            const stageDefinitions = [
-                {{ name: 'Reporting & Dashboards', tiers: [0], color: '#2f855a', yPos: -0.45 }},
-                {{ name: 'Operations & Management', tiers: [1, 2], color: '#3182ce', yPos: -0.15 }},
-                {{ name: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e', yPos: 0.15 }},
-                {{ name: 'Execution & Platforms', tiers: [4, 5], color: '#9f7aea', yPos: 0.45 }}
-            ];
+            // Build stage definitions dynamically from actual tier data
+            // Group nodes by tier and get representative label/color for each
+            const tierInfo = {{}};
+            nodes.forEach(node => {{
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!tierInfo[tier]) {{
+                    tierInfo[tier] = {{
+                        tier: tier,
+                        label: node.groupLabel || node.group || `Tier ${{tier}}`,
+                        color: node.color || '#888888',
+                        count: 0
+                    }};
+                }}
+                tierInfo[tier].count++;
+            }});
+
+            // Sort tiers and create stage definitions with evenly spaced Y positions
+            const sortedTiers = Object.keys(tierInfo).map(Number).sort((a, b) => a - b);
+            const numTiers = sortedTiers.length;
+            const stageDefinitions = sortedTiers.map((tier, index) => {{
+                // Spread from -0.45 to 0.45 based on tier position
+                const yPos = numTiers > 1 ? -0.45 + (0.9 * index / (numTiers - 1)) : 0;
+                return {{
+                    name: tierInfo[tier].label,
+                    tiers: [tier],
+                    color: tierInfo[tier].color,
+                    yPos: yPos
+                }};
+            }});
 
             // Create stage-based platforms (rings with labels) - only if rings are enabled
             if (typeof THREE !== 'undefined' && ringsEnabled) {{
