@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-01-28",
-    "updated": "2026-01-28",
+    "created": "2026-02-04",
+    "updated": "2026-02-04",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -917,6 +917,15 @@
       "created_at": "2025-12-09T22:32:05.344355+00:00"
     },
     {
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null
+    },
+    {
       "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
       "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
@@ -935,6 +944,15 @@
       "created_at": null
     },
     {
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null
+    },
+    {
       "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "label": "Odin node successfully federated with Zeus Memo...",
       "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
@@ -944,22 +962,49 @@
       "created_at": null
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null
+      "id": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "label": "## CCE Success Log: Seattle Orcas Enterprise In...",
+      "title": "## CCE Success Log: Seattle Orcas Enterprise Intelligence Prototype **Session:** 2026-02-04 **Demo:** Wednesday Feb 4, 2026 at 10:00 AM CT with Jagan Nemani (SVP Operations) **What Was Built:** 1. **Fan Engagement Dashboard** (fan_engagement_dashboard.html) - KPI cards with inline SVG sparklines - Bar charts for match engagement - Sponsor ROI tracking with bullet charts - Channel performance metrics - Dark theme, fully responsive 2. **Enterprise Intelligence Demo** (enterprise_intelligence_demo.html) - Virtuous Cycle visualization (Federate \u2192 Decide \u2192 Track \u2192 Learn \u2192 Improve) - Decision log with success/failure tracking - Pattern recognition panel (AI-detected patterns) - AI-powered recommendations with confidence scores - Sponsor ROI attribution - Zeus Memory integration badge 3. **Game Replay Animation** (game_replay_animation.html) - Interactive match timeline with play/pause - Variable speed controls (1x, 2x, 4x, 10x) - Ball-by-ball simulation (120 balls) - Event markers (wickets, sixes, fours) - Live score widget with run rate - Key moments cards that jump to specific overs 4. **Athena Knowledge Graph** (deployed to athena.aldc.io) - 20 player nodes with real Seattle Orcas 2025 roster - 5-tier hierarchy - 33 relationship edges **Impact:** - Full prototype ready for sales demo - Demonstrates ALDC Enterprise Intelligence capabilities - Aligns with Jagans product/frameworks thinking **Project Location:** /home/aldc/projects/active/2026-02-04-seattle-orcas-prototype/",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-02-04T20:32:45.409395"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null
+      "id": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "label": "Created Fusion92 Flightcheck DAX AI visualizati...",
+      "title": "Created Fusion92 Flightcheck DAX AI visualization at https://athena.aldc.io/viz/flightcheck. This 3D force-directed graph maps the complete data flow architecture for F92 media planning, activation, and financial management. Key components: Eclipse (central hub), Flightcheck (flight management), DSPs (Beeswax, Viant, DV360, Trade Desk), digital media platforms (Meta, TikTok, Google, LinkedIn, Pinterest, Snapchat, Bing), audience creation (Alteryx, TRAK), consumer data (Experian, Acxiom), media planning (Scenario Planner, MMM/MTA), and finance (NetSuite). 29 nodes, 42 edges, 12 node groups with created_at dates for time slider functionality.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-01-31T02:26:00.457342"
+    },
+    {
+      "id": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "label": "Created Fusion92 Flightcheck DAX AI visualizati...",
+      "title": "Created Fusion92 Flightcheck DAX AI visualization at https://athena.aldc.io/viz/flightcheck. This 3D force-directed graph maps the complete data flow architecture for F92 media planning, activation, and financial management. Key components: Eclipse (central hub), Flightcheck (flight management), DSPs (Beeswax, Viant, DV360, Trade Desk), digital media platforms (Meta, TikTok, Google, LinkedIn, Pinterest, Snapchat, Bing), audience creation (Alteryx, TRAK), consumer data (Experian, Acxiom), media planning (Scenario Planner, MMM/MTA), and finance (NetSuite). 29 nodes, 42 edges, 12 node groups with created_at dates for time slider functionality. Source: DAX AI Map screenshot from Nextcloud.",
+      "tier": 2,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-01-31T02:25:54.796103"
+    },
+    {
+      "id": "d86947d7-06f1-4eb0-a85f-1f0b2a2c8bc6",
+      "label": "Created Athena Data Flow visualization for athe...",
+      "title": "Created Athena Data Flow visualization for athena.aldc.io - F92 DAX AI Ecosystem Files created: - /home/aldc/repos/athena/data/examples/athena_data_flow.json (35 nodes, 40 edges) - /home/aldc/repos/athena/output/html/athena_data_flow.html (140KB) Features: 3D force graph, cylinder layout, glow effects, rings, 12 node groups, 23 edge types, logo labels, hover highlighting, sidebar details, date filtering, search, 2D/3D toggle, light/dark theme. Data flow stages: 1. Account Management + Business Reviews (Client-facing) 2. Data Inputs (Client + Consumer data) 3. Audience Creation (Alteryx, TRAK) 4. Media Planning (AI Media Planning Tool) 5. Activation + DSP Execution (Beeswax, Viant, DV360, TTD) 6. Digital Media Platforms (Meta, TikTok, Google, LinkedIn, Bing, Pinterest, Snapchat) 7. Flight Management (Approvals, Budget Tracking) 8. Financial Management (NetSuite) 9. Reporting (Client Dashboard, F92 Dashboard) Eclipse serves as the Data Foundation hub. Commit: db2af88 pushed to ALDC-io/zeus-decision-graph-visualization Repo: https://github.com/ALDC-io/zeus-decision-graph-visualization",
+      "tier": 3,
+      "group": "cce",
+      "size": 15,
+      "created_at": "2026-01-31T02:13:18.403337"
+    },
+    {
+      "id": "a566e1e9-d985-4753-9a57-b1f1890d3164",
+      "label": "# ALDC Data Mapping Ecosystem Visualization - P...",
+      "title": "# ALDC Data Mapping Ecosystem Visualization - Project Complete ## Project Summary Created comprehensive interactive 3D visualization of the entire ALDC data ecosystem in Athena. ## Deliverables ### 1. Data Model **File**: `/home/aldc/repos/athena/data/examples/aldc_ecosystem.json` - **52 nodes** across 10 groups (hub, source_external, source_internal, ingestion, processing, storage, ai_model, api, consumption, client) - **66 edges** with 8 relationship types (data_flow, api_call, embedding, transform, stores, queries, serves, configures) - **6 tiers** from central hub (tier 0) to consumption layer (tier 5) ### 2. Generated Visualization **File**: `/home/aldc/repos/athena/output/html/aldc_ecosystem.html` - Interactive 3D force-directed graph using 3d-force-graph library - Click and drag to rotate, scroll to zoom - Node colors by group, edges show data flow directions ### 3. API Endpoint **File**: `/home/aldc/repos/athena/src/api_server.py` - Added `/viz/ecosystem` endpoint - Featured on Athena landing page ### 4. Local Access **URL**: http://192.168.22.212:8085/viz/ecosystem ## Research Findings (6 Parallel Agents) 1. **quickstart-api**: Python client for ALDC Analytics Labs platform with dataset querying 2. **Client Data Models**: 143 templates total - ALDC_ENG (35), FUSION_92 (47), GEP (61) 3. **Zeus Memory**: 3.6M+ memories, Voyage-3 embeddings (1024-dim), hybrid search (~125ms) 4. **AI APIs**: Anthropic Claude, OpenAI GPT-3.5, Voyage AI batch embeddings, LangChain/LangGraph, BGE embeddings 5. **Athena**: 7 visualizations, 2,480-line generator, progressive loading API 6. **Eclipse**: Multi-step query orchestration, 143 templates, LangChain agent integration ## Data Ecosystem Layers Mapped 1. **Data Sources**: Client systems, CSV files, REST APIs, web content, meetings/calls, documents 2. **Ingestion Layer**: Eclipse connectors, Zeus ingestion, quickstart-api 3. **Processing Layer**: Eclipse templates, Zeus embeddings, quality scoring, Snowflake ETL 4. **Storage Layer**: Snowflake warehouse, PostgreSQL/pgvector, Cosmos DB 5. **AI Layer**: Anthropic Claude, Voyage AI, BGE embeddings 6. **Consumption Layer**: Athena visualizations, Atlas workspace, dashboards, Zeus MCP API ## Project Files - Project Plan: `/home/aldc/repos/claude_code_enhanced/projects/2026-01-30-aldc-data-mapping/PROJECT_PLAN.md` - Data JSON: `/home/aldc/repos/athena/data/examples/aldc_ecosystem.json` - HTML Viz: `/home/aldc/repos/athena/output/html/aldc_ecosystem.html` - API Server: `/home/aldc/repos/athena/src/api_server.py` ## Next Steps (Optional) - Deploy updated Athena container to Azure for https://athena.aldc.io/viz/ecosystem - Add client-specific filtered views (F92, GEP/Navira) - Integrate with Atlas semantic zoom ## Commands to Resume ```bash # Start local server cd /home/aldc/repos/athena python3 src/api_server.py # Access visualization http://192.168.22.212:8085/viz/ecosystem ```",
+      "tier": 3,
+      "group": "cce",
+      "size": 15,
+      "created_at": "2026-01-30T20:58:34.026738"
     },
     {
       "id": "00a75e30-ac3c-4ab3-abc4-11784f5a023f",
@@ -2033,6 +2078,21 @@
     },
     {
       "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2073,6 +2133,21 @@
     },
     {
       "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2113,6 +2188,21 @@
     },
     {
       "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2153,6 +2243,21 @@
     },
     {
       "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2193,6 +2298,21 @@
     },
     {
       "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2233,6 +2353,21 @@
     },
     {
       "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2273,6 +2408,21 @@
     },
     {
       "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "30c9a929-c332-4ab6-96fc-7745758d692e",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2313,6 +2463,21 @@
     },
     {
       "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "a795f64e-d54c-46d3-8275-509235ad1873",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2353,6 +2518,21 @@
     },
     {
       "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "related"
+    },
+    {
+      "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
       "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
       "type": "related"
     },
@@ -2389,6 +2569,21 @@
     {
       "source": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
       "target": "6436b332-7f7c-4223-8f76-70313dd8079b",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
+      "type": "related"
+    },
+    {
+      "source": "d1662cf8-815b-4500-be96-5eee0ff1f892",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
       "type": "related"
     },
     {
@@ -2829,6 +3024,11 @@
     {
       "source": "d28c10b2-c5f7-49a2-aa21-b50c919e3a78",
       "target": "0efe4913-6543-47a2-9255-1212c86a944f",
+      "type": "temporal_context"
+    },
+    {
+      "source": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "target": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
       "type": "temporal_context"
     },
     {
