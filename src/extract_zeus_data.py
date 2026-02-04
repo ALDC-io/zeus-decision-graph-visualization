@@ -74,7 +74,7 @@ CONTRIBUTORS = {
         "color": "#d53f8c",
         "description": "Lori Beck - COO & Operations",
         "management": True,
-        "image": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
+        "image": "https://avatars.slack-edge.com/2026-02-04/10442097229670_74526c6689d7559860d8_192.jpg"
     },
     "marshall": {
         "label": "Marshall",

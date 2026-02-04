@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 13:54",
-    "updated": "2026-02-04 13:54",
+    "created": "2026-02-04 14:07",
+    "updated": "2026-02-04 14:07",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -151,7 +151,7 @@
       "color": "#d53f8c",
       "description": "Lori Beck - COO & Operations",
       "management": true,
-      "image": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
+      "image": "https://avatars.slack-edge.com/2026-02-04/10442097229670_74526c6689d7559860d8_192.jpg"
     },
     "marshall": {
       "label": "Marshall",
@@ -1095,9 +1095,9 @@
       "contributor": "system"
     },
     {
-      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
-      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1119,9 +1119,9 @@
       "area": "rnd"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1143,14 +1143,98 @@
       "area": "rnd"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
+      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
       "created_at": null,
       "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "9091289a-866f-43c0-8e7c-7fc25348ea76",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 22:0...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 22:02:29 From: lori beck Channel: #the-olds Marshall I am so impressed by the candidate you brought forward, you clearly put a lot of work in ensuring the candidate to add to the team met our company goals and values - very good work - I can't imagine how many resumes you sifted through and interviews to find the best fit - I think he will be great - good job!!! Thanks for having me on the call :slightly_smiling_face: cheers",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T22:02:29.641229",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "797f964c-a251-4dd4-b573-b615494ce2c7",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:57:24 From: John Moran Channel: #the-olds nice!!! good work team!!",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:57:24.448129",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "ddaeffb0-1477-40bc-a546-92b13933f348",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:56:58 From: Mike Stuart Channel: #the-olds Woohoo...",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:56:58.212619",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "d49588c7-2f5a-417c-b84b-8293cc21c1d2",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:56:33 From: Marshall Johnston Channel: #the-olds <!here> got a verbal yes from Paul",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:56:33.477709",
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "02e0d29e-ef65-4e57-b1a9-814e10542012",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:55:35 From: lori beck Channel: #the-olds lol",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:55:35.119419",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "e521f359-d827-4ea0-9c09-fab947b659bd",
+      "label": "Slack Message - #aldc-team Date: 2026-02-04 21:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-04 21:55:28 From: Marshall Johnston Channel: #aldc-team some good news! I just got off the phone with Paul and he's given us a verbal acceptance. He's excited to join the team and we'll try to get him on as quickly as possible!",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:55:28.642939",
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "c022d58b-3452-4450-89d5-f6f553be8c77",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:55:20 From: John Moran Channel: #the-olds <!here> don't do anything for Lori until she updates her slack picture... thx",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:55:20.454729",
+      "contributor": "jk",
       "project": "",
       "area": "rnd"
     },
@@ -4611,93 +4695,9 @@
       "area": "rnd"
     },
     {
-      "id": "5fd7649f-cb93-4ba4-a4f5-cea19be5b795",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 16:3...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 16:36:36 From: lori beck Channel: #the-olds <https://karllorey.com/posts/without-benchmarking-llms-youre-overpaying?utm_source=tldrai>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T16:36:36.450309",
-      "contributor": "lori",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "ef6d720d-7e75-4d04-bd7e-38f77d6b3bae",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 00:1...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 00:12:30 From: John Moran Channel: #the-olds Share these IDs: - Memory ID: 42f69abe-2e61-4512-874f-8f32ad754656 - Session: navira_demo_deployment_config Also share: - Repository: <https://github.com/ALDC-io/prospect_prototypes> - Test Results: <https://github.com/ALDC-io/prospect_prototypes/actions/runs/21192010655> - Workflow: .github/workflows/setup-deployment-config.yml",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T00:12:30.744259",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "2ce831eb-fc65-4fbc-971c-6eca1dbcd5de",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 00:0...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 00:09:45 From: John Moran Channel: #the-olds <@U0A6A9VN96V> zeus memory: 42f69abe-2e61-4512-874f-8f32ad754656",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T00:09:45.680219",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "90b165a6-eda1-466d-81b0-ed2ad12d917a",
-      "label": "Slack Message - #the-olds Date: 2026-01-20 17:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-20 17:43:15 From: lori beck Channel: #the-olds <https://www.hyperact.co.uk/blog/how-revenue-decisions-shape-technical-debt?utm_source=tldrdev>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-20T17:43:15.669179",
-      "contributor": "lori",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "3d7496be-c489-4c03-a478-f9692e694950",
-      "label": "Slack Message - #the-olds Date: 2026-01-20 17:0...",
-      "title": "Slack Message - #the-olds Date: 2026-01-20 17:00:30 From: John Moran Channel: #the-olds *welp, seems to be working:* ZEUS-MEMORY ANALYSIS - FULLY COMPLETE - COMPREHENSIVE FINDINGS The exploration agent and Code Analysis Skill identified critical security issues affecting the entire system: 8 CRITICAL + 12 HIGH + 6 MEDIUM = 26 Total Vulnerabilities",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-20T17:00:30.887319",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "label": "Slack Message - #aldc-team Date: 2026-01-20 15:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-20 15:38:32 From: Mike Stuart Channel: #aldc-team Thanks!",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-20T15:38:32.947909",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "52f88706-8eba-4976-be65-e6199c694824",
-      "label": "Slack Message - #aldc-team Date: 2026-01-20 14:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-20 14:20:58 From: Brayden Marshall Channel: #aldc-team Welcome Mike!",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-20T14:20:58.223119",
-      "contributor": "marshall",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 130",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 129",
       "tier": 0,
       "group": "management",
       "size": 100,
@@ -4714,15 +4714,15 @@
       "size": 94,
       "contributor_id": "lori",
       "is_management": true,
-      "logo": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
+      "logo": "https://avatars.slack-edge.com/2026-02-04/10442097229670_74526c6689d7559860d8_192.jpg"
     },
     {
       "id": "contributor_marshall",
       "label": "Marshall",
-      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 43",
+      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 44",
       "tier": 0,
       "group": "management",
-      "size": 93,
+      "size": 94,
       "contributor_id": "marshall",
       "is_management": true,
       "logo": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg"
@@ -4777,13 +4777,25 @@
       "failures": 0
     },
     {
-      "id": "project_eclipse_internal",
-      "label": "eclipse_internal",
-      "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "id": "project_athena",
+      "label": "athena",
+      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
       "tier": 1,
       "group": "project",
       "size": 32,
-      "project_name": "eclipse_internal",
+      "project_name": "athena",
+      "area": "rnd",
+      "successes": 1,
+      "failures": 0
+    },
+    {
+      "id": "project_consulting_dashboard",
+      "label": "consulting-dashboard",
+      "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "consulting-dashboard",
       "area": "rnd",
       "successes": 0,
       "failures": 0
@@ -4801,18 +4813,6 @@
       "failures": 0
     },
     {
-      "id": "project_consulting_dashboard",
-      "label": "consulting-dashboard",
-      "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
-      "tier": 1,
-      "group": "project",
-      "size": 32,
-      "project_name": "consulting-dashboard",
-      "area": "rnd",
-      "successes": 0,
-      "failures": 0
-    },
-    {
       "id": "project_zeus_decision_graph_visualization",
       "label": "zeus-decision-graph-visualizat",
       "title": "zeus-decision-graph-visualization\n\nSuccesses: 2\nFailures: 1\nDecisions: 1\nOther: 4",
@@ -4825,15 +4825,15 @@
       "failures": 1
     },
     {
-      "id": "project_athena",
-      "label": "athena",
-      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
+      "id": "project_eclipse_internal",
+      "label": "eclipse_internal",
+      "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
       "tier": 1,
       "group": "project",
       "size": 32,
-      "project_name": "athena",
+      "project_name": "eclipse_internal",
       "area": "rnd",
-      "successes": 1,
+      "successes": 0,
       "failures": 0
     }
   ],
@@ -4854,32 +4854,12 @@
       "type": "references"
     },
     {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "same_category"
     },
@@ -4889,13 +4869,33 @@
       "type": "same_category"
     },
     {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
@@ -6429,21 +6429,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "2ce831eb-fc65-4fbc-971c-6eca1dbcd5de",
-      "target": "ef6d720d-7e75-4d04-bd7e-38f77d6b3bae",
-      "type": "temporal_context"
-    },
-    {
-      "source": "ef6d720d-7e75-4d04-bd7e-38f77d6b3bae",
-      "target": "5fd7649f-cb93-4ba4-a4f5-cea19be5b795",
-      "type": "temporal_context"
-    },
-    {
-      "source": "5fd7649f-cb93-4ba4-a4f5-cea19be5b795",
-      "target": "4820c51e-fa37-4572-a443-e02ebf376062",
-      "type": "temporal_context"
-    },
-    {
       "source": "4820c51e-fa37-4572-a443-e02ebf376062",
       "target": "4d61f8c1-dbf6-416f-8663-536ce5a1dbd3",
       "type": "temporal_context"
@@ -6479,18 +6464,13 @@
       "type": "temporal_context"
     },
     {
-      "source": "52f88706-8eba-4976-be65-e6199c694824",
-      "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
+      "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
+      "target": "f2f786b4-67f0-46ff-becf-0cd979b93858",
       "type": "temporal_context"
     },
     {
-      "source": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "target": "3d7496be-c489-4c03-a478-f9692e694950",
-      "type": "temporal_context"
-    },
-    {
-      "source": "3d7496be-c489-4c03-a478-f9692e694950",
-      "target": "90b165a6-eda1-466d-81b0-ed2ad12d917a",
+      "source": "f2f786b4-67f0-46ff-becf-0cd979b93858",
+      "target": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
       "type": "temporal_context"
     },
     {
@@ -6516,12 +6496,6 @@
       "target": "4820c51e-fa37-4572-a443-e02ebf376062",
       "type": "similar",
       "weight": 0.896
-    },
-    {
-      "source": "8a4e2906-fba3-43cf-a435-5904b2b3997d",
-      "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "type": "similar",
-      "weight": 0.895
     },
     {
       "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
@@ -6566,12 +6540,6 @@
       "weight": 0.884
     },
     {
-      "source": "2ce831eb-fc65-4fbc-971c-6eca1dbcd5de",
-      "target": "f2f786b4-67f0-46ff-becf-0cd979b93858",
-      "type": "similar",
-      "weight": 0.883
-    },
-    {
       "source": "4820c51e-fa37-4572-a443-e02ebf376062",
       "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
       "type": "similar",
@@ -6600,12 +6568,6 @@
       "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
       "type": "similar",
       "weight": 0.87
-    },
-    {
-      "source": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "type": "similar",
-      "weight": 0.86
     },
     {
       "source": "4820c51e-fa37-4572-a443-e02ebf376062",
@@ -7598,7 +7560,7 @@
     },
     {
       "source": "contributor_system",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -7608,7 +7570,7 @@
     },
     {
       "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "created_by"
     },
     {
@@ -7618,7 +7580,42 @@
     },
     {
       "source": "contributor_system",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "9091289a-866f-43c0-8e7c-7fc25348ea76",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "797f964c-a251-4dd4-b573-b615494ce2c7",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "ddaeffb0-1477-40bc-a546-92b13933f348",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "d49588c7-2f5a-417c-b84b-8293cc21c1d2",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "02e0d29e-ef65-4e57-b1a9-814e10542012",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "e521f359-d827-4ea0-9c09-fab947b659bd",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "c022d58b-3452-4450-89d5-f6f553be8c77",
       "type": "created_by"
     },
     {
@@ -9062,41 +9059,6 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_lori",
-      "target": "5fd7649f-cb93-4ba4-a4f5-cea19be5b795",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "ef6d720d-7e75-4d04-bd7e-38f77d6b3bae",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "2ce831eb-fc65-4fbc-971c-6eca1dbcd5de",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_lori",
-      "target": "90b165a6-eda1-466d-81b0-ed2ad12d917a",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "3d7496be-c489-4c03-a478-f9692e694950",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_marshall",
-      "target": "52f88706-8eba-4976-be65-e6199c694824",
-      "type": "created_by"
-    },
-    {
       "source": "area_client",
       "target": "project_seattle_orcas_prototype",
       "type": "contains"
@@ -9113,22 +9075,12 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_eclipse_internal",
+      "target": "project_athena",
       "type": "contains"
     },
     {
-      "source": "project_eclipse_internal",
-      "target": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
-      "type": "belongs_to"
-    },
-    {
-      "source": "area_rnd",
-      "target": "project_aldc_data_mapping",
-      "type": "contains"
-    },
-    {
-      "source": "project_aldc_data_mapping",
-      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
+      "source": "project_athena",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
       "type": "belongs_to"
     },
     {
@@ -9139,6 +9091,16 @@
     {
       "source": "project_consulting_dashboard",
       "target": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_aldc_data_mapping",
+      "type": "contains"
+    },
+    {
+      "source": "project_aldc_data_mapping",
+      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
       "type": "belongs_to"
     },
     {
@@ -9188,12 +9150,12 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_athena",
+      "target": "project_eclipse_internal",
       "type": "contains"
     },
     {
-      "source": "project_athena",
-      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "source": "project_eclipse_internal",
+      "target": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
       "type": "belongs_to"
     }
   ]
