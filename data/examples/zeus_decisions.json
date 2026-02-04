@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 13:33",
-    "updated": "2026-02-04 13:33",
+    "created": "2026-02-04 13:48",
+    "updated": "2026-02-04 13:48",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -143,31 +143,36 @@
       "label": "JK",
       "color": "#3182ce",
       "description": "John Moran - CEO & Technical Lead",
-      "management": true
+      "management": true,
+      "image": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg"
     },
     "lori": {
       "label": "Lori",
       "color": "#d53f8c",
       "description": "Lori Beck - COO & Operations",
-      "management": true
+      "management": true,
+      "image": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
     },
     "marshall": {
       "label": "Marshall",
       "color": "#38a169",
       "description": "Brayden Marshall - CTO & Development",
-      "management": true
+      "management": true,
+      "image": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
     },
     "mike": {
       "label": "Mike",
       "color": "#dd6b20",
       "description": "Mike Stuart - VP Engineering",
-      "management": true
+      "management": true,
+      "image": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
     },
     "system": {
       "label": "System",
       "color": "#805ad5",
       "description": "Automated CCE Learnings",
-      "management": false
+      "management": false,
+      "image": null
     }
   },
   "nodes": [
@@ -1090,33 +1095,21 @@
       "contributor": "system"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null,
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "label": "Odin node successfully federated with Zeus Memo...",
-      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null,
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
       "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1138,6 +1131,18 @@
       "area": "rnd"
     },
     {
+      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "label": "Odin node successfully federated with Zeus Memo...",
+      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
       "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
       "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
@@ -1146,6 +1151,162 @@
       "size": 10,
       "created_at": null,
       "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "761e026f-1c05-4e38-ada7-e991f50c662d",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:3...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:31:33 From: John Moran Channel: #the-olds <!here> ok kids, here is the new board i've been working on - <https://zeus.aldc.io/internal/mgmt> - kanban below along with a gantt. I've added end dates for each task. Please have this updated for each Monday meeting. If you want to create a personalized board to walk the mgmt team through your area like Lori, that gets you extra points.",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:31:33.029819",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "e636050d-c67f-49b2-9c2f-2ee0cb4eb626",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:28:57 From: John Moran Channel: #the-olds go get the deals, you get a deal you win it all anyways :slightly_smiling_face:",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:28:57.997789",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "7bb0e647-5d95-4285-b8f8-64d411c67ffd",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:28:42 From: lori beck Channel: #the-olds im busy trying to get deals where is that on there",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:28:42.698259",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "0ae9f23c-499d-4910-86f1-6058ca2fb527",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:28:33 From: lori beck Channel: #the-olds whats the prize lol beer or tequilla",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:28:33.821149",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "3a33cb8d-bab5-4af4-bba7-8d137d8aeb3b",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:28:00 From: John Moran Channel: #the-olds i can add a task for that :wink:",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:28:00.481389",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "999162e1-708a-4962-958f-75655c988e6f",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:27:25 From: Mike Stuart Channel: #the-olds Hey <@U0A6A9VN96V> we need to rewire part of our brains :grinning:",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:27:25.547449",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "8a197ed3-db0a-49b6-8031-20343ca515f5",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:24:31 From: lori beck Channel: #the-olds copy",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:24:31.873219",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "da3a2049-f67a-4c40-9e85-a60a984e832f",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:24:20 From: John Moran Channel: #the-olds or at least, it is meant to show how many memories, decisions you're making, failures / successes etc... more failure pls",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:24:20.697039",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "69767505-1385-4ba9-8411-88b30ebe7b17",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:24:08 From: lori beck Channel: #the-olds fuck",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:24:08.751899",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "44074900-0933-43b3-a8d4-849c10d66c7a",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:24:06 From: lori beck Channel: #the-olds im losing so would like to know how i win",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:24:06.130849",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "19b20fa3-eb8c-40a5-841d-79e1592839fa",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:23:42 From: John Moran Channel: #the-olds how much you're contributing to the company LORI",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:23:42.074319",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "0df4c7e3-84ca-4a73-8ee5-ff4bf2f3270d",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:23:25 From: lori beck Channel: #the-olds what is this telling us?",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:23:25.290029",
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "f1f51451-e571-4382-aade-93baa5c2ae0b",
+      "label": "Slack Message - #aldc-team Date: 2026-02-04 21:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-04 21:21:23 From: Mike Stuart Channel: #aldc-team Get well Steven!",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:21:23.623619",
+      "contributor": "mike",
       "project": "",
       "area": "rnd"
     },
@@ -4534,180 +4695,26 @@
       "area": "rnd"
     },
     {
-      "id": "b401ae13-2ebe-4126-81d5-17543fb6acf3",
-      "label": "Slack Message - #aldc-team Date: 2026-01-19 22:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-19 22:42:29 From: John Moran Channel: #aldc-team <@U06KZNK1HKM> <@U07B3C0MDR8> Gents, please meet Mike Stuart, who is joining us as an experienced dev executive who has lived through everything from startups to big enterprise companies, and has just \"un-retired\" to hang out with us to help grow the company and give Marshall some breathing room :slightly_smiling_face: We'll get him on calls once we get schedules and whatnot organized.",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:42:29.477579",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "465f38a6-8242-40c3-b2f6-0ec88f2a3a4a",
-      "label": "Slack Message - #sales Date: 2026-01-19 22:38:1...",
-      "title": "Slack Message - #sales Date: 2026-01-19 22:38:14 From: Mike Stuart Channel: #sales <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:38:14.144949",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "cbf9103f-3792-49bd-a30f-965a4ce9d1d4",
-      "label": "Slack Message - #f92_core Date: 2026-01-19 22:3...",
-      "title": "Slack Message - #f92_core Date: 2026-01-19 22:35:46 From: Mike Stuart Channel: #f92_core <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:35:46.223009",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
-      "label": "Slack Message - #gep Date: 2026-01-19 22:35:46 ...",
-      "title": "Slack Message - #gep Date: 2026-01-19 22:35:46 From: Mike Stuart Channel: #gep <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:35:46.154579",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
-      "label": "Slack Message - #911-outages Date: 2026-01-19 2...",
-      "title": "Slack Message - #911-outages Date: 2026-01-19 22:35:45 From: Mike Stuart Channel: #911-outages <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:35:45.899259",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "fccfbe8d-f947-4a00-95ac-306e84449b03",
-      "label": "Slack Message - #aldc-team Date: 2026-01-19 22:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-19 22:35:45 From: Mike Stuart Channel: #aldc-team <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:35:45.824359",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "c477d8c2-6bd9-4031-a2da-44df4941b7e4",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 22:3...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 22:35:45 From: Mike Stuart Channel: #the-olds <@U0A9P5ENXBL> has joined the channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:35:45.735589",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "828f86f7-bb49-4f83-8e78-50ccf9eb1262",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 20:2...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 20:29:46 From: Marshall Johnston Channel: #the-olds Lori, I will have 3 tickets that will be scoped by end of day for Navira. Can you figure out how we want to send out that scoping doc with <@U01NZCSEWQ7>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T20:29:46.815309",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "94ad012a-54cd-4b25-99e3-4e8f26107f0b",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 18:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 18:58:30 From: lori beck Channel: #the-olds ok",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T18:58:30.560799",
-      "contributor": "lori",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 18:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 18:54:06 From: John Moran Channel: #the-olds can do that too",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T18:54:06.523529",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "1beed024-2010-4007-8525-ef0e680f0d79",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 18:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 18:53:47 From: Marshall Johnston Channel: #the-olds if you guys are around let's do a mgmt meeting now!",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T18:53:47.400359",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
-      "label": "Slack Message - #the-olds Date: 2026-01-19 18:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-19 18:52:53 From: John Moran Channel: #the-olds <!here> got my wires crossed a bit on when Marshall was here/not, maybe just check &amp; update your items on <https://zeus.aldc.io/the-olds> for now - let me know if you need to chat w me on anything",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T18:52:53.390059",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
-      "label": "Slack Message - #aldc-team Date: 2026-01-19 17:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-19 17:17:45 From: John Moran Channel: #aldc-team sounds good",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T17:17:45.560819",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 159",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 158",
       "tier": 0,
       "group": "management",
       "size": 100,
       "contributor_id": "jk",
-      "is_management": true
+      "is_management": true,
+      "logo": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg"
     },
     {
       "id": "contributor_lori",
       "label": "Lori",
-      "title": "Lori Beck - COO & Operations\n\nALDC Management Team\nLearnings: 38",
+      "title": "Lori Beck - COO & Operations\n\nALDC Management Team\nLearnings: 43",
       "tier": 0,
       "group": "management",
-      "size": 88,
+      "size": 93,
       "contributor_id": "lori",
-      "is_management": true
+      "is_management": true,
+      "logo": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
     },
     {
       "id": "contributor_marshall",
@@ -4717,17 +4724,19 @@
       "group": "management",
       "size": 65,
       "contributor_id": "marshall",
-      "is_management": true
+      "is_management": true,
+      "logo": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
     },
     {
       "id": "contributor_mike",
       "label": "Mike",
-      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 40",
+      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 36",
       "tier": 0,
       "group": "management",
-      "size": 90,
+      "size": 86,
       "contributor_id": "mike",
-      "is_management": true
+      "is_management": true,
+      "logo": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
     },
     {
       "id": "contributor_system",
@@ -4768,30 +4777,6 @@
       "failures": 0
     },
     {
-      "id": "project_athena",
-      "label": "athena",
-      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
-      "tier": 1,
-      "group": "project",
-      "size": 32,
-      "project_name": "athena",
-      "area": "rnd",
-      "successes": 1,
-      "failures": 0
-    },
-    {
-      "id": "project_aldc_data_mapping",
-      "label": "aldc-data-mapping",
-      "title": "aldc-data-mapping\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
-      "tier": 1,
-      "group": "project",
-      "size": 32,
-      "project_name": "aldc-data-mapping",
-      "area": "rnd",
-      "successes": 0,
-      "failures": 0
-    },
-    {
       "id": "project_consulting_dashboard",
       "label": "consulting-dashboard",
       "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
@@ -4801,6 +4786,30 @@
       "project_name": "consulting-dashboard",
       "area": "rnd",
       "successes": 0,
+      "failures": 0
+    },
+    {
+      "id": "project_eclipse_internal",
+      "label": "eclipse_internal",
+      "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "eclipse_internal",
+      "area": "rnd",
+      "successes": 0,
+      "failures": 0
+    },
+    {
+      "id": "project_athena",
+      "label": "athena",
+      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "athena",
+      "area": "rnd",
+      "successes": 1,
       "failures": 0
     },
     {
@@ -4816,13 +4825,13 @@
       "failures": 1
     },
     {
-      "id": "project_eclipse_internal",
-      "label": "eclipse_internal",
-      "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "id": "project_aldc_data_mapping",
+      "label": "aldc-data-mapping",
+      "title": "aldc-data-mapping\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
       "tier": 1,
       "group": "project",
       "size": 32,
-      "project_name": "eclipse_internal",
+      "project_name": "aldc-data-mapping",
       "area": "rnd",
       "successes": 0,
       "failures": 0
@@ -4845,47 +4854,47 @@
       "type": "references"
     },
     {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
       "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "same_category"
+    },
+    {
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
@@ -6490,56 +6499,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
-      "target": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
-      "type": "temporal_context"
-    },
-    {
-      "source": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
-      "target": "1beed024-2010-4007-8525-ef0e680f0d79",
-      "type": "temporal_context"
-    },
-    {
-      "source": "1beed024-2010-4007-8525-ef0e680f0d79",
-      "target": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "type": "temporal_context"
-    },
-    {
-      "source": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "target": "94ad012a-54cd-4b25-99e3-4e8f26107f0b",
-      "type": "temporal_context"
-    },
-    {
-      "source": "94ad012a-54cd-4b25-99e3-4e8f26107f0b",
-      "target": "828f86f7-bb49-4f83-8e78-50ccf9eb1262",
-      "type": "temporal_context"
-    },
-    {
-      "source": "828f86f7-bb49-4f83-8e78-50ccf9eb1262",
-      "target": "c477d8c2-6bd9-4031-a2da-44df4941b7e4",
-      "type": "temporal_context"
-    },
-    {
-      "source": "c477d8c2-6bd9-4031-a2da-44df4941b7e4",
-      "target": "fccfbe8d-f947-4a00-95ac-306e84449b03",
-      "type": "temporal_context"
-    },
-    {
-      "source": "fccfbe8d-f947-4a00-95ac-306e84449b03",
-      "target": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
-      "type": "temporal_context"
-    },
-    {
-      "source": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
-      "target": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
-      "type": "temporal_context"
-    },
-    {
-      "source": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
-      "target": "cbf9103f-3792-49bd-a30f-965a4ce9d1d4",
-      "type": "temporal_context"
-    },
-    {
       "source": "176ce958-9218-4e70-9b28-ef51c612f840",
       "target": "232a55ab-ea14-4751-8bcf-c1d37204b8c5",
       "type": "highly_similar",
@@ -6564,20 +6523,8 @@
       "weight": 0.898
     },
     {
-      "source": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "target": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "type": "similar",
-      "weight": 0.897
-    },
-    {
       "source": "33574549-a91c-4e19-82fa-1f6b483e6c93",
       "target": "4820c51e-fa37-4572-a443-e02ebf376062",
-      "type": "similar",
-      "weight": 0.896
-    },
-    {
-      "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "target": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
       "type": "similar",
       "weight": 0.896
     },
@@ -6682,24 +6629,6 @@
       "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
       "type": "similar",
       "weight": 0.86
-    },
-    {
-      "source": "4820c51e-fa37-4572-a443-e02ebf376062",
-      "target": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "type": "similar",
-      "weight": 0.859
-    },
-    {
-      "source": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "target": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
-      "type": "similar",
-      "weight": 0.858
-    },
-    {
-      "source": "c4325833-3120-4039-8e39-cd79097a1b26",
-      "target": "fccfbe8d-f947-4a00-95ac-306e84449b03",
-      "type": "similar",
-      "weight": 0.854
     },
     {
       "source": "4820c51e-fa37-4572-a443-e02ebf376062",
@@ -7692,17 +7621,12 @@
     },
     {
       "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_system",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_system",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_system",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -7712,7 +7636,77 @@
     },
     {
       "source": "contributor_system",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_system",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "761e026f-1c05-4e38-ada7-e991f50c662d",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "e636050d-c67f-49b2-9c2f-2ee0cb4eb626",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "7bb0e647-5d95-4285-b8f8-64d411c67ffd",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "0ae9f23c-499d-4910-86f1-6058ca2fb527",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "3a33cb8d-bab5-4af4-bba7-8d137d8aeb3b",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "999162e1-708a-4962-958f-75655c988e6f",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "8a197ed3-db0a-49b6-8031-20343ca515f5",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "da3a2049-f67a-4c40-9e85-a60a984e832f",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "69767505-1385-4ba9-8411-88b30ebe7b17",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "44074900-0933-43b3-a8d4-849c10d66c7a",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "19b20fa3-eb8c-40a5-841d-79e1592839fa",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "0df4c7e3-84ca-4a73-8ee5-ff4bf2f3270d",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "f1f51451-e571-4382-aade-93baa5c2ae0b",
       "type": "created_by"
     },
     {
@@ -9126,71 +9120,6 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
-      "target": "b401ae13-2ebe-4126-81d5-17543fb6acf3",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "465f38a6-8242-40c3-b2f6-0ec88f2a3a4a",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "cbf9103f-3792-49bd-a30f-965a4ce9d1d4",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "fccfbe8d-f947-4a00-95ac-306e84449b03",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "c477d8c2-6bd9-4031-a2da-44df4941b7e4",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "828f86f7-bb49-4f83-8e78-50ccf9eb1262",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_lori",
-      "target": "94ad012a-54cd-4b25-99e3-4e8f26107f0b",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "1beed024-2010-4007-8525-ef0e680f0d79",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
-      "type": "created_by"
-    },
-    {
       "source": "area_client",
       "target": "project_seattle_orcas_prototype",
       "type": "contains"
@@ -9207,32 +9136,32 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_athena",
-      "type": "contains"
-    },
-    {
-      "source": "project_athena",
-      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
-      "type": "belongs_to"
-    },
-    {
-      "source": "area_rnd",
-      "target": "project_aldc_data_mapping",
-      "type": "contains"
-    },
-    {
-      "source": "project_aldc_data_mapping",
-      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
-      "type": "belongs_to"
-    },
-    {
-      "source": "area_rnd",
       "target": "project_consulting_dashboard",
       "type": "contains"
     },
     {
       "source": "project_consulting_dashboard",
       "target": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_eclipse_internal",
+      "type": "contains"
+    },
+    {
+      "source": "project_eclipse_internal",
+      "target": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_athena",
+      "type": "contains"
+    },
+    {
+      "source": "project_athena",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
       "type": "belongs_to"
     },
     {
@@ -9282,12 +9211,12 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_eclipse_internal",
+      "target": "project_aldc_data_mapping",
       "type": "contains"
     },
     {
-      "source": "project_eclipse_internal",
-      "target": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
+      "source": "project_aldc_data_mapping",
+      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
       "type": "belongs_to"
     }
   ]

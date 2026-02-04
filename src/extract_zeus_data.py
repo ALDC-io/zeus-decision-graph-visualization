@@ -60,13 +60,43 @@ TEAM_MEMBERS = {
     'cce-system': 'system',
 }
 
-# Contributor node definitions
+# Contributor node definitions with Slack headshot images
 CONTRIBUTORS = {
-    "jk": {"label": "JK", "color": "#3182ce", "description": "John Moran - CEO & Technical Lead", "management": True},
-    "lori": {"label": "Lori", "color": "#d53f8c", "description": "Lori Beck - COO & Operations", "management": True},
-    "marshall": {"label": "Marshall", "color": "#38a169", "description": "Brayden Marshall - CTO & Development", "management": True},
-    "mike": {"label": "Mike", "color": "#dd6b20", "description": "Mike Stuart - VP Engineering", "management": True},
-    "system": {"label": "System", "color": "#805ad5", "description": "Automated CCE Learnings", "management": False},
+    "jk": {
+        "label": "JK",
+        "color": "#3182ce",
+        "description": "John Moran - CEO & Technical Lead",
+        "management": True,
+        "image": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg"
+    },
+    "lori": {
+        "label": "Lori",
+        "color": "#d53f8c",
+        "description": "Lori Beck - COO & Operations",
+        "management": True,
+        "image": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
+    },
+    "marshall": {
+        "label": "Marshall",
+        "color": "#38a169",
+        "description": "Brayden Marshall - CTO & Development",
+        "management": True,
+        "image": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
+    },
+    "mike": {
+        "label": "Mike",
+        "color": "#dd6b20",
+        "description": "Mike Stuart - VP Engineering",
+        "management": True,
+        "image": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
+    },
+    "system": {
+        "label": "System",
+        "color": "#805ad5",
+        "description": "Automated CCE Learnings",
+        "management": False,
+        "image": None  # No image for system
+    },
 }
 
 # ALDC Management Team (forms a ring in visualization)
@@ -635,7 +665,7 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
     for contrib_id, contrib_info in CONTRIBUTORS.items():
         node_id = f"contributor_{contrib_id}"
         is_management = contrib_info.get("management", False)
-        contributor_nodes.append({
+        node_data = {
             "id": node_id,
             "label": contrib_info["label"],
             "title": contrib_info["description"],
@@ -644,7 +674,11 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
             "size": 50 if is_management else 40,
             "contributor_id": contrib_id,
             "is_management": is_management,
-        })
+        }
+        # Add headshot image as logo for visualization
+        if contrib_info.get("image"):
+            node_data["logo"] = contrib_info["image"]
+        contributor_nodes.append(node_data)
         node_ids.add(node_id)
 
     # Create ALDC Management Team ring (connect each member to the next)
