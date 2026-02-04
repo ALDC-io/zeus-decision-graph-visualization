@@ -8,10 +8,17 @@ Edge Generation Methods:
 2. Temporal clustering (same session/day)
 3. Vector similarity (pgvector embeddings)
 4. Hub connections (structural)
+5. Contributor connections (who created each learning)
+
+Features:
+- Contributor tracking (JK, Lori, Marshall, Mike, System)
+- Last 24 hours filter option
+- Human-centric view (center on contributor)
 """
 
 import json
 import re
+import argparse
 import psycopg2
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -28,6 +35,40 @@ conn_params = {
 
 TENANT_ID = 'b513bc6e-ad51-4a11-bea3-e3b1a84d7b55'
 
+# Team member mapping (name variations -> canonical ID)
+TEAM_MEMBERS = {
+    # JK variations
+    'john moran': 'jk',
+    'jk': 'jk',
+    'john': 'jk',
+    'jkadmin': 'jk',
+    # Lori variations
+    'lori beck': 'lori',
+    'lori': 'lori',
+    'lb': 'lori',
+    # Marshall variations
+    'brayden marshall': 'marshall',
+    'marshall': 'marshall',
+    'mj': 'marshall',
+    # Mike variations
+    'mike stuart': 'mike',
+    'mike': 'mike',
+    'steven deutekom': 'mike',  # alias
+    # System
+    'system': 'system',
+    'cce': 'system',
+    'cce-system': 'system',
+}
+
+# Contributor node definitions
+CONTRIBUTORS = {
+    "jk": {"label": "JK", "color": "#3182ce", "description": "John Moran - Technical Lead"},
+    "lori": {"label": "Lori", "color": "#d53f8c", "description": "Lori Beck - Operations"},
+    "marshall": {"label": "Marshall", "color": "#38a169", "description": "Brayden Marshall - Development"},
+    "mike": {"label": "Mike", "color": "#dd6b20", "description": "Mike Stuart - Engineering"},
+    "system": {"label": "System", "color": "#805ad5", "description": "Automated CCE Learnings"},
+}
+
 # Group definitions with colors
 GROUPS = {
     "decision": {"color": "#1a365d", "label": "Decisions"},
@@ -38,6 +79,7 @@ GROUPS = {
     "cce_system": {"color": "#805ad5", "label": "System Events"},
     "cce": {"color": "#d69e2e", "label": "CCE General"},
     "architecture": {"color": "#dd6b20", "label": "Architecture"},
+    "contributor": {"color": "#718096", "label": "Contributors"},
 }
 
 # Edge type styles - expanded for new relationship types
@@ -57,9 +99,44 @@ EDGE_TYPES = {
     # Temporal
     "temporal_context": {"color": "#fc8181", "width": 1, "label": "Temporal Context"},
 
+    # Contributor
+    "created_by": {"color": "#00b5d8", "width": 2, "label": "Created By"},
+
     # Generic
     "related": {"color": "#a0aec0", "width": 1, "label": "Related"},
 }
+
+
+def resolve_contributor(metadata, source, content=""):
+    """Resolve the contributor from metadata, source, or content."""
+    # Check metadata fields
+    if isinstance(metadata, dict):
+        # Check assignee
+        assignee = metadata.get('assignee', '').lower()
+        if assignee in TEAM_MEMBERS:
+            return TEAM_MEMBERS[assignee]
+
+        # Check user_name (Slack)
+        user_name = metadata.get('user_name', '').lower()
+        if user_name in TEAM_MEMBERS:
+            return TEAM_MEMBERS[user_name]
+
+        # Check created_by
+        created_by = metadata.get('created_by', '').lower()
+        if created_by in TEAM_MEMBERS:
+            return TEAM_MEMBERS[created_by]
+
+    # Check source for CCE patterns (assume JK for now - could enhance)
+    if source and source.startswith('cce'):
+        return 'system'  # CCE learnings are system-generated
+
+    # Check content for name mentions
+    content_lower = content.lower() if content else ""
+    for name, contrib_id in TEAM_MEMBERS.items():
+        if name in content_lower and contrib_id != 'system':
+            return contrib_id
+
+    return 'system'  # Default to system
 
 # Patterns that might contain secrets
 SECRET_PATTERNS = [
@@ -106,17 +183,29 @@ def clean_text(text, max_len=None):
     return cleaned
 
 
-def extract_nodes(cur):
-    """Extract all nodes (decisions + memories)."""
+def extract_nodes(cur, hours_filter=0):
+    """Extract all nodes (decisions + memories).
+
+    Args:
+        cur: Database cursor
+        hours_filter: Only include data from last N hours (0 = no filter)
+    """
     nodes = []
     node_ids = set()
     node_metadata = {}  # Store metadata for edge generation
 
+    # Build time filter clause
+    time_clause = ""
+    if hours_filter > 0:
+        time_clause = f"AND created_at > NOW() - INTERVAL '{hours_filter} hours'"
+        print(f"Filtering to last {hours_filter} hours")
+
     # 1. Get decisions
-    cur.execute("""
+    cur.execute(f"""
         SELECT decision_id, action, reasoning, confidence, agent_id, created_at
         FROM zeus_core.decisions
         WHERE tenant_id = %s
+        {time_clause}
         ORDER BY created_at DESC
         LIMIT 200
     """, (TENANT_ID,))
@@ -136,6 +225,9 @@ def extract_nodes(cur):
         if confidence:
             full_content += f"\n\nConfidence: {confidence}"
 
+        # Resolve contributor
+        contributor = resolve_contributor({}, "decision", action)
+
         nodes.append({
             "id": node_id,
             "label": clean_text(action, 50),
@@ -144,6 +236,7 @@ def extract_nodes(cur):
             "group": "decision",
             "size": 25 + (int(confidence * 10) if confidence else 0),
             "created_at": created_at.isoformat() if created_at else None,
+            "contributor": contributor,
         })
 
         node_metadata[node_id] = {
@@ -152,21 +245,24 @@ def extract_nodes(cur):
             "created_at": created_at,
             "category": None,
             "source": "decision",
+            "contributor": contributor,
         }
 
     # 2. Get CCE memories
-    cur.execute("""
+    cur.execute(f"""
         SELECT memory_id, content, source, metadata, created_at
         FROM zeus_core.memories
         WHERE tenant_id = %s
           AND source IN ('cce_decision_log', 'cce_research', 'cce_failed_approach',
-                        'cce_success_log', 'cce_system', 'cce')
+                        'cce_success_log', 'cce_system', 'cce', 'cce-learning',
+                        'cce-prototype', 'cce_learn', 'cce-session', 'slack')
           AND (
             metadata->>'category' IS NULL
             OR metadata->>'category' IN %s
           )
+        {time_clause}
         ORDER BY created_at DESC
-        LIMIT 200
+        LIMIT 300
     """, (TENANT_ID, tuple(SAFE_CATEGORIES)))
 
     memories = cur.fetchall()
@@ -179,6 +275,11 @@ def extract_nodes(cur):
         'cce_success_log': 2,
         'cce_system': 4,
         'cce': 3,
+        'cce-learning': 2,
+        'cce-prototype': 2,
+        'cce_learn': 2,
+        'cce-session': 3,
+        'slack': 4,
     }
 
     size_map = {
@@ -188,6 +289,11 @@ def extract_nodes(cur):
         'cce_success_log': 20,
         'cce_system': 10,
         'cce': 15,
+        'cce-learning': 18,
+        'cce-prototype': 22,
+        'cce_learn': 18,
+        'cce-session': 12,
+        'slack': 10,
     }
 
     for row in memories:
@@ -199,6 +305,11 @@ def extract_nodes(cur):
 
         node_ids.add(node_id)
 
+        meta = metadata if isinstance(metadata, dict) else {}
+
+        # Resolve contributor from metadata or content
+        contributor = resolve_contributor(meta, source, content)
+
         nodes.append({
             "id": node_id,
             "label": clean_text(content, 50),
@@ -207,9 +318,9 @@ def extract_nodes(cur):
             "group": source if source in GROUPS else "cce",
             "size": size_map.get(source, 15),
             "created_at": created_at.isoformat() if created_at else None,
+            "contributor": contributor,
         })
 
-        meta = metadata if isinstance(metadata, dict) else {}
         node_metadata[node_id] = {
             "type": "memory",
             "agent_id": meta.get('agent_id'),
@@ -217,6 +328,7 @@ def extract_nodes(cur):
             "category": meta.get('category'),
             "source": source,
             "related_memory": meta.get('related_memory'),
+            "contributor": contributor,
         }
 
     # 3. Create hub node
@@ -443,13 +555,72 @@ def generate_hub_edges(nodes, edge_set):
     return edges
 
 
-def extract_data():
-    """Extract all data and generate edges using multiple methods."""
+def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_set):
+    """Add contributor nodes and connect learnings to their creators."""
+    contributor_nodes = []
+    contributor_edges = []
+    contributor_counts = defaultdict(int)
+
+    def add_edge(source, target, edge_type):
+        key = tuple(sorted([source, target])) + (edge_type,)
+        if key not in edge_set and source != target:
+            edge_set.add(key)
+            contributor_edges.append({
+                "source": source,
+                "target": target,
+                "type": edge_type
+            })
+
+    # Add contributor nodes
+    for contrib_id, contrib_info in CONTRIBUTORS.items():
+        node_id = f"contributor_{contrib_id}"
+        contributor_nodes.append({
+            "id": node_id,
+            "label": contrib_info["label"],
+            "title": contrib_info["description"],
+            "tier": 0,  # Top tier like hub
+            "group": "contributor",
+            "size": 40,
+            "contributor_id": contrib_id,
+        })
+        node_ids.add(node_id)
+
+    # Connect learnings to contributors
+    for node_id, meta in node_metadata.items():
+        if meta.get('type') == 'hub':
+            continue
+        contrib_id = meta.get('contributor', 'system')
+        contributor_counts[contrib_id] += 1
+        contrib_node_id = f"contributor_{contrib_id}"
+        if contrib_node_id in node_ids:
+            add_edge(contrib_node_id, node_id, "created_by")
+
+    # Update contributor node sizes based on activity
+    for node in contributor_nodes:
+        contrib_id = node.get('contributor_id')
+        count = contributor_counts.get(contrib_id, 0)
+        node['size'] = 30 + min(count, 50)  # Scale size by activity
+        node['title'] += f"\n\nLearnings: {count}"
+
+    print(f"Generated {len(contributor_nodes)} contributor nodes")
+    print(f"Generated {len(contributor_edges)} contributor edges")
+    print(f"  Contributor activity: {dict(contributor_counts)}")
+
+    return contributor_nodes, contributor_edges
+
+
+def extract_data(hours_filter=0, include_contributors=False):
+    """Extract all data and generate edges using multiple methods.
+
+    Args:
+        hours_filter: Only include data from last N hours (0 = no filter)
+        include_contributors: Add contributor nodes and edges
+    """
     conn = psycopg2.connect(**conn_params)
     cur = conn.cursor()
 
-    # Extract nodes
-    nodes, node_ids, node_metadata = extract_nodes(cur)
+    # Extract nodes (pass hours filter)
+    nodes, node_ids, node_metadata = extract_nodes(cur, hours_filter=hours_filter)
 
     # Generate edges using all methods
     all_edges = []
@@ -471,6 +642,14 @@ def extract_data():
     hub_edges = generate_hub_edges(nodes, edge_set)
     all_edges.extend(hub_edges)
 
+    # 5. Contributor nodes and edges (optional)
+    if include_contributors:
+        contrib_nodes, contrib_edges = generate_contributor_nodes_and_edges(
+            nodes, node_ids, node_metadata, edge_set
+        )
+        nodes.extend(contrib_nodes)
+        all_edges.extend(contrib_edges)
+
     cur.close()
     conn.close()
 
@@ -486,7 +665,17 @@ def extract_data():
 
 
 def main():
-    nodes, edges = extract_data()
+    parser = argparse.ArgumentParser(description='Extract Zeus Memory data for visualization')
+    parser.add_argument('--hours', type=int, default=0,
+                       help='Filter to last N hours (0 = no filter, default)')
+    parser.add_argument('--contributors', action='store_true',
+                       help='Add contributor nodes and edges')
+    parser.add_argument('--output', type=str, default='data/examples/zeus_decisions.json',
+                       help='Output file path')
+    args = parser.parse_args()
+
+    # Extract data with optional time filter
+    nodes, edges = extract_data(hours_filter=args.hours, include_contributors=args.contributors)
 
     # Build visualization data
     data = {
@@ -494,25 +683,31 @@ def main():
             "title": "Zeus Memory Knowledge Graph",
             "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
             "source": "zeus_core database",
-            "created": datetime.now().strftime("%Y-%m-%d"),
-            "updated": datetime.now().strftime("%Y-%m-%d"),
-            "edge_methods": ["metadata", "temporal", "similarity", "hub"]
+            "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor"],
+            "hours_filter": args.hours if args.hours > 0 else "all",
+            "contributors_enabled": args.contributors
         },
         "groups": GROUPS,
         "edge_types": EDGE_TYPES,
+        "contributors": CONTRIBUTORS,
         "nodes": nodes,
         "edges": edges
     }
 
     # Write output
-    output_path = "data/examples/zeus_decisions.json"
-    with open(output_path, 'w') as f:
+    with open(args.output, 'w') as f:
         json.dump(data, f, indent=2, default=str)
 
-    print(f"\nGenerated {output_path}")
+    print(f"\nGenerated {args.output}")
     print(f"  Nodes: {len(nodes)}")
     print(f"  Edges: {len(edges)}")
     print(f"  Groups: {list(GROUPS.keys())}")
+    if args.hours > 0:
+        print(f"  Time filter: Last {args.hours} hours")
+    if args.contributors:
+        print(f"  Contributors: {list(CONTRIBUTORS.keys())}")
 
 
 if __name__ == "__main__":
