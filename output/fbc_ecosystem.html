@@ -2921,24 +2921,30 @@
                 });
             });
 
+            // Group nodes by tier for even distribution within each ring
+            const nodesByTier = {};
             nodes.forEach(node => {
-                const group = groups[node.group || 'default'];
-                // Spread nodes within their group segment
-                const nodeIndexInGroup = group.nodes.indexOf(node);
-                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
-                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
-                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
-                const angle = baseAngle + offsetAngle;
-
-                // Y position based on stage (mapped from tier) with small offset for separation
                 const tier = typeof node.tier === 'number' ? node.tier : 0;
-                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
-                // Add small random offset within stage band for visual separation
-                const tierOffset = (tier % 2 === 0 ? 0.02 : -0.02) + (Math.random() - 0.5) * 0.04;
+                if (!nodesByTier[tier]) nodesByTier[tier] = [];
+                nodesByTier[tier].push(node);
+            });
 
-                node.fx = Math.cos(angle) * radius;
-                node.fz = Math.sin(angle) * radius;
-                node.fy = (stageY + tierOffset) * height;
+            // Position each node with its own space around the ring
+            Object.keys(nodesByTier).forEach(tier => {
+                const tierNodes = nodesByTier[tier];
+                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
+
+                tierNodes.forEach((node, index) => {
+                    // Each node gets equal angular space around the full circle
+                    const angle = (index / tierNodes.length) * Math.PI * 2;
+
+                    // Small Y offset for visual depth
+                    const tierOffset = (Math.random() - 0.5) * 0.03;
+
+                    node.fx = Math.cos(angle) * radius;
+                    node.fz = Math.sin(angle) * radius;
+                    node.fy = (stageY + tierOffset) * height;
+                });
             });
 
             graph.d3ReheatSimulation();
