@@ -1,0 +1,391 @@
+{
+  "metadata": {
+    "title": "Seattle Orcas - Team Intelligence",
+    "description": "Seattle Orcas MLC 2025 Squad - Player Performance & Team Dynamics",
+    "version": "1.0",
+    "created": "2026-02-04",
+    "source": "ALDC Enterprise Intelligence"
+  },
+  "nodes": [
+    {
+      "id": "team_orcas",
+      "label": "Seattle Orcas",
+      "type": "organization",
+      "tier": 0,
+      "description": "Major League Cricket Franchise - Season 4",
+      "metadata": {
+        "founded": "2023",
+        "league": "Major League Cricket",
+        "home": "Marymoor Park, Redmond WA",
+        "coach": "Adam Voges",
+        "owners": "Nadella, Somasegar, GMR Group"
+      }
+    },
+    {
+      "id": "klaasen",
+      "label": "Heinrich Klaasen",
+      "type": "player",
+      "tier": 1,
+      "description": "Captain | Wicketkeeper-Batter | South Africa",
+      "metadata": {
+        "role": "wicketkeeper-batter",
+        "nationality": "South Africa",
+        "batting": "Right-hand",
+        "matches": 247,
+        "runs": 5634,
+        "average": 28.5,
+        "strike_rate": 142.3,
+        "status": "Captain"
+      }
+    },
+    {
+      "id": "warner",
+      "label": "David Warner",
+      "type": "player",
+      "tier": 2,
+      "description": "Opening Batter | Australia | 13,000+ T20 runs",
+      "metadata": {
+        "role": "batter",
+        "nationality": "Australia",
+        "batting": "Left-hand",
+        "matches": 350,
+        "runs": 13000,
+        "average": 37.2,
+        "strike_rate": 139.8,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "hetmyer",
+      "label": "Shimron Hetmyer",
+      "type": "player",
+      "tier": 2,
+      "description": "Middle-Order Batter | West Indies | Power Hitter",
+      "metadata": {
+        "role": "batter",
+        "nationality": "West Indies",
+        "batting": "Left-hand",
+        "matches": 270,
+        "runs": 5144,
+        "average": 24.8,
+        "strike_rate": 147.5,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "farooqi",
+      "label": "Fazalhaq Farooqi",
+      "type": "player",
+      "tier": 2,
+      "description": "Left-Arm Fast Bowler | Afghanistan | 154 T20 wickets",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "Afghanistan",
+        "bowling": "Left-arm fast",
+        "matches": 120,
+        "wickets": 154,
+        "economy": 7.8,
+        "average": 18.2,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "mccoy",
+      "label": "Obed McCoy",
+      "type": "player",
+      "tier": 2,
+      "description": "Left-Arm Fast Bowler | West Indies | 177 T20 wickets",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "West Indies",
+        "bowling": "Left-arm fast",
+        "matches": 143,
+        "wickets": 177,
+        "economy": 8.2,
+        "average": 20.5,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "raza",
+      "label": "Sikandar Raza",
+      "type": "player",
+      "tier": 2,
+      "description": "All-Rounder | Zimbabwe | Experienced Match-Winner",
+      "metadata": {
+        "role": "all-rounder",
+        "nationality": "Zimbabwe",
+        "batting": "Right-hand",
+        "bowling": "Right-arm off-spin",
+        "matches": 280,
+        "runs": 4500,
+        "wickets": 95,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "mayers",
+      "label": "Kyle Mayers",
+      "type": "player",
+      "tier": 2,
+      "description": "All-Rounder | West Indies | Power-Hitting All-Rounder",
+      "metadata": {
+        "role": "all-rounder",
+        "nationality": "West Indies",
+        "batting": "Left-hand",
+        "bowling": "Right-arm medium",
+        "matches": 85,
+        "runs": 1800,
+        "wickets": 35,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "coetzee",
+      "label": "Gerald Coetzee",
+      "type": "player",
+      "tier": 2,
+      "description": "Right-Arm Fast Bowler | South Africa | Express Pace",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "South Africa",
+        "bowling": "Right-arm fast",
+        "matches": 45,
+        "wickets": 52,
+        "economy": 8.5,
+        "average": 22.1,
+        "status": "Star Player"
+      }
+    },
+    {
+      "id": "fortuin",
+      "label": "Bjorn Fortuin",
+      "type": "player",
+      "tier": 3,
+      "description": "Left-Arm Spinner | South Africa | Economy Specialist",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "South Africa",
+        "bowling": "Left-arm spin",
+        "matches": 90,
+        "wickets": 85,
+        "economy": 7.2,
+        "average": 24.8,
+        "status": "Core"
+      }
+    },
+    {
+      "id": "taylor",
+      "label": "Steven Taylor",
+      "type": "player",
+      "tier": 3,
+      "description": "Opening Batter | USA | First US T20I Centurion",
+      "metadata": {
+        "role": "batter",
+        "nationality": "USA",
+        "batting": "Left-hand",
+        "matches": 75,
+        "runs": 1650,
+        "average": 22.5,
+        "strike_rate": 138.2,
+        "status": "Core"
+      }
+    },
+    {
+      "id": "jones",
+      "label": "Aaron Jones",
+      "type": "player",
+      "tier": 3,
+      "description": "Middle-Order Batter | USA | USA International",
+      "metadata": {
+        "role": "batter",
+        "nationality": "USA",
+        "batting": "Right-hand",
+        "matches": 55,
+        "runs": 1200,
+        "average": 26.5,
+        "strike_rate": 145.0,
+        "status": "Core"
+      }
+    },
+    {
+      "id": "brown",
+      "label": "Josh Brown",
+      "type": "player",
+      "tier": 3,
+      "description": "Batter | Australia | Power Hitter",
+      "metadata": {
+        "role": "batter",
+        "nationality": "Australia",
+        "batting": "Right-hand",
+        "matches": 40,
+        "runs": 950,
+        "average": 24.5,
+        "strike_rate": 155.2,
+        "status": "Core"
+      }
+    },
+    {
+      "id": "naib",
+      "label": "Gulbadin Naib",
+      "type": "player",
+      "tier": 3,
+      "description": "All-Rounder | Afghanistan | Former Captain",
+      "metadata": {
+        "role": "all-rounder",
+        "nationality": "Afghanistan",
+        "batting": "Right-hand",
+        "bowling": "Right-arm medium",
+        "matches": 150,
+        "runs": 2200,
+        "wickets": 75,
+        "status": "Core"
+      }
+    },
+    {
+      "id": "harmeet",
+      "label": "Harmeet Singh",
+      "type": "player",
+      "tier": 3,
+      "description": "All-Rounder | USA | Vice-Captain | Local Hero",
+      "metadata": {
+        "role": "all-rounder",
+        "nationality": "USA",
+        "batting": "Left-hand",
+        "bowling": "Left-arm spin",
+        "matches": 65,
+        "runs": 800,
+        "wickets": 55,
+        "status": "Vice-Captain"
+      }
+    },
+    {
+      "id": "jahangir",
+      "label": "Shayan Jahangir",
+      "type": "player",
+      "tier": 4,
+      "description": "Wicketkeeper-Batter | Pakistan/USA | Rising Star",
+      "metadata": {
+        "role": "wicketkeeper-batter",
+        "nationality": "USA",
+        "batting": "Right-hand",
+        "matches": 24,
+        "runs": 409,
+        "average": 18.5,
+        "status": "Development"
+      }
+    },
+    {
+      "id": "nayak",
+      "label": "Sujit Nayak",
+      "type": "player",
+      "tier": 4,
+      "description": "Batter | India/USA | Left-Hand Specialist",
+      "metadata": {
+        "role": "batter",
+        "nationality": "USA",
+        "batting": "Left-hand",
+        "matches": 30,
+        "runs": 550,
+        "average": 20.0,
+        "status": "Development"
+      }
+    },
+    {
+      "id": "jariwala",
+      "label": "Rahul Jariwala",
+      "type": "player",
+      "tier": 4,
+      "description": "Wicketkeeper-Batter | USA | Domestic Talent",
+      "metadata": {
+        "role": "wicketkeeper-batter",
+        "nationality": "USA",
+        "batting": "Right-hand",
+        "matches": 20,
+        "runs": 320,
+        "average": 16.0,
+        "status": "Development"
+      }
+    },
+    {
+      "id": "gannon",
+      "label": "Cameron Gannon",
+      "type": "player",
+      "tier": 4,
+      "description": "Right-Arm Fast Bowler | Australia | 45 wickets in 38 matches",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "Australia",
+        "bowling": "Right-arm fast-medium",
+        "matches": 38,
+        "wickets": 45,
+        "economy": 8.0,
+        "status": "Development"
+      }
+    },
+    {
+      "id": "salamkheil",
+      "label": "Waqar Salamkheil",
+      "type": "player",
+      "tier": 4,
+      "description": "Bowler | Afghanistan | Young Prospect",
+      "metadata": {
+        "role": "bowler",
+        "nationality": "Afghanistan",
+        "bowling": "Right-arm leg-spin",
+        "matches": 15,
+        "wickets": 18,
+        "economy": 7.5,
+        "status": "Development"
+      }
+    }
+  ],
+  "edges": [
+    {"source": "team_orcas", "target": "klaasen", "label": "leads", "weight": 10},
+    {"source": "klaasen", "target": "harmeet", "label": "vice-captain", "weight": 8},
+
+    {"source": "team_orcas", "target": "warner", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "hetmyer", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "farooqi", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "mccoy", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "raza", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "mayers", "label": "star player", "weight": 9},
+    {"source": "team_orcas", "target": "coetzee", "label": "star player", "weight": 9},
+
+    {"source": "warner", "target": "taylor", "label": "opening pair", "weight": 7},
+    {"source": "warner", "target": "hetmyer", "label": "batting lineup", "weight": 6},
+    {"source": "hetmyer", "target": "klaasen", "label": "middle order", "weight": 6},
+    {"source": "klaasen", "target": "jones", "label": "middle order", "weight": 5},
+    {"source": "jones", "target": "raza", "label": "finisher", "weight": 5},
+    {"source": "raza", "target": "mayers", "label": "all-round depth", "weight": 5},
+
+    {"source": "farooqi", "target": "mccoy", "label": "new ball pair", "weight": 8},
+    {"source": "farooqi", "target": "coetzee", "label": "pace attack", "weight": 7},
+    {"source": "mccoy", "target": "coetzee", "label": "pace attack", "weight": 7},
+    {"source": "fortuin", "target": "raza", "label": "spin options", "weight": 6},
+    {"source": "fortuin", "target": "harmeet", "label": "spin duo", "weight": 6},
+
+    {"source": "klaasen", "target": "jahangir", "label": "keeping mentor", "weight": 4},
+    {"source": "klaasen", "target": "jariwala", "label": "keeping mentor", "weight": 4},
+
+    {"source": "team_orcas", "target": "fortuin", "label": "core", "weight": 7},
+    {"source": "team_orcas", "target": "taylor", "label": "core", "weight": 7},
+    {"source": "team_orcas", "target": "jones", "label": "core", "weight": 7},
+    {"source": "team_orcas", "target": "brown", "label": "core", "weight": 7},
+    {"source": "team_orcas", "target": "naib", "label": "core", "weight": 7},
+    {"source": "team_orcas", "target": "harmeet", "label": "core", "weight": 7},
+
+    {"source": "team_orcas", "target": "jahangir", "label": "development", "weight": 5},
+    {"source": "team_orcas", "target": "nayak", "label": "development", "weight": 5},
+    {"source": "team_orcas", "target": "jariwala", "label": "development", "weight": 5},
+    {"source": "team_orcas", "target": "gannon", "label": "development", "weight": 5},
+    {"source": "team_orcas", "target": "salamkheil", "label": "development", "weight": 5}
+  ],
+  "tier_labels": {
+    "0": "Organization",
+    "1": "Leadership",
+    "2": "International Stars",
+    "3": "Core Squad",
+    "4": "Development"
+  }
+}
