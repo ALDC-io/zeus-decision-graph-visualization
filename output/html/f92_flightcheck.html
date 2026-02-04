@@ -2858,35 +2858,33 @@
                     const yPos = stage.yPos * height;
                     const ringColor = stage.color;
 
-                    // Create flat ring disc with small inner radius (10% of outer) for transparency
-                    const outerRadius = radius + 50;
-                    const innerRadius = outerRadius * 0.1;  // Small inner hole
-                    const ringGeom = new THREE.RingGeometry(innerRadius, outerRadius, 64);
-                    const ringMat = new THREE.MeshBasicMaterial({
+                    // Create 3D torus ring with high transparency
+                    const torusRadius = radius + 30;
+                    const tubeRadius = 4;
+                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
+                    const torusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.08 : 0.12,
-                        side: THREE.DoubleSide
+                        opacity: currentTheme === 'light' ? 0.15 : 0.2
                     });
-                    const ring = new THREE.Mesh(ringGeom, ringMat);
-                    ring.rotation.x = -Math.PI / 2;
-                    ring.position.y = yPos;
-                    scene.add(ring);
-                    tierPlatforms.push(ring);
+                    const torus = new THREE.Mesh(torusGeom, torusMat);
+                    torus.rotation.x = Math.PI / 2;
+                    torus.position.y = yPos;
+                    scene.add(torus);
+                    tierPlatforms.push(torus);
 
-                    // Add subtle edge ring for definition
-                    const edgeGeom = new THREE.RingGeometry(outerRadius - 2, outerRadius, 64);
-                    const edgeMat = new THREE.MeshBasicMaterial({
+                    // Add outer glow ring - very subtle
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 4, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.3 : 0.4,
-                        side: THREE.DoubleSide
+                        opacity: currentTheme === 'light' ? 0.05 : 0.08
                     });
-                    const edge = new THREE.Mesh(edgeGeom, edgeMat);
-                    edge.rotation.x = -Math.PI / 2;
-                    edge.position.y = yPos;
-                    scene.add(edge);
-                    tierPlatforms.push(edge);
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
 
                     // Create stage label
                     const canvas = document.createElement('canvas');
