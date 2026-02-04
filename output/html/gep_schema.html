@@ -349,235 +349,279 @@
         .modal-meta .label {
             font-weight: 600;
         }
-        /* Dashboard Modal Styles */
+        /* Dashboard Modal Styles - Compact with Sparklines */
         .dashboard-modal .modal-content {
-            max-width: 1000px;
-            max-height: 90vh;
+            max-width: 900px;
+            max-height: 85vh;
         }
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 24px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 16px;
             background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
             color: white;
         }
         .dashboard-header h2 {
             margin: 0;
-            font-size: 20px;
+            font-size: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .dashboard-header .org-badge {
+        .org-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
+            object-fit: contain;
+            padding: 4px;
         }
         .dashboard-close {
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
         }
-        .dashboard-close:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        .dashboard-summary {
+        .dashboard-close:hover { background: rgba(255,255,255,0.3); }
+        /* Org Profile Section */
+        .org-profile {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 16px;
-            padding: 20px 24px;
+            padding: 12px 16px;
             background: #f8f9fa;
             border-bottom: 1px solid #e0e0e0;
         }
-        .summary-card {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .org-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-        .summary-card .card-label {
+        .org-info .org-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a365d;
+        }
+        .org-info .org-desc {
             font-size: 11px;
             color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            line-height: 1.4;
         }
-        .summary-card .card-value {
-            font-size: 28px;
+        .org-info .org-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 10px;
+            color: #888;
+        }
+        .org-info .org-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .org-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .kpi-mini {
+            text-align: center;
+            padding: 6px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .kpi-mini .kpi-value {
+            font-size: 18px;
             font-weight: 700;
             color: #1a365d;
         }
-        .summary-card .card-value.score {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
+        .kpi-mini .kpi-label {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
         }
-        .summary-card .card-value .score-max {
-            font-size: 14px;
-            color: #999;
-            font-weight: 400;
+        .kpi-mini .sparkline {
+            height: 16px;
+            margin-top: 2px;
         }
-        .summary-card .card-trend {
-            font-size: 12px;
-            margin-top: 4px;
+        /* Bullet Chart */
+        .bullet-chart {
+            position: relative;
+            height: 12px;
+            background: linear-gradient(to right, #fed7d7 0%, #fed7d7 50%, #fefcbf 50%, #fefcbf 75%, #c6f6d5 75%, #c6f6d5 100%);
+            border-radius: 2px;
+            overflow: visible;
         }
-        .summary-card .card-trend.up { color: #2f855a; }
-        .summary-card .card-trend.down { color: #c53030; }
-        .summary-card .card-trend.neutral { color: #666; }
+        .bullet-chart .bullet-bar {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            height: 8px;
+            background: #1a365d;
+            border-radius: 1px;
+        }
+        .bullet-chart .bullet-target {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 12px;
+            background: #333;
+        }
+        /* Dashboard Body */
         .dashboard-body {
-            padding: 24px;
+            padding: 12px 16px;
             overflow-y: auto;
             flex: 1;
             min-height: 0;
         }
-        .project-section {
-            margin-bottom: 24px;
+        /* Compact Project Row */
+        .project-row {
+            display: grid;
+            grid-template-columns: 200px 1fr 80px 80px 60px;
+            align-items: center;
+            padding: 8px 12px;
             background: white;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .project-row:hover {
+            background: #f8f9fa;
+            border-color: #d0d0d0;
+        }
+        .project-row.expanded {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-bottom: 0;
+        }
+        .project-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            color: #333;
+        }
+        .project-name .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .project-name .init-count {
+            font-size: 10px;
+            color: #888;
+            font-weight: 400;
+        }
+        .project-bullet {
+            padding: 0 8px;
+        }
+        .project-metric {
+            text-align: center;
+            font-size: 12px;
+        }
+        .project-metric .metric-val {
+            font-weight: 600;
+            color: #1a365d;
+        }
+        .project-metric .metric-lbl {
+            font-size: 9px;
+            color: #999;
+            text-transform: uppercase;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+        .status-dot.on-track { background: #48bb78; }
+        .status-dot.at-risk { background: #ecc94b; }
+        .status-dot.blocked { background: #f56565; }
+        .status-dot.complete { background: #9f7aea; }
+        /* Initiative Sub-rows */
+        .initiative-rows {
+            display: none;
+            background: #fafbfc;
+            border: 1px solid #e8e8e8;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            margin-bottom: 6px;
+            padding: 4px 0;
+        }
+        .project-row.expanded + .initiative-rows {
+            display: block;
+        }
+        .init-row {
+            display: grid;
+            grid-template-columns: 200px 1fr 80px 80px 60px;
+            align-items: center;
+            padding: 6px 12px 6px 28px;
+            gap: 12px;
+            font-size: 12px;
+        }
+        .init-row:hover {
+            background: #f0f4f8;
+        }
+        .init-name {
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .mini-progress {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
             overflow: hidden;
         }
-        .project-header {
+        .mini-progress .fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+        .mini-progress .fill.green { background: #48bb78; }
+        .mini-progress .fill.yellow { background: #ecc94b; }
+        .mini-progress .fill.red { background: #f56565; }
+        /* Section Headers */
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
-            background: #f8f9fa;
+            padding: 8px 0;
+            margin-bottom: 8px;
             border-bottom: 1px solid #e0e0e0;
-            cursor: pointer;
         }
-        .project-header:hover {
-            background: #f0f4f8;
-        }
-        .project-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .project-title h3 {
+        .section-header h3 {
             margin: 0;
-            font-size: 16px;
-            color: #1a365d;
-        }
-        .project-score {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .score-badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: white;
-        }
-        .score-badge.excellent { background: #2f855a; }
-        .score-badge.good { background: #38a169; }
-        .score-badge.fair { background: #d69e2e; }
-        .score-badge.poor { background: #c53030; }
-        .expand-icon {
-            color: #666;
-            transition: transform 0.2s;
-        }
-        .project-section.expanded .expand-icon {
-            transform: rotate(180deg);
-        }
-        .initiative-list {
-            display: none;
-            padding: 0;
-        }
-        .project-section.expanded .initiative-list {
-            display: block;
-        }
-        .initiative-item {
-            display: grid;
-            grid-template-columns: 1fr repeat(5, 100px);
-            align-items: center;
-            padding: 14px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            gap: 12px;
-        }
-        .initiative-item:last-child {
-            border-bottom: none;
-        }
-        .initiative-item:hover {
-            background: #fafbfc;
-        }
-        .initiative-name {
-            font-weight: 500;
-            color: #333;
-        }
-        .initiative-name .init-desc {
             font-size: 12px;
-            color: #666;
-            font-weight: 400;
-            margin-top: 2px;
-        }
-        .metric-cell {
-            text-align: center;
-        }
-        .metric-cell .metric-label {
-            font-size: 10px;
-            color: #999;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .metric-cell .metric-value {
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .status-indicator {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .status-indicator.on-track { background: #c6f6d5; color: #22543d; }
-        .status-indicator.at-risk { background: #fefcbf; color: #744210; }
-        .status-indicator.blocked { background: #fed7d7; color: #742a2a; }
-        .status-indicator.complete { background: #e9d8fd; color: #44337a; }
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .progress-bar .progress-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-        .progress-bar .progress-fill.green { background: #48bb78; }
-        .progress-bar .progress-fill.yellow { background: #ecc94b; }
-        .progress-bar .progress-fill.red { background: #f56565; }
-        .initiative-header {
-            display: grid;
-            grid-template-columns: 1fr repeat(5, 100px);
-            padding: 10px 20px;
-            background: #f0f4f8;
-            font-size: 10px;
             font-weight: 600;
             color: #666;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+        .section-header .legend {
+            display: flex;
             gap: 12px;
+            font-size: 10px;
+            color: #888;
         }
-        .initiative-header span {
-            text-align: center;
+        .section-header .legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        .initiative-header span:first-child {
-            text-align: left;
+        .section-header .legend .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
         .node-meta {
             font-size: 11px;
@@ -1435,16 +1479,16 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="dashboard-header">
                 <h2>
+                    <img id="dashboard-logo" class="org-logo" src="" alt="" style="display:none;">
                     <span id="dashboard-title">Health Dashboard</span>
-                    <span class="org-badge" id="dashboard-org-badge"></span>
                 </h2>
                 <button class="dashboard-close" onclick="closeDashboard()">&times;</button>
             </div>
-            <div class="dashboard-summary" id="dashboard-summary">
-                <!-- Summary cards populated by JS -->
+            <div class="org-profile" id="org-profile">
+                <!-- Org info and KPIs populated by JS -->
             </div>
             <div class="dashboard-body" id="dashboard-body">
-                <!-- Projects and initiatives populated by JS -->
+                <!-- Projects with bullet charts populated by JS -->
             </div>
         </div>
     </div>
@@ -2130,103 +2174,133 @@
             return 'red';
         }
 
+        // Generate sparkline SVG
+        function generateSparkline(values, color = '#1a365d') {
+            const width = 60, height = 16;
+            const max = Math.max(...values);
+            const min = Math.min(...values);
+            const range = max - min || 1;
+            const points = values.map((v, i) => {
+                const x = (i / (values.length - 1)) * width;
+                const y = height - ((v - min) / range) * (height - 2) - 1;
+                return `${x},${y}`;
+            }).join(' ');
+            return `<svg width="${width}" height="${height}" class="sparkline"><polyline fill="none" stroke="${color}" stroke-width="1.5" points="${points}"/></svg>`;
+        }
+
         function showDashboard(node) {
             const data = generateDashboardData(node);
 
-            // Set header
-            document.getElementById('dashboard-title').textContent = 'Health Dashboard';
-            document.getElementById('dashboard-org-badge').textContent = data.orgName;
-            document.getElementById('dashboard-org-badge').style.background = data.orgColor || 'rgba(255,255,255,0.2)';
+            // Set header with logo
+            document.getElementById('dashboard-title').textContent = data.orgName;
+            const logo = document.getElementById('dashboard-logo');
+            if (node.logo) {
+                logo.src = node.logo;
+                logo.style.display = 'block';
+            } else {
+                logo.style.display = 'none';
+            }
 
-            // Build summary cards
-            const summaryHtml = `
-                <div class="summary-card">
-                    <div class="card-label">Overall Score</div>
-                    <div class="card-value score">${data.overallScore}<span class="score-max">/100</span></div>
-                    <div class="card-trend up">+3 from last month</div>
+            // Generate mock sparkline data
+            const progressHistory = Array.from({length: 8}, () => Math.max(20, Math.min(100, data.overallProgress + (Math.random() - 0.5) * 30)));
+            progressHistory[progressHistory.length - 1] = data.overallProgress;
+            const qualityHistory = Array.from({length: 8}, () => Math.max(2, Math.min(5, parseFloat(data.overallQuality) + (Math.random() - 0.5) * 1.5)));
+            qualityHistory[qualityHistory.length - 1] = parseFloat(data.overallQuality);
+
+            // Build org profile section
+            const profileHtml = `
+                <div class="org-info">
+                    <div class="org-name">${node.groupLabel || node.group || 'Organization'}</div>
+                    <div class="org-desc">${node.description ? node.description.substring(0, 120) + '...' : 'Connected entity in the ecosystem with associated projects and initiatives.'}</div>
+                    <div class="org-meta">
+                        <span>&#128205; Tier ${node.tier || 0}</span>
+                        <span>&#128279; ${(linksByNode[node.id] || []).length} connections</span>
+                        <span>&#128197; Active</span>
+                    </div>
                 </div>
-                <div class="summary-card">
-                    <div class="card-label">Projects</div>
-                    <div class="card-value">${data.totalProjects}</div>
-                    <div class="card-trend neutral">${data.totalInitiatives} initiatives</div>
-                </div>
-                <div class="summary-card">
-                    <div class="card-label">Avg Progress</div>
-                    <div class="card-value">${data.overallProgress}%</div>
-                    <div class="card-trend ${data.overallProgress >= 60 ? 'up' : 'down'}">${data.overallProgress >= 60 ? 'On track' : 'Behind schedule'}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="card-label">Quality Score</div>
-                    <div class="card-value">${data.overallQuality}</div>
-                    <div class="card-trend up">&#9733; rating</div>
+                <div class="org-kpis">
+                    <div class="kpi-mini">
+                        <div class="kpi-value">${data.overallScore}</div>
+                        <div class="kpi-label">Score</div>
+                        ${generateSparkline(progressHistory, '#2f855a')}
+                    </div>
+                    <div class="kpi-mini">
+                        <div class="kpi-value">${data.totalProjects}</div>
+                        <div class="kpi-label">Projects</div>
+                        <div style="font-size: 10px; color: #888; margin-top: 2px;">${data.totalInitiatives} init</div>
+                    </div>
+                    <div class="kpi-mini">
+                        <div class="kpi-value">${data.overallProgress}%</div>
+                        <div class="kpi-label">Progress</div>
+                        ${generateSparkline(progressHistory, '#3182ce')}
+                    </div>
+                    <div class="kpi-mini">
+                        <div class="kpi-value">${data.overallQuality}</div>
+                        <div class="kpi-label">Quality</div>
+                        ${generateSparkline(qualityHistory.map(v => v * 20), '#d69e2e')}
+                    </div>
                 </div>
             `;
-            document.getElementById('dashboard-summary').innerHTML = summaryHtml;
+            document.getElementById('org-profile').innerHTML = profileHtml;
 
-            // Build projects
-            let bodyHtml = '';
-            data.projects.forEach((project, pIdx) => {
-                const scoreClass = getScoreClass(project.progress);
-
-                let initiativesHtml = `
-                    <div class="initiative-header">
-                        <span>Initiative</span>
-                        <span>Status</span>
-                        <span>Progress</span>
-                        <span>Timeline</span>
-                        <span>Budget</span>
-                        <span>Quality</span>
+            // Build projects with bullet charts
+            let bodyHtml = `
+                <div class="section-header">
+                    <h3>Projects & Initiatives</h3>
+                    <div class="legend">
+                        <span><div class="dot" style="background: #48bb78;"></div> On Track</span>
+                        <span><div class="dot" style="background: #ecc94b;"></div> At Risk</span>
+                        <span><div class="dot" style="background: #f56565;"></div> Blocked</span>
+                        <span><div class="dot" style="background: #9f7aea;"></div> Complete</span>
                     </div>
-                `;
+                </div>
+            `;
 
+            data.projects.forEach((project, pIdx) => {
+                const target = 75; // Target line at 75%
+
+                // Build initiative rows
+                let initRowsHtml = '';
                 project.initiatives.forEach(init => {
                     const progressColor = getProgressColor(init.progress);
-                    const stars = '&#9733;'.repeat(init.quality) + '&#9734;'.repeat(5 - init.quality);
-
-                    initiativesHtml += `
-                        <div class="initiative-item">
-                            <div class="initiative-name">
-                                ${init.name}
-                                ${init.description ? `<div class="init-desc">${init.description}...</div>` : ''}
-                            </div>
-                            <div class="metric-cell">
-                                <span class="status-indicator ${init.status}">${init.status.replace('-', ' ')}</span>
-                            </div>
-                            <div class="metric-cell">
-                                <div class="progress-bar">
-                                    <div class="progress-fill ${progressColor}" style="width: ${init.progress}%"></div>
-                                </div>
-                                <div style="font-size: 11px; margin-top: 4px;">${init.progress}%</div>
-                            </div>
-                            <div class="metric-cell">
-                                <div class="metric-value" style="color: ${init.timeline === 'On Track' || init.timeline === 'Completed' ? '#2f855a' : init.timeline === 'At Risk' ? '#d69e2e' : '#c53030'}">${init.timeline}</div>
-                            </div>
-                            <div class="metric-cell">
-                                <div class="metric-value" style="color: ${init.budget === 'Under Budget' ? '#2f855a' : init.budget === 'On Budget' ? '#666' : '#c53030'}">${init.budget}</div>
-                            </div>
-                            <div class="metric-cell">
-                                <div style="color: #d69e2e; font-size: 12px;">${stars}</div>
-                            </div>
+                    initRowsHtml += `
+                        <div class="init-row">
+                            <div class="init-name">${init.name}</div>
+                            <div class="mini-progress"><div class="fill ${progressColor}" style="width: ${init.progress}%"></div></div>
+                            <div class="project-metric"><span class="metric-val">${init.progress}%</span></div>
+                            <div class="project-metric"><span class="metric-val" style="color: ${init.budget === 'Under Budget' ? '#2f855a' : init.budget === 'Over Budget' ? '#c53030' : '#666'}">${init.budget.split(' ')[0]}</span></div>
+                            <div><div class="status-dot ${init.status}"></div></div>
                         </div>
                     `;
                 });
 
                 bodyHtml += `
-                    <div class="project-section" onclick="this.classList.toggle('expanded')">
-                        <div class="project-header">
-                            <div class="project-title">
-                                <span style="width: 12px; height: 12px; border-radius: 50%; background: ${project.color}; display: inline-block;"></span>
-                                <h3>${project.name}</h3>
-                                <span style="font-size: 12px; color: #666;">(${project.initiatives.length} initiatives)</span>
-                            </div>
-                            <div class="project-score">
-                                <span class="score-badge ${scoreClass}">${project.progress}%</span>
-                                <span class="expand-icon">&#9660;</span>
+                    <div class="project-row" onclick="this.classList.toggle('expanded')">
+                        <div class="project-name">
+                            <span class="color-dot" style="background: ${project.color}"></span>
+                            ${project.name}
+                            <span class="init-count">(${project.initiatives.length})</span>
+                        </div>
+                        <div class="project-bullet">
+                            <div class="bullet-chart">
+                                <div class="bullet-bar" style="width: ${project.progress}%"></div>
+                                <div class="bullet-target" style="left: ${target}%"></div>
                             </div>
                         </div>
-                        <div class="initiative-list">
-                            ${initiativesHtml}
+                        <div class="project-metric">
+                            <div class="metric-val">${project.progress}%</div>
+                            <div class="metric-lbl">Progress</div>
                         </div>
+                        <div class="project-metric">
+                            <div class="metric-val">${project.quality}</div>
+                            <div class="metric-lbl">Quality</div>
+                        </div>
+                        <div>
+                            <div class="status-dot ${project.status}"></div>
+                        </div>
+                    </div>
+                    <div class="initiative-rows">
+                        ${initRowsHtml}
                     </div>
                 `;
             });
