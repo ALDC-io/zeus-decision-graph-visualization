@@ -3,17 +3,19 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 13:10",
-    "updated": "2026-02-04 13:10",
+    "created": "2026-02-04 13:33",
+    "updated": "2026-02-04 13:33",
     "edge_methods": [
       "metadata",
       "temporal",
       "similarity",
       "hub",
-      "contributor"
+      "contributor",
+      "hierarchy"
     ],
     "hours_filter": "all",
-    "contributors_enabled": true
+    "contributors_enabled": true,
+    "hierarchy_enabled": true
   },
   "groups": {
     "decision": {
@@ -51,6 +53,22 @@
     "contributor": {
       "color": "#718096",
       "label": "Contributors"
+    },
+    "management": {
+      "color": "#e53e3e",
+      "label": "ALDC Management Team"
+    },
+    "area_client": {
+      "color": "#2b6cb0",
+      "label": "Client Work"
+    },
+    "area_rnd": {
+      "color": "#9f7aea",
+      "label": "R&D"
+    },
+    "project": {
+      "color": "#4a5568",
+      "label": "Projects"
     }
   },
   "edge_types": {
@@ -94,6 +112,26 @@
       "width": 2,
       "label": "Created By"
     },
+    "team_member": {
+      "color": "#e53e3e",
+      "width": 4,
+      "label": "ALDC Management Team"
+    },
+    "contains": {
+      "color": "#4a5568",
+      "width": 3,
+      "label": "Contains"
+    },
+    "belongs_to": {
+      "color": "#718096",
+      "width": 2,
+      "label": "Belongs To"
+    },
+    "works_on": {
+      "color": "#63b3ed",
+      "width": 2,
+      "label": "Works On"
+    },
     "related": {
       "color": "#a0aec0",
       "width": 1,
@@ -104,27 +142,32 @@
     "jk": {
       "label": "JK",
       "color": "#3182ce",
-      "description": "John Moran - Technical Lead"
+      "description": "John Moran - CEO & Technical Lead",
+      "management": true
     },
     "lori": {
       "label": "Lori",
       "color": "#d53f8c",
-      "description": "Lori Beck - Operations"
+      "description": "Lori Beck - COO & Operations",
+      "management": true
     },
     "marshall": {
       "label": "Marshall",
       "color": "#38a169",
-      "description": "Brayden Marshall - Development"
+      "description": "Brayden Marshall - CTO & Development",
+      "management": true
     },
     "mike": {
       "label": "Mike",
       "color": "#dd6b20",
-      "description": "Mike Stuart - Engineering"
+      "description": "Mike Stuart - VP Engineering",
+      "management": true
     },
     "system": {
       "label": "System",
       "color": "#805ad5",
-      "description": "Automated CCE Learnings"
+      "description": "Automated CCE Learnings",
+      "management": false
     }
   },
   "nodes": [
@@ -1047,14 +1090,16 @@
       "contributor": "system"
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
       "created_at": null,
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
@@ -1064,7 +1109,9 @@
       "group": "cce_system",
       "size": 10,
       "created_at": null,
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
@@ -1074,7 +1121,9 @@
       "group": "cce_system",
       "size": 10,
       "created_at": null,
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
@@ -1084,17 +1133,33 @@
       "group": "cce_system",
       "size": 10,
       "created_at": null,
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
       "created_at": null,
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "bd3d36fb-bd8e-45e0-8643-937d1d1b8253",
+      "label": "Slack Message - #aldc-team Date: 2026-02-04 21:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-04 21:10:46 From: Marshall Johnston Channel: #aldc-team take care berrotherrr",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:10:46.377069",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "180d9bd4-ea41-4162-b7d5-694f82197cf1",
@@ -1104,7 +1169,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T20:40:05.452129",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
@@ -1114,7 +1181,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-02-04T20:32:45.409395",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "seattle-orcas-prototype",
+      "area": "client"
     },
     {
       "id": "3b5d33b4-5864-4511-9111-d42c01ad5a52",
@@ -1124,7 +1193,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T20:26:42.634049",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "30975fde-b2de-4296-94fb-587f3db54ce1",
@@ -1134,7 +1205,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T20:11:07.829199",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4722629a-dee6-4ac4-beda-dd5db5a21705",
@@ -1144,7 +1217,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T20:04:45.944729",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8ee10112-c588-4096-83b7-9385564936f4",
@@ -1154,7 +1229,9 @@
       "group": "cce",
       "size": 22,
       "created_at": "2026-02-04T19:53:32.465846",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "seattle-orcas-prototype",
+      "area": "client"
     },
     {
       "id": "51e7f084-1682-4377-b37c-23e75d939b95",
@@ -1164,7 +1241,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T19:24:23.071729",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "048057e9-d46a-4b5e-b695-cbc8e93d03ea",
@@ -1174,7 +1253,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:53:00.331539",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "56c7a0e1-7402-4b27-9548-cd6f3af0b754",
@@ -1184,7 +1265,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:37:26.848479",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "579a141d-7483-4b4e-9682-4661d8b4b99c",
@@ -1194,7 +1277,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:37.831069",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "5655606e-2881-4d80-988d-c45ec597abc7",
@@ -1204,7 +1289,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:30.847769",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "dd097d58-7305-4c94-99ab-4fc1382ed981",
@@ -1214,7 +1301,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:26.463899",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "bbaeb3fa-fff4-4d10-b008-17967c25fa28",
@@ -1224,7 +1313,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:03.422469",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6ad70eed-4e54-4885-95b9-c6d0be49c80d",
@@ -1234,7 +1325,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:51.412929",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6fe30b27-465b-4719-b81e-8ecb1a3b0593",
@@ -1244,7 +1337,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:47.403039",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "73fb273c-e2c6-419e-a41b-68e48030651a",
@@ -1254,7 +1349,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:37.591599",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "008ac27d-499e-4476-9b2a-44fe9dd18e96",
@@ -1264,7 +1361,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:20.082149",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1a1715e0-4b01-4c1e-8411-ffb4c8e6fa03",
@@ -1274,7 +1373,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T16:57:58.414989",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a7c93038-b652-4c90-91cd-07217b18ec2b",
@@ -1284,7 +1385,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T03:22:44.423869",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
@@ -1294,7 +1397,9 @@
       "group": "cce",
       "size": 12,
       "created_at": "2026-02-04T02:15:09.476643",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "eclipse_internal",
+      "area": "rnd"
     },
     {
       "id": "cb44f3d1-375e-44ba-961a-e2d2cab0c4d9",
@@ -1304,7 +1409,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:15:47.728379",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "57801406-676f-4227-aefa-3c540f58ce5c",
@@ -1314,7 +1421,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:13:15.235869",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c06cb024-75c5-4a92-86cd-d76d3b2638db",
@@ -1324,7 +1433,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:08:14.001319",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cf8349f9-d9a7-4428-a000-8931ef01703e",
@@ -1334,7 +1445,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:07:55.594769",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "79028569-17cd-4eb4-8fd7-a69d5f38d234",
@@ -1344,7 +1457,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:05:34.243889",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a78a6d20-732f-405e-9b84-d867273cd5e6",
@@ -1354,7 +1469,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T01:02:06.109989",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e9f3fd6c-5f18-42ba-b43c-e9ac4fb79a32",
@@ -1364,7 +1481,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T00:52:49.514569",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e8a85de5-a6b6-4307-b296-02d89223f36b",
@@ -1374,7 +1493,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T00:10:20.139069",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a9b76b63-9359-4d09-9697-848c54098229",
@@ -1384,7 +1505,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T00:10:02.135289",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "bfd84642-47fe-4927-8172-ac5335b42df1",
@@ -1394,7 +1517,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T00:09:49.657579",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1c44654c-be4e-4c55-b319-3372a14541db",
@@ -1404,7 +1529,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T23:12:05.866129",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "b594b9c7-bd32-408e-b604-fbde9a426495",
@@ -1414,7 +1541,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:39:22.819739",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3ca9c33f-c00d-480e-ba97-c76c5bf431fc",
@@ -1424,7 +1553,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:38:15.343349",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "48f96269-6ffd-47a4-a9fb-1883cf9b915d",
@@ -1434,7 +1565,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:38:06.787449",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1a7027fd-a68e-4a9e-b27b-c88bfaaa4fa9",
@@ -1444,7 +1577,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:37:50.878389",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2459969c-99b2-4152-b631-b8dae24a14f3",
@@ -1454,7 +1589,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T21:59:56.268729",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6bb076cb-a4ea-4611-80bc-b9eda38f5d6e",
@@ -1464,7 +1601,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T21:47:56.698569",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "73ad678d-ceab-47da-8b9d-2892031b2550",
@@ -1474,7 +1613,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:49:25.354999",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2e8cd946-2e44-4d29-99e3-e9856521aab3",
@@ -1484,7 +1625,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:48:40.073949",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e84b6ef0-95f9-4c2d-89cb-3448c5dc30d9",
@@ -1494,7 +1637,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:45:55.023739",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1d8b9d96-8770-45a9-87b1-15096c048971",
@@ -1504,7 +1649,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:45:37.033689",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "64bfa384-43d2-43a7-b9fb-189b1b0d81f7",
@@ -1514,7 +1661,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:45:14.731849",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "06b189ec-3f94-4dfe-9a6d-3c0173b06167",
@@ -1524,7 +1673,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:37.692149",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3a173047-f9e6-4745-9d78-09000de7dcec",
@@ -1534,7 +1685,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:27.876639",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "37000cf7-507c-49a4-833c-a722b4055d0c",
@@ -1544,7 +1697,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:17.626689",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "644c5058-9824-4134-9a5a-15bf17acb74c",
@@ -1554,7 +1709,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:08.178459",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "66b3ff73-0721-48df-aaea-50e9436b6e6f",
@@ -1564,7 +1721,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:43:39.204709",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "7b42c994-4a5f-45f3-b296-351d65e58965",
@@ -1574,7 +1733,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:25:41.692709",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f009356a-4bee-4bde-8df3-da21c18c6f9c",
@@ -1584,7 +1745,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:25:29.888219",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6e440bca-a2f4-4536-8430-aa656215cbd4",
@@ -1594,7 +1757,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:23:53.495209",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e275c9cb-d9c4-4ddd-a5b0-0afbd029ed5b",
@@ -1604,7 +1769,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:23:12.525919",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "7abb273e-e66b-472e-a6b3-351e4d7e61d1",
@@ -1614,7 +1781,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:22:49.259859",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c6cc6a33-7718-4318-8af5-c49165f72ad8",
@@ -1624,7 +1793,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:22:25.536489",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "65c7e0b8-9086-4a92-8be2-e7e78d1637ee",
@@ -1634,7 +1805,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T19:25:30.251199",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3429ba20-b62f-4fdb-b041-9106b8c42858",
@@ -1644,7 +1817,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T19:10:35.411199",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "17f8fd21-e00a-4840-b0c5-713b0505a64c",
@@ -1654,7 +1829,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:07:45.768709",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f6525ce0-41aa-41b4-ac4a-176d59fda87b",
@@ -1664,7 +1841,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:07:23.368159",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ecf1b2e9-ad41-48ee-9192-2eb4633a1760",
@@ -1674,7 +1853,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:06:50.873899",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "eb0bcf27-2309-4434-b6ee-df6ec4323d61",
@@ -1684,7 +1865,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:06:24.123669",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "388a74d1-e00d-4d44-8160-d76b3b9bde71",
@@ -1694,7 +1877,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:06:08.428109",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d39c9acb-8612-43fb-b969-9d5f6c8b5dd0",
@@ -1704,7 +1889,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T18:05:58.297899",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d405b5c5-3d45-4baa-9401-918b7e2c81e2",
@@ -1714,7 +1901,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:46:34.105609",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "45736e6c-6d43-4324-ba71-8ff8755e6329",
@@ -1724,7 +1913,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:42:18.988709",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9682ad20-d02f-4e72-90d9-04ff464f5ffd",
@@ -1734,7 +1925,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:41:41.927789",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d8ba2acd-78ff-4deb-8491-16e65318d327",
@@ -1744,7 +1937,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:40:48.792239",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cc39d67e-5e7e-45c5-8285-c147ab7745fe",
@@ -1754,7 +1949,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:39:28.668719",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "5cbf32c5-bb53-4c1d-afa3-be34b3a8cd34",
@@ -1764,7 +1961,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:21:08.266979",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4b47c4d8-aae2-476b-9f7e-b48fd337027b",
@@ -1774,7 +1973,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T17:10:29.157959",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "87cf81a8-0c16-4715-80af-542fe2924d42",
@@ -1784,7 +1985,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T15:31:17.795889",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "461540ae-724e-4569-ba30-0247f52b8112",
@@ -1794,7 +1997,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T00:27:36.576249",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e3e2df88-24d6-4c3f-8164-f3a2b4cefd11",
@@ -1804,7 +2009,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T00:27:23.990669",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f891b2a4-2062-487e-8248-85b39dfbef76",
@@ -1814,7 +2021,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T23:57:13.509249",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "09ad0dae-6b54-4bee-b9ca-b9335bebc239",
@@ -1824,7 +2033,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T23:32:22.784389",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fdd4188d-7500-4cea-927b-aa36c2e6cdbc",
@@ -1834,7 +2045,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T23:29:11.358419",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4fbfdf44-3f99-454f-8979-1308cc84f4c6",
@@ -1844,7 +2057,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T23:01:37.844159",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "768f1f07-c531-447e-88ed-28b705a26918",
@@ -1854,7 +2069,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T22:28:14.042779",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9d6fff1f-aa72-42b2-aa06-397ef4850bfa",
@@ -1864,7 +2081,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T21:39:28.331719",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0b491ef4-232a-48bf-aa10-50ec54f4442e",
@@ -1874,7 +2093,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T19:41:08.520649",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fba38045-69ef-4997-8a3e-bbb93a492bc4",
@@ -1884,7 +2105,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T18:27:32.497369",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f0e777d9-4bc2-4e08-9454-2aab74140f3f",
@@ -1894,7 +2117,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T17:03:08.176749",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6400c17c-85d0-482f-92be-4627b8f7dd25",
@@ -1904,7 +2129,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T17:00:52.026579",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9b363e53-84bc-441f-942c-ef3a5a5fc4a0",
@@ -1914,7 +2141,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-01T23:37:39.360979",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "163f3047-7c2b-4ef8-8cec-49e0fe8d7d8d",
@@ -1924,7 +2153,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:51:52.926316",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "91b1bb68-fb07-4529-af3c-1f7383220813",
@@ -1934,7 +2165,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:47:44.540306",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "469e3b93-fee3-45c1-ac4c-3c580de3bb55",
@@ -1944,7 +2177,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:34:34.238552",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "aad9d466-fa47-4e14-9862-4dd4dfc43413",
@@ -1954,7 +2189,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:31:57.932150",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fb555594-4081-498d-ac2b-56427a4b6734",
@@ -1964,7 +2201,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:29:58.537361",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9c1fad3d-f392-4d8a-b1de-34d4fafd35ea",
@@ -1974,7 +2213,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-31T02:26:00.457342",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
@@ -1984,7 +2225,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-31T02:25:54.796103",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "athena",
+      "area": "rnd"
     },
     {
       "id": "d86947d7-06f1-4eb0-a85f-1f0b2a2c8bc6",
@@ -1994,7 +2237,9 @@
       "group": "cce",
       "size": 15,
       "created_at": "2026-01-31T02:13:18.403337",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "42cc16a0-5ee9-4cee-a4e0-58c81e0087ca",
@@ -2004,7 +2249,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:08:37.664908",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "61d166e5-ab6d-4c34-87c2-26db57c76cc1",
@@ -2014,7 +2261,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-31T02:04:36.655250",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "250d0e7b-3f50-415d-9a67-dce827d7d060",
@@ -2024,7 +2273,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-31T00:30:35.110039",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
@@ -2034,7 +2285,9 @@
       "group": "cce",
       "size": 18,
       "created_at": "2026-01-30T23:59:41.810775",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "consulting-dashboard",
+      "area": "rnd"
     },
     {
       "id": "50da6048-3933-424a-ae24-477a20a2e38a",
@@ -2044,7 +2297,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T23:37:50.967199",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "789ad2e8-cc85-44f0-8b13-8e035d3c6510",
@@ -2054,7 +2309,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T23:37:16.634609",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f70c46a6-b82c-464a-84f3-eb016daa18be",
@@ -2064,7 +2321,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:04:58.143099",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4532b1fe-b114-4d0e-8b3e-c64106c1b2d4",
@@ -2074,7 +2333,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:04:35.876659",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3c383ebd-ef47-4e97-ba76-2a9f2edc62bb",
@@ -2084,7 +2345,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:03:56.171689",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0203ec2a-692e-433c-aad8-ce622aec24d6",
@@ -2094,7 +2357,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:03:33.086709",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1e938c0a-85d3-424a-9743-19a9ea1c917d",
@@ -2104,7 +2369,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:02:49.614599",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ce26dcb3-fdfb-4c27-9946-12b7d8a3c8f0",
@@ -2114,7 +2381,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:02:16.644379",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "69f6a33d-4072-441b-b5ac-7156b5852447",
@@ -2124,7 +2393,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:00:49.301309",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "774bbdba-9c3a-44ca-b739-6b49815222d0",
@@ -2134,7 +2405,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:00:02.990859",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "eb23dadd-b256-48b5-8cea-06e665bdd1ad",
@@ -2144,7 +2417,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:59:07.993229",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a566e1e9-d985-4753-9a57-b1f1890d3164",
@@ -2154,7 +2429,9 @@
       "group": "cce",
       "size": 15,
       "created_at": "2026-01-30T20:58:34.026738",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "aldc-data-mapping",
+      "area": "rnd"
     },
     {
       "id": "3ec17849-7b45-4c10-a385-e7bf8f6e5df0",
@@ -2164,7 +2441,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:58:25.416999",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "51c33d99-31f6-4896-a4a1-76a7928c4b0f",
@@ -2174,7 +2453,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:56:06.750959",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ca824dc4-77b5-4abc-8bee-149cba7b5b0a",
@@ -2184,7 +2465,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:54:18.096339",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "71b1b9a3-4b61-45b8-9c25-a459a3571cde",
@@ -2194,7 +2477,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:51:47.047929",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2c95885a-93a6-4407-bc19-973bd12a378e",
@@ -2204,7 +2489,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:51:20.744839",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4f026657-03ca-4666-8463-a09c841fda16",
@@ -2214,7 +2501,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:50.776549",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2bc5808e-c2a4-45a9-bdbd-f43db99ea631",
@@ -2224,7 +2513,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:33.232869",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d890019f-ce76-4558-96f0-7e6bd4bb948d",
@@ -2234,7 +2525,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:28.507049",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "7f6ad6f4-59b4-4274-897d-f3c26eb6efab",
@@ -2244,7 +2537,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:27.909579",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a972a37a-940c-427a-a18d-eba0ddd2a13d",
@@ -2254,7 +2549,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:10.122449",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0e7aebd1-298a-4ab1-8ce8-6c93cfdfc290",
@@ -2264,7 +2561,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:49:46.079629",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2ade582c-f9c0-489b-9fe6-ee00b03c4355",
@@ -2274,7 +2573,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:49:17.322299",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "99654e94-2ced-490a-a0e9-49812970de29",
@@ -2284,7 +2585,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:48:37.882389",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fda8dadf-8c74-4149-bc88-c16f145f6982",
@@ -2294,7 +2597,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:45:44.329789",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fae7ae68-483a-44f9-91c4-a6ad2990a9f1",
@@ -2304,7 +2609,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:43:01.265519",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "aa55ec74-212d-40c8-b635-84478864a360",
@@ -2314,7 +2621,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:42:25.562839",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4f34ed79-646b-4faf-b44b-a43ffae43b1c",
@@ -2324,7 +2633,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:39:25.966319",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4b9f5623-a517-4c20-90cc-ee5d436a4ce5",
@@ -2334,7 +2645,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:38:57.025129",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "5b0a0f2f-34e5-48e7-8195-cd0b5b3fee7b",
@@ -2344,7 +2657,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:38:43.526859",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e98c9ea6-5e49-41df-9b27-25d644396495",
@@ -2354,7 +2669,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:37:59.479629",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "bf92666d-ed51-4c18-8876-33b343c1e54e",
@@ -2364,7 +2681,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:37:42.394049",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "59d7010c-6231-4e40-a7d8-23220d51f229",
@@ -2374,7 +2693,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:37:36.055859",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "560afe78-3f2d-45b4-a7dc-4c7c001ef678",
@@ -2384,7 +2705,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:35:46.080869",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "baaf77c9-7912-468e-9a31-2f4750998e0c",
@@ -2394,7 +2717,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:28:56.114199",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "b172f2c6-2def-49ff-a5a8-86bd79ad0af3",
@@ -2404,7 +2729,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:25:16.445049",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "53c2a937-d25d-4fe4-824e-3ed1742786b9",
@@ -2414,7 +2741,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:14:34.945399",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9fc59a01-f2aa-4671-a04b-1733f89260f9",
@@ -2424,7 +2753,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T17:23:25.672559",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a329a03d-1b0c-46d8-9c96-34ea13f9c455",
@@ -2434,7 +2765,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T17:19:04.819819",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "451f27e0-3010-41d4-a441-2b94352ef0e5",
@@ -2444,7 +2777,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T23:09:50.558009",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "87afa830-5d8f-4ba3-9eb8-435cd7a9ded1",
@@ -2454,7 +2789,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T22:00:41.210339",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "486dabf7-a960-4fa8-a998-c799008aa070",
@@ -2464,7 +2801,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:57:33.291739",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "13f42b19-ec72-4aec-8ec8-ed7426661bee",
@@ -2474,7 +2813,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:56:55.662469",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "768d95de-8d3a-454f-8947-ac02e12730da",
@@ -2484,7 +2825,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:56:52.342809",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d44bbffa-4e0b-4090-a2ee-8b7055a8a1ea",
@@ -2494,7 +2837,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:55:21.031079",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "accc3a75-b64f-4786-a8d2-c0215b57e76c",
@@ -2504,7 +2849,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:54:27.508729",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f8e59daf-f3c4-4292-87a3-2532330aa2f7",
@@ -2514,7 +2861,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:52:11.461569",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4910342c-687d-41bb-9afe-075a4c7a2969",
@@ -2524,7 +2873,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:41:31.256649",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ea7649bf-8d19-4a5d-a1e1-8b33928160f6",
@@ -2534,7 +2885,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:40:37.025419",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "38af4af3-a1ad-4f41-acc7-eeaa8c616e1e",
@@ -2544,7 +2897,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:54:29.468849",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d2a4055f-c995-4aab-90c5-a6ffe795d71f",
@@ -2554,7 +2909,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:39:38.142939",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fd92c2b2-5529-4ffb-aa3d-1e6e5f38f59f",
@@ -2564,7 +2921,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:21:12.560989",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "73995f72-42e8-4316-a3ba-22ebf8e785d9",
@@ -2574,7 +2933,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:20:21.675859",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "71a53f29-d5aa-4d39-89ea-74106cbfd90e",
@@ -2584,7 +2945,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T19:31:27.288669",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "db80d8b1-a8f2-49b1-9ce9-efd561b66921",
@@ -2594,7 +2957,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T18:21:52.862749",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d2eb027e-afa1-4442-8274-ee9fb5998864",
@@ -2604,7 +2969,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T18:10:55.404779",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3e6adfdf-c7c4-46d0-9fe1-56b4a41a2d7f",
@@ -2614,7 +2981,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T17:37:17.106109",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "59b0b151-3255-41cf-a4ef-0c3020cc222d",
@@ -2624,7 +2993,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T17:20:49.192239",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "65a3ca42-6acd-449a-ae0d-dbe057df4550",
@@ -2634,7 +3005,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T17:12:03.280829",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "173b95f7-9f46-432d-a353-2669d0db95dc",
@@ -2644,7 +3017,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T16:32:55.702689",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9afd0835-6d27-4777-9cf7-3d4ff0768bf9",
@@ -2654,7 +3029,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T16:32:49.896219",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "509acd62-deaf-4b5e-9b65-b6764aa79ca6",
@@ -2664,7 +3041,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T16:32:45.862759",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "00a75e30-ac3c-4ab3-abc4-11784f5a023f",
@@ -2674,7 +3053,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-29T02:50:11.326404",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "422126dd-2714-4008-b993-545e4ee8cdfb",
@@ -2684,7 +3065,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-29T02:50:09.767277",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "3aaec4da-8ceb-490b-9281-22489fd9af21",
@@ -2694,7 +3077,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-29T02:45:17.566458",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
@@ -2704,7 +3089,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-29T02:45:09.364217",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
@@ -2714,7 +3101,9 @@
       "group": "cce_research",
       "size": 20,
       "created_at": "2026-01-29T01:16:32.595692",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
@@ -2724,7 +3113,9 @@
       "group": "cce_research",
       "size": 20,
       "created_at": "2026-01-29T01:16:09.003111",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "b231fb78-d82d-4856-8740-a14034e0de3d",
@@ -2734,7 +3125,9 @@
       "group": "cce_research",
       "size": 20,
       "created_at": "2026-01-29T01:15:47.637843",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
@@ -2744,7 +3137,9 @@
       "group": "cce_research",
       "size": 20,
       "created_at": "2026-01-29T01:15:30.690503",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "zeus-decision-graph-visualization",
+      "area": "rnd"
     },
     {
       "id": "7385915f-ad32-4efa-9edb-db161de134a5",
@@ -2754,7 +3149,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T01:14:31.538019",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0ec48349-d3b4-43aa-b33c-24ac836d94fb",
@@ -2764,7 +3161,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T01:11:00.617999",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
@@ -2774,7 +3173,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-28T21:46:57.971097",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e761df6c-0629-4557-8200-11e6804c0e08",
@@ -2784,7 +3185,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-28T21:46:44.590115",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3235c2de-5748-4d13-84cc-306d9289c850",
@@ -2794,7 +3197,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-28T21:46:23.099882",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ca0b2400-7917-4012-bf42-24f973c827c2",
@@ -2804,7 +3209,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T20:48:22.549579",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9e2b6bf7-c447-41b3-b116-e66d694febc5",
@@ -2814,7 +3221,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T20:47:25.234669",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f6da3153-56ad-4b7d-9df0-954382221dc3",
@@ -2824,7 +3233,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-28T18:30:13.560049",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
@@ -2834,7 +3245,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-28T18:30:13.362391",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
@@ -2844,7 +3257,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-28T18:30:13.168170",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
@@ -2854,7 +3269,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-28T18:30:12.958970",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "40725e33-6f6b-4711-a668-a2be7eb500a2",
@@ -2864,7 +3281,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T16:41:34.823729",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "225c3bf2-2e37-44f6-9027-0bae1efefa0c",
@@ -2874,7 +3293,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T16:40:51.600099",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "11ac34b3-bc8e-41ff-8811-7c75c86c2c77",
@@ -2884,7 +3305,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T16:37:07.360049",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e448cab8-7a99-4b40-8e76-00a6816309fb",
@@ -2894,7 +3317,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:53:24.201839",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "367fe383-c5d4-4e74-9f21-11be0ad2f366",
@@ -2904,7 +3329,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:53:00.981369",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "79308569-81db-4341-b5b7-19bbe0f744ac",
@@ -2914,7 +3341,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:52:04.808909",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "46c431df-4a12-4a91-8620-11e9c8bd52ca",
@@ -2924,7 +3353,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:52:00.930979",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d1c43b34-2c46-4b17-b573-7384dc0f95a0",
@@ -2934,7 +3365,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:51:56.411319",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0b8d3c54-f760-4deb-83cb-a59a81aebf75",
@@ -2944,7 +3377,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:51:43.159649",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1c84743d-70ea-4ccf-bc64-d5ba4c8fb983",
@@ -2954,7 +3389,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:51:34.441189",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9252ea85-ab2f-4f65-a5c2-3d5f5abb44d9",
@@ -2964,7 +3401,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:51:23.061109",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c81ee30b-d55b-4426-a13b-cf55c2a6b0dd",
@@ -2974,7 +3413,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:50:25.232509",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "448b2501-94eb-4aec-a924-8ba35397aa0c",
@@ -2984,7 +3425,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:37:09.077069",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6435e4f6-0ae2-41e8-ab8c-8e6b2f4b563a",
@@ -2994,7 +3437,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:36:14.704479",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9ab150ad-3bb8-4a8e-8483-097935085e5e",
@@ -3004,7 +3449,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-28T04:36:09.905579",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cbd85882-64f6-48e7-9be0-88ad98da4a07",
@@ -3014,7 +3461,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-27T17:45:49.409419",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "32194ebb-5ac4-43c0-afd2-5c04eb089a92",
@@ -3024,7 +3473,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-27T17:17:15.878779",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1d09669e-fa54-4650-bbd8-4c8ae6819b05",
@@ -3034,7 +3485,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-27T05:42:19.570645",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e523eab1-34e5-4e50-9a02-27ea5206b1a2",
@@ -3044,7 +3497,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-27T05:42:18.769396",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "575b79f2-f591-44dd-8fe9-a7568f42e26a",
@@ -3054,7 +3509,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-27T05:42:18.027028",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2bf76ce2-7dbb-495d-a763-adbb9819fc0e",
@@ -3064,7 +3521,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-27T05:41:59.173403",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "50edff2d-8c84-4ec2-a324-5bddaf61dc3f",
@@ -3074,7 +3533,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-27T05:41:58.716110",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6436b332-7f7c-4223-8f76-70313dd8079b",
@@ -3084,7 +3545,9 @@
       "group": "cce_success_log",
       "size": 20,
       "created_at": "2026-01-27T05:41:58.092586",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "adaab4a9-b775-4421-bf9e-23e9f1b87d56",
@@ -3094,7 +3557,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:41:35.712378",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fb937e23-843f-4234-9c57-2aef3ae1c9da",
@@ -3104,7 +3569,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:41:34.882219",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9531d0d0-c974-4a80-b14f-027ca1f90c73",
@@ -3114,7 +3581,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:41:34.121612",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "30c9a929-c332-4ab6-96fc-7745758d692e",
@@ -3124,7 +3593,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:38:36.541360",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a795f64e-d54c-46d3-8275-509235ad1873",
@@ -3134,7 +3605,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:38:31.743015",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3b5c53da-e55d-492a-928a-693d20b77964",
@@ -3144,7 +3617,9 @@
       "group": "cce_decision_log",
       "size": 25,
       "created_at": "2026-01-27T05:12:06.688172",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c45c7dde-ac70-4fd0-8872-82082ab55c44",
@@ -3154,7 +3629,9 @@
       "group": "cce_failed_approach",
       "size": 15,
       "created_at": "2026-01-27T05:12:02.210619",
-      "contributor": "system"
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a2348fe7-ce10-4a45-9ffa-09b4c87f4feb",
@@ -3164,7 +3641,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-27T01:07:51.144489",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2dae8594-b970-435b-8125-2d95a3578980",
@@ -3174,7 +3653,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T23:52:54.428749",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f6d21f9f-6e92-4fb3-a8c2-701eb498b3a4",
@@ -3184,7 +3665,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T22:00:38.287029",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a76a4e65-571e-4ab8-8329-1b4766044109",
@@ -3194,7 +3677,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:53:39.850349",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "72f13f9d-be9b-4948-aeae-3ae5ef77180a",
@@ -3204,7 +3689,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:53:27.003439",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0fe2fe47-42ba-42b2-957b-462d964c1bf5",
@@ -3214,7 +3701,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:53:04.661189",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "162c1a71-694c-4641-94d1-67bd72a65086",
@@ -3224,7 +3713,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:52:56.509809",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "bd48e53b-0f7b-4806-bffb-c16f6e959353",
@@ -3234,7 +3725,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:52:53.147109",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "41419da4-e335-43f9-bc6e-52515b6a4976",
@@ -3244,7 +3737,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:52:11.933679",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "62b6d6ec-7ddc-4f14-ad6e-256ee70c0837",
@@ -3254,7 +3749,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:51:40.168419",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0f42f201-990b-47ce-80f7-c42db1ded10f",
@@ -3264,7 +3761,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:51:36.656279",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3e04cd72-445a-45e6-9ee6-f0fb26d0da3d",
@@ -3274,7 +3773,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-26T21:09:50.161089",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "26494f92-0e10-4550-8fa2-2fef1356e937",
@@ -3284,7 +3785,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:51:04.057939",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d0818cb6-4a99-4355-be88-96b19c01925f",
@@ -3294,7 +3797,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:50:53.843769",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3a7a31e0-bf21-45ec-9383-5d5a4b522138",
@@ -3304,7 +3809,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:50:53.608519",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f830f7bb-e85c-459f-9e6b-4ed4ce6375a1",
@@ -3314,7 +3821,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:50:40.286479",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "434d1e88-36c6-4f67-86c3-402e1d77493b",
@@ -3324,7 +3833,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:48:48.157499",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3a943388-728d-4a1d-8ade-e6d7e3ba825b",
@@ -3334,7 +3845,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:48:28.986739",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1fafb71f-49c7-495c-b70f-1ddb37c3bedc",
@@ -3344,7 +3857,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:48:05.329879",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4832d5ad-e1d0-426c-b6e0-3b8dc60a2cf7",
@@ -3354,7 +3869,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:47:39.684539",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9ec277ce-151c-405b-ba40-1336b021d7b6",
@@ -3364,7 +3881,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:47:20.396759",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0f1f7361-1227-4c8d-b4ed-02ee1b533a81",
@@ -3374,7 +3893,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:47:02.336259",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "974c2218-a677-4ad8-9bb9-225188ded7aa",
@@ -3384,7 +3905,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:46:30.862149",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1b75e99f-6c55-4171-b4f7-528e80bc951b",
@@ -3394,7 +3917,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T18:45:06.293059",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cd3f41b9-87e0-4b1c-ac27-ec27601ed2c7",
@@ -3404,7 +3929,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-25T17:47:51.456819",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d0c16e3d-6db2-42e5-97b3-8b437deb0f6d",
@@ -3414,7 +3941,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T23:41:55.756689",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "e8141b06-1362-4d81-bf59-41612a4ec02e",
@@ -3424,7 +3953,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T23:31:22.095599",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1ea54b45-4b81-438d-a16a-deab0971c21b",
@@ -3434,7 +3965,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T22:55:52.771019",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "764e9601-4b5f-42ef-a271-8f6b48e086ed",
@@ -3444,7 +3977,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T22:55:23.997549",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "06b66ca0-758d-42c4-88a2-4df9f3a59ded",
@@ -3454,7 +3989,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T20:23:05.499179",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f99802ad-12d4-4f4e-8f3b-3998bd84efdb",
@@ -3464,7 +4001,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T19:52:44.363579",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "0826fe58-d762-4c7b-a026-851b498a97b0",
@@ -3474,7 +4013,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T17:44:03.399999",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "33574549-a91c-4e19-82fa-1f6b483e6c93",
@@ -3484,7 +4025,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T17:33:51.517689",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "49a7ee55-34a0-4a44-9c74-13db6cec07b2",
@@ -3494,7 +4037,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T17:33:37.325439",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8a4e2906-fba3-43cf-a435-5904b2b3997d",
@@ -3504,7 +4049,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T16:48:52.320259",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "9f8a9626-a926-43ad-8564-f3c5fdb98f81",
@@ -3514,7 +4061,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T16:08:15.555979",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "12ec9f90-4284-42da-97ec-f708e5f8b98b",
@@ -3524,7 +4073,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T15:54:00.306189",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "dabc8c1b-4592-4d91-b5a9-5d7044c9850a",
@@ -3534,7 +4085,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T15:40:01.457239",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f7309073-0439-4e86-86f3-a481658691df",
@@ -3544,7 +4097,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:46:47.996169",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "af31bbe5-dfd0-4f52-9300-9c6db1accd69",
@@ -3554,7 +4109,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:46:40.472519",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3bf52f2c-5c39-4c0a-8b5d-b55b66569c69",
@@ -3564,7 +4121,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:44:05.511909",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "bdc96d71-6695-40f2-bcd4-7888b4bb055d",
@@ -3574,7 +4133,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:07:36.415159",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ab9b3957-e653-4d79-a604-63c464a34ad1",
@@ -3584,7 +4145,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T05:06:45.164169",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "41ed51f4-e8d2-496d-8fcd-a7d1be4b65ba",
@@ -3594,7 +4157,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T00:31:51.245089",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4a0fd6e5-619b-466c-a03c-00ef93daaa47",
@@ -3604,7 +4169,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T00:23:15.967759",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3c9df8dc-40e6-4097-a7a0-abe6ede866b8",
@@ -3614,7 +4181,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T00:22:52.533309",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "232a55ab-ea14-4751-8bcf-c1d37204b8c5",
@@ -3624,7 +4193,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T23:31:40.575379",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "a8f4296e-8905-4d0c-a9cf-d6619169b8d6",
@@ -3634,7 +4205,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T23:07:10.229739",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "6a321d5f-87c5-49fb-9a54-87d9dccb287a",
@@ -3644,7 +4217,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T19:26:43.077059",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "176ce958-9218-4e70-9b28-ef51c612f840",
@@ -3654,7 +4229,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T18:39:02.882869",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
@@ -3664,7 +4241,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T18:01:48.091569",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2ba99597-ea74-443a-bbee-359a2f899128",
@@ -3674,7 +4253,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T16:48:09.280439",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "740263d5-217c-4f92-9396-494b93a82ebb",
@@ -3684,7 +4265,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T16:46:31.259779",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f9a648ce-2076-4019-b856-074c03a7f301",
@@ -3694,7 +4277,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T16:43:52.308179",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
@@ -3704,7 +4289,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T01:25:42.818409",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "954b76b8-9f55-4231-b2b0-0a53f7c4db93",
@@ -3714,7 +4301,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-22T00:37:34.817069",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
@@ -3724,7 +4313,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T23:40:40.105799",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "f2f786b4-67f0-46ff-becf-0cd979b93858",
@@ -3734,7 +4325,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:51:49.797349",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
@@ -3744,7 +4337,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:47:07.179889",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
@@ -3754,7 +4349,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:47:02.484769",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c6f1a5db-ea03-4921-971a-121101c24526",
@@ -3764,7 +4361,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:46:46.103629",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "5be6b0cc-9251-43b0-84ae-7dd488e27c8f",
@@ -3774,7 +4373,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:46:13.246829",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "362a08d9-9441-420a-a5c5-1637ba5f426e",
@@ -3784,7 +4385,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:46:07.804659",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8b0fd3ea-6cdc-4cb8-aaad-395680db7877",
@@ -3794,7 +4397,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:00:36.603419",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4d61f8c1-dbf6-416f-8663-536ce5a1dbd3",
@@ -3804,7 +4409,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T18:00:34.291819",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "4820c51e-fa37-4572-a443-e02ebf376062",
@@ -3814,7 +4421,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T16:36:57.822729",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "5fd7649f-cb93-4ba4-a4f5-cea19be5b795",
@@ -3824,7 +4433,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T16:36:36.450309",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "ef6d720d-7e75-4d04-bd7e-38f77d6b3bae",
@@ -3834,7 +4445,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T00:12:30.744259",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "2ce831eb-fc65-4fbc-971c-6eca1dbcd5de",
@@ -3844,7 +4457,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T00:09:45.680219",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "90b165a6-eda1-466d-81b0-ed2ad12d917a",
@@ -3854,7 +4469,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-20T17:43:15.669179",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "3d7496be-c489-4c03-a478-f9692e694950",
@@ -3864,7 +4481,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-20T17:00:30.887319",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
@@ -3874,7 +4493,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-20T15:38:32.947909",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "52f88706-8eba-4976-be65-e6199c694824",
@@ -3884,7 +4505,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-20T14:20:58.223119",
-      "contributor": "marshall"
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
@@ -3894,7 +4517,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-20T06:18:23.353889",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c4325833-3120-4039-8e39-cd79097a1b26",
@@ -3904,7 +4529,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:43:04.128789",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "b401ae13-2ebe-4126-81d5-17543fb6acf3",
@@ -3914,7 +4541,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:42:29.477579",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "465f38a6-8242-40c3-b2f6-0ec88f2a3a4a",
@@ -3924,7 +4553,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:38:14.144949",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "cbf9103f-3792-49bd-a30f-965a4ce9d1d4",
@@ -3934,7 +4565,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:35:46.223009",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
@@ -3944,7 +4577,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:35:46.154579",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
@@ -3954,7 +4589,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:35:45.899259",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "fccfbe8d-f947-4a00-95ac-306e84449b03",
@@ -3964,7 +4601,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:35:45.824359",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "c477d8c2-6bd9-4031-a2da-44df4941b7e4",
@@ -3974,7 +4613,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T22:35:45.735589",
-      "contributor": "mike"
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "828f86f7-bb49-4f83-8e78-50ccf9eb1262",
@@ -3984,7 +4625,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T20:29:46.815309",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "94ad012a-54cd-4b25-99e3-4e8f26107f0b",
@@ -3994,7 +4637,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T18:58:30.560799",
-      "contributor": "lori"
+      "contributor": "lori",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "d3e6e31f-dc20-4ac4-b534-88f07bc45a5e",
@@ -4004,7 +4649,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T18:54:06.523529",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1beed024-2010-4007-8525-ef0e680f0d79",
@@ -4014,7 +4661,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T18:53:47.400359",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
@@ -4024,7 +4673,9 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T18:52:53.390059",
-      "contributor": "jk"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
@@ -4034,53 +4685,49 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-19T17:17:45.560819",
-      "contributor": "jk"
-    },
-    {
-      "id": "ef93c602-a1ad-4347-b318-2b88280d5e17",
-      "label": "Slack Message - #aldc-team Date: 2026-01-19 17:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-19 17:17:35 From: Brayden Marshall Channel: #aldc-team I'll send you a DM to chat so we can take this out of the team channel",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T17:17:35.407699",
-      "contributor": "marshall"
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
     },
     {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - Technical Lead\n\nLearnings: 158",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 159",
       "tier": 0,
-      "group": "contributor",
-      "size": 80,
-      "contributor_id": "jk"
+      "group": "management",
+      "size": 100,
+      "contributor_id": "jk",
+      "is_management": true
     },
     {
       "id": "contributor_lori",
       "label": "Lori",
-      "title": "Lori Beck - Operations\n\nLearnings: 38",
+      "title": "Lori Beck - COO & Operations\n\nALDC Management Team\nLearnings: 38",
       "tier": 0,
-      "group": "contributor",
-      "size": 68,
-      "contributor_id": "lori"
+      "group": "management",
+      "size": 88,
+      "contributor_id": "lori",
+      "is_management": true
     },
     {
       "id": "contributor_marshall",
       "label": "Marshall",
-      "title": "Brayden Marshall - Development\n\nLearnings: 16",
+      "title": "Brayden Marshall - CTO & Development\n\nALDC Management Team\nLearnings: 15",
       "tier": 0,
-      "group": "contributor",
-      "size": 46,
-      "contributor_id": "marshall"
+      "group": "management",
+      "size": 65,
+      "contributor_id": "marshall",
+      "is_management": true
     },
     {
       "id": "contributor_mike",
       "label": "Mike",
-      "title": "Mike Stuart - Engineering\n\nLearnings: 40",
+      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 40",
       "tier": 0,
-      "group": "contributor",
-      "size": 70,
-      "contributor_id": "mike"
+      "group": "management",
+      "size": 90,
+      "contributor_id": "mike",
+      "is_management": true
     },
     {
       "id": "contributor_system",
@@ -4089,7 +4736,96 @@
       "tier": 0,
       "group": "contributor",
       "size": 80,
-      "contributor_id": "system"
+      "contributor_id": "system",
+      "is_management": false
+    },
+    {
+      "id": "area_client",
+      "label": "Client Work",
+      "title": "Client Projects and Engagements",
+      "tier": 0,
+      "group": "area_client",
+      "size": 60
+    },
+    {
+      "id": "area_rnd",
+      "label": "R&D",
+      "title": "Research & Development / Internal Projects",
+      "tier": 0,
+      "group": "area_rnd",
+      "size": 60
+    },
+    {
+      "id": "project_seattle_orcas_prototype",
+      "label": "seattle-orcas-prototype",
+      "title": "seattle-orcas-prototype\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 34,
+      "project_name": "seattle-orcas-prototype",
+      "area": "client",
+      "successes": 1,
+      "failures": 0
+    },
+    {
+      "id": "project_athena",
+      "label": "athena",
+      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "athena",
+      "area": "rnd",
+      "successes": 1,
+      "failures": 0
+    },
+    {
+      "id": "project_aldc_data_mapping",
+      "label": "aldc-data-mapping",
+      "title": "aldc-data-mapping\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "aldc-data-mapping",
+      "area": "rnd",
+      "successes": 0,
+      "failures": 0
+    },
+    {
+      "id": "project_consulting_dashboard",
+      "label": "consulting-dashboard",
+      "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "consulting-dashboard",
+      "area": "rnd",
+      "successes": 0,
+      "failures": 0
+    },
+    {
+      "id": "project_zeus_decision_graph_visualization",
+      "label": "zeus-decision-graph-visualizat",
+      "title": "zeus-decision-graph-visualization\n\nSuccesses: 2\nFailures: 1\nDecisions: 1\nOther: 4",
+      "tier": 1,
+      "group": "project",
+      "size": 46,
+      "project_name": "zeus-decision-graph-visualization",
+      "area": "rnd",
+      "successes": 2,
+      "failures": 1
+    },
+    {
+      "id": "project_eclipse_internal",
+      "label": "eclipse_internal",
+      "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "eclipse_internal",
+      "area": "rnd",
+      "successes": 0,
+      "failures": 0
     }
   ],
   "edges": [
@@ -4109,17 +4845,17 @@
       "type": "references"
     },
     {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "same_category"
     },
@@ -4135,7 +4871,7 @@
     },
     {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
@@ -4145,12 +4881,12 @@
     },
     {
       "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
       "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
@@ -5754,11 +6490,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "ef93c602-a1ad-4347-b318-2b88280d5e17",
-      "target": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
-      "type": "temporal_context"
-    },
-    {
       "source": "8939f6de-75d7-49e8-bdd5-23fb886a2c2e",
       "target": "1cea2326-0ac8-44ee-85aa-b1ff5b17af26",
       "type": "temporal_context"
@@ -5801,6 +6532,11 @@
     {
       "source": "05302576-5af2-4f73-a7d4-ed2e5d153f11",
       "target": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
+      "type": "temporal_context"
+    },
+    {
+      "source": "823ed36a-e692-461f-bdc7-fcbd146c1e0e",
+      "target": "cbf9103f-3792-49bd-a30f-965a4ce9d1d4",
       "type": "temporal_context"
     },
     {
@@ -5848,12 +6584,6 @@
     {
       "source": "8a4e2906-fba3-43cf-a435-5904b2b3997d",
       "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "type": "similar",
-      "weight": 0.895
-    },
-    {
-      "source": "8a4e2906-fba3-43cf-a435-5904b2b3997d",
-      "target": "ef93c602-a1ad-4347-b318-2b88280d5e17",
       "type": "similar",
       "weight": 0.895
     },
@@ -6486,6 +7216,26 @@
       "type": "informs"
     },
     {
+      "source": "contributor_jk",
+      "target": "contributor_lori",
+      "type": "team_member"
+    },
+    {
+      "source": "contributor_lori",
+      "target": "contributor_marshall",
+      "type": "team_member"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "contributor_mike",
+      "type": "team_member"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "contributor_jk",
+      "type": "team_member"
+    },
+    {
       "source": "contributor_system",
       "target": "3fef9c85-6da2-4dcf-bd29-1617db201147",
       "type": "created_by"
@@ -6942,7 +7692,7 @@
     },
     {
       "source": "contributor_system",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -6962,7 +7712,12 @@
     },
     {
       "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "bd3d36fb-bd8e-45e0-8643-937d1d1b8253",
       "type": "created_by"
     },
     {
@@ -8436,9 +9191,104 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_marshall",
-      "target": "ef93c602-a1ad-4347-b318-2b88280d5e17",
-      "type": "created_by"
+      "source": "area_client",
+      "target": "project_seattle_orcas_prototype",
+      "type": "contains"
+    },
+    {
+      "source": "project_seattle_orcas_prototype",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_seattle_orcas_prototype",
+      "target": "8ee10112-c588-4096-83b7-9385564936f4",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_athena",
+      "type": "contains"
+    },
+    {
+      "source": "project_athena",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_aldc_data_mapping",
+      "type": "contains"
+    },
+    {
+      "source": "project_aldc_data_mapping",
+      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_consulting_dashboard",
+      "type": "contains"
+    },
+    {
+      "source": "project_consulting_dashboard",
+      "target": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_zeus_decision_graph_visualization",
+      "type": "contains"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "00a75e30-ac3c-4ab3-abc4-11784f5a023f",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "b231fb78-d82d-4856-8740-a14034e0de3d",
+      "type": "belongs_to"
+    },
+    {
+      "source": "project_zeus_decision_graph_visualization",
+      "target": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_eclipse_internal",
+      "type": "contains"
+    },
+    {
+      "source": "project_eclipse_internal",
+      "target": "086fc92e-23b8-4475-9c67-d8f8bb3f055f",
+      "type": "belongs_to"
     }
   ]
 }

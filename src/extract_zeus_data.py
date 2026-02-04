@@ -62,12 +62,47 @@ TEAM_MEMBERS = {
 
 # Contributor node definitions
 CONTRIBUTORS = {
-    "jk": {"label": "JK", "color": "#3182ce", "description": "John Moran - Technical Lead"},
-    "lori": {"label": "Lori", "color": "#d53f8c", "description": "Lori Beck - Operations"},
-    "marshall": {"label": "Marshall", "color": "#38a169", "description": "Brayden Marshall - Development"},
-    "mike": {"label": "Mike", "color": "#dd6b20", "description": "Mike Stuart - Engineering"},
-    "system": {"label": "System", "color": "#805ad5", "description": "Automated CCE Learnings"},
+    "jk": {"label": "JK", "color": "#3182ce", "description": "John Moran - CEO & Technical Lead", "management": True},
+    "lori": {"label": "Lori", "color": "#d53f8c", "description": "Lori Beck - COO & Operations", "management": True},
+    "marshall": {"label": "Marshall", "color": "#38a169", "description": "Brayden Marshall - CTO & Development", "management": True},
+    "mike": {"label": "Mike", "color": "#dd6b20", "description": "Mike Stuart - VP Engineering", "management": True},
+    "system": {"label": "System", "color": "#805ad5", "description": "Automated CCE Learnings", "management": False},
 }
+
+# ALDC Management Team (forms a ring in visualization)
+ALDC_MANAGEMENT_TEAM = ["jk", "lori", "marshall", "mike"]
+
+# Project to Area mapping (Client vs R&D)
+PROJECT_AREAS = {
+    # Client Projects
+    "canadian-tire": "client",
+    "osfi": "client",
+    "ctfs": "client",
+    "seattle-orcas": "client",
+    "fan-engagement": "client",
+    # R&D / Internal Projects
+    "athena": "rnd",
+    "atlas": "rnd",
+    "zeus": "rnd",
+    "eclipse": "rnd",
+    "cce": "rnd",
+    "liquid": "rnd",
+    "innovation": "rnd",
+    "aldc": "rnd",
+    "daa": "rnd",
+    "sred": "rnd",
+    "profitability": "rnd",
+}
+
+def classify_project_area(project_name):
+    """Classify a project as 'client' or 'rnd' based on name patterns."""
+    if not project_name:
+        return "rnd"  # Default to R&D
+    project_lower = project_name.lower()
+    for pattern, area in PROJECT_AREAS.items():
+        if pattern in project_lower:
+            return area
+    return "rnd"  # Default to R&D if no match
 
 # Group definitions with colors
 GROUPS = {
@@ -80,6 +115,12 @@ GROUPS = {
     "cce": {"color": "#d69e2e", "label": "CCE General"},
     "architecture": {"color": "#dd6b20", "label": "Architecture"},
     "contributor": {"color": "#718096", "label": "Contributors"},
+    "management": {"color": "#e53e3e", "label": "ALDC Management Team"},
+    # Area groups
+    "area_client": {"color": "#2b6cb0", "label": "Client Work"},
+    "area_rnd": {"color": "#9f7aea", "label": "R&D"},
+    # Project groups (dynamically colored)
+    "project": {"color": "#4a5568", "label": "Projects"},
 }
 
 # Edge type styles - expanded for new relationship types
@@ -101,6 +142,14 @@ EDGE_TYPES = {
 
     # Contributor
     "created_by": {"color": "#00b5d8", "width": 2, "label": "Created By"},
+
+    # Team relationships
+    "team_member": {"color": "#e53e3e", "width": 4, "label": "ALDC Management Team"},
+
+    # Hierarchy relationships (Area -> Project -> Learning)
+    "contains": {"color": "#4a5568", "width": 3, "label": "Contains"},
+    "belongs_to": {"color": "#718096", "width": 2, "label": "Belongs To"},
+    "works_on": {"color": "#63b3ed", "width": 2, "label": "Works On"},
 
     # Generic
     "related": {"color": "#a0aec0", "width": 1, "label": "Related"},
@@ -310,6 +359,10 @@ def extract_nodes(cur, hours_filter=0):
         # Resolve contributor from metadata or content
         contributor = resolve_contributor(meta, source, content)
 
+        # Extract project name from metadata
+        project = meta.get('project', '')
+        area = classify_project_area(project)
+
         nodes.append({
             "id": node_id,
             "label": clean_text(content, 50),
@@ -319,6 +372,8 @@ def extract_nodes(cur, hours_filter=0):
             "size": size_map.get(source, 15),
             "created_at": created_at.isoformat() if created_at else None,
             "contributor": contributor,
+            "project": project,
+            "area": area,
         })
 
         node_metadata[node_id] = {
@@ -329,6 +384,8 @@ def extract_nodes(cur, hours_filter=0):
             "source": source,
             "related_memory": meta.get('related_memory'),
             "contributor": contributor,
+            "project": project,
+            "area": area,
         }
 
     # 3. Create hub node
@@ -556,7 +613,10 @@ def generate_hub_edges(nodes, edge_set):
 
 
 def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_set):
-    """Add contributor nodes and connect learnings to their creators."""
+    """Add contributor nodes and connect learnings to their creators.
+
+    Also creates ALDC Management Team ring connecting JK, Lori, Marshall, and Mike.
+    """
     contributor_nodes = []
     contributor_edges = []
     contributor_counts = defaultdict(int)
@@ -574,16 +634,28 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
     # Add contributor nodes
     for contrib_id, contrib_info in CONTRIBUTORS.items():
         node_id = f"contributor_{contrib_id}"
+        is_management = contrib_info.get("management", False)
         contributor_nodes.append({
             "id": node_id,
             "label": contrib_info["label"],
             "title": contrib_info["description"],
             "tier": 0,  # Top tier like hub
-            "group": "contributor",
-            "size": 40,
+            "group": "management" if is_management else "contributor",
+            "size": 50 if is_management else 40,
             "contributor_id": contrib_id,
+            "is_management": is_management,
         })
         node_ids.add(node_id)
+
+    # Create ALDC Management Team ring (connect each member to the next)
+    # This creates: JK <-> Lori <-> Marshall <-> Mike <-> JK
+    for i, member_id in enumerate(ALDC_MANAGEMENT_TEAM):
+        next_member_id = ALDC_MANAGEMENT_TEAM[(i + 1) % len(ALDC_MANAGEMENT_TEAM)]
+        source_node = f"contributor_{member_id}"
+        target_node = f"contributor_{next_member_id}"
+        add_edge(source_node, target_node, "team_member")
+
+    print(f"Created ALDC Management Team ring: {' <-> '.join([c.upper() for c in ALDC_MANAGEMENT_TEAM])} <-> {ALDC_MANAGEMENT_TEAM[0].upper()}")
 
     # Connect learnings to contributors
     for node_id, meta in node_metadata.items():
@@ -599,8 +671,12 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
     for node in contributor_nodes:
         contrib_id = node.get('contributor_id')
         count = contributor_counts.get(contrib_id, 0)
-        node['size'] = 30 + min(count, 50)  # Scale size by activity
-        node['title'] += f"\n\nLearnings: {count}"
+        base_size = 50 if node.get('is_management') else 30
+        node['size'] = base_size + min(count, 50)  # Scale size by activity
+        if node.get('is_management'):
+            node['title'] += f"\n\nALDC Management Team\nLearnings: {count}"
+        else:
+            node['title'] += f"\n\nLearnings: {count}"
 
     print(f"Generated {len(contributor_nodes)} contributor nodes")
     print(f"Generated {len(contributor_edges)} contributor edges")
@@ -609,12 +685,137 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
     return contributor_nodes, contributor_edges
 
 
-def extract_data(hours_filter=0, include_contributors=False):
+def generate_hierarchy_nodes_and_edges(nodes, node_ids, node_metadata, edge_set):
+    """Create Area and Project hierarchy nodes.
+
+    Hierarchy: Area (Client/R&D) -> Project -> Learning (success/failure/decision)
+    This creates a visual structure showing work organized by:
+    - Area (Client Work vs R&D)
+    - Project/Initiative
+    - Type (Success/Failure/Decision)
+    """
+    hierarchy_nodes = []
+    hierarchy_edges = []
+    project_counts = defaultdict(lambda: {'success': 0, 'failure': 0, 'decision': 0, 'other': 0})
+    area_projects = defaultdict(set)
+
+    def add_edge(source, target, edge_type):
+        key = tuple(sorted([source, target])) + (edge_type,)
+        if key not in edge_set and source != target:
+            edge_set.add(key)
+            hierarchy_edges.append({
+                "source": source,
+                "target": target,
+                "type": edge_type
+            })
+
+    # Create Area nodes (Client and R&D)
+    area_nodes = {
+        "area_client": {
+            "id": "area_client",
+            "label": "Client Work",
+            "title": "Client Projects and Engagements",
+            "tier": 0,
+            "group": "area_client",
+            "size": 60,
+        },
+        "area_rnd": {
+            "id": "area_rnd",
+            "label": "R&D",
+            "title": "Research & Development / Internal Projects",
+            "tier": 0,
+            "group": "area_rnd",
+            "size": 60,
+        }
+    }
+
+    for area_id, area_node in area_nodes.items():
+        hierarchy_nodes.append(area_node)
+        node_ids.add(area_id)
+
+    # Scan nodes for projects and categorize learnings
+    for node_id, meta in node_metadata.items():
+        if meta.get('type') == 'hub':
+            continue
+
+        project = meta.get('project', '')
+        area = meta.get('area', 'rnd')
+        source = meta.get('source', '')
+
+        if project:
+            area_projects[area].add(project)
+
+            # Categorize by type (success/failure/decision)
+            if source == 'cce_success_log':
+                project_counts[project]['success'] += 1
+            elif source == 'cce_failed_approach':
+                project_counts[project]['failure'] += 1
+            elif source == 'cce_decision_log':
+                project_counts[project]['decision'] += 1
+            else:
+                project_counts[project]['other'] += 1
+
+    # Create Project nodes
+    project_colors = ['#3182ce', '#38a169', '#d53f8c', '#dd6b20', '#805ad5', '#319795', '#d69e2e', '#e53e3e']
+    color_idx = 0
+
+    for area, projects in area_projects.items():
+        for project_name in projects:
+            project_id = f"project_{project_name.replace(' ', '_').replace('-', '_').lower()}"
+            if project_id in node_ids:
+                continue
+
+            counts = project_counts[project_name]
+            total = sum(counts.values())
+
+            # Determine project health color
+            if counts['failure'] > counts['success']:
+                project_color = "#e53e3e"  # Red - more failures
+            elif counts['success'] > 0:
+                project_color = "#38a169"  # Green - has successes
+            else:
+                project_color = project_colors[color_idx % len(project_colors)]
+                color_idx += 1
+
+            hierarchy_nodes.append({
+                "id": project_id,
+                "label": project_name[:30],
+                "title": f"{project_name}\n\nSuccesses: {counts['success']}\nFailures: {counts['failure']}\nDecisions: {counts['decision']}\nOther: {counts['other']}",
+                "tier": 1,
+                "group": "project",
+                "size": 30 + min(total * 2, 30),
+                "project_name": project_name,
+                "area": area,
+                "successes": counts['success'],
+                "failures": counts['failure'],
+            })
+            node_ids.add(project_id)
+
+            # Connect project to area
+            area_node_id = f"area_{area}"
+            add_edge(area_node_id, project_id, "contains")
+
+            # Connect learnings to project
+            for node_id, meta in node_metadata.items():
+                if meta.get('project') == project_name:
+                    add_edge(project_id, node_id, "belongs_to")
+
+    # Summary
+    print(f"Generated {len(hierarchy_nodes)} hierarchy nodes (2 areas + {len(hierarchy_nodes) - 2} projects)")
+    print(f"Generated {len(hierarchy_edges)} hierarchy edges")
+    print(f"  Client projects: {len(area_projects['client'])}")
+    print(f"  R&D projects: {len(area_projects['rnd'])}")
+
+    return hierarchy_nodes, hierarchy_edges
+
+
+def extract_data(hours_filter=0, include_contributors=False, include_hierarchy=False):
     """Extract all data and generate edges using multiple methods.
 
     Args:
         hours_filter: Only include data from last N hours (0 = no filter)
         include_contributors: Add contributor nodes and edges
+        include_hierarchy: Add Area/Project hierarchy nodes and edges
     """
     conn = psycopg2.connect(**conn_params)
     cur = conn.cursor()
@@ -650,6 +851,14 @@ def extract_data(hours_filter=0, include_contributors=False):
         nodes.extend(contrib_nodes)
         all_edges.extend(contrib_edges)
 
+    # 6. Hierarchy nodes and edges (Area -> Project -> Learning)
+    if include_hierarchy:
+        hierarchy_nodes, hierarchy_edges = generate_hierarchy_nodes_and_edges(
+            nodes, node_ids, node_metadata, edge_set
+        )
+        nodes.extend(hierarchy_nodes)
+        all_edges.extend(hierarchy_edges)
+
     cur.close()
     conn.close()
 
@@ -670,12 +879,18 @@ def main():
                        help='Filter to last N hours (0 = no filter, default)')
     parser.add_argument('--contributors', action='store_true',
                        help='Add contributor nodes and edges')
+    parser.add_argument('--hierarchy', action='store_true',
+                       help='Add Area/Project hierarchy nodes (Client vs R&D)')
     parser.add_argument('--output', type=str, default='data/examples/zeus_decisions.json',
                        help='Output file path')
     args = parser.parse_args()
 
     # Extract data with optional time filter
-    nodes, edges = extract_data(hours_filter=args.hours, include_contributors=args.contributors)
+    nodes, edges = extract_data(
+        hours_filter=args.hours,
+        include_contributors=args.contributors,
+        include_hierarchy=args.hierarchy
+    )
 
     # Build visualization data
     data = {
@@ -685,9 +900,10 @@ def main():
             "source": "zeus_core database",
             "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor"],
+            "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor", "hierarchy"],
             "hours_filter": args.hours if args.hours > 0 else "all",
-            "contributors_enabled": args.contributors
+            "contributors_enabled": args.contributors,
+            "hierarchy_enabled": args.hierarchy,
         },
         "groups": GROUPS,
         "edge_types": EDGE_TYPES,
