@@ -349,9 +349,13 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             margin-bottom: 15px;
             font-size: 13px;
         }}
+        .node-actions {{
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }}
         .view-full-btn {{
             display: inline-block;
-            margin-bottom: 15px;
             padding: 6px 12px;
             background: #1a365d;
             color: white;
@@ -363,6 +367,12 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         }}
         .view-full-btn:hover {{
             background: #2d4a7c;
+        }}
+        .recenter-btn {{
+            background: #2f855a;
+        }}
+        .recenter-btn:hover {{
+            background: #276749;
         }}
         .modal-overlay {{
             display: none;
@@ -1313,7 +1323,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     </div>
                     <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
-                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
+                    <div class="node-actions">
+                        <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full</button>
+                        <button class="view-full-btn recenter-btn" id="recenter-btn" onclick="recenterOnNode()">&#9733; Recenter</button>
+                    </div>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                     <div id="overlay-info-container" style="margin-top: 15px;"></div>
@@ -2006,6 +2019,91 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             setTimeout(() => {{
                 navigateToNode(nodeId);
             }}, 100);
+        }}
+
+        // Recenter graph on selected node - show neighborhood view
+        let recenteredNodeId = null;
+
+        function recenterOnNode() {{
+            if (!selectedNode) return;
+
+            recenteredNodeId = selectedNode.id;
+
+            // Get direct connections
+            const connections = linksByNode[selectedNode.id] || [];
+            const neighborIds = new Set([selectedNode.id]);
+            connections.forEach(conn => neighborIds.add(conn.nodeId));
+
+            // Filter to show only the selected node and its neighbors
+            const neighborNodes = nodesData.filter(n => neighborIds.has(n.id));
+            const neighborLinks = linksData.filter(link => {{
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return sourceId === selectedNode.id || targetId === selectedNode.id;
+            }});
+
+            // Position nodes in a radial layout around the center node
+            const centerNode = neighborNodes.find(n => n.id === selectedNode.id);
+            const otherNodes = neighborNodes.filter(n => n.id !== selectedNode.id);
+
+            // Center node at origin
+            if (centerNode) {{
+                centerNode.fx = 0;
+                centerNode.fy = 0;
+                centerNode.fz = 0;
+            }}
+
+            // Spread neighbors in a circle around center
+            const radius = 150;
+            otherNodes.forEach((node, index) => {{
+                const angle = (index / otherNodes.length) * Math.PI * 2;
+                node.fx = Math.cos(angle) * radius;
+                node.fy = 0;
+                node.fz = Math.sin(angle) * radius;
+            }});
+
+            // Update graph
+            graph.graphData({{
+                nodes: neighborNodes,
+                links: neighborLinks
+            }});
+
+            // Clear tier platforms since we're in neighborhood view
+            clearTierPlatforms();
+
+            // Zoom to fit
+            setTimeout(() => {{
+                graph.zoomToFit(500, 50);
+            }}, 100);
+
+            // Update button to show reset option
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#8635; Reset View';
+            btn.onclick = resetToFullGraph;
+        }}
+
+        function resetToFullGraph() {{
+            recenteredNodeId = null;
+
+            // Clear fixed positions
+            nodesData.forEach(node => {{
+                node.fx = undefined;
+                node.fy = undefined;
+                node.fz = undefined;
+            }});
+
+            // Restore full graph
+            applyFilters();
+
+            // Re-apply current layout if cylinder
+            if (currentLayout === 'cylinder') {{
+                setTimeout(() => setLayout('cylinder'), 100);
+            }}
+
+            // Reset button
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#9733; Recenter';
+            btn.onclick = recenterOnNode;
         }}
 
         // Close modal
