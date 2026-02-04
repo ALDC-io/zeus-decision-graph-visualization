@@ -3096,12 +3096,10 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     // Each node gets equal angular space around the full circle
                     const angle = (index / tierNodes.length) * Math.PI * 2;
 
-                    // Small Y offset for visual depth
-                    const tierOffset = (Math.random() - 0.5) * 0.03;
-
+                    // Snap to ring - no Y offset
                     node.fx = Math.cos(angle) * radius;
                     node.fz = Math.sin(angle) * radius;
-                    node.fy = (stageY + tierOffset) * height;
+                    node.fy = stageY * height;
                 }});
             }});
 
