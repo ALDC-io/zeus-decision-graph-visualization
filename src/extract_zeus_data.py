@@ -46,8 +46,8 @@ TEAM_MEMBERS = {
     'lori beck': 'lori',
     'lori': 'lori',
     'lb': 'lori',
-    # Marshall variations
-    'brayden marshall': 'marshall',
+    # Marshall variations (Marshall Johnston)
+    'marshall johnston': 'marshall',
     'marshall': 'marshall',
     'mj': 'marshall',
     # Mike variations
@@ -79,9 +79,9 @@ CONTRIBUTORS = {
     "marshall": {
         "label": "Marshall",
         "color": "#38a169",
-        "description": "Brayden Marshall - CTO & Development",
+        "description": "Marshall Johnston - CTO & Development",
         "management": True,
-        "image": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
+        "image": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg"
     },
     "mike": {
         "label": "Mike",

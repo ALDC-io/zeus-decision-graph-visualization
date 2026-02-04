@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 13:48",
-    "updated": "2026-02-04 13:48",
+    "created": "2026-02-04 13:54",
+    "updated": "2026-02-04 13:54",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -156,9 +156,9 @@
     "marshall": {
       "label": "Marshall",
       "color": "#38a169",
-      "description": "Brayden Marshall - CTO & Development",
+      "description": "Marshall Johnston - CTO & Development",
       "management": true,
-      "image": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
+      "image": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg"
     },
     "mike": {
       "label": "Mike",
@@ -1107,9 +1107,9 @@
       "area": "rnd"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1119,9 +1119,9 @@
       "area": "rnd"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1143,14 +1143,38 @@
       "area": "rnd"
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
       "created_at": null,
       "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "1bbe704a-cc0e-4720-b84b-ca47a66b3578",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:4...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:43:42 From: John Moran Channel: #the-olds hope so, not mean to be useless overhead so keep me honest",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:43:42.742369",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "037069fc-6de2-4ef6-ac4b-b1dc1c7507fc",
+      "label": "Slack Message - #the-olds Date: 2026-02-04 21:4...",
+      "title": "Slack Message - #the-olds Date: 2026-02-04 21:40:56 From: Mike Stuart Channel: #the-olds Cool!",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-04T21:40:56.665249",
+      "contributor": "mike",
       "project": "",
       "area": "rnd"
     },
@@ -1318,7 +1342,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T21:10:46.377069",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1426,7 +1450,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:37:26.848479",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1450,7 +1474,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:30.847769",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1474,7 +1498,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:36:03.422469",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1498,7 +1522,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:47.403039",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1510,7 +1534,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T17:35:37.591599",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1534,7 +1558,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T16:57:58.414989",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1666,7 +1690,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-04T00:10:02.135289",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1714,7 +1738,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:38:15.343349",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1726,7 +1750,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:38:06.787449",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1738,7 +1762,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T22:37:50.878389",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1822,7 +1846,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:45:14.731849",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1858,7 +1882,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:17.626689",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1870,7 +1894,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T20:44:08.178459",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -1966,7 +1990,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T19:25:30.251199",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -2158,7 +2182,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T00:27:36.576249",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -2170,7 +2194,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-03T00:27:23.990669",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -2242,7 +2266,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-02-02T21:39:28.331719",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -2506,7 +2530,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T21:03:56.171689",
-      "contributor": "marshall",
+      "contributor": "lori",
       "project": "",
       "area": "rnd"
     },
@@ -2698,7 +2722,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-30T20:50:27.909579",
-      "contributor": "marshall",
+      "contributor": "jk",
       "project": "",
       "area": "rnd"
     },
@@ -3010,7 +3034,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:54:27.508729",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3022,7 +3046,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T21:52:11.461569",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3070,7 +3094,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:39:38.142939",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3094,7 +3118,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T20:20:21.675859",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3178,7 +3202,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T16:32:55.702689",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3202,7 +3226,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-29T16:32:45.862759",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -3622,7 +3646,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-27T17:45:49.409419",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4234,7 +4258,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T15:54:00.306189",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4270,7 +4294,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:46:40.472519",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4282,7 +4306,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:44:05.511909",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4294,7 +4318,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-23T14:07:36.415159",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4474,7 +4498,7 @@
       "group": "cce",
       "size": 10,
       "created_at": "2026-01-21T23:40:40.105799",
-      "contributor": "jk",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4671,33 +4695,9 @@
       "area": "rnd"
     },
     {
-      "id": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "label": "Slack Message - #aldc-team Date: 2026-01-20 06:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-20 06:18:23 From: Mike Stuart Channel: #aldc-team Thanks <@U07B3C0MDR8>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-20T06:18:23.353889",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "c4325833-3120-4039-8e39-cd79097a1b26",
-      "label": "Slack Message - #aldc-team Date: 2026-01-19 22:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-19 22:43:04 From: Steven Deutekom Channel: #aldc-team Welcome!",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-19T22:43:04.128789",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 158",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 130",
       "tier": 0,
       "group": "management",
       "size": 100,
@@ -4708,10 +4708,10 @@
     {
       "id": "contributor_lori",
       "label": "Lori",
-      "title": "Lori Beck - COO & Operations\n\nALDC Management Team\nLearnings: 43",
+      "title": "Lori Beck - COO & Operations\n\nALDC Management Team\nLearnings: 44",
       "tier": 0,
       "group": "management",
-      "size": 93,
+      "size": 94,
       "contributor_id": "lori",
       "is_management": true,
       "logo": "https://secure.gravatar.com/avatar/8e7a568f14fd5e712261e3b3bea6df21.jpg?s=192"
@@ -4719,21 +4719,21 @@
     {
       "id": "contributor_marshall",
       "label": "Marshall",
-      "title": "Brayden Marshall - CTO & Development\n\nALDC Management Team\nLearnings: 15",
+      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 43",
       "tier": 0,
       "group": "management",
-      "size": 65,
+      "size": 93,
       "contributor_id": "marshall",
       "is_management": true,
-      "logo": "https://avatars.slack-edge.com/2024-02-27/6712680711811_ccf9fdb135464f235579_192.jpg"
+      "logo": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg"
     },
     {
       "id": "contributor_mike",
       "label": "Mike",
-      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 36",
+      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 35",
       "tier": 0,
       "group": "management",
-      "size": 86,
+      "size": 85,
       "contributor_id": "mike",
       "is_management": true,
       "logo": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
@@ -4777,18 +4777,6 @@
       "failures": 0
     },
     {
-      "id": "project_consulting_dashboard",
-      "label": "consulting-dashboard",
-      "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
-      "tier": 1,
-      "group": "project",
-      "size": 32,
-      "project_name": "consulting-dashboard",
-      "area": "rnd",
-      "successes": 0,
-      "failures": 0
-    },
-    {
       "id": "project_eclipse_internal",
       "label": "eclipse_internal",
       "title": "eclipse_internal\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
@@ -4801,15 +4789,27 @@
       "failures": 0
     },
     {
-      "id": "project_athena",
-      "label": "athena",
-      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
+      "id": "project_aldc_data_mapping",
+      "label": "aldc-data-mapping",
+      "title": "aldc-data-mapping\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
       "tier": 1,
       "group": "project",
       "size": 32,
-      "project_name": "athena",
+      "project_name": "aldc-data-mapping",
       "area": "rnd",
-      "successes": 1,
+      "successes": 0,
+      "failures": 0
+    },
+    {
+      "id": "project_consulting_dashboard",
+      "label": "consulting-dashboard",
+      "title": "consulting-dashboard\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "tier": 1,
+      "group": "project",
+      "size": 32,
+      "project_name": "consulting-dashboard",
+      "area": "rnd",
+      "successes": 0,
       "failures": 0
     },
     {
@@ -4825,15 +4825,15 @@
       "failures": 1
     },
     {
-      "id": "project_aldc_data_mapping",
-      "label": "aldc-data-mapping",
-      "title": "aldc-data-mapping\n\nSuccesses: 0\nFailures: 0\nDecisions: 0\nOther: 1",
+      "id": "project_athena",
+      "label": "athena",
+      "title": "athena\n\nSuccesses: 1\nFailures: 0\nDecisions: 0\nOther: 0",
       "tier": 1,
       "group": "project",
       "size": 32,
-      "project_name": "aldc-data-mapping",
+      "project_name": "athena",
       "area": "rnd",
-      "successes": 0,
+      "successes": 1,
       "failures": 0
     }
   ],
@@ -4855,47 +4855,47 @@
     },
     {
       "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "same_category"
     },
     {
       "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "same_category"
     },
     {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "same_category"
     },
     {
@@ -6479,11 +6479,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "target": "52f88706-8eba-4976-be65-e6199c694824",
-      "type": "temporal_context"
-    },
-    {
       "source": "52f88706-8eba-4976-be65-e6199c694824",
       "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
       "type": "temporal_context"
@@ -6503,12 +6498,6 @@
       "target": "232a55ab-ea14-4751-8bcf-c1d37204b8c5",
       "type": "highly_similar",
       "weight": 0.997
-    },
-    {
-      "source": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "target": "c885bfbd-c2c8-4516-9df3-099bb4791a97",
-      "type": "highly_similar",
-      "weight": 0.979
     },
     {
       "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
@@ -6537,12 +6526,6 @@
     {
       "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
       "target": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "type": "similar",
-      "weight": 0.893
-    },
-    {
-      "source": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "target": "8a4e2906-fba3-43cf-a435-5904b2b3997d",
       "type": "similar",
       "weight": 0.893
     },
@@ -6617,12 +6600,6 @@
       "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
       "type": "similar",
       "weight": 0.87
-    },
-    {
-      "source": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "target": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "type": "similar",
-      "weight": 0.867
     },
     {
       "source": "2ba99597-ea74-443a-bbee-359a2f899128",
@@ -7626,12 +7603,12 @@
     },
     {
       "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "created_by"
     },
     {
       "source": "contributor_system",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -7641,7 +7618,17 @@
     },
     {
       "source": "contributor_system",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "1bbe704a-cc0e-4720-b84b-ca47a66b3578",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "037069fc-6de2-4ef6-ac4b-b1dc1c7507fc",
       "type": "created_by"
     },
     {
@@ -7710,7 +7697,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "bd3d36fb-bd8e-45e0-8643-937d1d1b8253",
       "type": "created_by"
     },
@@ -7755,7 +7742,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "56c7a0e1-7402-4b27-9548-cd6f3af0b754",
       "type": "created_by"
     },
@@ -7765,7 +7752,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "5655606e-2881-4d80-988d-c45ec597abc7",
       "type": "created_by"
     },
@@ -7775,7 +7762,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "bbaeb3fa-fff4-4d10-b008-17967c25fa28",
       "type": "created_by"
     },
@@ -7785,12 +7772,12 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "6fe30b27-465b-4719-b81e-8ecb1a3b0593",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "73fb273c-e2c6-419e-a41b-68e48030651a",
       "type": "created_by"
     },
@@ -7800,7 +7787,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "1a1715e0-4b01-4c1e-8411-ffb4c8e6fa03",
       "type": "created_by"
     },
@@ -7855,7 +7842,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "a9b76b63-9359-4d09-9697-848c54098229",
       "type": "created_by"
     },
@@ -7875,17 +7862,17 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "3ca9c33f-c00d-480e-ba97-c76c5bf431fc",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "48f96269-6ffd-47a4-a9fb-1883cf9b915d",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "1a7027fd-a68e-4a9e-b27b-c88bfaaa4fa9",
       "type": "created_by"
     },
@@ -7920,7 +7907,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "64bfa384-43d2-43a7-b9fb-189b1b0d81f7",
       "type": "created_by"
     },
@@ -7935,12 +7922,12 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "37000cf7-507c-49a4-833c-a722b4055d0c",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "644c5058-9824-4134-9a5a-15bf17acb74c",
       "type": "created_by"
     },
@@ -7980,7 +7967,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "65c7e0b8-9086-4a92-8be2-e7e78d1637ee",
       "type": "created_by"
     },
@@ -8060,12 +8047,12 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "461540ae-724e-4569-ba30-0247f52b8112",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "e3e2df88-24d6-4c3f-8164-f3a2b4cefd11",
       "type": "created_by"
     },
@@ -8095,7 +8082,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "9d6fff1f-aa72-42b2-aa06-397ef4850bfa",
       "type": "created_by"
     },
@@ -8205,7 +8192,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_marshall",
+      "source": "contributor_lori",
       "target": "3c383ebd-ef47-4e97-ba76-2a9f2edc62bb",
       "type": "created_by"
     },
@@ -8285,7 +8272,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_marshall",
+      "source": "contributor_jk",
       "target": "7f6ad6f4-59b4-4274-897d-f3c26eb6efab",
       "type": "created_by"
     },
@@ -8415,12 +8402,12 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "accc3a75-b64f-4786-a8d2-c0215b57e76c",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "f8e59daf-f3c4-4292-87a3-2532330aa2f7",
       "type": "created_by"
     },
@@ -8440,7 +8427,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "d2a4055f-c995-4aab-90c5-a6ffe795d71f",
       "type": "created_by"
     },
@@ -8450,7 +8437,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "73995f72-42e8-4316-a3ba-22ebf8e785d9",
       "type": "created_by"
     },
@@ -8485,7 +8472,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "173b95f7-9f46-432d-a353-2669d0db95dc",
       "type": "created_by"
     },
@@ -8495,7 +8482,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "509acd62-deaf-4b5e-9b65-b6764aa79ca6",
       "type": "created_by"
     },
@@ -8670,7 +8657,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "cbd85882-64f6-48e7-9be0-88ad98da4a07",
       "type": "created_by"
     },
@@ -8925,7 +8912,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "12ec9f90-4284-42da-97ec-f708e5f8b98b",
       "type": "created_by"
     },
@@ -8940,17 +8927,17 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "af31bbe5-dfd0-4f52-9300-9c6db1accd69",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "3bf52f2c-5c39-4c0a-8b5d-b55b66569c69",
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "bdc96d71-6695-40f2-bcd4-7888b4bb055d",
       "type": "created_by"
     },
@@ -9025,7 +9012,7 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_jk",
+      "source": "contributor_marshall",
       "target": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
       "type": "created_by"
     },
@@ -9110,16 +9097,6 @@
       "type": "created_by"
     },
     {
-      "source": "contributor_mike",
-      "target": "48e8139a-2cab-4d19-95fe-b8daaeba6cb2",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "c4325833-3120-4039-8e39-cd79097a1b26",
-      "type": "created_by"
-    },
-    {
       "source": "area_client",
       "target": "project_seattle_orcas_prototype",
       "type": "contains"
@@ -9136,16 +9113,6 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_consulting_dashboard",
-      "type": "contains"
-    },
-    {
-      "source": "project_consulting_dashboard",
-      "target": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
-      "type": "belongs_to"
-    },
-    {
-      "source": "area_rnd",
       "target": "project_eclipse_internal",
       "type": "contains"
     },
@@ -9156,12 +9123,22 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_athena",
+      "target": "project_aldc_data_mapping",
       "type": "contains"
     },
     {
-      "source": "project_athena",
-      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
+      "source": "project_aldc_data_mapping",
+      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
+      "type": "belongs_to"
+    },
+    {
+      "source": "area_rnd",
+      "target": "project_consulting_dashboard",
+      "type": "contains"
+    },
+    {
+      "source": "project_consulting_dashboard",
+      "target": "90c9a55b-f369-43ff-bfb5-0fedbe828a9e",
       "type": "belongs_to"
     },
     {
@@ -9211,12 +9188,12 @@
     },
     {
       "source": "area_rnd",
-      "target": "project_aldc_data_mapping",
+      "target": "project_athena",
       "type": "contains"
     },
     {
-      "source": "project_aldc_data_mapping",
-      "target": "a566e1e9-d985-4753-9a57-b1f1890d3164",
+      "source": "project_athena",
+      "target": "a4a8832e-b359-4604-a60a-ae38fe8a9565",
       "type": "belongs_to"
     }
   ]
