@@ -1884,34 +1884,102 @@
                 return sourceId === selectedNode.id || targetId === selectedNode.id;
             });
 
-            // Position nodes in a radial layout around the center node
-            const centerNode = neighborNodes.find(n => n.id === selectedNode.id);
-            const otherNodes = neighborNodes.filter(n => n.id !== selectedNode.id);
+            // Clear existing tier platforms
+            clearTierPlatforms();
 
-            // Center node at origin
-            if (centerNode) {
-                centerNode.fx = 0;
-                centerNode.fy = 0;
-                centerNode.fz = 0;
-            }
-
-            // Spread neighbors in a circle around center
-            const radius = 150;
-            otherNodes.forEach((node, index) => {
-                const angle = (index / otherNodes.length) * Math.PI * 2;
-                node.fx = Math.cos(angle) * radius;
-                node.fy = 0;
-                node.fz = Math.sin(angle) * radius;
+            // Group neighbors by tier for cylinder-style layout
+            const tierGroups = {};
+            neighborNodes.forEach(node => {
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!tierGroups[tier]) tierGroups[tier] = [];
+                tierGroups[tier].push(node);
             });
 
-            // Update graph
+            const tiers = Object.keys(tierGroups).map(Number).sort((a, b) => a - b);
+            const numTiers = tiers.length;
+            const radius = 150;
+            const height = 300;
+
+            // Position nodes by tier with center node marked
+            tiers.forEach((tier, tierIndex) => {
+                const tierNodes = tierGroups[tier];
+                const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+
+                tierNodes.forEach((node, nodeIndex) => {
+                    if (node.id === selectedNode.id) {
+                        // Center node stays at center of its tier ring
+                        node.fx = 0;
+                        node.fy = yPos;
+                        node.fz = 0;
+                    } else {
+                        // Spread other nodes around the ring
+                        const othersInTier = tierNodes.filter(n => n.id !== selectedNode.id);
+                        const idx = othersInTier.indexOf(node);
+                        const angle = (idx / Math.max(othersInTier.length, 1)) * Math.PI * 2;
+                        node.fx = Math.cos(angle) * radius;
+                        node.fy = yPos;
+                        node.fz = Math.sin(angle) * radius;
+                    }
+                });
+            });
+
+            // Update graph data
             graph.graphData({
                 nodes: neighborNodes,
                 links: neighborLinks
             });
 
-            // Clear tier platforms since we're in neighborhood view
-            clearTierPlatforms();
+            // Create rings for the neighborhood tiers if rings enabled
+            if (typeof THREE !== 'undefined' && ringsEnabled) {
+                const scene = graph.scene();
+
+                tiers.forEach((tier, tierIndex) => {
+                    const tierNodes = tierGroups[tier];
+                    const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+                    const ringColor = tierNodes[0]?.color || '#888888';
+                    const tierLabel = tierNodes[0]?.groupLabel || tierNodes[0]?.group || `Tier ${tier}`;
+
+                    // Soft glow area ring
+                    const torusRadius = radius + 30;
+                    const glowTubeRadius = 25;
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
+
+                    // Tier label
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(tierLabel, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.95
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
 
             // Zoom to fit
             setTimeout(() => {
