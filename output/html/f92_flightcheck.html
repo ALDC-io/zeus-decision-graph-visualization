@@ -164,9 +164,13 @@
             margin-bottom: 15px;
             font-size: 13px;
         }
+        .node-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
         .view-full-btn {
             display: inline-block;
-            margin-bottom: 15px;
             padding: 6px 12px;
             background: #1a365d;
             color: white;
@@ -178,6 +182,12 @@
         }
         .view-full-btn:hover {
             background: #2d4a7c;
+        }
+        .recenter-btn {
+            background: #2f855a;
+        }
+        .recenter-btn:hover {
+            background: #276749;
         }
         .modal-overlay {
             display: none;
@@ -1144,7 +1154,10 @@
                     </div>
                     <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
-                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
+                    <div class="node-actions">
+                        <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full</button>
+                        <button class="view-full-btn recenter-btn" id="recenter-btn" onclick="recenterOnNode()">&#9733; Recenter</button>
+                    </div>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                     <div id="overlay-info-container" style="margin-top: 15px;"></div>
@@ -1837,6 +1850,159 @@
             setTimeout(() => {
                 navigateToNode(nodeId);
             }, 100);
+        }
+
+        // Recenter graph on selected node - show neighborhood view
+        let recenteredNodeId = null;
+
+        function recenterOnNode() {
+            if (!selectedNode) return;
+
+            recenteredNodeId = selectedNode.id;
+
+            // Get direct connections
+            const connections = linksByNode[selectedNode.id] || [];
+            const neighborIds = new Set([selectedNode.id]);
+            connections.forEach(conn => neighborIds.add(conn.nodeId));
+
+            // Filter to show only the selected node and its neighbors
+            const neighborNodes = nodesData.filter(n => neighborIds.has(n.id));
+            const neighborLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return sourceId === selectedNode.id || targetId === selectedNode.id;
+            });
+
+            // Clear existing tier platforms
+            clearTierPlatforms();
+
+            // Group neighbors by tier for cylinder-style layout
+            const tierGroups = {};
+            neighborNodes.forEach(node => {
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!tierGroups[tier]) tierGroups[tier] = [];
+                tierGroups[tier].push(node);
+            });
+
+            const tiers = Object.keys(tierGroups).map(Number).sort((a, b) => a - b);
+            const numTiers = tiers.length;
+            const radius = 150;
+            const height = 300;
+
+            // Position nodes by tier with center node marked
+            tiers.forEach((tier, tierIndex) => {
+                const tierNodes = tierGroups[tier];
+                const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+
+                tierNodes.forEach((node, nodeIndex) => {
+                    if (node.id === selectedNode.id) {
+                        // Center node stays at center of its tier ring
+                        node.fx = 0;
+                        node.fy = yPos;
+                        node.fz = 0;
+                    } else {
+                        // Spread other nodes around the ring
+                        const othersInTier = tierNodes.filter(n => n.id !== selectedNode.id);
+                        const idx = othersInTier.indexOf(node);
+                        const angle = (idx / Math.max(othersInTier.length, 1)) * Math.PI * 2;
+                        node.fx = Math.cos(angle) * radius;
+                        node.fy = yPos;
+                        node.fz = Math.sin(angle) * radius;
+                    }
+                });
+            });
+
+            // Update graph data
+            graph.graphData({
+                nodes: neighborNodes,
+                links: neighborLinks
+            });
+
+            // Create rings for the neighborhood tiers if rings enabled
+            if (typeof THREE !== 'undefined' && ringsEnabled) {
+                const scene = graph.scene();
+
+                tiers.forEach((tier, tierIndex) => {
+                    const tierNodes = tierGroups[tier];
+                    const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+                    const ringColor = tierNodes[0]?.color || '#888888';
+                    const tierLabel = tierNodes[0]?.groupLabel || tierNodes[0]?.group || `Tier ${tier}`;
+
+                    // Soft glow area ring
+                    const torusRadius = radius + 30;
+                    const glowTubeRadius = 25;
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
+
+                    // Tier label
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(tierLabel, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.95
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
+
+            // Zoom to fit
+            setTimeout(() => {
+                graph.zoomToFit(500, 50);
+            }, 100);
+
+            // Update button to show reset option
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#8635; Reset View';
+            btn.onclick = resetToFullGraph;
+        }
+
+        function resetToFullGraph() {
+            recenteredNodeId = null;
+
+            // Clear fixed positions
+            nodesData.forEach(node => {
+                node.fx = undefined;
+                node.fy = undefined;
+                node.fz = undefined;
+            });
+
+            // Restore full graph
+            applyFilters();
+
+            // Re-apply current layout if cylinder
+            if (currentLayout === 'cylinder') {
+                setTimeout(() => setLayout('cylinder'), 100);
+            }
+
+            // Reset button
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#9733; Recenter';
+            btn.onclick = recenterOnNode;
         }
 
         // Close modal
@@ -2858,27 +3024,14 @@
                     const yPos = stage.yPos * height;
                     const ringColor = stage.color;
 
-                    // Create 3D torus ring with high transparency
+                    // Soft glow area ring - gentle focus effect only
                     const torusRadius = radius + 30;
-                    const tubeRadius = 4;
-                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
-                    const torusMat = new THREE.MeshBasicMaterial({
-                        color: ringColor,
-                        transparent: true,
-                        opacity: currentTheme === 'light' ? 0.15 : 0.2
-                    });
-                    const torus = new THREE.Mesh(torusGeom, torusMat);
-                    torus.rotation.x = Math.PI / 2;
-                    torus.position.y = yPos;
-                    scene.add(torus);
-                    tierPlatforms.push(torus);
-
-                    // Add outer glow ring - very subtle
-                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 4, 16, 100);
+                    const glowTubeRadius = 25;  // Wide, soft tube
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
                     const glowTorusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.05 : 0.08
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
                     });
                     const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
                     glowTorus.rotation.x = Math.PI / 2;
@@ -2923,24 +3076,28 @@
                 });
             });
 
+            // Group nodes by tier for even distribution within each ring
+            const nodesByTier = {};
             nodes.forEach(node => {
-                const group = groups[node.group || 'default'];
-                // Spread nodes within their group segment
-                const nodeIndexInGroup = group.nodes.indexOf(node);
-                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
-                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
-                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
-                const angle = baseAngle + offsetAngle;
-
-                // Y position based on stage (mapped from tier) with small offset for separation
                 const tier = typeof node.tier === 'number' ? node.tier : 0;
-                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
-                // Add small random offset within stage band for visual separation
-                const tierOffset = (tier % 2 === 0 ? 0.02 : -0.02) + (Math.random() - 0.5) * 0.04;
+                if (!nodesByTier[tier]) nodesByTier[tier] = [];
+                nodesByTier[tier].push(node);
+            });
 
-                node.fx = Math.cos(angle) * radius;
-                node.fz = Math.sin(angle) * radius;
-                node.fy = (stageY + tierOffset) * height;
+            // Position each node with its own space around the ring
+            Object.keys(nodesByTier).forEach(tier => {
+                const tierNodes = nodesByTier[tier];
+                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
+
+                tierNodes.forEach((node, index) => {
+                    // Each node gets equal angular space around the full circle
+                    const angle = (index / tierNodes.length) * Math.PI * 2;
+
+                    // Snap to ring - no Y offset
+                    node.fx = Math.cos(angle) * radius;
+                    node.fz = Math.sin(angle) * radius;
+                    node.fy = stageY * height;
+                });
             });
 
             graph.d3ReheatSimulation();

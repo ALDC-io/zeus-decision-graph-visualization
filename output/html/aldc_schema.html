@@ -2,10 +2,14 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>ALDC Internal Engineering Schema</title>
     <link rel="icon" href="data:,">
+    <!-- Load THREE.js first, then 3d-force-graph will use the global THREE -->
     <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <script src="//unpkg.com/3d-force-graph"></script>
+    <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -160,9 +164,13 @@
             margin-bottom: 15px;
             font-size: 13px;
         }
+        .node-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
         .view-full-btn {
             display: inline-block;
-            margin-bottom: 15px;
             padding: 6px 12px;
             background: #1a365d;
             color: white;
@@ -174,6 +182,12 @@
         }
         .view-full-btn:hover {
             background: #2d4a7c;
+        }
+        .recenter-btn {
+            background: #2f855a;
+        }
+        .recenter-btn:hover {
+            background: #276749;
         }
         .modal-overlay {
             display: none;
@@ -1077,6 +1091,10 @@
                     <span class="toggle-label">Rings</span>
                     <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Logos</span>
+                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Overlays -->
                 <div class="toolbar-section">
@@ -1139,7 +1157,10 @@
                     </div>
                     <div class="node-meta" id="node-meta"></div>
                     <div class="node-description" id="node-description"></div>
-                    <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full Content</button>
+                    <div class="node-actions">
+                        <button class="view-full-btn" id="view-full-btn" onclick="showFullContent()">View Full</button>
+                        <button class="view-full-btn recenter-btn" id="recenter-btn" onclick="recenterOnNode()">&#9733; Recenter</button>
+                    </div>
                     <div class="connections-header">Connected Nodes</div>
                     <ul class="connection-list" id="connections"></ul>
                     <div id="overlay-info-container" style="margin-top: 15px;"></div>
@@ -1722,6 +1743,13 @@
                 const newHeight = wrapper.offsetHeight;
                 graph.width(newWidth).height(newHeight);
             });
+
+            // Apply labels after graph is ready
+            setTimeout(() => {
+                if (logoLabelsEnabled) {
+                    applyLogoLabelRendering();
+                }
+            }, 500);
         }
 
         // Show full content in modal
@@ -1825,6 +1853,159 @@
             setTimeout(() => {
                 navigateToNode(nodeId);
             }, 100);
+        }
+
+        // Recenter graph on selected node - show neighborhood view
+        let recenteredNodeId = null;
+
+        function recenterOnNode() {
+            if (!selectedNode) return;
+
+            recenteredNodeId = selectedNode.id;
+
+            // Get direct connections
+            const connections = linksByNode[selectedNode.id] || [];
+            const neighborIds = new Set([selectedNode.id]);
+            connections.forEach(conn => neighborIds.add(conn.nodeId));
+
+            // Filter to show only the selected node and its neighbors
+            const neighborNodes = nodesData.filter(n => neighborIds.has(n.id));
+            const neighborLinks = linksData.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                return sourceId === selectedNode.id || targetId === selectedNode.id;
+            });
+
+            // Clear existing tier platforms
+            clearTierPlatforms();
+
+            // Group neighbors by tier for cylinder-style layout
+            const tierGroups = {};
+            neighborNodes.forEach(node => {
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!tierGroups[tier]) tierGroups[tier] = [];
+                tierGroups[tier].push(node);
+            });
+
+            const tiers = Object.keys(tierGroups).map(Number).sort((a, b) => a - b);
+            const numTiers = tiers.length;
+            const radius = 150;
+            const height = 300;
+
+            // Position nodes by tier with center node marked
+            tiers.forEach((tier, tierIndex) => {
+                const tierNodes = tierGroups[tier];
+                const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+
+                tierNodes.forEach((node, nodeIndex) => {
+                    if (node.id === selectedNode.id) {
+                        // Center node stays at center of its tier ring
+                        node.fx = 0;
+                        node.fy = yPos;
+                        node.fz = 0;
+                    } else {
+                        // Spread other nodes around the ring
+                        const othersInTier = tierNodes.filter(n => n.id !== selectedNode.id);
+                        const idx = othersInTier.indexOf(node);
+                        const angle = (idx / Math.max(othersInTier.length, 1)) * Math.PI * 2;
+                        node.fx = Math.cos(angle) * radius;
+                        node.fy = yPos;
+                        node.fz = Math.sin(angle) * radius;
+                    }
+                });
+            });
+
+            // Update graph data
+            graph.graphData({
+                nodes: neighborNodes,
+                links: neighborLinks
+            });
+
+            // Create rings for the neighborhood tiers if rings enabled
+            if (typeof THREE !== 'undefined' && ringsEnabled) {
+                const scene = graph.scene();
+
+                tiers.forEach((tier, tierIndex) => {
+                    const tierNodes = tierGroups[tier];
+                    const yPos = numTiers > 1 ? (-0.45 + (0.9 * tierIndex / (numTiers - 1))) * height : 0;
+                    const ringColor = tierNodes[0]?.color || '#888888';
+                    const tierLabel = tierNodes[0]?.groupLabel || tierNodes[0]?.group || `Tier ${tier}`;
+
+                    // Soft glow area ring
+                    const torusRadius = radius + 30;
+                    const glowTubeRadius = 25;
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
+                    const glowTorusMat = new THREE.MeshBasicMaterial({
+                        color: ringColor,
+                        transparent: true,
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
+                    });
+                    const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
+                    glowTorus.rotation.x = Math.PI / 2;
+                    glowTorus.position.y = yPos;
+                    scene.add(glowTorus);
+                    tierPlatforms.push(glowTorus);
+
+                    // Tier label
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 512;
+                    canvas.height = 64;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(tierLabel, canvas.width / 2, canvas.height / 2);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMat = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                        opacity: 0.95
+                    });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.scale.set(150, 20, 1);
+                    sprite.position.set(radius + 80, yPos, 0);
+                    scene.add(sprite);
+                    tierPlatforms.push(sprite);
+                });
+            }
+
+            // Zoom to fit
+            setTimeout(() => {
+                graph.zoomToFit(500, 50);
+            }, 100);
+
+            // Update button to show reset option
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#8635; Reset View';
+            btn.onclick = resetToFullGraph;
+        }
+
+        function resetToFullGraph() {
+            recenteredNodeId = null;
+
+            // Clear fixed positions
+            nodesData.forEach(node => {
+                node.fx = undefined;
+                node.fy = undefined;
+                node.fz = undefined;
+            });
+
+            // Restore full graph
+            applyFilters();
+
+            // Re-apply current layout if cylinder
+            if (currentLayout === 'cylinder') {
+                setTimeout(() => setLayout('cylinder'), 100);
+            }
+
+            // Reset button
+            const btn = document.getElementById('recenter-btn');
+            btn.innerHTML = '&#9733; Recenter';
+            btn.onclick = recenterOnNode;
         }
 
         // Close modal
@@ -2105,10 +2286,23 @@
         let particlesEnabled = false;
         let labelsEnabled = true;
         let ringsEnabled = true;
+        let logoLabelsEnabled = true;  // Re-enabled with simpler implementation
         let currentLayout = 'force';
         let multiSelectedNodes = new Set();
         let timePlayInterval = null;
         let timeSliderValue = 100;
+
+        // --- Logo/image cache for performance ---
+        const logoCache = new Map();
+        const logoLoadPromises = new Map();
+
+        // --- Stage groupings for cylinder layout ---
+        const stageGroups = {
+            'outputs': { label: 'Reporting & Dashboards', tiers: [0], color: '#2f855a' },
+            'management': { label: 'Account & Operations', tiers: [1, 2], color: '#3182ce' },
+            'processing': { label: 'Planning & Activation', tiers: [2, 3], color: '#e53e3e' },
+            'execution': { label: 'DSPs & Platforms', tiers: [4, 5], color: '#9f7aea' }
+        };
 
         // --- Search functionality ---
         let searchTimeout = null;
@@ -2297,6 +2491,272 @@
             } else {
                 graph.nodeLabel(null);
             }
+        }
+
+        // --- Logo + Label node rendering ---
+        function toggleLogoLabels() {
+            logoLabelsEnabled = !logoLabelsEnabled;
+            const toggle = document.getElementById('logo-labels-toggle');
+            if (toggle) toggle.classList.toggle('active', logoLabelsEnabled);
+
+            if (logoLabelsEnabled) {
+                applyLogoLabelRendering();
+            } else {
+                // Reset to default spheres
+                graph.nodeThreeObject(null);
+                graph.nodeThreeObjectExtend(false);
+            }
+        }
+
+        function applyLogoLabelRendering() {
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js not available for logo+label rendering');
+                return;
+            }
+
+            // Create a sprite that contains both logo and label
+            // Using extend=false to REPLACE the default sphere with our custom sprite
+            graph.nodeThreeObject(node => {
+                const size = Math.max(node.val / 5, 3) * 2;
+
+                // Create a combined sprite with logo (if available) and label
+                const sprite = createLogoLabelSprite(node.name, node.color, node.logo, size, node.group);
+                return sprite;
+            });
+
+            // extend=false replaces the default sphere entirely
+            graph.nodeThreeObjectExtend(false);
+        }
+
+        // Create a single sprite with logo and label combined
+        // Default icons for nodes without logos (by group/category)
+        // Default icons using Google Material Icons (reliable, consistent style)
+        // These are base64 SVG data URIs for guaranteed loading
+        const defaultIcons = {
+            'hub': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#dd6b20"/><stop offset="100%" stop-color="#c05621"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#g)"/><path d="M25 30h50v8H35v12h35v8H35v12h40v8H25z" fill="white"/></svg>'),
+            'output': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>'),
+            'account': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>'),
+            'client_data': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4zm0 2c3.87 0 6 1.5 6 2s-2.13 2-6 2-6-1.5-6-2 2.13-2 6-2zm6 12c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17zm0-5c0 .5-2.13 2-6 2s-6-1.5-6-2V9.77c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V12z"/></svg>'),
+            'audience': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58C.48 14.9 0 15.62 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85-.85-.37-1.79-.58-2.78-.58-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/></svg>'),
+            'consumer_data': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>'),
+            'media_planning': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>'),
+            'activation': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/></svg>'),
+            'dsp': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>'),
+            'digital_media': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg>'),
+            'flight': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'),
+            'finance': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>'),
+            'default': 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9E9E9E"><circle cx="12" cy="12" r="8"/></svg>')
+        };
+
+        function createLogoLabelSprite(name, color, logoUrl, nodeSize, group) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            // Higher resolution for crisp logos
+            canvas.width = 256;
+            canvas.height = 320;
+
+            // Start with fully transparent background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw label below (scaled for higher res canvas)
+            ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            // Truncate text if too long
+            let displayText = name;
+            while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
+                displayText = displayText.slice(0, -4) + '...';
+            }
+            ctx.fillText(displayText, 128, 240);
+
+            // If logo URL provided, load it and update the sprite
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false,  // Disable depth testing so sprites always render on top
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
+            sprite.renderOrder = 1000;  // High render order ensures sprites render after edges
+
+            // Draw colored circle as fallback (will be covered by logo if loaded)
+            // Scaled for 256x320 canvas (center at 128, 120)
+            ctx.beginPath();
+            ctx.arc(128, 120, 96, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Draw initials as fallback
+            const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 128, 120);
+
+            // Determine the logo URL to use (provided or default based on group)
+            let finalLogoUrl = logoUrl;
+            if (!logoUrl && group) {
+                finalLogoUrl = defaultIcons[group] || defaultIcons['default'];
+            }
+
+            // If we have a logo URL, try to load and overlay it
+            if (finalLogoUrl) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                // Use weserv.nl image proxy for CORS support (but not for data URIs)
+                let proxiedUrl = finalLogoUrl;
+                if (!finalLogoUrl.startsWith('data:')) {
+                    try {
+                        const urlObj = new URL(finalLogoUrl);
+                        // Remove protocol and use weserv.nl proxy
+                        const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                        proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
+                    } catch (e) {
+                        console.warn('Invalid logo URL:', finalLogoUrl);
+                    }
+                }
+
+                img.onload = () => {
+                    // Clear the logo area for transparent background
+                    ctx.clearRect(0, 0, 256, 220);
+
+                    // Draw logo directly without background or border (fully transparent)
+                    // Scaled for 256x320 canvas
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(128, 120, 96, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(img, 32, 24, 192, 192);
+                    ctx.restore();
+
+                    texture.needsUpdate = true;
+                    console.log('Logo loaded for:', name);
+                };
+                img.onerror = (e) => {
+                    console.warn('Failed to load logo for', name, ':', proxiedUrl, e);
+                    // Initials already drawn, just update texture
+                    texture.needsUpdate = true;
+                };
+                img.src = proxiedUrl;
+            } else {
+                texture.needsUpdate = true;
+            }
+
+            return sprite;
+        }
+
+        function createLabelSprite(text, color, nodeSize) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 64;
+
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            const textWidth = ctx.measureText(text).width;
+            ctx.roundRect(10, 16, canvas.width - 20, 32, 6);
+            ctx.fill();
+
+            // Text
+            ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Truncate if too long
+            let displayText = text;
+            if (ctx.measureText(text).width > canvas.width - 30) {
+                while (ctx.measureText(displayText + '...').width > canvas.width - 30 && displayText.length > 0) {
+                    displayText = displayText.slice(0, -1);
+                }
+                displayText += '...';
+            }
+            ctx.fillText(displayText, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 4, nodeSize, 1);
+            return sprite;
+        }
+
+        function createInitialsSprite(initials, bgColor, size) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 128;
+
+            // Circle background
+            ctx.beginPath();
+            ctx.arc(64, 64, 60, 0, Math.PI * 2);
+            ctx.fillStyle = bgColor;
+            ctx.fill();
+
+            // Initials text
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 64, 68);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(size * 2, size * 2, 1);
+            return sprite;
+        }
+
+        function getInitials(name) {
+            // Extract initials from name
+            const words = name.split(/[\s\-\/]+/).filter(w => w.length > 0);
+            if (words.length === 1) {
+                return words[0].substring(0, 2).toUpperCase();
+            }
+            return words.slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+
+        async function loadLogoTexture(url) {
+            // Check cache first
+            if (logoCache.has(url)) {
+                return logoCache.get(url);
+            }
+
+            // Check if already loading
+            if (logoLoadPromises.has(url)) {
+                return logoLoadPromises.get(url);
+            }
+
+            // Start loading
+            const promise = new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const texture = new THREE.Texture(img);
+                    texture.needsUpdate = true;
+                    logoCache.set(url, texture);
+                    resolve(texture);
+                };
+                img.onerror = () => {
+                    logoCache.set(url, null);
+                    resolve(null);
+                };
+                img.src = url;
+            });
+
+            logoLoadPromises.set(url, promise);
+            return promise;
         }
 
         // --- Theme toggle (light/dark mode) ---
@@ -2529,47 +2989,52 @@
             const radius = 200;
             const height = 500;
 
-            // Collect unique tiers for platform creation
-            const uniqueTiers = new Set();
+            // Build stage definitions dynamically from actual tier data
+            // Group nodes by tier and get representative label/color for each
+            const tierInfo = {};
             nodes.forEach(node => {
-                const yValue = getYValue(node);
-                uniqueTiers.add(yValue);
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!tierInfo[tier]) {
+                    tierInfo[tier] = {
+                        tier: tier,
+                        label: node.groupLabel || node.group || `Tier ${tier}`,
+                        color: node.color || '#888888',
+                        count: 0
+                    };
+                }
+                tierInfo[tier].count++;
             });
 
-            // Create tier platforms (rings with labels) - only if rings are enabled
+            // Sort tiers and create stage definitions with evenly spaced Y positions
+            const sortedTiers = Object.keys(tierInfo).map(Number).sort((a, b) => a - b);
+            const numTiers = sortedTiers.length;
+            const stageDefinitions = sortedTiers.map((tier, index) => {
+                // Spread from -0.45 to 0.45 based on tier position
+                const yPos = numTiers > 1 ? -0.45 + (0.9 * index / (numTiers - 1)) : 0;
+                return {
+                    name: tierInfo[tier].label,
+                    tiers: [tier],
+                    color: tierInfo[tier].color,
+                    yPos: yPos
+                };
+            });
+
+            // Create stage-based platforms (rings with labels) - only if rings are enabled
             if (typeof THREE !== 'undefined' && ringsEnabled) {
                 const scene = graph.scene();
-                const sortedTiers = Array.from(uniqueTiers).sort((a, b) => a - b);
 
-                // Ring colors for different tiers
-                const ringColors = ['#4a90d9', '#6b5b95', '#88b04b', '#e89b6b', '#92a8d1', '#955251'];
+                stageDefinitions.forEach((stage, index) => {
+                    const yPos = stage.yPos * height;
+                    const ringColor = stage.color;
 
-                sortedTiers.forEach((tierValue, index) => {
-                    const yNorm = (tierValue - minY) / yRange;
-                    const yPos = (yNorm - 0.5) * height;
-                    const ringColor = ringColors[index % ringColors.length];
-
-                    // Create 3D torus ring for depth
+                    // Soft glow area ring - gentle focus effect only
                     const torusRadius = radius + 30;
-                    const tubeRadius = 3;
-                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
-                    const torusMat = new THREE.MeshBasicMaterial({
-                        color: ringColor,
-                        transparent: true,
-                        opacity: currentTheme === 'light' ? 0.5 : 0.7
-                    });
-                    const torus = new THREE.Mesh(torusGeom, torusMat);
-                    torus.rotation.x = Math.PI / 2;
-                    torus.position.y = yPos;
-                    scene.add(torus);
-                    tierPlatforms.push(torus);
-
-                    // Add outer glow ring
-                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 3, 16, 100);
+                    const glowTubeRadius = 25;  // Wide, soft tube
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
                     const glowTorusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.15 : 0.25
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
                     });
                     const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
                     glowTorus.rotation.x = Math.PI / 2;
@@ -2577,8 +3042,7 @@
                     scene.add(glowTorus);
                     tierPlatforms.push(glowTorus);
 
-                    // Create tier label
-                    const labelText = tierLabels[tierValue] || `Tier ${tierValue}`;
+                    // Create stage label
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.width = 512;
@@ -2587,42 +3051,56 @@
                     ctx.fillStyle = 'rgba(0, 0, 0, 0)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
                     ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText(labelText, canvas.width / 2, canvas.height / 2);
+                    ctx.fillText(stage.name, canvas.width / 2, canvas.height / 2);
 
                     const texture = new THREE.CanvasTexture(canvas);
                     const spriteMat = new THREE.SpriteMaterial({
                         map: texture,
                         transparent: true,
-                        opacity: 0.9
+                        opacity: 0.95
                     });
                     const sprite = new THREE.Sprite(spriteMat);
-                    sprite.scale.set(150, 20, 1);
-                    sprite.position.set(radius + 80, yPos, 0);
+                    sprite.scale.set(180, 24, 1);
+                    sprite.position.set(radius + 100, yPos, 0);
                     scene.add(sprite);
                     tierPlatforms.push(sprite);
                 });
             }
 
+            // Map tiers to stage Y positions for node placement
+            const tierToStageY = {};
+            stageDefinitions.forEach(stage => {
+                stage.tiers.forEach(tier => {
+                    tierToStageY[tier] = stage.yPos;
+                });
+            });
+
+            // Group nodes by tier for even distribution within each ring
+            const nodesByTier = {};
             nodes.forEach(node => {
-                const group = groups[node.group || 'default'];
-                // Spread nodes within their group segment
-                const nodeIndexInGroup = group.nodes.indexOf(node);
-                const groupSpread = 0.8 / totalGroups; // How much of the circle each group takes
-                const baseAngle = (group.index / totalGroups) * Math.PI * 2;
-                const offsetAngle = (nodeIndexInGroup / Math.max(group.nodes.length, 1) - 0.5) * groupSpread * Math.PI * 2;
-                const angle = baseAngle + offsetAngle;
+                const tier = typeof node.tier === 'number' ? node.tier : 0;
+                if (!nodesByTier[tier]) nodesByTier[tier] = [];
+                nodesByTier[tier].push(node);
+            });
 
-                // Y position based on tier or date
-                const yValue = getYValue(node);
-                const yNorm = (yValue - minY) / yRange;
+            // Position each node with its own space around the ring
+            Object.keys(nodesByTier).forEach(tier => {
+                const tierNodes = nodesByTier[tier];
+                const stageY = tierToStageY[tier] !== undefined ? tierToStageY[tier] : 0;
 
-                node.fx = Math.cos(angle) * radius;
-                node.fz = Math.sin(angle) * radius;
-                node.fy = (yNorm - 0.5) * height;
+                tierNodes.forEach((node, index) => {
+                    // Each node gets equal angular space around the full circle
+                    const angle = (index / tierNodes.length) * Math.PI * 2;
+
+                    // Snap to ring - no Y offset
+                    node.fx = Math.cos(angle) * radius;
+                    node.fz = Math.sin(angle) * radius;
+                    node.fy = stageY * height;
+                });
             });
 
             graph.d3ReheatSimulation();
