@@ -534,6 +534,236 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .modal-meta .label {{
             font-weight: 600;
         }}
+        /* Dashboard Modal Styles */
+        .dashboard-modal .modal-content {{
+            max-width: 1000px;
+            max-height: 90vh;
+        }}
+        .dashboard-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
+            color: white;
+        }}
+        .dashboard-header h2 {{
+            margin: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }}
+        .dashboard-header .org-badge {{
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }}
+        .dashboard-close {{
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }}
+        .dashboard-close:hover {{
+            background: rgba(255,255,255,0.3);
+        }}
+        .dashboard-summary {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 20px 24px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }}
+        .summary-card {{
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        .summary-card .card-label {{
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }}
+        .summary-card .card-value {{
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a365d;
+        }}
+        .summary-card .card-value.score {{
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }}
+        .summary-card .card-value .score-max {{
+            font-size: 14px;
+            color: #999;
+            font-weight: 400;
+        }}
+        .summary-card .card-trend {{
+            font-size: 12px;
+            margin-top: 4px;
+        }}
+        .summary-card .card-trend.up {{ color: #2f855a; }}
+        .summary-card .card-trend.down {{ color: #c53030; }}
+        .summary-card .card-trend.neutral {{ color: #666; }}
+        .dashboard-body {{
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }}
+        .project-section {{
+            margin-bottom: 24px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }}
+        .project-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+        }}
+        .project-header:hover {{
+            background: #f0f4f8;
+        }}
+        .project-title {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }}
+        .project-title h3 {{
+            margin: 0;
+            font-size: 16px;
+            color: #1a365d;
+        }}
+        .project-score {{
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }}
+        .score-badge {{
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }}
+        .score-badge.excellent {{ background: #2f855a; }}
+        .score-badge.good {{ background: #38a169; }}
+        .score-badge.fair {{ background: #d69e2e; }}
+        .score-badge.poor {{ background: #c53030; }}
+        .expand-icon {{
+            color: #666;
+            transition: transform 0.2s;
+        }}
+        .project-section.expanded .expand-icon {{
+            transform: rotate(180deg);
+        }}
+        .initiative-list {{
+            display: none;
+            padding: 0;
+        }}
+        .project-section.expanded .initiative-list {{
+            display: block;
+        }}
+        .initiative-item {{
+            display: grid;
+            grid-template-columns: 1fr repeat(5, 100px);
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 12px;
+        }}
+        .initiative-item:last-child {{
+            border-bottom: none;
+        }}
+        .initiative-item:hover {{
+            background: #fafbfc;
+        }}
+        .initiative-name {{
+            font-weight: 500;
+            color: #333;
+        }}
+        .initiative-name .init-desc {{
+            font-size: 12px;
+            color: #666;
+            font-weight: 400;
+            margin-top: 2px;
+        }}
+        .metric-cell {{
+            text-align: center;
+        }}
+        .metric-cell .metric-label {{
+            font-size: 10px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }}
+        .metric-cell .metric-value {{
+            font-weight: 600;
+            font-size: 14px;
+        }}
+        .status-indicator {{
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }}
+        .status-indicator.on-track {{ background: #c6f6d5; color: #22543d; }}
+        .status-indicator.at-risk {{ background: #fefcbf; color: #744210; }}
+        .status-indicator.blocked {{ background: #fed7d7; color: #742a2a; }}
+        .status-indicator.complete {{ background: #e9d8fd; color: #44337a; }}
+        .progress-bar {{
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }}
+        .progress-bar .progress-fill {{
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }}
+        .progress-bar .progress-fill.green {{ background: #48bb78; }}
+        .progress-bar .progress-fill.yellow {{ background: #ecc94b; }}
+        .progress-bar .progress-fill.red {{ background: #f56565; }}
+        .initiative-header {{
+            display: grid;
+            grid-template-columns: 1fr repeat(5, 100px);
+            padding: 10px 20px;
+            background: #f0f4f8;
+            font-size: 10px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            gap: 12px;
+        }}
+        .initiative-header span {{
+            text-align: center;
+        }}
+        .initiative-header span:first-child {{
+            text-align: left;
+        }}
         .node-meta {{
             font-size: 11px;
             color: #888;
@@ -1366,6 +1596,25 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         </div>
     </div>
 
+    <!-- Dashboard Modal -->
+    <div class="modal-overlay dashboard-modal" id="dashboard-modal" onclick="closeDashboard(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="dashboard-header">
+                <h2>
+                    <span id="dashboard-title">Health Dashboard</span>
+                    <span class="org-badge" id="dashboard-org-badge"></span>
+                </h2>
+                <button class="dashboard-close" onclick="closeDashboard()">&times;</button>
+            </div>
+            <div class="dashboard-summary" id="dashboard-summary">
+                <!-- Summary cards populated by JS -->
+            </div>
+            <div class="dashboard-body" id="dashboard-body">
+                <!-- Projects and initiatives populated by JS -->
+            </div>
+        </div>
+    </div>
+
     <script>
         // Data
         const nodesData = {nodes_json};
@@ -1918,99 +2167,246 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}, 500);
         }}
 
-        // Show full content in modal
+        // Show dashboard modal
         function showFullContent() {{
             if (!selectedNode) return;
+            showDashboard(selectedNode);
+        }}
 
-            // Set title and logo
-            document.getElementById('modal-title').textContent = selectedNode.name;
-            const modalLogo = document.getElementById('modal-logo');
-            if (selectedNode.logo) {{
-                modalLogo.src = selectedNode.logo;
-                modalLogo.style.display = 'block';
-            }} else {{
-                modalLogo.style.display = 'none';
+        // Generate mock project/initiative data based on node and its connections
+        function generateDashboardData(node) {{
+            const connections = linksByNode[node.id] || [];
+            const connectedNodes = connections.map(c => nodeMap[c.nodeId]).filter(Boolean);
+
+            // Group connected nodes by tier to create project hierarchy
+            const tierGroups = {{}};
+            connectedNodes.forEach(n => {{
+                const tier = n.tier || 0;
+                if (!tierGroups[tier]) tierGroups[tier] = [];
+                tierGroups[tier].push(n);
+            }});
+
+            // Create projects from tier groups
+            const projects = [];
+            const statuses = ['on-track', 'on-track', 'on-track', 'at-risk', 'at-risk', 'blocked', 'complete'];
+            const getRandomStatus = () => statuses[Math.floor(Math.random() * statuses.length)];
+            const getRandomProgress = (status) => {{
+                if (status === 'complete') return 100;
+                if (status === 'blocked') return Math.floor(Math.random() * 40) + 10;
+                if (status === 'at-risk') return Math.floor(Math.random() * 30) + 40;
+                return Math.floor(Math.random() * 30) + 60;
+            }};
+            const getRandomBudget = () => ['On Budget', 'Under Budget', 'Over Budget'][Math.floor(Math.random() * 3)];
+            const getRandomTimeline = (status) => {{
+                if (status === 'complete') return 'Completed';
+                if (status === 'blocked') return 'Delayed';
+                if (status === 'at-risk') return 'At Risk';
+                return 'On Track';
+            }};
+            const getRandomQuality = () => Math.floor(Math.random() * 3) + 3; // 3-5 stars
+
+            Object.keys(tierGroups).sort((a, b) => a - b).forEach((tier, idx) => {{
+                const tierNodes = tierGroups[tier];
+                const projectName = tierNodes[0]?.groupLabel || `Project ${{idx + 1}}`;
+
+                const initiatives = tierNodes.map(n => {{
+                    const status = getRandomStatus();
+                    return {{
+                        name: n.name,
+                        description: n.description?.substring(0, 50) || '',
+                        status: status,
+                        progress: getRandomProgress(status),
+                        timeline: getRandomTimeline(status),
+                        budget: getRandomBudget(),
+                        quality: getRandomQuality()
+                    }};
+                }});
+
+                // Calculate project rollup
+                const avgProgress = Math.round(initiatives.reduce((s, i) => s + i.progress, 0) / initiatives.length);
+                const avgQuality = (initiatives.reduce((s, i) => s + i.quality, 0) / initiatives.length).toFixed(1);
+                const hasBlocked = initiatives.some(i => i.status === 'blocked');
+                const hasAtRisk = initiatives.some(i => i.status === 'at-risk');
+                const allComplete = initiatives.every(i => i.status === 'complete');
+
+                let projectStatus = 'on-track';
+                if (allComplete) projectStatus = 'complete';
+                else if (hasBlocked) projectStatus = 'blocked';
+                else if (hasAtRisk) projectStatus = 'at-risk';
+
+                projects.push({{
+                    name: projectName,
+                    color: tierNodes[0]?.color || '#888',
+                    status: projectStatus,
+                    progress: avgProgress,
+                    quality: avgQuality,
+                    initiatives: initiatives
+                }});
+            }});
+
+            // If no connected nodes, create sample data from the node itself
+            if (projects.length === 0) {{
+                const status = getRandomStatus();
+                projects.push({{
+                    name: node.groupLabel || node.group || 'Main Project',
+                    color: node.color || '#1a365d',
+                    status: status,
+                    progress: getRandomProgress(status),
+                    quality: '4.2',
+                    initiatives: [{{
+                        name: node.name,
+                        description: node.description?.substring(0, 50) || '',
+                        status: status,
+                        progress: getRandomProgress(status),
+                        timeline: getRandomTimeline(status),
+                        budget: getRandomBudget(),
+                        quality: getRandomQuality()
+                    }}]
+                }});
             }}
 
-            // Set tier badge
-            const tierBadge = document.getElementById('modal-tier-badge');
-            tierBadge.textContent = selectedNode.groupLabel || selectedNode.group;
-            tierBadge.style.background = selectedNode.color;
+            // Calculate overall org metrics
+            const totalInitiatives = projects.reduce((s, p) => s + p.initiatives.length, 0);
+            const overallProgress = Math.round(projects.reduce((s, p) => s + p.progress, 0) / projects.length);
+            const overallQuality = (projects.reduce((s, p) => s + parseFloat(p.quality), 0) / projects.length).toFixed(1);
+            const overallScore = Math.round((overallProgress * 0.6 + parseFloat(overallQuality) * 8) );
 
-            // Set description
-            document.getElementById('modal-content').textContent = selectedNode.description || 'No description available.';
+            return {{
+                orgName: node.name,
+                orgColor: node.color,
+                totalProjects: projects.length,
+                totalInitiatives: totalInitiatives,
+                overallProgress: overallProgress,
+                overallQuality: overallQuality,
+                overallScore: overallScore,
+                projects: projects
+            }};
+        }}
 
-            // Build details grid
-            const detailsGrid = document.getElementById('modal-details');
-            const detailsSection = document.getElementById('modal-details-section');
-            let detailsHtml = '';
+        function getScoreClass(score) {{
+            if (score >= 85) return 'excellent';
+            if (score >= 70) return 'good';
+            if (score >= 50) return 'fair';
+            return 'poor';
+        }}
 
-            // Add node type detail
-            detailsHtml += `
-                <div class="modal-detail-item">
-                    <div class="detail-label">Node Type</div>
-                    <div class="detail-value">${{selectedNode.groupLabel || selectedNode.group}}</div>
+        function getProgressColor(progress) {{
+            if (progress >= 70) return 'green';
+            if (progress >= 40) return 'yellow';
+            return 'red';
+        }}
+
+        function showDashboard(node) {{
+            const data = generateDashboardData(node);
+
+            // Set header
+            document.getElementById('dashboard-title').textContent = 'Health Dashboard';
+            document.getElementById('dashboard-org-badge').textContent = data.orgName;
+            document.getElementById('dashboard-org-badge').style.background = data.orgColor || 'rgba(255,255,255,0.2)';
+
+            // Build summary cards
+            const summaryHtml = `
+                <div class="summary-card">
+                    <div class="card-label">Overall Score</div>
+                    <div class="card-value score">${{data.overallScore}}<span class="score-max">/100</span></div>
+                    <div class="card-trend up">+3 from last month</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-label">Projects</div>
+                    <div class="card-value">${{data.totalProjects}}</div>
+                    <div class="card-trend neutral">${{data.totalInitiatives}} initiatives</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-label">Avg Progress</div>
+                    <div class="card-value">${{data.overallProgress}}%</div>
+                    <div class="card-trend ${{data.overallProgress >= 60 ? 'up' : 'down'}}">${{data.overallProgress >= 60 ? 'On track' : 'Behind schedule'}}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-label">Quality Score</div>
+                    <div class="card-value">${{data.overallQuality}}</div>
+                    <div class="card-trend up">&#9733; rating</div>
                 </div>
             `;
+            document.getElementById('dashboard-summary').innerHTML = summaryHtml;
 
-            // Add tier detail
-            detailsHtml += `
-                <div class="modal-detail-item">
-                    <div class="detail-label">Tier Level</div>
-                    <div class="detail-value">Tier ${{selectedNode.tier}}</div>
-                </div>
-            `;
+            // Build projects
+            let bodyHtml = '';
+            data.projects.forEach((project, pIdx) => {{
+                const scoreClass = getScoreClass(project.progress);
 
-            // Add ID detail
-            detailsHtml += `
-                <div class="modal-detail-item">
-                    <div class="detail-label">Node ID</div>
-                    <div class="detail-value">${{selectedNode.id}}</div>
-                </div>
-            `;
+                let initiativesHtml = `
+                    <div class="initiative-header">
+                        <span>Initiative</span>
+                        <span>Status</span>
+                        <span>Progress</span>
+                        <span>Timeline</span>
+                        <span>Budget</span>
+                        <span>Quality</span>
+                    </div>
+                `;
 
-            // Add size/importance detail
-            detailsHtml += `
-                <div class="modal-detail-item">
-                    <div class="detail-label">Relative Size</div>
-                    <div class="detail-value">${{selectedNode.val || 20}}</div>
-                </div>
-            `;
+                project.initiatives.forEach(init => {{
+                    const progressColor = getProgressColor(init.progress);
+                    const stars = '&#9733;'.repeat(init.quality) + '&#9734;'.repeat(5 - init.quality);
 
-            detailsGrid.innerHTML = detailsHtml;
-            detailsSection.style.display = detailsHtml ? 'block' : 'none';
-
-            // Build connections section
-            const connectionsEl = document.getElementById('modal-connections');
-            const connectionsSection = document.getElementById('modal-connections-section');
-            const connections = linksByNode[selectedNode.id] || [];
-
-            if (connections.length > 0) {{
-                let connectionsHtml = '';
-                connections.forEach(conn => {{
-                    const connNode = nodeMap[conn.nodeId];
-                    if (!connNode) return;
-                    connectionsHtml += `
-                        <span class="modal-conn-chip" onclick="navigateToNodeFromModal('${{conn.nodeId}}')">
-                            ${{connNode.name}}
-                            <span class="conn-type">${{conn.relationType}}</span>
-                        </span>
+                    initiativesHtml += `
+                        <div class="initiative-item">
+                            <div class="initiative-name">
+                                ${{init.name}}
+                                ${{init.description ? `<div class="init-desc">${{init.description}}...</div>` : ''}}
+                            </div>
+                            <div class="metric-cell">
+                                <span class="status-indicator ${{init.status}}">${{init.status.replace('-', ' ')}}</span>
+                            </div>
+                            <div class="metric-cell">
+                                <div class="progress-bar">
+                                    <div class="progress-fill ${{progressColor}}" style="width: ${{init.progress}}%"></div>
+                                </div>
+                                <div style="font-size: 11px; margin-top: 4px;">${{init.progress}}%</div>
+                            </div>
+                            <div class="metric-cell">
+                                <div class="metric-value" style="color: ${{init.timeline === 'On Track' || init.timeline === 'Completed' ? '#2f855a' : init.timeline === 'At Risk' ? '#d69e2e' : '#c53030'}}">${{init.timeline}}</div>
+                            </div>
+                            <div class="metric-cell">
+                                <div class="metric-value" style="color: ${{init.budget === 'Under Budget' ? '#2f855a' : init.budget === 'On Budget' ? '#666' : '#c53030'}}">${{init.budget}}</div>
+                            </div>
+                            <div class="metric-cell">
+                                <div style="color: #d69e2e; font-size: 12px;">${{stars}}</div>
+                            </div>
+                        </div>
                     `;
                 }});
-                connectionsEl.innerHTML = connectionsHtml;
-                connectionsSection.style.display = 'block';
-            }} else {{
-                connectionsSection.style.display = 'none';
+
+                bodyHtml += `
+                    <div class="project-section" onclick="this.classList.toggle('expanded')">
+                        <div class="project-header">
+                            <div class="project-title">
+                                <span style="width: 12px; height: 12px; border-radius: 50%; background: ${{project.color}}; display: inline-block;"></span>
+                                <h3>${{project.name}}</h3>
+                                <span style="font-size: 12px; color: #666;">(${{project.initiatives.length}} initiatives)</span>
+                            </div>
+                            <div class="project-score">
+                                <span class="score-badge ${{scoreClass}}">${{project.progress}}%</span>
+                                <span class="expand-icon">&#9660;</span>
+                            </div>
+                        </div>
+                        <div class="initiative-list">
+                            ${{initiativesHtml}}
+                        </div>
+                    </div>
+                `;
+            }});
+
+            document.getElementById('dashboard-body').innerHTML = bodyHtml;
+
+            // Show modal
+            document.getElementById('dashboard-modal').classList.add('active');
+        }}
+
+        function closeDashboard(event) {{
+            if (!event || event.target === event.currentTarget) {{
+                document.getElementById('dashboard-modal').classList.remove('active');
             }}
-
-            // Set footer meta
-            document.getElementById('modal-meta').innerHTML = `
-                <span><span class="label">Full ID:</span> ${{selectedNode.id}}</span>
-                <span><span class="label">Group:</span> ${{selectedNode.group}}</span>
-                <span><span class="label">Connections:</span> ${{connections.length}}</span>
-            `;
-
-            document.getElementById('content-modal').classList.add('active');
         }}
 
         // Navigate to node from modal and close modal
@@ -2181,10 +2577,11 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             }}
         }}
 
-        // Close modal on Escape key
+        // Close modals on Escape key
         document.addEventListener('keydown', function(e) {{
             if (e.key === 'Escape') {{
                 closeModal();
+                closeDashboard();
             }}
         }});
 
