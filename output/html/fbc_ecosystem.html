@@ -2869,27 +2869,14 @@
                     const yPos = stage.yPos * height;
                     const ringColor = stage.color;
 
-                    // Create 3D torus ring with high transparency
+                    // Soft glow area ring - gentle focus effect only
                     const torusRadius = radius + 30;
-                    const tubeRadius = 4;
-                    const torusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius, 16, 100);
-                    const torusMat = new THREE.MeshBasicMaterial({
-                        color: ringColor,
-                        transparent: true,
-                        opacity: currentTheme === 'light' ? 0.15 : 0.2
-                    });
-                    const torus = new THREE.Mesh(torusGeom, torusMat);
-                    torus.rotation.x = Math.PI / 2;
-                    torus.position.y = yPos;
-                    scene.add(torus);
-                    tierPlatforms.push(torus);
-
-                    // Add outer glow ring - very subtle
-                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, tubeRadius * 4, 16, 100);
+                    const glowTubeRadius = 25;  // Wide, soft tube
+                    const glowTorusGeom = new THREE.TorusGeometry(torusRadius, glowTubeRadius, 16, 100);
                     const glowTorusMat = new THREE.MeshBasicMaterial({
                         color: ringColor,
                         transparent: true,
-                        opacity: currentTheme === 'light' ? 0.05 : 0.08
+                        opacity: currentTheme === 'light' ? 0.06 : 0.1
                     });
                     const glowTorus = new THREE.Mesh(glowTorusGeom, glowTorusMat);
                     glowTorus.rotation.x = Math.PI / 2;
