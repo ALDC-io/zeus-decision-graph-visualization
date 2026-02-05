@@ -690,7 +690,14 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
         target_node = f"contributor_{next_member_id}"
         add_edge(source_node, target_node, "team_member")
 
-    print(f"Created ALDC Management Team ring: {' <-> '.join([c.upper() for c in ALDC_MANAGEMENT_TEAM])} <-> {ALDC_MANAGEMENT_TEAM[0].upper()}")
+    # Connect Zeus Memory hub to each management team member
+    # This makes Zeus Memory part of the management team cluster
+    hub_id = "zeus-memory-hub"
+    for member_id in ALDC_MANAGEMENT_TEAM:
+        member_node = f"contributor_{member_id}"
+        add_edge(hub_id, member_node, "team_member")
+
+    print(f"Created ALDC Management Team ring: {' <-> '.join([c.upper() for c in ALDC_MANAGEMENT_TEAM])} <-> {ALDC_MANAGEMENT_TEAM[0].upper()} + Zeus Memory")
 
     # Connect learnings to contributors
     for node_id, meta in node_metadata.items():

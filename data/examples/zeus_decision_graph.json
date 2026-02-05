@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 16:09",
-    "updated": "2026-02-04 16:09",
+    "created": "2026-02-04 16:22",
+    "updated": "2026-02-04 16:22",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -1096,18 +1096,6 @@
       "contributor": "system"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null,
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "label": "Odin node successfully federated with Zeus Memo...",
       "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
@@ -1132,6 +1120,30 @@
       "area": "rnd"
     },
     {
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
       "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
       "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
@@ -1144,14 +1156,14 @@
       "area": "rnd"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "id": "ffc143d5-177d-49fa-9a86-6d2f4ea3bc46",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:20:16 From: Marshall Johnston Channel: #the-olds we doing dinner tonight?",
       "tier": 4,
-      "group": "cce_system",
+      "group": "cce",
       "size": 10,
-      "created_at": null,
-      "contributor": "system",
+      "created_at": "2026-02-05T00:20:16.845419",
+      "contributor": "marshall",
       "project": "",
       "area": "rnd"
     },
@@ -4682,18 +4694,6 @@
       "contributor": "jk",
       "project": "",
       "area": "rnd"
-    },
-    {
-      "id": "5be6b0cc-9251-43b0-84ae-7dd488e27c8f",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 18:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 18:46:13 From: Mike Stuart Channel: #the-olds Awesome",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T18:46:13.246829",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
     }
   ],
   "edges": [
@@ -4713,28 +4713,8 @@
       "type": "references"
     },
     {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
@@ -4743,8 +4723,8 @@
       "type": "same_category"
     },
     {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "same_category"
     },
     {
@@ -4753,8 +4733,28 @@
       "type": "same_category"
     },
     {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
@@ -6293,11 +6293,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "5be6b0cc-9251-43b0-84ae-7dd488e27c8f",
-      "target": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "type": "temporal_context"
-    },
-    {
       "source": "c6f1a5db-ea03-4921-971a-121101c24526",
       "target": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
       "type": "temporal_context"
@@ -6346,12 +6341,6 @@
       "target": "bdc96d71-6695-40f2-bcd4-7888b4bb055d",
       "type": "similar",
       "weight": 0.89
-    },
-    {
-      "source": "4a0fd6e5-619b-466c-a03c-00ef93daaa47",
-      "target": "5be6b0cc-9251-43b0-84ae-7dd488e27c8f",
-      "type": "similar",
-      "weight": 0.887
     },
     {
       "source": "41ed51f4-e8d2-496d-8fcd-a7d1be4b65ba",
