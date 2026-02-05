@@ -786,6 +786,10 @@
                     <span class="toggle-label">Rings</span>
                     <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
                 </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Logos</span>
+                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
+                </div>
                 <div class="toolbar-divider"></div>
                 <!-- Multi-select indicator -->
                 <span id="selection-count" class="selection-count">0 selected</span>
@@ -950,6 +954,7 @@
         let labelsEnabled = true;
         let currentTheme = 'dark';
         let ringsEnabled = true;
+        let logoLabelsEnabled = true;
         let timeSliderValue = 100;
         let timePlayInterval = null;
 
@@ -1253,6 +1258,83 @@
             rebuildNodeRendering();
         }
 
+        // --- Logo + Label node rendering ---
+        function toggleLogoLabels() {
+            logoLabelsEnabled = !logoLabelsEnabled;
+            const toggle = document.getElementById('logo-labels-toggle');
+            if (toggle) toggle.classList.toggle('active', logoLabelsEnabled);
+            rebuildNodeRendering();
+        }
+
+        function createLogoLabelSprite(name, color, nodeSize, nodeType) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 320;
+
+            // Start with fully transparent background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw label below
+            ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            // Truncate text if too long
+            let displayText = name;
+            while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
+                displayText = displayText.slice(0, -4) + '...';
+            }
+            ctx.fillText(displayText, 128, 240);
+
+            // Draw colored circle background
+            ctx.beginPath();
+            ctx.arc(128, 120, 96, 0, Math.PI * 2);
+            ctx.fillStyle = color || '#718096';
+            ctx.fill();
+
+            // Draw type icon/initials
+            const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials, 128, 120);
+
+            // Small type badge at bottom of circle
+            if (nodeType) {
+                const badgeColors = { hub: '#1a365d', tenant: '#3182ce', source: '#38a169', memory: '#805ad5' };
+                const badgeColor = badgeColors[nodeType] || '#718096';
+                ctx.beginPath();
+                ctx.arc(128, 200, 24, 0, Math.PI * 2);
+                ctx.fillStyle = badgeColor;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                const typeLabel = nodeType.charAt(0).toUpperCase();
+                ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(typeLabel, 128, 201);
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
+            sprite.renderOrder = 1000;
+
+            texture.needsUpdate = true;
+            return sprite;
+        }
+
         // --- Theme toggle (light/dark mode) ---
         function toggleTheme() {
             currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -1302,93 +1384,105 @@
 
         // --- Unified node rendering ---
         function rebuildNodeRendering() {
-            graph.nodeThreeObject(node => {
-                const group = new THREE.Group();
-                const size = (node.val || 10) / 6;
-
-                let geometry;
-                switch(currentGeometry) {
-                    case 'cube':
-                        geometry = new THREE.BoxGeometry(size, size, size);
-                        break;
-                    case 'diamond':
-                        geometry = new THREE.OctahedronGeometry(size);
-                        break;
-                    case 'ring':
-                        geometry = new THREE.TorusGeometry(size * 0.7, size * 0.2, 8, 24);
-                        break;
-                    default: // sphere - use type-based shapes
-                        switch(node.type) {
-                            case 'hub':
-                                geometry = new THREE.IcosahedronGeometry(size * 1.5);
-                                break;
-                            case 'tenant':
-                                geometry = new THREE.OctahedronGeometry(size * 1.2);
-                                break;
-                            case 'source':
-                                geometry = new THREE.BoxGeometry(size, size, size);
-                                break;
-                            default:
-                                geometry = new THREE.SphereGeometry(size * 0.7, 16, 16);
-                        }
-                }
-
-                const material = new THREE.MeshPhongMaterial({
-                    color: multiSelectedNodes.has(node.id) ? '#ffd700' : (node.color || '#718096'),
-                    transparent: true,
-                    opacity: 0.9,
-                    shininess: 80
+            if (logoLabelsEnabled) {
+                // Logo+Label sprite mode (matches Zeus decision graph style)
+                graph.nodeThreeObject(node => {
+                    const size = Math.max((node.val || 10) / 5, 3) * 2;
+                    const color = multiSelectedNodes.has(node.id) ? '#ffd700' : (node.color || '#718096');
+                    return createLogoLabelSprite(node.name, color, size, node.type);
                 });
+                graph.nodeThreeObjectExtend(false);
+            } else {
+                // 3D geometry mode
+                graph.nodeThreeObjectExtend(true);
+                graph.nodeThreeObject(node => {
+                    const group = new THREE.Group();
+                    const size = (node.val || 10) / 6;
 
-                const mesh = new THREE.Mesh(geometry, material);
-                group.add(mesh);
-
-                // Glow effect
-                if (glowEnabled || node.type === 'hub' || node.type === 'tenant') {
-                    if (glowEnabled) {
-                        const glowTexture = createGlowTexture(node.color || '#718096');
-                        const spriteMaterial = new THREE.SpriteMaterial({
-                            map: glowTexture,
-                            transparent: true,
-                            blending: THREE.AdditiveBlending,
-                            opacity: 0.5
-                        });
-                        const sprite = new THREE.Sprite(spriteMaterial);
-                        sprite.scale.set(size * 6, size * 6, 1);
-                        group.add(sprite);
-                    } else {
-                        // Default subtle glow for hub/tenant only
-                        const glowGeometry = new THREE.SphereGeometry(size * 1.8, 16, 16);
-                        const glowMaterial = new THREE.MeshBasicMaterial({
-                            color: node.color || '#718096',
-                            transparent: true,
-                            opacity: 0.12
-                        });
-                        group.add(new THREE.Mesh(glowGeometry, glowMaterial));
+                    let geometry;
+                    switch(currentGeometry) {
+                        case 'cube':
+                            geometry = new THREE.BoxGeometry(size, size, size);
+                            break;
+                        case 'diamond':
+                            geometry = new THREE.OctahedronGeometry(size);
+                            break;
+                        case 'ring':
+                            geometry = new THREE.TorusGeometry(size * 0.7, size * 0.2, 8, 24);
+                            break;
+                        default: // sphere - use type-based shapes
+                            switch(node.type) {
+                                case 'hub':
+                                    geometry = new THREE.IcosahedronGeometry(size * 1.5);
+                                    break;
+                                case 'tenant':
+                                    geometry = new THREE.OctahedronGeometry(size * 1.2);
+                                    break;
+                                case 'source':
+                                    geometry = new THREE.BoxGeometry(size, size, size);
+                                    break;
+                                default:
+                                    geometry = new THREE.SphereGeometry(size * 0.7, 16, 16);
+                            }
                     }
-                }
 
-                // Labels for hub and tenants
-                if (labelsEnabled && (node.type === 'hub' || node.type === 'tenant')) {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 256;
-                    canvas.height = 64;
-                    ctx.font = 'bold 20px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(node.name.substring(0, 25), 128, 40);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: multiSelectedNodes.has(node.id) ? '#ffd700' : (node.color || '#718096'),
+                        transparent: true,
+                        opacity: 0.9,
+                        shininess: 80
+                    });
 
-                    const texture = new THREE.CanvasTexture(canvas);
-                    const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
-                    const sprite = new THREE.Sprite(spriteMaterial);
-                    sprite.scale.set(45, 11, 1);
-                    sprite.position.y = size * 2 + 8;
-                    group.add(sprite);
-                }
+                    const mesh = new THREE.Mesh(geometry, material);
+                    group.add(mesh);
 
-                return group;
-            });
+                    // Glow effect
+                    if (glowEnabled || node.type === 'hub' || node.type === 'tenant') {
+                        if (glowEnabled) {
+                            const glowTexture = createGlowTexture(node.color || '#718096');
+                            const spriteMaterial = new THREE.SpriteMaterial({
+                                map: glowTexture,
+                                transparent: true,
+                                blending: THREE.AdditiveBlending,
+                                opacity: 0.5
+                            });
+                            const sprite = new THREE.Sprite(spriteMaterial);
+                            sprite.scale.set(size * 6, size * 6, 1);
+                            group.add(sprite);
+                        } else {
+                            // Default subtle glow for hub/tenant only
+                            const glowGeometry = new THREE.SphereGeometry(size * 1.8, 16, 16);
+                            const glowMaterial = new THREE.MeshBasicMaterial({
+                                color: node.color || '#718096',
+                                transparent: true,
+                                opacity: 0.12
+                            });
+                            group.add(new THREE.Mesh(glowGeometry, glowMaterial));
+                        }
+                    }
+
+                    // Labels for hub and tenants
+                    if (labelsEnabled && (node.type === 'hub' || node.type === 'tenant')) {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = 256;
+                        canvas.height = 64;
+                        ctx.font = 'bold 20px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = 'white';
+                        ctx.fillText(node.name.substring(0, 25), 128, 40);
+
+                        const texture = new THREE.CanvasTexture(canvas);
+                        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+                        const sprite = new THREE.Sprite(spriteMaterial);
+                        sprite.scale.set(45, 11, 1);
+                        sprite.position.y = size * 2 + 8;
+                        group.add(sprite);
+                    }
+
+                    return group;
+                });
+            }
         }
 
         // --- Search ---
