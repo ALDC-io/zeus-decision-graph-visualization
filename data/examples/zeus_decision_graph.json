@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 16:51",
-    "updated": "2026-02-04 16:51",
+    "created": "2026-02-05 08:58",
+    "updated": "2026-02-05 08:58",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -1096,18 +1096,6 @@
       "contributor": "system"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null,
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
       "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
@@ -1120,9 +1108,21 @@
       "area": "rnd"
     },
     {
-      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "label": "Odin node successfully federated with Zeus Memo...",
-      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1144,14 +1144,74 @@
       "area": "rnd"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "label": "Odin node successfully federated with Zeus Memo...",
+      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
       "created_at": null,
       "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "74424745-e2a0-48e5-946c-0a4ccaf4e2c3",
+      "label": "Slack Message - #aldc-team Date: 2026-02-05 16:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-05 16:25:33 From: Steven Deutekom Channel: #aldc-team I am still quite sick today and won't be working",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T16:25:33.513249",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "f74e6287-9555-41bc-bfd2-37ca809dd740",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 16:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 16:25:14 From: John Moran Channel: #the-olds ok - <!here> still interested in doing an afternoon working session? 1:30 work?",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T16:25:14.587949",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "0c7bd4db-1a19-434e-aa67-483d5518d922",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:5...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:51:55 From: John Moran Channel: #the-olds <https://flowimmersive.com/>",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:51:55.591719",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "ba62e3e6-f473-4ec0-b27f-431c2be72156",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:3...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:36:46 From: John Moran Channel: #the-olds <@U0A6A9VN96V> don't worry, i have other windows doing real work",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:36:46.131479",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "20a15634-8818-44e3-97af-775619b2cb78",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:3...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:36:19 From: John Moran Channel: #the-olds well this is fun",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:36:19.029709",
+      "contributor": "jk",
       "project": "",
       "area": "rnd"
     },
@@ -4636,66 +4696,6 @@
       "area": "rnd"
     },
     {
-      "id": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "label": "Slack Message - #the-olds Date: 2026-01-22 18:0...",
-      "title": "Slack Message - #the-olds Date: 2026-01-22 18:01:48 From: John Moran Channel: #the-olds <@U0A9P5ENXBL> <@U0A6A9VN96V>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T18:01:48.091569",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "label": "Slack Message - #aldc-team Date: 2026-01-22 16:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-22 16:48:09 From: John Moran Channel: #aldc-team thanks Steven",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T16:48:09.280439",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "740263d5-217c-4f92-9396-494b93a82ebb",
-      "label": "Slack Message - #aldc-team Date: 2026-01-22 16:...",
-      "title": "Slack Message - #aldc-team Date: 2026-01-22 16:46:31 From: Steven Deutekom Channel: #aldc-team Looks like I am gonna have to duck out for an hour or so. Don't think I will make standup. My update is that I am finishing up notifications and getting them up for a PR. Then moving on to wrap up the final must do 537 tickets. My coffee this week goes to Lori for jumping into customer support in general as well as corving things on marshall's days off.",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T16:46:31.259779",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "f9a648ce-2076-4019-b856-074c03a7f301",
-      "label": "Slack Message - #the-olds Date: 2026-01-22 16:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-22 16:43:52 From: John Moran Channel: #the-olds good feedback from Marshall on the container thinking: [6:40 AM] *Marshall* replied to a thread: since these will be added as apps, as long as theyre standalone webpages/web apps this should be fine. if youre referring to containers in the docker sense that is more relevant if we needed to spin up a ton of them due to load etc. if youre referring to containerizing them in the \"docker\" sense. I would say this is probably overkill, however what i do think makes sense is that each app runs in an iframe with its own service worker. You can reload the iframe to reset state, clear the service worker cache, and isolate localStorage/sessionStorage per app. (edited) [6:53 AM] *Marshall* initially i expect the apps to be completely isolated from the eclipse DOM. meaning that they wouldnt have access to the parent app or what its doing, they would just nest inside. then we'd create a defined \"bridge\" that would allow the apps to have access to certain information like the user context, dataset access via the eclipse app, etc. (edited)",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T16:43:52.308179",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
-      "label": "Slack Message - #the-olds Date: 2026-01-22 01:2...",
-      "title": "Slack Message - #the-olds Date: 2026-01-22 01:25:42 From: John Moran Channel: #the-olds Blackbaud Raiser's Edge NXT",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T01:25:42.818409",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
       "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 124",
@@ -4767,28 +4767,8 @@
       "type": "references"
     },
     {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
       "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "same_category"
     },
     {
@@ -4797,18 +4777,38 @@
       "type": "same_category"
     },
     {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
       "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
@@ -5757,6 +5757,26 @@
       "type": "temporal_context"
     },
     {
+      "source": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
+      "target": "20a15634-8818-44e3-97af-775619b2cb78",
+      "type": "temporal_context"
+    },
+    {
+      "source": "20a15634-8818-44e3-97af-775619b2cb78",
+      "target": "ba62e3e6-f473-4ec0-b27f-431c2be72156",
+      "type": "temporal_context"
+    },
+    {
+      "source": "ba62e3e6-f473-4ec0-b27f-431c2be72156",
+      "target": "0c7bd4db-1a19-434e-aa67-483d5518d922",
+      "type": "temporal_context"
+    },
+    {
+      "source": "0c7bd4db-1a19-434e-aa67-483d5518d922",
+      "target": "f74e6287-9555-41bc-bfd2-37ca809dd740",
+      "type": "temporal_context"
+    },
+    {
       "source": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
       "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
       "type": "temporal_context"
@@ -6332,31 +6352,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
-      "target": "f9a648ce-2076-4019-b856-074c03a7f301",
-      "type": "temporal_context"
-    },
-    {
-      "source": "f9a648ce-2076-4019-b856-074c03a7f301",
-      "target": "740263d5-217c-4f92-9396-494b93a82ebb",
-      "type": "temporal_context"
-    },
-    {
-      "source": "740263d5-217c-4f92-9396-494b93a82ebb",
-      "target": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "type": "temporal_context"
-    },
-    {
-      "source": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "type": "temporal_context"
-    },
-    {
-      "source": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "target": "176ce958-9218-4e70-9b28-ef51c612f840",
-      "type": "temporal_context"
-    },
-    {
       "source": "176ce958-9218-4e70-9b28-ef51c612f840",
       "target": "6a321d5f-87c5-49fb-9a54-87d9dccb287a",
       "type": "temporal_context"
@@ -6388,12 +6383,6 @@
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "similar",
       "weight": 0.88
-    },
-    {
-      "source": "33574549-a91c-4e19-82fa-1f6b483e6c93",
-      "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "type": "similar",
-      "weight": 0.87
     },
     {
       "source": "12ec9f90-4284-42da-97ec-f708e5f8b98b",
@@ -7393,17 +7382,17 @@
     },
     {
       "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_system",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "created_by"
     },
     {
       "source": "contributor_system",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_system",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "created_by"
     },
     {
@@ -7413,7 +7402,32 @@
     },
     {
       "source": "contributor_system",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "74424745-e2a0-48e5-946c-0a4ccaf4e2c3",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "f74e6287-9555-41bc-bfd2-37ca809dd740",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "0c7bd4db-1a19-434e-aa67-483d5518d922",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "ba62e3e6-f473-4ec0-b27f-431c2be72156",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "20a15634-8818-44e3-97af-775619b2cb78",
       "type": "created_by"
     },
     {
@@ -8864,31 +8878,6 @@
     {
       "source": "contributor_jk",
       "target": "176ce958-9218-4e70-9b28-ef51c612f840",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "2ba99597-ea74-443a-bbee-359a2f899128",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "740263d5-217c-4f92-9396-494b93a82ebb",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "f9a648ce-2076-4019-b856-074c03a7f301",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
       "type": "created_by"
     }
   ]
