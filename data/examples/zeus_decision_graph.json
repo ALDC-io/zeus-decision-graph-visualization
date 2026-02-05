@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-05 10:33",
-    "updated": "2026-02-05 10:33",
+    "created": "2026-02-05 10:54",
+    "updated": "2026-02-05 10:54",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -18,7 +18,7 @@
     "contributors_enabled": true,
     "hierarchy_enabled": false,
     "ingestion_enabled": true,
-    "embedding_backlog": 5
+    "embedding_backlog": 0
   },
   "groups": {
     "decision": {
@@ -273,16 +273,17 @@
       "icon": "\ud83e\udde0",
       "description": "Claude Code Enhanced session learnings"
     },
-    "system": {
+    "zeus_automation": {
       "patterns": [
         "system_monitor",
         "continuous_",
-        "lsm_vec"
+        "lsm_vec",
+        "internal"
       ],
-      "label": "System",
-      "color": "#6B7280",
-      "icon": "\u2699\ufe0f",
-      "description": "System monitoring and maintenance"
+      "label": "Zeus Automation",
+      "color": "#805AD5",
+      "icon": "\u26a1",
+      "description": "Zeus internal automation, monitoring, and maintenance"
     }
   },
   "nodes": [
@@ -1242,9 +1243,9 @@
       "area": "rnd"
     },
     {
-      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
-      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
+      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
+      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1254,9 +1255,9 @@
       "area": "rnd"
     },
     {
-      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
-      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
+      "id": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "label": "FEDERATION CONFIRMED: Odin node (192.168.31.186...",
+      "title": "FEDERATION CONFIRMED: Odin node (192.168.31.186) successfully integrated with Zeus Memory Hub. Full bidirectional access established. Hardware: 2x Tesla P100 16GB GPUs, 48 CPU cores, 188GB RAM. Federation timestamp: 2025-08-06 19:00:42 UTC",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -4874,12 +4875,12 @@
     {
       "id": "source_email",
       "label": "\ud83d\udce7 Email",
-      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,063\nPercentage: 72.1%",
+      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,065\nPercentage: 72.1%",
       "tier": 1,
       "group": "ingestion_source",
       "size": 70,
       "source_type": "email",
-      "memory_count": 2367063,
+      "memory_count": 2367065,
       "percentage": 72.1,
       "color": "#0078D4"
     },
@@ -4956,16 +4957,16 @@
       "color": "#EC4899"
     },
     {
-      "id": "source_system",
-      "label": "\u2699\ufe0f System",
-      "title": "System\n\nSystem monitoring and maintenance\n\nMemories: 82,814\nPercentage: 2.5%",
+      "id": "source_zeus_automation",
+      "label": "\u26a1 Zeus Automation",
+      "title": "Zeus Automation\n\nZeus internal automation, monitoring, and maintenance\n\nMemories: 82,833\nPercentage: 2.5%",
       "tier": 1,
       "group": "ingestion_source",
       "size": 38,
-      "source_type": "system",
-      "memory_count": 82814,
+      "source_type": "zeus_automation",
+      "memory_count": 82833,
       "percentage": 2.5,
-      "color": "#6B7280"
+      "color": "#805AD5"
     },
     {
       "id": "domain_web_direct",
@@ -5146,7 +5147,7 @@
     },
     {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
@@ -5156,16 +5157,11 @@
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
@@ -5175,8 +5171,13 @@
       "type": "same_category"
     },
     {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
@@ -6657,6 +6658,18 @@
       "weight": 0.962
     },
     {
+      "source": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "highly_similar",
+      "weight": 0.958
+    },
+    {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "type": "highly_similar",
+      "weight": 0.957
+    },
+    {
       "source": "4f34ed79-646b-4faf-b44b-a43ffae43b1c",
       "target": "87afa830-5d8f-4ba3-9eb8-435cd7a9ded1",
       "type": "highly_similar",
@@ -6693,6 +6706,12 @@
       "weight": 0.941
     },
     {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "b2b4c29b-2cd3-48f6-b205-14dd67281431",
+      "type": "highly_similar",
+      "weight": 0.938
+    },
+    {
       "source": "02e0d29e-ef65-4e57-b1a9-814e10542012",
       "target": "69767505-1385-4ba9-8411-88b30ebe7b17",
       "type": "highly_similar",
@@ -6715,6 +6734,12 @@
       "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
       "type": "highly_similar",
       "weight": 0.933
+    },
+    {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "a78a6d20-732f-405e-9b84-d867273cd5e6",
+      "type": "highly_similar",
+      "weight": 0.929
     },
     {
       "source": "87afa830-5d8f-4ba3-9eb8-435cd7a9ded1",
@@ -6757,6 +6782,12 @@
       "target": "b2b4c29b-2cd3-48f6-b205-14dd67281431",
       "type": "similar",
       "weight": 0.918
+    },
+    {
+      "source": "20a15634-8818-44e3-97af-775619b2cb78",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.916
     },
     {
       "source": "0203ec2a-692e-433c-aad8-ce622aec24d6",
@@ -6819,8 +6850,20 @@
       "weight": 0.911
     },
     {
+      "source": "6bb076cb-a4ea-4611-80bc-b9eda38f5d6e",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.91
+    },
+    {
       "source": "644c5058-9824-4134-9a5a-15bf17acb74c",
       "target": "9fc59a01-f2aa-4671-a04b-1733f89260f9",
+      "type": "similar",
+      "weight": 0.91
+    },
+    {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
       "type": "similar",
       "weight": 0.91
     },
@@ -6907,6 +6950,30 @@
       "target": "8a197ed3-db0a-49b6-8031-20343ca515f5",
       "type": "similar",
       "weight": 0.903
+    },
+    {
+      "source": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.901
+    },
+    {
+      "source": "68b6d684-87ea-4fe2-8c09-d50a69ca9e82",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.901
+    },
+    {
+      "source": "6ad70eed-4e54-4885-95b9-c6d0be49c80d",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.901
+    },
+    {
+      "source": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.899
     },
     {
       "source": "6bb076cb-a4ea-4611-80bc-b9eda38f5d6e",
@@ -7011,6 +7078,18 @@
       "weight": 0.886
     },
     {
+      "source": "1bbe704a-cc0e-4720-b84b-ca47a66b3578",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.886
+    },
+    {
+      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.886
+    },
+    {
       "source": "4532b1fe-b114-4d0e-8b3e-c64106c1b2d4",
       "target": "99654e94-2ced-490a-a0e9-49812970de29",
       "type": "similar",
@@ -7029,6 +7108,12 @@
       "weight": 0.885
     },
     {
+      "source": "1d8b9d96-8770-45a9-87b1-15096c048971",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.885
+    },
+    {
       "source": "1bbe704a-cc0e-4720-b84b-ca47a66b3578",
       "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
       "type": "similar",
@@ -7037,6 +7122,12 @@
     {
       "source": "06b189ec-3f94-4dfe-9a6d-3c0173b06167",
       "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
+      "type": "similar",
+      "weight": 0.882
+    },
+    {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
       "type": "similar",
       "weight": 0.882
     },
@@ -7079,6 +7170,12 @@
     {
       "source": "20a15634-8818-44e3-97af-775619b2cb78",
       "target": "a78a6d20-732f-405e-9b84-d867273cd5e6",
+      "type": "similar",
+      "weight": 0.88
+    },
+    {
+      "source": "b2b4c29b-2cd3-48f6-b205-14dd67281431",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
       "type": "similar",
       "weight": 0.88
     },
@@ -7126,6 +7223,12 @@
     },
     {
       "source": "06b189ec-3f94-4dfe-9a6d-3c0173b06167",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.877
+    },
+    {
+      "source": "06b189ec-3f94-4dfe-9a6d-3c0173b06167",
       "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
       "type": "similar",
       "weight": 0.877
@@ -7133,6 +7236,12 @@
     {
       "source": "ae40781a-fe10-4053-bdf6-8cde598f104e",
       "target": "d890019f-ce76-4558-96f0-7e6bd4bb948d",
+      "type": "similar",
+      "weight": 0.877
+    },
+    {
+      "source": "3a173047-f9e6-4745-9d78-09000de7dcec",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
       "type": "similar",
       "weight": 0.877
     },
@@ -7167,8 +7276,20 @@
       "weight": 0.876
     },
     {
+      "source": "68b6d684-87ea-4fe2-8c09-d50a69ca9e82",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.875
+    },
+    {
       "source": "02e0d29e-ef65-4e57-b1a9-814e10542012",
       "target": "50da6048-3933-424a-ae24-477a20a2e38a",
+      "type": "similar",
+      "weight": 0.874
+    },
+    {
+      "source": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
       "type": "similar",
       "weight": 0.874
     },
@@ -7239,6 +7360,12 @@
       "weight": 0.869
     },
     {
+      "source": "a78a6d20-732f-405e-9b84-d867273cd5e6",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.869
+    },
+    {
       "source": "250d0e7b-3f50-415d-9a67-dce827d7d060",
       "target": "768f1f07-c531-447e-88ed-28b705a26918",
       "type": "similar",
@@ -7283,6 +7410,12 @@
     {
       "source": "5655606e-2881-4d80-988d-c45ec597abc7",
       "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
+      "type": "similar",
+      "weight": 0.866
+    },
+    {
+      "source": "6ad70eed-4e54-4885-95b9-c6d0be49c80d",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
       "type": "similar",
       "weight": 0.866
     },
@@ -7377,6 +7510,18 @@
       "weight": 0.863
     },
     {
+      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
+      "target": "b2b4c29b-2cd3-48f6-b205-14dd67281431",
+      "type": "similar",
+      "weight": 0.862
+    },
+    {
+      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
+      "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
+      "type": "similar",
+      "weight": 0.862
+    },
+    {
       "source": "02e0d29e-ef65-4e57-b1a9-814e10542012",
       "target": "0df4c7e3-84ca-4a73-8ee5-ff4bf2f3270d",
       "type": "similar",
@@ -7395,6 +7540,12 @@
       "weight": 0.862
     },
     {
+      "source": "768f1f07-c531-447e-88ed-28b705a26918",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.862
+    },
+    {
       "source": "87afa830-5d8f-4ba3-9eb8-435cd7a9ded1",
       "target": "ae40781a-fe10-4053-bdf6-8cde598f104e",
       "type": "similar",
@@ -7403,6 +7554,18 @@
     {
       "source": "0df4c7e3-84ca-4a73-8ee5-ff4bf2f3270d",
       "target": "f41ca426-0f2b-41ba-8ef5-ae7f75d8902f",
+      "type": "similar",
+      "weight": 0.861
+    },
+    {
+      "source": "3a33cb8d-bab5-4af4-bba7-8d137d8aeb3b",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.861
+    },
+    {
+      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
+      "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
       "type": "similar",
       "weight": 0.861
     },
@@ -7437,6 +7600,18 @@
       "weight": 0.859
     },
     {
+      "source": "1d8b9d96-8770-45a9-87b1-15096c048971",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.859
+    },
+    {
+      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
+      "target": "6bb076cb-a4ea-4611-80bc-b9eda38f5d6e",
+      "type": "similar",
+      "weight": 0.859
+    },
+    {
       "source": "4722629a-dee6-4ac4-beda-dd5db5a21705",
       "target": "74424745-e2a0-48e5-946c-0a4ccaf4e2c3",
       "type": "similar",
@@ -7461,6 +7636,12 @@
       "weight": 0.857
     },
     {
+      "source": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.857
+    },
+    {
       "source": "53c2a937-d25d-4fe4-824e-3ed1742786b9",
       "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
       "type": "similar",
@@ -7473,10 +7654,22 @@
       "weight": 0.856
     },
     {
+      "source": "20a15634-8818-44e3-97af-775619b2cb78",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.856
+    },
+    {
       "source": "73fb273c-e2c6-419e-a41b-68e48030651a",
       "target": "b7717751-93b0-4b33-8141-6871ae925c25",
       "type": "similar",
       "weight": 0.855
+    },
+    {
+      "source": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "target": "b7717751-93b0-4b33-8141-6871ae925c25",
+      "type": "similar",
+      "weight": 0.854
     },
     {
       "source": "3b5d33b4-5864-4511-9111-d42c01ad5a52",
@@ -7545,10 +7738,34 @@
       "weight": 0.852
     },
     {
+      "source": "5655606e-2881-4d80-988d-c45ec597abc7",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.852
+    },
+    {
       "source": "7abb273e-e66b-472e-a6b3-351e4d7e61d1",
       "target": "e9f3fd6c-5f18-42ba-b43c-e9ac4fb79a32",
       "type": "similar",
       "weight": 0.852
+    },
+    {
+      "source": "02e0d29e-ef65-4e57-b1a9-814e10542012",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.852
+    },
+    {
+      "source": "644c5058-9824-4134-9a5a-15bf17acb74c",
+      "target": "8a1a54c4-8497-4159-beb4-7f871318c1ea",
+      "type": "similar",
+      "weight": 0.852
+    },
+    {
+      "source": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "target": "fa50265a-d222-442e-9d42-d9785800d65b",
+      "type": "similar",
+      "weight": 0.851
     },
     {
       "source": "d890019f-ce76-4558-96f0-7e6bd4bb948d",
@@ -8581,12 +8798,12 @@
     },
     {
       "source": "contributor_system",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "created_by"
     },
     {
       "source": "contributor_system",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "created_by"
     },
     {
@@ -10106,7 +10323,7 @@
     },
     {
       "source": "zeus-memory-hub",
-      "target": "source_system",
+      "target": "source_zeus_automation",
       "type": "feeds_into"
     },
     {

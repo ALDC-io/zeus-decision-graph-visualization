@@ -192,12 +192,12 @@ INGESTION_SOURCES = {
         "icon": "🧠",
         "description": "Claude Code Enhanced session learnings"
     },
-    "system": {
-        "patterns": ["system_monitor", "continuous_", "lsm_vec"],
-        "label": "System",
-        "color": "#6B7280",  # Gray
-        "icon": "⚙️",
-        "description": "System monitoring and maintenance"
+    "zeus_automation": {
+        "patterns": ["system_monitor", "continuous_", "lsm_vec", "internal"],
+        "label": "Zeus Automation",
+        "color": "#805AD5",  # Purple (matches Zeus branding)
+        "icon": "⚡",
+        "description": "Zeus internal automation, monitoring, and maintenance"
     },
 }
 
