@@ -141,6 +141,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
         }
         .filter-section-title button {
             font-size: 9px;
@@ -154,10 +155,20 @@
         .filter-section-title button:hover {
             background: #f0f0f0;
         }
+        .filter-section-title .section-arrow {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        .filter-section-title .section-arrow.collapsed {
+            transform: rotate(-90deg);
+        }
         .filter-chips {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+        }
+        .filter-chips.collapsed {
+            display: none;
         }
         .filter-chip {
             display: inline-flex;
@@ -399,6 +410,235 @@
             border-color: #1a365d;
         }
 
+        /* Effects toggle */
+        .effects-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 28px;
+            height: 16px;
+            background: #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle-switch.active {
+            background: #3182ce;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.2s;
+        }
+        .toggle-switch.active::after {
+            left: 14px;
+        }
+        .toggle-label {
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* Search bar */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        #search-input {
+            font-size: 11px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            background: white;
+        }
+        #search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+        .search-results.active {
+            display: block;
+        }
+        .search-result-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 11px;
+        }
+        .search-result-item:hover {
+            background: #f0f7ff;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item .name {
+            font-weight: 500;
+            color: #1a365d;
+        }
+        .search-result-item .type {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Time slider */
+        .time-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #time-slider {
+            width: 120px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        #time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #3182ce;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .time-display {
+            font-size: 10px;
+            color: #666;
+            min-width: 80px;
+        }
+        .play-btn {
+            font-size: 12px;
+            padding: 2px 8px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .play-btn:hover {
+            background: #f0f0f0;
+        }
+        .play-btn.playing {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+
+        /* VR button */
+        .vr-btn {
+            padding: 4px 10px;
+            border: 1px solid #805ad5;
+            background: white;
+            color: #805ad5;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        .vr-btn:hover:not(:disabled) {
+            background: #805ad5;
+            color: white;
+        }
+        .vr-btn:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        /* Multi-select indicator */
+        .selection-count {
+            font-size: 10px;
+            color: #805ad5;
+            font-weight: 600;
+            padding: 2px 8px;
+            background: rgba(128, 90, 213, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+        .selection-count.active {
+            display: inline-block;
+        }
+
+        /* Stats display */
+        .stats-display {
+            font-size: 9px;
+            color: #666;
+            padding: 2px 6px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 3px;
+        }
+
+        /* Extended toolbar */
+        .toolbar-extended {
+            position: absolute;
+            top: 50px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar-extended.hidden {
+            display: none;
+        }
+
+        /* Heat map legend */
+        .heatmap-legend {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            left: 12px;
+            background: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .heatmap-legend.active {
+            display: block;
+        }
+        .heatmap-gradient {
+            width: 150px;
+            height: 12px;
+            background: linear-gradient(to right, #3182ce, #38a169, #ecc94b, #e53e3e);
+            border-radius: 2px;
+            margin-bottom: 4px;
+        }
+        .heatmap-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: #666;
+        }
+
         /* Legend */
         .legend {
             position: absolute;
@@ -509,11 +749,66 @@
                     <span class="shape-chip active" data-shape="sphere" onclick="setNodeGeometry('sphere')">&#9679;</span>
                     <span class="shape-chip" data-shape="cube" onclick="setNodeGeometry('cube')">&#9632;</span>
                     <span class="shape-chip" data-shape="diamond" onclick="setNodeGeometry('diamond')">&#9670;</span>
+                    <span class="shape-chip" data-shape="ring" onclick="setNodeGeometry('ring')">&#9675;</span>
                 </div>
                 <div class="toolbar-divider"></div>
                 <div class="toolbar-section">
                     <button class="view-btn" onclick="resetCamera()">Reset</button>
                     <button class="view-btn" onclick="zoomToFit()">Fit</button>
+                </div>
+            </div>
+            <!-- Extended Toolbar with effects toggles, search, etc. -->
+            <div id="toolbar-extended" class="toolbar-extended">
+                <!-- Search -->
+                <div class="toolbar-section search-container" style="position: relative;">
+                    <input type="text" id="search-input" placeholder="Search nodes..." onkeyup="handleSearch(event)" onfocus="showSearchResults()" onblur="hideSearchResults()">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Effects toggles -->
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Glow</span>
+                    <div id="glow-toggle" class="toggle-switch" onclick="toggleGlow()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Particles</span>
+                    <div id="particles-toggle" class="toggle-switch active" onclick="toggleParticles()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Labels</span>
+                    <div id="labels-toggle" class="toggle-switch active" onclick="toggleLabels()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Light</span>
+                    <div id="theme-toggle" class="toggle-switch" onclick="toggleTheme()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Rings</span>
+                    <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
+                </div>
+                <div class="toolbar-divider"></div>
+                <!-- Multi-select indicator -->
+                <span id="selection-count" class="selection-count">0 selected</span>
+                <!-- VR button -->
+                <button id="vr-btn" class="vr-btn" onclick="enterVR()" disabled>VR</button>
+                <!-- Stats -->
+                <span id="stats-display" class="stats-display"></span>
+            </div>
+            <!-- Time slider -->
+            <div id="time-toolbar" class="toolbar-extended" style="top: 90px; display: none;">
+                <div class="toolbar-section time-slider-container">
+                    <span style="font-size:10px;color:#666;">Time:</span>
+                    <button id="play-btn" class="play-btn" onclick="toggleTimePlay()">&#9654;</button>
+                    <input type="range" id="time-slider" min="0" max="100" value="100" oninput="updateTimeSlider()">
+                    <span id="time-display" class="time-display">All time</span>
+                </div>
+            </div>
+            <!-- Heat map legend -->
+            <div id="heatmap-legend" class="heatmap-legend">
+                <div class="heatmap-gradient"></div>
+                <div class="heatmap-labels">
+                    <span>Low</span>
+                    <span>High</span>
                 </div>
             </div>
             <div class="legend">
@@ -557,11 +852,12 @@
                 </div>
             </div>
 
-            <!-- Filters Section -->
+            <!-- Collapsible Filters Sections -->
             <div class="filters-section">
-                <div class="filter-section-title">
+                <div class="filter-section-title" onclick="toggleFilterSection('node-filters')">
                     Node Types
-                    <button onclick="toggleAllNodes()">Toggle All</button>
+                    <span class="section-arrow" id="arrow-node-filters">&#9660;</span>
+                    <button onclick="event.stopPropagation(); toggleAllNodes()">Toggle All</button>
                 </div>
                 <div class="filter-chips" id="node-filters">
                     <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#1a365d"></span>Hub</span>
@@ -572,9 +868,10 @@
             </div>
 
             <div class="filters-section">
-                <div class="filter-section-title">
+                <div class="filter-section-title" onclick="toggleFilterSection('source-filters')">
                     Source Categories
-                    <button onclick="toggleAllSources()">Toggle All</button>
+                    <span class="section-arrow" id="arrow-source-filters">&#9660;</span>
+                    <button onclick="event.stopPropagation(); toggleAllSources()">Toggle All</button>
                 </div>
                 <div class="filter-chips" id="source-filters">
                     <span class="filter-chip active" data-source="email"><span class="chip-color" style="background:#63b3ed"></span>Email</span>
@@ -588,9 +885,10 @@
             </div>
 
             <div class="filters-section">
-                <div class="filter-section-title">
+                <div class="filter-section-title" onclick="toggleFilterSection('edge-filters')">
                     Edge Types
-                    <button onclick="toggleSemanticLinks()">Toggle Semantic</button>
+                    <span class="section-arrow" id="arrow-edge-filters">&#9660;</span>
+                    <button onclick="event.stopPropagation(); toggleSemanticLinks()">Toggle Semantic</button>
                 </div>
                 <div class="filter-chips" id="edge-filters">
                     <span class="filter-chip active" data-edge="hierarchy"><span class="chip-color" style="background:rgba(255,255,255,0.4)"></span>Hierarchy</span>
@@ -602,6 +900,10 @@
                 <div class="info-placeholder" id="placeholder">
                     <p><strong>Click a node</strong> to explore</p>
                     <p>Drag to rotate &bull; Scroll to zoom &bull; Right-drag to pan</p>
+                    <p style="margin-top:10px;font-size:10px;color:#888;">
+                        <strong>Shift+Click</strong> to multi-select nodes<br>
+                        <strong>Search</strong> nodes via the toolbar above
+                    </p>
                     <p style="margin-top:15px;font-size:10px;color:#888;">
                         <strong>Hierarchy:</strong> Hub &rarr; Tenants &rarr; Sources &rarr; Memories<br>
                         <strong>Semantic Links:</strong> Cross-source relationships based on embedding similarity
@@ -641,6 +943,26 @@
 
         // Node lookup
         const nodeMap = {};
+
+        // Effects state
+        let glowEnabled = false;
+        let particlesEnabled = true;
+        let labelsEnabled = true;
+        let currentTheme = 'dark';
+        let ringsEnabled = true;
+        let timeSliderValue = 100;
+        let timePlayInterval = null;
+
+        // Multi-select state
+        const multiSelectedNodes = new Set();
+
+        // Collapsible sidebar sections
+        function toggleFilterSection(sectionId) {
+            const chips = document.getElementById(sectionId);
+            const arrow = document.getElementById('arrow-' + sectionId);
+            chips.classList.toggle('collapsed');
+            if (arrow) arrow.classList.toggle('collapsed');
+        }
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -796,20 +1118,22 @@
             const tierSpacing = 100;
             const maxTier = Math.max(...nodes.map(n => n.tier || 0));
 
-            // Create ring platforms for each tier
-            for (let tier = 0; tier <= maxTier; tier++) {
-                const radius = baseRadius + tier * 50;
-                const ringGeometry = new THREE.TorusGeometry(radius, 2, 8, 64);
-                const ringMaterial = new THREE.MeshBasicMaterial({
-                    color: tier === 0 ? 0x1a365d : (tier === 1 ? 0x3182ce : (tier === 2 ? 0x38a169 : 0x805ad5)),
-                    transparent: true,
-                    opacity: 0.3
-                });
-                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-                ring.rotation.x = Math.PI / 2;
-                ring.position.y = tier * tierSpacing;
-                scene.add(ring);
-                tierPlatforms.push(ring);
+            // Create ring platforms for each tier (if rings enabled)
+            if (ringsEnabled) {
+                for (let tier = 0; tier <= maxTier; tier++) {
+                    const radius = baseRadius + tier * 50;
+                    const ringGeometry = new THREE.TorusGeometry(radius, 2, 8, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: tier === 0 ? 0x1a365d : (tier === 1 ? 0x3182ce : (tier === 2 ? 0x38a169 : 0x805ad5)),
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 2;
+                    ring.position.y = tier * tierSpacing;
+                    scene.add(ring);
+                    tierPlatforms.push(ring);
+                }
             }
 
             // Group nodes by tier
@@ -863,7 +1187,528 @@
             document.querySelectorAll('.shape-chip').forEach(c => c.classList.remove('active'));
             document.querySelector(`.shape-chip[data-shape="${shape}"]`).classList.add('active');
             // Re-render nodes with new geometry
-            graph.nodeThreeObject(graph.nodeThreeObject());
+            rebuildNodeRendering();
+        }
+
+        // --- Glow effect ---
+        function toggleGlow() {
+            glowEnabled = !glowEnabled;
+            document.getElementById('glow-toggle').classList.toggle('active', glowEnabled);
+            rebuildNodeRendering();
+        }
+
+        function createGlowTexture(color) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(0.2, color);
+            gradient.addColorStop(0.4, hexToRgba(color, 0.5));
+            gradient.addColorStop(0.7, hexToRgba(color, 0.2));
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 128, 128);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            return texture;
+        }
+
+        function hexToRgba(hex, alpha) {
+            let r = 0, g = 0, b = 0;
+            if (hex && hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            } else if (hex && hex.length === 7) {
+                r = parseInt(hex.slice(1, 3), 16);
+                g = parseInt(hex.slice(3, 5), 16);
+                b = parseInt(hex.slice(5, 7), 16);
+            }
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        // --- Edge particles ---
+        function toggleParticles() {
+            particlesEnabled = !particlesEnabled;
+            document.getElementById('particles-toggle').classList.toggle('active', particlesEnabled);
+
+            if (particlesEnabled) {
+                graph.linkDirectionalParticles(link => link.type === 'semantic' ? 4 : 2)
+                    .linkDirectionalParticleSpeed(0.005)
+                    .linkDirectionalParticleWidth(link => link.type === 'semantic' ? 2 : 1)
+                    .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#805ad5' : '#ffffff');
+            } else {
+                graph.linkDirectionalParticles(0);
+            }
+        }
+
+        // --- Labels toggle ---
+        function toggleLabels() {
+            labelsEnabled = !labelsEnabled;
+            document.getElementById('labels-toggle').classList.toggle('active', labelsEnabled);
+            rebuildNodeRendering();
+        }
+
+        // --- Theme toggle (light/dark mode) ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.getElementById('theme-toggle').classList.toggle('active', currentTheme === 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const body = document.body;
+            const graphWrapper = document.getElementById('graph-wrapper');
+
+            if (currentTheme === 'light') {
+                body.style.background = '#f5f7fa';
+                graphWrapper.style.background = '#f0f4f8';
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#f0f4f8');
+                }
+            } else {
+                body.style.background = '#0a0a1a';
+                graphWrapper.style.background = '#0a0a1a';
+                if (graph && graph.backgroundColor) {
+                    graph.backgroundColor('#0a0a1a');
+                }
+            }
+
+            // Refresh cylinder layout to update ring opacities
+            if (currentLayout === 'cylinder' && ringsEnabled) {
+                clearTierPlatforms();
+                applyCylinderLayout();
+            }
+        }
+
+        // --- Rings toggle (for cylinder layout) ---
+        function toggleRings() {
+            ringsEnabled = !ringsEnabled;
+            document.getElementById('rings-toggle').classList.toggle('active', ringsEnabled);
+
+            if (currentLayout === 'cylinder') {
+                if (ringsEnabled) {
+                    clearTierPlatforms();
+                    applyCylinderLayout();
+                } else {
+                    clearTierPlatforms();
+                }
+            }
+        }
+
+        // --- Unified node rendering ---
+        function rebuildNodeRendering() {
+            graph.nodeThreeObject(node => {
+                const group = new THREE.Group();
+                const size = (node.val || 10) / 6;
+
+                let geometry;
+                switch(currentGeometry) {
+                    case 'cube':
+                        geometry = new THREE.BoxGeometry(size, size, size);
+                        break;
+                    case 'diamond':
+                        geometry = new THREE.OctahedronGeometry(size);
+                        break;
+                    case 'ring':
+                        geometry = new THREE.TorusGeometry(size * 0.7, size * 0.2, 8, 24);
+                        break;
+                    default: // sphere - use type-based shapes
+                        switch(node.type) {
+                            case 'hub':
+                                geometry = new THREE.IcosahedronGeometry(size * 1.5);
+                                break;
+                            case 'tenant':
+                                geometry = new THREE.OctahedronGeometry(size * 1.2);
+                                break;
+                            case 'source':
+                                geometry = new THREE.BoxGeometry(size, size, size);
+                                break;
+                            default:
+                                geometry = new THREE.SphereGeometry(size * 0.7, 16, 16);
+                        }
+                }
+
+                const material = new THREE.MeshPhongMaterial({
+                    color: multiSelectedNodes.has(node.id) ? '#ffd700' : (node.color || '#718096'),
+                    transparent: true,
+                    opacity: 0.9,
+                    shininess: 80
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+                group.add(mesh);
+
+                // Glow effect
+                if (glowEnabled || node.type === 'hub' || node.type === 'tenant') {
+                    if (glowEnabled) {
+                        const glowTexture = createGlowTexture(node.color || '#718096');
+                        const spriteMaterial = new THREE.SpriteMaterial({
+                            map: glowTexture,
+                            transparent: true,
+                            blending: THREE.AdditiveBlending,
+                            opacity: 0.5
+                        });
+                        const sprite = new THREE.Sprite(spriteMaterial);
+                        sprite.scale.set(size * 6, size * 6, 1);
+                        group.add(sprite);
+                    } else {
+                        // Default subtle glow for hub/tenant only
+                        const glowGeometry = new THREE.SphereGeometry(size * 1.8, 16, 16);
+                        const glowMaterial = new THREE.MeshBasicMaterial({
+                            color: node.color || '#718096',
+                            transparent: true,
+                            opacity: 0.12
+                        });
+                        group.add(new THREE.Mesh(glowGeometry, glowMaterial));
+                    }
+                }
+
+                // Labels for hub and tenants
+                if (labelsEnabled && (node.type === 'hub' || node.type === 'tenant')) {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 256;
+                    canvas.height = 64;
+                    ctx.font = 'bold 20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = 'white';
+                    ctx.fillText(node.name.substring(0, 25), 128, 40);
+
+                    const texture = new THREE.CanvasTexture(canvas);
+                    const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+                    const sprite = new THREE.Sprite(spriteMaterial);
+                    sprite.scale.set(45, 11, 1);
+                    sprite.position.y = size * 2 + 8;
+                    group.add(sprite);
+                }
+
+                return group;
+            });
+        }
+
+        // --- Search ---
+        function handleSearch(event) {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const resultsEl = document.getElementById('search-results');
+
+            if (!query) {
+                resultsEl.classList.remove('active');
+                return;
+            }
+
+            const matches = graphData.nodes.filter(n =>
+                n.name.toLowerCase().includes(query)
+            ).slice(0, 10);
+
+            if (matches.length > 0) {
+                resultsEl.innerHTML = matches.map(node =>
+                    '<div class="search-result-item" onmousedown="searchSelectNode(\'' + node.id + '\')">' +
+                    '<div class="name">' + node.name + '</div>' +
+                    '<div class="type">' + (node.type || 'node') + '</div>' +
+                    '</div>'
+                ).join('');
+                resultsEl.classList.add('active');
+            } else {
+                resultsEl.innerHTML = '<div class="search-result-item"><div class="name" style="color:#999">No results</div></div>';
+                resultsEl.classList.add('active');
+            }
+
+            // Enter key navigates to first result
+            if (event.key === 'Enter' && matches.length > 0) {
+                searchSelectNode(matches[0].id);
+            }
+        }
+
+        function showSearchResults() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                document.getElementById('search-results').classList.add('active');
+            }
+        }
+
+        function hideSearchResults() {
+            setTimeout(() => {
+                document.getElementById('search-results').classList.remove('active');
+            }, 200);
+        }
+
+        function searchSelectNode(nodeId) {
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').classList.remove('active');
+            focusNode(nodeId);
+        }
+
+        // --- Multi-select with shift-click ---
+        function setupMultiSelect() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Shift') {
+                    graph.onNodeClick((node) => {
+                        if (multiSelectedNodes.has(node.id)) {
+                            multiSelectedNodes.delete(node.id);
+                        } else {
+                            multiSelectedNodes.add(node.id);
+                        }
+                        updateMultiSelectDisplay();
+                        rebuildNodeRendering();
+                    });
+                }
+            });
+
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Shift') {
+                    graph.onNodeClick(node => handleNodeClick(node));
+                }
+            });
+        }
+
+        function handleNodeClick(node) {
+            if (node) {
+                showNodeInfo(node);
+                const distance = 150;
+                const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+                graph.cameraPosition(
+                    { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
+                    node, 1500
+                );
+            }
+        }
+
+        function updateMultiSelectDisplay() {
+            const countEl = document.getElementById('selection-count');
+            if (multiSelectedNodes.size > 0) {
+                countEl.textContent = multiSelectedNodes.size + ' selected';
+                countEl.classList.add('active');
+            } else {
+                countEl.classList.remove('active');
+            }
+        }
+
+        // --- Time slider ---
+        function initTimeSlider() {
+            const nodesWithDates = graphData.nodes.filter(n => n.createdAt);
+            if (nodesWithDates.length > 0) {
+                document.getElementById('time-toolbar').style.display = 'flex';
+
+                const dates = nodesWithDates.map(n => new Date(n.createdAt).getTime()).sort((a, b) => a - b);
+                window.timeRange = {
+                    min: dates[0],
+                    max: dates[dates.length - 1]
+                };
+            }
+        }
+
+        function updateTimeSlider() {
+            timeSliderValue = parseInt(document.getElementById('time-slider').value);
+
+            if (!window.timeRange) return;
+
+            const cutoffTime = window.timeRange.min + (timeSliderValue / 100) * (window.timeRange.max - window.timeRange.min);
+            const cutoffDate = new Date(cutoffTime);
+
+            document.getElementById('time-display').textContent =
+                timeSliderValue === 100 ? 'All time' : cutoffDate.toLocaleDateString();
+
+            // Filter nodes by time (respecting existing filters)
+            const filteredNodes = graphData.nodes.filter(node => {
+                if (!activeNodeTypes.has(node.type)) return false;
+                if (node.type === 'source' && !activeSourceCategories.has(node.group || 'other')) return false;
+                if (!node.createdAt) return true;
+                return new Date(node.createdAt).getTime() <= cutoffTime;
+            });
+
+            const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+            const filteredLinks = graphData.links.filter(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                if (!filteredNodeIds.has(sourceId) || !filteredNodeIds.has(targetId)) return false;
+                const edgeType = link.type === 'semantic' ? 'semantic' : 'hierarchy';
+                return activeEdgeTypes.has(edgeType);
+            });
+
+            graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+        }
+
+        function toggleTimePlay() {
+            const btn = document.getElementById('play-btn');
+
+            if (timePlayInterval) {
+                clearInterval(timePlayInterval);
+                timePlayInterval = null;
+                btn.innerHTML = '&#9654;';
+                btn.classList.remove('playing');
+            } else {
+                if (timeSliderValue >= 100) {
+                    document.getElementById('time-slider').value = 0;
+                    timeSliderValue = 0;
+                }
+
+                btn.innerHTML = '&#9646;&#9646;';
+                btn.classList.add('playing');
+
+                timePlayInterval = setInterval(() => {
+                    timeSliderValue += 1;
+                    document.getElementById('time-slider').value = timeSliderValue;
+                    updateTimeSlider();
+
+                    if (timeSliderValue >= 100) {
+                        toggleTimePlay();
+                    }
+                }, 100);
+            }
+        }
+
+        // --- VR mode ---
+        function checkVRSupport() {
+            if (navigator.xr) {
+                navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+                    document.getElementById('vr-btn').disabled = !supported;
+                });
+            }
+        }
+
+        function enterVR() {
+            if (graph.scene && navigator.xr) {
+                const renderer = graph.renderer();
+                renderer.xr.enabled = true;
+
+                navigator.xr.requestSession('immersive-vr').then(session => {
+                    renderer.xr.setSession(session);
+                });
+            }
+        }
+
+        // --- Stats display ---
+        function updateStats() {
+            const nodes = graph.graphData().nodes;
+            const links = graph.graphData().links;
+            const statsEl = document.getElementById('stats-display');
+            statsEl.textContent = nodes.length + ' nodes \u00b7 ' + links.length + ' edges';
+        }
+
+        // --- Heatmap coloring ---
+        function applyHeatMapColoring(metric) {
+            metric = metric || 'connections';
+            let values = {};
+
+            if (metric === 'connections') {
+                graphData.nodes.forEach(node => {
+                    let count = 0;
+                    graphData.links.forEach(link => {
+                        const sId = typeof link.source === 'object' ? link.source.id : link.source;
+                        const tId = typeof link.target === 'object' ? link.target.id : link.target;
+                        if (sId === node.id || tId === node.id) count++;
+                    });
+                    values[node.id] = count;
+                });
+            } else if (metric === 'recency') {
+                const now = Date.now();
+                graphData.nodes.forEach(node => {
+                    if (node.createdAt) {
+                        const age = now - new Date(node.createdAt).getTime();
+                        values[node.id] = 1 - (age / (365 * 24 * 60 * 60 * 1000));
+                    } else {
+                        values[node.id] = 0;
+                    }
+                });
+            }
+
+            const maxVal = Math.max(...Object.values(values));
+            const minVal = Math.min(...Object.values(values));
+            const range = maxVal - minVal || 1;
+
+            graph.nodeColor(node => {
+                const normalized = (values[node.id] - minVal) / range;
+                return interpolateColor(normalized);
+            });
+
+            document.getElementById('heatmap-legend').classList.add('active');
+        }
+
+        function interpolateColor(t) {
+            const colors = [
+                [49, 130, 206],
+                [56, 161, 105],
+                [236, 201, 75],
+                [229, 62, 62]
+            ];
+
+            const idx = t * (colors.length - 1);
+            const lower = Math.floor(idx);
+            const upper = Math.min(lower + 1, colors.length - 1);
+            const frac = idx - lower;
+
+            const r = Math.round(colors[lower][0] + frac * (colors[upper][0] - colors[lower][0]));
+            const g = Math.round(colors[lower][1] + frac * (colors[upper][1] - colors[lower][1]));
+            const b = Math.round(colors[lower][2] + frac * (colors[upper][2] - colors[lower][2]));
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function resetHeatMap() {
+            graph.nodeColor(node => node.color);
+            document.getElementById('heatmap-legend').classList.remove('active');
+        }
+
+        // --- Path highlighting (find shortest path between multi-selected nodes) ---
+        function highlightPath() {
+            if (multiSelectedNodes.size !== 2) return;
+
+            const [startId, endId] = Array.from(multiSelectedNodes);
+            const path = findShortestPath(startId, endId);
+
+            if (path) {
+                const pathSet = new Set(path);
+                graph.nodeColor(node => pathSet.has(node.id) ? '#ffd700' : '#333333');
+                graph.linkColor(link => {
+                    const sId = typeof link.source === 'object' ? link.source.id : link.source;
+                    const tId = typeof link.target === 'object' ? link.target.id : link.target;
+                    const sIdx = path.indexOf(sId);
+                    const tIdx = path.indexOf(tId);
+                    if (sIdx >= 0 && tIdx >= 0 && Math.abs(sIdx - tIdx) === 1) {
+                        return '#ffd700';
+                    }
+                    return '#222222';
+                });
+            }
+        }
+
+        function findShortestPath(startId, endId) {
+            const visited = new Set();
+            const queue = [[startId]];
+
+            // Build adjacency
+            const adj = {};
+            graphData.links.forEach(link => {
+                const sId = typeof link.source === 'object' ? link.source.id : link.source;
+                const tId = typeof link.target === 'object' ? link.target.id : link.target;
+                if (!adj[sId]) adj[sId] = [];
+                if (!adj[tId]) adj[tId] = [];
+                adj[sId].push(tId);
+                adj[tId].push(sId);
+            });
+
+            while (queue.length > 0) {
+                const path = queue.shift();
+                const nodeId = path[path.length - 1];
+
+                if (nodeId === endId) return path;
+                if (visited.has(nodeId)) continue;
+                visited.add(nodeId);
+
+                const neighbors = adj[nodeId] || [];
+                for (const nId of neighbors) {
+                    if (!visited.has(nId)) {
+                        queue.push([...path, nId]);
+                    }
+                }
+            }
+
+            return null;
         }
 
         // Filter functions
@@ -944,6 +1789,7 @@
             });
 
             graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+            updateStats();
         }
 
         // Setup filter chip click handlers
@@ -1084,80 +1930,10 @@
                 .linkDirectionalParticleSpeed(0.005)
                 .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#805ad5' : '#ffffff')
                 .onNodeHover(node => { container.style.cursor = node ? 'pointer' : 'default'; })
-                .onNodeClick(node => {
-                    if (node) {
-                        showNodeInfo(node);
-                        const distance = 150;
-                        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-                        graph.cameraPosition(
-                            { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
-                            node, 1500
-                        );
-                    }
-                });
+                .onNodeClick(node => handleNodeClick(node));
 
-            // Custom node rendering with different shapes
-            graph.nodeThreeObject(node => {
-                const group = new THREE.Group();
-                const size = (node.val || 10) / 6;
-
-                let geometry;
-                switch(node.type) {
-                    case 'hub':
-                        geometry = new THREE.IcosahedronGeometry(size * 1.5);
-                        break;
-                    case 'tenant':
-                        geometry = new THREE.OctahedronGeometry(size * 1.2);
-                        break;
-                    case 'source':
-                        geometry = new THREE.BoxGeometry(size, size, size);
-                        break;
-                    default:
-                        geometry = new THREE.SphereGeometry(size * 0.7, 16, 16);
-                }
-
-                const material = new THREE.MeshPhongMaterial({
-                    color: node.color || '#718096',
-                    transparent: true,
-                    opacity: 0.9,
-                    shininess: 80
-                });
-
-                const mesh = new THREE.Mesh(geometry, material);
-                group.add(mesh);
-
-                // Glow effect for hub and tenants
-                if (node.type === 'hub' || node.type === 'tenant') {
-                    const glowGeometry = new THREE.SphereGeometry(size * 1.8, 16, 16);
-                    const glowMaterial = new THREE.MeshBasicMaterial({
-                        color: node.color || '#718096',
-                        transparent: true,
-                        opacity: 0.12
-                    });
-                    group.add(new THREE.Mesh(glowGeometry, glowMaterial));
-                }
-
-                // Labels for hub and tenants
-                if (node.type === 'hub' || node.type === 'tenant') {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 256;
-                    canvas.height = 64;
-                    ctx.font = 'bold 20px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(node.name.substring(0, 25), 128, 40);
-
-                    const texture = new THREE.CanvasTexture(canvas);
-                    const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
-                    const sprite = new THREE.Sprite(spriteMaterial);
-                    sprite.scale.set(45, 11, 1);
-                    sprite.position.y = size * 2 + 8;
-                    group.add(sprite);
-                }
-
-                return group;
-            });
+            // Custom node rendering
+            rebuildNodeRendering();
 
             // Add lighting
             const scene = graph.scene();
@@ -1170,6 +1946,18 @@
             setTimeout(() => {
                 graph.cameraPosition({ x: 0, y: 200, z: 500 }, { x: 0, y: 0, z: 0 }, 0);
             }, 100);
+
+            // Setup multi-select
+            setupMultiSelect();
+
+            // Initialize time slider if data has dates
+            initTimeSlider();
+
+            // Check VR support
+            checkVRSupport();
+
+            // Update stats display
+            updateStats();
 
             document.getElementById('loading').classList.add('hidden');
         }
