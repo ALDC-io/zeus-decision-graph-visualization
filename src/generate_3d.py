@@ -3235,11 +3235,9 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             ctx.textBaseline = 'middle';
             ctx.fillText(initials, 128, 120);
 
-            // Determine the logo URL to use (provided or default based on group)
-            let finalLogoUrl = logoUrl;
-            if (!logoUrl && group) {{
-                finalLogoUrl = defaultIcons[group] || defaultIcons['default'];
-            }}
+            // Only use logo if explicitly provided - no default icons
+            // This ensures only Zeus Memory hub and management team get logos
+            let finalLogoUrl = logoUrl || null;
 
             // If we have a logo URL, try to load and overlay it
             if (finalLogoUrl) {{
