@@ -134,6 +134,85 @@ def classify_project_area(project_name):
             return area
     return "rnd"  # Default to R&D if no match
 
+# Ingestion source definitions - maps source patterns to canonical sources
+INGESTION_SOURCES = {
+    "slack": {
+        "patterns": ["slack"],
+        "label": "Slack",
+        "color": "#4A154B",  # Slack purple
+        "icon": "💬",
+        "description": "Messages and threads from Slack workspace"
+    },
+    "email": {
+        "patterns": ["email", "ms_graph_email", "microsoft_graph_email"],
+        "label": "Email",
+        "color": "#0078D4",  # Outlook blue
+        "icon": "📧",
+        "description": "Emails from Microsoft 365 / Outlook"
+    },
+    "web_docs": {
+        "patterns": ["web_scraping_docs"],
+        "label": "Documentation",
+        "color": "#10B981",  # Green
+        "icon": "📚",
+        "description": "Technical documentation (Anthropic, LangChain, etc.)"
+    },
+    "web_rss": {
+        "patterns": ["web_scraping_rss", "rss_"],
+        "label": "RSS Feeds",
+        "color": "#F59E0B",  # Orange
+        "icon": "📰",
+        "description": "News and blog feeds (TechCrunch, Medium, arXiv)"
+    },
+    "web_direct": {
+        "patterns": ["web_scraping_web_direct", "web_scraping_daemon"],
+        "label": "Web Scraping",
+        "color": "#6366F1",  # Indigo
+        "icon": "🌐",
+        "description": "Direct web page scraping"
+    },
+    "hubspot": {
+        "patterns": ["hubspot"],
+        "label": "HubSpot",
+        "color": "#FF7A59",  # HubSpot orange
+        "icon": "🎯",
+        "description": "CRM data from HubSpot"
+    },
+    "api": {
+        "patterns": ["api"],
+        "label": "API",
+        "color": "#8B5CF6",  # Purple
+        "icon": "🔌",
+        "description": "Direct API ingestion"
+    },
+    "cce": {
+        "patterns": ["cce"],
+        "label": "CCE Learnings",
+        "color": "#EC4899",  # Pink
+        "icon": "🧠",
+        "description": "Claude Code Enhanced session learnings"
+    },
+    "system": {
+        "patterns": ["system_monitor", "continuous_", "lsm_vec"],
+        "label": "System",
+        "color": "#6B7280",  # Gray
+        "icon": "⚙️",
+        "description": "System monitoring and maintenance"
+    },
+}
+
+def classify_ingestion_source(source_name):
+    """Classify a source string into a canonical ingestion source."""
+    if not source_name:
+        return "other"
+    source_lower = source_name.lower()
+    for source_id, source_info in INGESTION_SOURCES.items():
+        for pattern in source_info["patterns"]:
+            if pattern in source_lower:
+                return source_id
+    return "other"
+
+
 # Group definitions with colors
 GROUPS = {
     "decision": {"color": "#1a365d", "label": "Decisions"},
@@ -151,6 +230,9 @@ GROUPS = {
     "area_rnd": {"color": "#9f7aea", "label": "R&D"},
     # Project groups (dynamically colored)
     "project": {"color": "#4a5568", "label": "Projects"},
+    # Ingestion source groups
+    "ingestion_source": {"color": "#0EA5E9", "label": "Ingestion Sources"},
+    "web_domain": {"color": "#14B8A6", "label": "Web Domains"},
 }
 
 # Edge type styles - expanded for new relationship types
@@ -183,6 +265,10 @@ EDGE_TYPES = {
 
     # Generic
     "related": {"color": "#a0aec0", "width": 1, "label": "Related"},
+
+    # Ingestion relationships
+    "ingested_from": {"color": "#0EA5E9", "width": 2, "label": "Ingested From"},
+    "feeds_into": {"color": "#14B8A6", "width": 2, "label": "Feeds Into"},
 }
 
 
@@ -851,13 +937,153 @@ def generate_hierarchy_nodes_and_edges(nodes, node_ids, node_metadata, edge_set)
     return hierarchy_nodes, hierarchy_edges
 
 
-def extract_data(hours_filter=0, include_contributors=False, include_hierarchy=False):
+def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge_set):
+    """Generate ingestion source nodes and web domain nodes.
+
+    Creates a visual representation of where data is being ingested from:
+    - Main source nodes (Slack, Email, Web, HubSpot, etc.)
+    - Web domain breakdown (grouped by domain for web sources)
+    - Edges connecting sources to the hub
+    """
+    ingestion_nodes = []
+    ingestion_edges = []
+    source_counts = defaultdict(int)
+    web_domain_counts = defaultdict(int)
+
+    def add_edge(source, target, edge_type):
+        key = tuple(sorted([source, target])) + (edge_type,)
+        if key not in edge_set and source != target:
+            edge_set.add(key)
+            ingestion_edges.append({
+                "source": source,
+                "target": target,
+                "type": edge_type
+            })
+
+    # Query source distribution from database
+    cur.execute("""
+        SELECT source, COUNT(*) as count
+        FROM zeus_core.memories
+        WHERE tenant_id = %s
+        GROUP BY source
+        ORDER BY count DESC
+    """, (TENANT_ID,))
+
+    source_rows = cur.fetchall()
+
+    # Aggregate by canonical source
+    for source_name, count in source_rows:
+        canonical = classify_ingestion_source(source_name)
+        source_counts[canonical] += count
+
+        # Track web domains separately
+        if source_name and 'web_scraping' in source_name.lower():
+            # Extract domain hint from source name
+            parts = source_name.replace('web_scraping_', '').replace('web-scraping_', '').split('_')
+            if len(parts) >= 2:
+                domain_hint = parts[0] + '_' + parts[1]  # e.g., "docs_anthropic" or "rss_techcrunch"
+            else:
+                domain_hint = parts[0] if parts else 'unknown'
+            web_domain_counts[domain_hint] += count
+
+    # Create main ingestion source nodes
+    hub_id = "zeus-memory-hub"
+    total_memories = sum(source_counts.values())
+
+    for source_id, source_info in INGESTION_SOURCES.items():
+        count = source_counts.get(source_id, 0)
+        if count == 0:
+            continue
+
+        percentage = round(count / total_memories * 100, 1) if total_memories > 0 else 0
+        node_id = f"source_{source_id}"
+
+        ingestion_nodes.append({
+            "id": node_id,
+            "label": f"{source_info['icon']} {source_info['label']}",
+            "title": f"{source_info['label']}\n\n{source_info['description']}\n\nMemories: {count:,}\nPercentage: {percentage}%",
+            "tier": 1,
+            "group": "ingestion_source",
+            "size": 30 + min(int(count / 10000), 40),  # Scale size by count
+            "source_type": source_id,
+            "memory_count": count,
+            "percentage": percentage,
+            "color": source_info['color'],
+        })
+        node_ids.add(node_id)
+
+        # Connect to hub
+        add_edge(hub_id, node_id, "feeds_into")
+
+    # Create web domain nodes (top 15 by count)
+    web_source_node = "source_web_docs"
+    rss_source_node = "source_web_rss"
+    direct_source_node = "source_web_direct"
+
+    sorted_domains = sorted(web_domain_counts.items(), key=lambda x: -x[1])[:15]
+
+    for domain_hint, count in sorted_domains:
+        if count < 100:  # Skip tiny sources
+            continue
+
+        domain_id = f"domain_{domain_hint.replace(' ', '_').replace('-', '_')}"
+        domain_label = domain_hint.replace('_', ' ').title()
+
+        # Determine parent source
+        if 'docs' in domain_hint:
+            parent_source = web_source_node
+        elif 'rss' in domain_hint:
+            parent_source = rss_source_node
+        else:
+            parent_source = direct_source_node
+
+        ingestion_nodes.append({
+            "id": domain_id,
+            "label": domain_label[:25],
+            "title": f"Web Source: {domain_label}\n\nMemories: {count:,}",
+            "tier": 2,
+            "group": "web_domain",
+            "size": 15 + min(int(count / 500), 25),
+            "domain": domain_hint,
+            "memory_count": count,
+        })
+        node_ids.add(domain_id)
+
+        # Connect to parent web source if it exists
+        if parent_source in node_ids:
+            add_edge(parent_source, domain_id, "contains")
+
+    print(f"Generated {len(ingestion_nodes)} ingestion source nodes")
+    print(f"  Sources: {dict(source_counts)}")
+    print(f"Generated {len(ingestion_edges)} ingestion edges")
+
+    return ingestion_nodes, ingestion_edges
+
+
+def get_embedding_backlog_count(cur):
+    """Get the count of pending embeddings from the embedding queue."""
+    try:
+        cur.execute("""
+            SELECT COUNT(*) FROM zeus_core.embedding_queue
+            WHERE status = 'pending'
+        """)
+        return cur.fetchone()[0]
+    except Exception as e:
+        print(f"Warning: Could not get embedding backlog: {e}")
+        return 0
+
+
+def extract_data(hours_filter=0, include_contributors=False, include_hierarchy=False, include_ingestion=False):
     """Extract all data and generate edges using multiple methods.
 
     Args:
         hours_filter: Only include data from last N hours (0 = no filter)
         include_contributors: Add contributor nodes and edges
         include_hierarchy: Add Area/Project hierarchy nodes and edges
+        include_ingestion: Add ingestion source nodes and edges
+
+    Returns:
+        nodes, edges, metadata dict with embedding_backlog count
     """
     conn = psycopg2.connect(**conn_params)
     cur = conn.cursor()
@@ -901,6 +1127,18 @@ def extract_data(hours_filter=0, include_contributors=False, include_hierarchy=F
         nodes.extend(hierarchy_nodes)
         all_edges.extend(hierarchy_edges)
 
+    # 7. Ingestion source nodes and edges
+    if include_ingestion:
+        ingestion_nodes, ingestion_edges = generate_ingestion_source_nodes_and_edges(
+            cur, node_ids, node_metadata, edge_set
+        )
+        nodes.extend(ingestion_nodes)
+        all_edges.extend(ingestion_edges)
+
+    # 8. Get embedding backlog count
+    embedding_backlog = get_embedding_backlog_count(cur)
+    print(f"Embedding backlog: {embedding_backlog} pending")
+
     cur.close()
     conn.close()
 
@@ -912,7 +1150,12 @@ def extract_data(hours_filter=0, include_contributors=False, include_hierarchy=F
     for etype, count in sorted(edge_types.items(), key=lambda x: -x[1]):
         print(f"  {etype}: {count}")
 
-    return nodes, all_edges
+    # Return additional metadata
+    extra_metadata = {
+        "embedding_backlog": embedding_backlog,
+    }
+
+    return nodes, all_edges, extra_metadata
 
 
 def main():
@@ -923,16 +1166,19 @@ def main():
                        help='Disable contributor nodes and edges (enabled by default)')
     parser.add_argument('--hierarchy', action='store_true',
                        help='Add Area/Project hierarchy nodes (Client vs R&D)')
+    parser.add_argument('--no-ingestion', action='store_true',
+                       help='Disable ingestion source nodes (enabled by default)')
     parser.add_argument('--output', type=str, default='data/examples/zeus_decisions.json',
                        help='Output file path')
     args = parser.parse_args()
 
     # Extract data with optional time filter
-    # Contributors enabled by default, use --no-contributors to disable
-    nodes, edges = extract_data(
+    # Contributors and ingestion enabled by default
+    nodes, edges, extra_metadata = extract_data(
         hours_filter=args.hours,
         include_contributors=not args.no_contributors,
-        include_hierarchy=args.hierarchy
+        include_hierarchy=args.hierarchy,
+        include_ingestion=not args.no_ingestion
     )
 
     # Build visualization data
@@ -943,14 +1189,17 @@ def main():
             "source": "zeus_core database",
             "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor", "hierarchy"],
+            "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor", "hierarchy", "ingestion"],
             "hours_filter": args.hours if args.hours > 0 else "all",
             "contributors_enabled": not args.no_contributors,
             "hierarchy_enabled": args.hierarchy,
+            "ingestion_enabled": not args.no_ingestion,
+            "embedding_backlog": extra_metadata.get("embedding_backlog", 0),
         },
         "groups": GROUPS,
         "edge_types": EDGE_TYPES,
         "contributors": CONTRIBUTORS,
+        "ingestion_sources": INGESTION_SOURCES,
         "nodes": nodes,
         "edges": edges
     }

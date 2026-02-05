@@ -183,6 +183,19 @@ def generate_html(data: dict[str, Any], title: str) -> str:
     # Get description from metadata
     description = data.get("metadata", {}).get("description", "Click a node to explore")
 
+    # Get embedding backlog count
+    embedding_backlog = data.get("metadata", {}).get("embedding_backlog", 0)
+    graph_updated = data.get("metadata", {}).get("updated", "Unknown")
+
+    # Get ingestion sources info if available
+    ingestion_sources = data.get("ingestion_sources", {})
+
+    # Pre-calculate counts for sidebar
+    node_count_str = f"{len(nodes_list):,}"
+    edge_count_str = f"{len(links_list):,}"
+    embedding_backlog_str = f"{embedding_backlog:,} pending"
+    backlog_status_class = "status-warning" if embedding_backlog > 0 else "status-ok"
+
     html = f'''<!DOCTYPE html>
 <html>
 <head>
@@ -835,6 +848,133 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         .connection-list {{
             list-style: none;
         }}
+        /* Sidebar Controls Styles */
+        #sidebar-controls {{
+            border-bottom: 1px solid #e0e0e0;
+        }}
+        .sidebar-section {{
+            border-bottom: 1px solid #f0f0f0;
+        }}
+        .sidebar-section:last-child {{
+            border-bottom: none;
+        }}
+        .sidebar-section-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a365d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #f8f9fa;
+            user-select: none;
+        }}
+        .sidebar-section-header:hover {{
+            background: #e8f4fd;
+        }}
+        .section-arrow {{
+            font-size: 10px;
+            transition: transform 0.2s;
+        }}
+        .sidebar-section.collapsed .section-arrow {{
+            transform: rotate(-90deg);
+        }}
+        .sidebar-section-content {{
+            padding: 12px 16px;
+            transition: max-height 0.3s ease, opacity 0.2s ease;
+            overflow: hidden;
+        }}
+        .sidebar-section.collapsed .sidebar-section-content {{
+            max-height: 0;
+            padding: 0 16px;
+            opacity: 0;
+        }}
+        .sidebar-filter-chips {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }}
+        .sidebar-toggle-btn {{
+            font-size: 11px;
+            padding: 4px 10px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
+        }}
+        .sidebar-toggle-btn:hover {{
+            background: #f0f0f0;
+        }}
+        .sidebar-date-select {{
+            width: 100%;
+            font-size: 12px;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }}
+        .sidebar-date-inputs {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }}
+        .sidebar-date-input {{
+            flex: 1;
+            font-size: 11px;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }}
+        .sidebar-date-count {{
+            font-size: 11px;
+            color: #666;
+        }}
+        /* Status Items */
+        .status-item {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }}
+        .status-item:last-child {{
+            border-bottom: none;
+        }}
+        .status-label {{
+            font-size: 12px;
+            color: #666;
+        }}
+        .status-value {{
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a365d;
+        }}
+        .status-warning {{
+            background: #fff8e6;
+            padding: 8px;
+            margin: -8px;
+            border-radius: 4px;
+        }}
+        .status-warning .status-value {{
+            color: #d97706;
+        }}
+        .status-ok {{
+            background: #f0fdf4;
+            padding: 8px;
+            margin: -8px;
+            border-radius: 4px;
+        }}
+        .status-ok .status-value {{
+            color: #16a34a;
+        }}
         .connection-item {{
             padding: 10px 12px;
             margin-bottom: 8px;
@@ -1448,38 +1588,6 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
                     <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
                 </div>
-                <div class="toolbar-divider"></div>
-                <div class="toolbar-section">
-                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('nodes')">Nodes <span class="arrow">▼</span></span>
-                    <div class="filter-group collapsed" id="nodes-filters">
-                        {node_chips_html}
-                        <button class="mini-btn" onclick="toggleAllNodes()">Toggle</button>
-                    </div>
-                </div>
-                <div class="toolbar-divider"></div>
-                <div class="toolbar-section">
-                    <span class="toolbar-label collapsed" onclick="toggleFilterSection('edges')">Edges <span class="arrow">▼</span></span>
-                    <div class="filter-group collapsed" id="edges-filters">
-                        {edge_chips_html}
-                        <button class="mini-btn" onclick="toggleAllEdges()">Toggle</button>
-                    </div>
-                </div>
-                <div class="toolbar-divider"></div>
-                <div class="toolbar-section">
-                    <span class="toolbar-label" onclick="toggleFilterSection('dates')">Date <span class="arrow">▼</span></span>
-                    <div class="filter-group" id="dates-filters">
-                        <select id="date-preset" class="date-select" onchange="applyDatePreset()">
-                            <option value="all">All Time</option>
-                            <option value="7d">Last 7 Days</option>
-                            <option value="30d">Last 30 Days</option>
-                            <option value="90d">Last 90 Days</option>
-                            <option value="custom">Custom Range</option>
-                        </select>
-                        <input type="date" id="date-from" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
-                        <input type="date" id="date-to" class="date-input" style="display:none" onchange="applyCustomDateFilter()">
-                        <span id="date-count" class="date-count"></span>
-                    </div>
-                </div>
                 {view_mode_toggle_html}
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
@@ -1580,6 +1688,82 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             <div class="header">
                 <h1>{title}</h1>
                 <p>{description}</p>
+            </div>
+            <!-- Status & Filters Section -->
+            <div id="sidebar-controls">
+                <!-- Embedding Status -->
+                <div class="sidebar-section" id="status-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('status')">
+                        <span>Status</span>
+                        <span class="section-arrow">▼</span>
+                    </div>
+                    <div class="sidebar-section-content" id="status-content">
+                        <div class="status-item">
+                            <span class="status-label">Graph Updated</span>
+                            <span class="status-value" id="graph-updated">{graph_updated}</span>
+                        </div>
+                        <div class="status-item {backlog_status_class}">
+                            <span class="status-label">Voyage API Backlog</span>
+                            <span class="status-value" id="embedding-backlog">{embedding_backlog_str}</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Nodes</span>
+                            <span class="status-value" id="node-count">{node_count_str}</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Edges</span>
+                            <span class="status-value" id="edge-count">{edge_count_str}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Node Filters -->
+                <div class="sidebar-section" id="nodes-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('nodes')">
+                        <span>Node Filters</span>
+                        <span class="section-arrow">▼</span>
+                    </div>
+                    <div class="sidebar-section-content" id="nodes-content">
+                        <div class="sidebar-filter-chips">
+                            {node_chips_html}
+                        </div>
+                        <button class="sidebar-toggle-btn" onclick="toggleAllNodes()">Toggle All</button>
+                    </div>
+                </div>
+                <!-- Edge Filters -->
+                <div class="sidebar-section" id="edges-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('edges')">
+                        <span>Edge Filters</span>
+                        <span class="section-arrow">▼</span>
+                    </div>
+                    <div class="sidebar-section-content" id="edges-content">
+                        <div class="sidebar-filter-chips">
+                            {edge_chips_html}
+                        </div>
+                        <button class="sidebar-toggle-btn" onclick="toggleAllEdges()">Toggle All</button>
+                    </div>
+                </div>
+                <!-- Date Filter -->
+                <div class="sidebar-section" id="dates-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('dates')">
+                        <span>Date Filter</span>
+                        <span class="section-arrow">▼</span>
+                    </div>
+                    <div class="sidebar-section-content" id="dates-content">
+                        <select id="date-preset-sidebar" class="sidebar-date-select" onchange="applyDatePresetSidebar()">
+                            <option value="all">All Time</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <div class="sidebar-date-inputs" id="sidebar-date-inputs" style="display:none;">
+                            <input type="date" id="date-from-sidebar" class="sidebar-date-input" onchange="applyCustomDateFilterSidebar()">
+                            <span>to</span>
+                            <input type="date" id="date-to-sidebar" class="sidebar-date-input" onchange="applyCustomDateFilterSidebar()">
+                        </div>
+                        <span id="date-count-sidebar" class="sidebar-date-count"></span>
+                    </div>
+                </div>
             </div>
             <div id="info-panel">
                 <div class="info-placeholder" id="placeholder">
@@ -2116,12 +2300,97 @@ def generate_html(data: dict[str, Any], title: str) -> str:
             applyFilters();
         }}
 
-        // Toggle filter sections
+        // Toggle filter sections (toolbar - legacy)
         function toggleFilterSection(section) {{
             const label = document.querySelector(`.toolbar-label[onclick*="${{section}}"]`);
             const group = document.getElementById(`${{section}}-filters`);
-            label.classList.toggle('collapsed');
-            group.classList.toggle('collapsed');
+            if (label && group) {{
+                label.classList.toggle('collapsed');
+                group.classList.toggle('collapsed');
+            }}
+        }}
+
+        // Toggle sidebar sections (new RHS sidebar)
+        function toggleSidebarSection(section) {{
+            const sectionEl = document.getElementById(`${{section}}-section`);
+            if (sectionEl) {{
+                sectionEl.classList.toggle('collapsed');
+            }}
+        }}
+
+        // Sidebar date filter functions
+        function applyDatePresetSidebar() {{
+            const preset = document.getElementById('date-preset-sidebar').value;
+            const dateInputs = document.getElementById('sidebar-date-inputs');
+
+            if (preset === 'custom') {{
+                dateInputs.style.display = 'flex';
+            }} else {{
+                dateInputs.style.display = 'none';
+                applyDateFilter(preset);
+            }}
+
+            // Sync with toolbar if exists
+            const toolbarPreset = document.getElementById('date-preset');
+            if (toolbarPreset) {{
+                toolbarPreset.value = preset;
+            }}
+        }}
+
+        function applyCustomDateFilterSidebar() {{
+            const fromDate = document.getElementById('date-from-sidebar').value;
+            const toDate = document.getElementById('date-to-sidebar').value;
+
+            if (fromDate && toDate) {{
+                applyDateFilter('custom', fromDate, toDate);
+            }}
+
+            // Sync with toolbar if exists
+            const toolbarFrom = document.getElementById('date-from');
+            const toolbarTo = document.getElementById('date-to');
+            if (toolbarFrom) toolbarFrom.value = fromDate;
+            if (toolbarTo) toolbarTo.value = toDate;
+        }}
+
+        // Generic date filter application
+        function applyDateFilter(preset, fromDate = null, toDate = null) {{
+            let dateCount = 0;
+            const now = new Date();
+
+            graphData.nodes.forEach(node => {{
+                if (!node.createdAt) {{
+                    node.__dateVisible = true;
+                    return;
+                }}
+                const nodeDate = new Date(node.createdAt);
+
+                if (preset === 'all') {{
+                    node.__dateVisible = true;
+                }} else if (preset === 'custom' && fromDate && toDate) {{
+                    const from = new Date(fromDate);
+                    const to = new Date(toDate);
+                    to.setHours(23, 59, 59, 999);
+                    node.__dateVisible = nodeDate >= from && nodeDate <= to;
+                }} else {{
+                    const days = parseInt(preset);
+                    const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+                    node.__dateVisible = nodeDate >= cutoff;
+                }}
+
+                if (node.__dateVisible) dateCount++;
+            }});
+
+            // Update counts
+            const countEl = document.getElementById('date-count-sidebar');
+            if (countEl) {{
+                countEl.textContent = `(${{dateCount}} nodes)`;
+            }}
+            const toolbarCount = document.getElementById('date-count');
+            if (toolbarCount) {{
+                toolbarCount.textContent = `(${{dateCount}})`;
+            }}
+
+            applyFilters();
         }}
 
         // Toggle sidebar visibility
