@@ -192,13 +192,6 @@ INGESTION_SOURCES = {
         "icon": "🧠",
         "description": "Claude Code Enhanced session learnings"
     },
-    "zeus_automation": {
-        "patterns": ["system_monitor", "continuous_", "lsm_vec", "internal"],
-        "label": "Zeus Automation",
-        "color": "#805AD5",  # Purple (matches Zeus branding)
-        "icon": "⚡",
-        "description": "Zeus internal automation, monitoring, and maintenance"
-    },
 }
 
 def classify_ingestion_source(source_name):

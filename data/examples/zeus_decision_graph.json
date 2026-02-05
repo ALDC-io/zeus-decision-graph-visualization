@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-05 10:54",
-    "updated": "2026-02-05 10:54",
+    "created": "2026-02-05 11:02",
+    "updated": "2026-02-05 11:02",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -18,7 +18,7 @@
     "contributors_enabled": true,
     "hierarchy_enabled": false,
     "ingestion_enabled": true,
-    "embedding_backlog": 0
+    "embedding_backlog": 3
   },
   "groups": {
     "decision": {
@@ -272,18 +272,6 @@
       "color": "#EC4899",
       "icon": "\ud83e\udde0",
       "description": "Claude Code Enhanced session learnings"
-    },
-    "zeus_automation": {
-      "patterns": [
-        "system_monitor",
-        "continuous_",
-        "lsm_vec",
-        "internal"
-      ],
-      "label": "Zeus Automation",
-      "color": "#805AD5",
-      "icon": "\u26a1",
-      "description": "Zeus internal automation, monitoring, and maintenance"
     }
   },
   "nodes": [
@@ -4875,12 +4863,12 @@
     {
       "id": "source_email",
       "label": "\ud83d\udce7 Email",
-      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,065\nPercentage: 72.1%",
+      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,069\nPercentage: 72.1%",
       "tier": 1,
       "group": "ingestion_source",
       "size": 70,
       "source_type": "email",
-      "memory_count": 2367065,
+      "memory_count": 2367069,
       "percentage": 72.1,
       "color": "#0078D4"
     },
@@ -4955,18 +4943,6 @@
       "memory_count": 539,
       "percentage": 0.0,
       "color": "#EC4899"
-    },
-    {
-      "id": "source_zeus_automation",
-      "label": "\u26a1 Zeus Automation",
-      "title": "Zeus Automation\n\nZeus internal automation, monitoring, and maintenance\n\nMemories: 82,833\nPercentage: 2.5%",
-      "tier": 1,
-      "group": "ingestion_source",
-      "size": 38,
-      "source_type": "zeus_automation",
-      "memory_count": 82833,
-      "percentage": 2.5,
-      "color": "#805AD5"
     },
     {
       "id": "domain_web_direct",
@@ -10319,11 +10295,6 @@
     {
       "source": "zeus-memory-hub",
       "target": "source_cce",
-      "type": "feeds_into"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "source_zeus_automation",
       "type": "feeds_into"
     },
     {
