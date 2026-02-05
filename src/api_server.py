@@ -769,6 +769,18 @@ async def get_tenant_graph():
         "System Default": "#38a169",
         "Former Employees": "#e53e3e",
     }
+    # Slack profile pictures for managers/tenants
+    tenant_logos = {
+        "JK": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg",
+        "ALDC Management Team": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
+    }
+    # Source category logos
+    source_logos = {
+        "email": "https://cdn-icons-png.flaticon.com/512/732/732200.png",
+        "slack": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png",
+        "rss": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
+        "api": "https://cdn-icons-png.flaticon.com/512/1493/1493169.png",
+    }
     source_colors = {
         "email": "#63b3ed",
         "slack": "#f6ad55",
@@ -867,7 +879,8 @@ async def get_tenant_graph():
             "tier": 0,
             "type": "hub",
             "group": "hub",
-            "groupLabel": "Hub"
+            "groupLabel": "Hub",
+            "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
         })
 
         # Group sources by tenant
@@ -897,7 +910,7 @@ async def get_tenant_graph():
             tcount = tenant["memory_count"]
 
             node_id = f"tenant_{tid[:8]}"
-            nodes.append({
+            tenant_node = {
                 "id": node_id,
                 "name": tname,
                 "description": f"{tcount:,} memories",
@@ -908,7 +921,10 @@ async def get_tenant_graph():
                 "group": "tenant",
                 "groupLabel": "Tenants",
                 "memoryCount": tcount
-            })
+            }
+            if tname in tenant_logos:
+                tenant_node["logo"] = tenant_logos[tname]
+            nodes.append(tenant_node)
 
             links.append({
                 "source": "zeus-hub",
@@ -930,7 +946,7 @@ async def get_tenant_graph():
                 # Track for semantic links
                 source_node_map[f"{tid}_{source['source']}"] = source_id
 
-                nodes.append({
+                source_node = {
                     "id": source_id,
                     "name": source["source"].replace("_", " ").title()[:25],
                     "description": f"{source_count:,} memories from {source['source']}",
@@ -943,7 +959,10 @@ async def get_tenant_graph():
                     "memoryCount": source_count,
                     "parentTenant": tname,
                     "tenantId": tid[:8]
-                })
+                }
+                if source_group in source_logos:
+                    source_node["logo"] = source_logos[source_group]
+                nodes.append(source_node)
 
                 links.append({
                     "source": node_id,

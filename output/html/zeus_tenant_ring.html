@@ -1240,12 +1240,15 @@
         function toggleParticles() {
             particlesEnabled = !particlesEnabled;
             document.getElementById('particles-toggle').classList.toggle('active', particlesEnabled);
+            applyParticles();
+        }
 
+        function applyParticles() {
             if (particlesEnabled) {
                 graph.linkDirectionalParticles(link => link.type === 'semantic' ? 4 : 2)
-                    .linkDirectionalParticleSpeed(0.005)
-                    .linkDirectionalParticleWidth(link => link.type === 'semantic' ? 2 : 1)
-                    .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#805ad5' : '#ffffff');
+                    .linkDirectionalParticleSpeed(0.006)
+                    .linkDirectionalParticleWidth(link => link.type === 'semantic' ? 3 : 1.5)
+                    .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#b794f4' : '#63b3ed');
             } else {
                 graph.linkDirectionalParticles(0);
             }
@@ -1266,7 +1269,7 @@
             rebuildNodeRendering();
         }
 
-        function createLogoLabelSprite(name, color, nodeSize, nodeType) {
+        function createLogoLabelSprite(name, color, nodeSize, nodeType, logoUrl) {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 256;
@@ -1331,7 +1334,47 @@
             sprite.scale.set(nodeSize * 3, nodeSize * 3.75, 1);
             sprite.renderOrder = 1000;
 
-            texture.needsUpdate = true;
+            // Load logo image if URL provided
+            const finalLogoUrl = logoUrl || null;
+            if (finalLogoUrl) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                // Use weserv.nl image proxy for CORS support (skip for data URIs)
+                let proxiedUrl = finalLogoUrl;
+                if (!finalLogoUrl.startsWith('data:')) {
+                    try {
+                        const urlObj = new URL(finalLogoUrl);
+                        const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                        proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
+                    } catch (e) {
+                        console.warn('Invalid logo URL:', finalLogoUrl);
+                    }
+                }
+
+                img.onload = () => {
+                    // Clear the circle area and redraw with logo
+                    ctx.clearRect(0, 0, 256, 220);
+
+                    // Draw logo clipped to circle
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(128, 120, 96, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(img, 32, 24, 192, 192);
+                    ctx.restore();
+
+                    texture.needsUpdate = true;
+                };
+                img.onerror = (e) => {
+                    console.warn('Failed to load logo for', name, ':', proxiedUrl);
+                    texture.needsUpdate = true;
+                };
+                img.src = proxiedUrl;
+            } else {
+                texture.needsUpdate = true;
+            }
+
             return sprite;
         }
 
@@ -1389,7 +1432,7 @@
                 graph.nodeThreeObject(node => {
                     const size = Math.max((node.val || 10) / 5, 3) * 2;
                     const color = multiSelectedNodes.has(node.id) ? '#ffd700' : (node.color || '#718096');
-                    return createLogoLabelSprite(node.name, color, size, node.type);
+                    return createLogoLabelSprite(node.name, color, size, node.type, node.logo);
                 });
                 graph.nodeThreeObjectExtend(false);
             } else {
@@ -2016,13 +2059,13 @@
                 .nodeVal(node => node.val || 10)
                 .nodeColor(node => node.color || '#718096')
                 .nodeOpacity(0.9)
-                .linkColor(link => link.color || 'rgba(255,255,255,0.2)')
+                .linkColor(link => link.type === 'semantic' ? 'rgba(183, 148, 244, 0.6)' : 'rgba(99, 179, 237, 0.35)')
                 .linkWidth(link => link.type === 'semantic' ? 2 : (link.value || 1))
-                .linkOpacity(link => link.type === 'semantic' ? 0.8 : 0.5)
+                .linkOpacity(0.7)
                 .linkDirectionalParticles(link => link.type === 'semantic' ? 4 : 2)
-                .linkDirectionalParticleWidth(link => link.type === 'semantic' ? 2 : 1)
-                .linkDirectionalParticleSpeed(0.005)
-                .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#805ad5' : '#ffffff')
+                .linkDirectionalParticleWidth(link => link.type === 'semantic' ? 3 : 1.5)
+                .linkDirectionalParticleSpeed(0.006)
+                .linkDirectionalParticleColor(link => link.type === 'semantic' ? '#b794f4' : '#63b3ed')
                 .onNodeHover(node => { container.style.cursor = node ? 'pointer' : 'default'; })
                 .onNodeClick(node => handleNodeClick(node));
 
