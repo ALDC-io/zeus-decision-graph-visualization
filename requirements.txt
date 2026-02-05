@@ -7,6 +7,9 @@ gunicorn>=21.2.0
 # Data handling
 pydantic>=2.5.0
 
+# Database (for tenant distribution API)
+asyncpg>=0.29.0
+
 # Production dependencies (already in venv for dev)
 # numpy - for layout computation
 # scipy - for clustering
