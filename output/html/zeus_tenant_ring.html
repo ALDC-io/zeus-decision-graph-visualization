@@ -7,7 +7,8 @@
     <meta http-equiv="Expires" content="0">
     <title>Zeus Memory - Tenant Knowledge Graph</title>
     <link rel="icon" href="data:,">
-    <!-- 3d-force-graph bundles Three.js - only load this one to avoid duplicates -->
+    <!-- Load THREE.js first, then 3d-force-graph will use the global THREE -->
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
     <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
     <style>
         * {
