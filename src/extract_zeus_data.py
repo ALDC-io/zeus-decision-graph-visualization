@@ -427,6 +427,7 @@ def extract_nodes(cur, hours_filter=0):
         "tier": 0,
         "group": "architecture",
         "size": 50,
+        "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
     })
     node_ids.add(hub_id)
     node_metadata[hub_id] = {
