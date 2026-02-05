@@ -2341,12 +2341,46 @@
             const neighborIds = new Set([selectedNode.id]);
             connections.forEach(conn => neighborIds.add(conn.nodeId));
 
+            // Special handling for management team: include all team members
+            // Check if selected node is part of management team (has team_member edges)
+            const teamMemberConnections = connections.filter(c => c.type === 'team_member');
+            if (teamMemberConnections.length > 0) {
+                // This is a team member - find ALL team members via team_member edges
+                const teamMemberIds = new Set([selectedNode.id]);
+                const toExplore = [selectedNode.id];
+                const explored = new Set();
+
+                while (toExplore.length > 0) {
+                    const currentId = toExplore.pop();
+                    if (explored.has(currentId)) continue;
+                    explored.add(currentId);
+
+                    const nodeConnections = linksByNode[currentId] || [];
+                    nodeConnections.forEach(conn => {
+                        if (conn.type === 'team_member' && !explored.has(conn.nodeId)) {
+                            teamMemberIds.add(conn.nodeId);
+                            toExplore.push(conn.nodeId);
+                        }
+                    });
+                }
+
+                // Add all team members to neighbor set
+                teamMemberIds.forEach(id => neighborIds.add(id));
+
+                // Also add all team_member edges between team members
+                console.log('[Athena] Management team view - including all team members:', Array.from(teamMemberIds));
+            }
+
             // Filter to show only the selected node and its neighbors
             const neighborNodes = nodesData.filter(n => neighborIds.has(n.id));
             const neighborLinks = linksData.filter(link => {
                 const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
                 const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-                return sourceId === selectedNode.id || targetId === selectedNode.id;
+                // Include edges to/from selected node
+                if (sourceId === selectedNode.id || targetId === selectedNode.id) return true;
+                // Also include team_member edges between any visible nodes (for management team view)
+                if (link.edgeType === 'team_member' && neighborIds.has(sourceId) && neighborIds.has(targetId)) return true;
+                return false;
             });
 
             // Clear existing tier platforms
