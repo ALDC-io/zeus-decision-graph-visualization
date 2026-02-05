@@ -91,11 +91,11 @@ CONTRIBUTORS = {
         "image": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
     },
     "system": {
-        "label": "System",
+        "label": "Zeus",
         "color": "#805ad5",
-        "description": "Automated CCE Learnings",
+        "description": "Zeus Memory - Automated learnings and system events",
         "management": False,
-        "image": None  # No image for system
+        "image": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
     },
 }
 
@@ -135,12 +135,14 @@ def classify_project_area(project_name):
     return "rnd"  # Default to R&D if no match
 
 # Ingestion source definitions - maps source patterns to canonical sources
+# Logos from official brand resources or high-quality icon sources
 INGESTION_SOURCES = {
     "slack": {
         "patterns": ["slack"],
         "label": "Slack",
         "color": "#4A154B",  # Slack purple
         "icon": "💬",
+        "logo": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png",
         "description": "Messages and threads from Slack workspace"
     },
     "email": {
@@ -148,6 +150,7 @@ INGESTION_SOURCES = {
         "label": "Email",
         "color": "#0078D4",  # Outlook blue
         "icon": "📧",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg",
         "description": "Emails from Microsoft 365 / Outlook"
     },
     "web_docs": {
@@ -155,6 +158,7 @@ INGESTION_SOURCES = {
         "label": "Documentation",
         "color": "#10B981",  # Green
         "icon": "📚",
+        "logo": "https://cdn-icons-png.flaticon.com/512/2991/2991112.png",  # Docs icon
         "description": "Technical documentation (Anthropic, LangChain, etc.)"
     },
     "web_rss": {
@@ -162,6 +166,7 @@ INGESTION_SOURCES = {
         "label": "RSS Feeds",
         "color": "#F59E0B",  # Orange
         "icon": "📰",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
         "description": "News and blog feeds (TechCrunch, Medium, arXiv)"
     },
     "web_direct": {
@@ -169,6 +174,7 @@ INGESTION_SOURCES = {
         "label": "Web Scraping",
         "color": "#6366F1",  # Indigo
         "icon": "🌐",
+        "logo": "https://cdn-icons-png.flaticon.com/512/1006/1006771.png",  # Globe/web icon
         "description": "Direct web page scraping"
     },
     "hubspot": {
@@ -176,6 +182,7 @@ INGESTION_SOURCES = {
         "label": "HubSpot",
         "color": "#FF7A59",  # HubSpot orange
         "icon": "🎯",
+        "logo": "https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png",
         "description": "CRM data from HubSpot"
     },
     "api": {
@@ -183,13 +190,15 @@ INGESTION_SOURCES = {
         "label": "API",
         "color": "#8B5CF6",  # Purple
         "icon": "🔌",
+        "logo": "https://cdn-icons-png.flaticon.com/512/1493/1493169.png",  # API icon
         "description": "Direct API ingestion"
     },
     "cce": {
         "patterns": ["cce"],
-        "label": "CCE Learnings",
-        "color": "#EC4899",  # Pink
+        "label": "CCE",
+        "color": "#EC4899",  # Pink (Anthropic-ish)
         "icon": "🧠",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg",
         "description": "Claude Code Enhanced session learnings"
     },
 }
@@ -390,7 +399,7 @@ def extract_nodes(cur, hours_filter=0):
             "id": node_id,
             "label": clean_text(action, 50),
             "title": full_content,  # Full content for modal display
-            "tier": 1,
+            "tier": 2,  # Core outputs tier
             "group": "decision",
             "size": 25 + (int(confidence * 10) if confidence else 0),
             "created_at": created_at.isoformat() if created_at else None,
@@ -426,18 +435,24 @@ def extract_nodes(cur, hours_filter=0):
     memories = cur.fetchall()
     print(f"Found {len(memories)} CCE memories")
 
+    # Tier system for cylinder layout (data flow):
+    # Tier 0: Outermost - Data Sources (Ingestion) - set in generate_ingestion_source_nodes
+    # Tier 1: Hub + Team (center) - Zeus Memory, Management Team
+    # Tier 2: Core Outputs - Decisions, Decision Logs, Success Logs
+    # Tier 3: Supporting Data - Research, CCE Learnings, Failed Approaches
+    # Tier 4: Web Domains (sub-sources)
     tier_map = {
-        'cce_decision_log': 1,
-        'cce_research': 2,
-        'cce_failed_approach': 3,
-        'cce_success_log': 2,
-        'cce_system': 4,
-        'cce': 3,
-        'cce-learning': 2,
-        'cce-prototype': 2,
-        'cce_learn': 2,
-        'cce-session': 3,
-        'slack': 4,
+        'cce_decision_log': 2,  # Core output
+        'cce_research': 3,      # Supporting
+        'cce_failed_approach': 3,  # Supporting (learning from failures)
+        'cce_success_log': 2,   # Core output
+        'cce_system': 3,        # Supporting
+        'cce': 3,               # Supporting
+        'cce-learning': 3,      # Supporting
+        'cce-prototype': 3,     # Supporting
+        'cce_learn': 3,         # Supporting
+        'cce-session': 3,       # Supporting
+        'slack': 3,             # Supporting (messages)
     }
 
     size_map = {
@@ -991,18 +1006,22 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
         percentage = round(count / total_memories * 100, 1) if total_memories > 0 else 0
         node_id = f"source_{source_id}"
 
-        ingestion_nodes.append({
+        node_data = {
             "id": node_id,
-            "label": f"{source_info['icon']} {source_info['label']}",
+            "label": source_info['label'],  # Clean label without emoji
             "title": f"{source_info['label']}\n\n{source_info['description']}\n\nMemories: {count:,}\nPercentage: {percentage}%",
-            "tier": 1,
+            "tier": 0,  # Tier 0 = outermost ring (data sources)
             "group": "ingestion_source",
-            "size": 30 + min(int(count / 10000), 40),  # Scale size by count
+            "size": 35 + min(int(count / 10000), 35),  # Scale size by count
             "source_type": source_id,
             "memory_count": count,
             "percentage": percentage,
             "color": source_info['color'],
-        })
+        }
+        # Add logo if available
+        if source_info.get('logo'):
+            node_data['logo'] = source_info['logo']
+        ingestion_nodes.append(node_data)
         node_ids.add(node_id)
 
         # Connect to hub
@@ -1034,7 +1053,7 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
             "id": domain_id,
             "label": domain_label[:25],
             "title": f"Web Source: {domain_label}\n\nMemories: {count:,}",
-            "tier": 2,
+            "tier": 4,  # Sub-sources tier (furthest out)
             "group": "web_domain",
             "size": 15 + min(int(count / 500), 25),
             "domain": domain_hint,
