@@ -253,6 +253,7 @@
             color: white;
         }
         .tier-hub { background: #1a365d; }
+        .tier-pipeline { background: #ed8936; }
         .tier-tenant { background: #3182ce; }
         .tier-source { background: #38a169; }
         .tier-memory { background: #805ad5; }
@@ -819,11 +820,12 @@
                 <div class="legend-title">Node Types</div>
                 <div class="legend-items">
                     <div class="legend-item"><div class="legend-dot" style="background:#1a365d"></div>Hub</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#ed8936"></div>Ingestion</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#48bb78"></div>Embedding</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>Tenant</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Source</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#805ad5"></div>Memory</div>
-                    <div class="legend-item"><div class="legend-line" style="background:rgba(255,255,255,0.4)"></div>Hierarchy</div>
-                    <div class="legend-item"><div class="legend-line" style="background:#805ad5"></div>Semantic</div>
+                    <div class="legend-item"><div class="legend-line" style="background:rgba(237,137,54,0.5)"></div>Pipeline</div>
+                    <div class="legend-item"><div class="legend-line" style="background:rgba(99,179,237,0.3)"></div>Hierarchy</div>
                 </div>
             </div>
             <div class="loading-overlay" id="loading">
@@ -865,6 +867,7 @@
                 </div>
                 <div class="filter-chips" id="node-filters">
                     <span class="filter-chip active" data-group="hub"><span class="chip-color" style="background:#1a365d"></span>Hub</span>
+                    <span class="filter-chip active" data-group="pipeline"><span class="chip-color" style="background:#ed8936"></span>Pipeline</span>
                     <span class="filter-chip active" data-group="tenant"><span class="chip-color" style="background:#3182ce"></span>Tenants</span>
                     <span class="filter-chip active" data-group="source"><span class="chip-color" style="background:#38a169"></span>Sources</span>
                     <span class="filter-chip active" data-group="memory"><span class="chip-color" style="background:#805ad5"></span>Memories</span>
@@ -895,7 +898,8 @@
                     <button onclick="event.stopPropagation(); toggleSemanticLinks()">Toggle Semantic</button>
                 </div>
                 <div class="filter-chips" id="edge-filters">
-                    <span class="filter-chip active" data-edge="hierarchy"><span class="chip-color" style="background:rgba(255,255,255,0.4)"></span>Hierarchy</span>
+                    <span class="filter-chip active" data-edge="hierarchy"><span class="chip-color" style="background:rgba(99,179,237,0.4)"></span>Hierarchy</span>
+                    <span class="filter-chip active" data-edge="pipeline"><span class="chip-color" style="background:#ed8936"></span>Pipeline Flow</span>
                     <span class="filter-chip active" data-edge="semantic"><span class="chip-color" style="background:#805ad5"></span>Semantic Links</span>
                 </div>
             </div>
@@ -941,9 +945,9 @@
         let sidebarVisible = true;
 
         // Filter state
-        const activeNodeTypes = new Set(['hub', 'tenant', 'source', 'memory']);
+        const activeNodeTypes = new Set(['hub', 'pipeline', 'tenant', 'source', 'memory']);
         const activeSourceCategories = new Set(['email', 'slack', 'rss', 'research', 'api', 'documents', 'other']);
-        const activeEdgeTypes = new Set(['hierarchy', 'semantic']);
+        const activeEdgeTypes = new Set(['hierarchy', 'semantic', 'pipeline']);
 
         // Node lookup
         const nodeMap = {};
@@ -1307,7 +1311,7 @@
 
             // Small type badge at bottom of circle
             if (nodeType) {
-                const badgeColors = { hub: '#1a365d', tenant: '#3182ce', source: '#38a169', memory: '#805ad5' };
+                const badgeColors = { hub: '#1a365d', pipeline: '#ed8936', tenant: '#3182ce', source: '#38a169', memory: '#805ad5' };
                 const badgeColor = badgeColors[nodeType] || '#718096';
                 ctx.beginPath();
                 ctx.arc(128, 200, 24, 0, Math.PI * 2);
@@ -1663,7 +1667,7 @@
                 const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
                 const targetId = typeof link.target === 'object' ? link.target.id : link.target;
                 if (!filteredNodeIds.has(sourceId) || !filteredNodeIds.has(targetId)) return false;
-                const edgeType = link.type === 'semantic' ? 'semantic' : 'hierarchy';
+                const edgeType = link.type === 'semantic' ? 'semantic' : (link.type === 'pipeline' ? 'pipeline' : 'hierarchy');
                 return activeEdgeTypes.has(edgeType);
             });
 
@@ -1867,13 +1871,13 @@
 
         function toggleAllNodes() {
             const chips = document.querySelectorAll('#node-filters .filter-chip');
-            const allActive = activeNodeTypes.size === 4;
+            const allActive = activeNodeTypes.size === 5;
 
             if (allActive) {
                 activeNodeTypes.clear();
                 chips.forEach(c => c.classList.remove('active'));
             } else {
-                ['hub', 'tenant', 'source', 'memory'].forEach(t => activeNodeTypes.add(t));
+                ['hub', 'pipeline', 'tenant', 'source', 'memory'].forEach(t => activeNodeTypes.add(t));
                 chips.forEach(c => c.classList.add('active'));
             }
             applyFilters();
@@ -1920,7 +1924,7 @@
                 const targetId = typeof link.target === 'object' ? link.target.id : link.target;
                 if (!nodeIds.has(sourceId) || !nodeIds.has(targetId)) return false;
                 // Edge type filter
-                const edgeType = link.type === 'semantic' ? 'semantic' : 'hierarchy';
+                const edgeType = link.type === 'semantic' ? 'semantic' : (link.type === 'pipeline' ? 'pipeline' : 'hierarchy');
                 if (!activeEdgeTypes.has(edgeType)) return false;
                 return true;
             });

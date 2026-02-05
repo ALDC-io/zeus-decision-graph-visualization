@@ -747,10 +747,8 @@ async def get_tenant_distribution():
 @app.get("/api/tenant-graph")
 async def get_tenant_graph():
     """
-    Get 3-level deep Zeus Memory graph for visualization.
-    Level 1: Tenants
-    Level 2: Sources within each tenant
-    Level 3: Sample memories with semantic relationships based on embeddings
+    Dynamic Zeus Memory tenant graph built from the database.
+    Queries tenants, parent hierarchy, and sources live.
     """
     import asyncpg
     import os
@@ -762,34 +760,38 @@ async def get_tenant_graph():
         "password": os.getenv("DB_PASSWORD", "ZeusMemory2024Db"),
     }
 
-    # Colors for different levels
-    tenant_colors = {
-        "JK": "#3182ce",
-        "ALDC Management Team": "#805ad5",
-        "System Default": "#38a169",
-        "Former Employees": "#e53e3e",
-    }
-    # Slack profile pictures for managers/tenants
+    # Slack profile pictures for known people
     tenant_logos = {
         "JK": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg",
         "ALDC Management Team": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
+        "Lori Beck": "https://avatars.slack-edge.com/2026-02-04/10442097229670_74526c6689d7559860d8_192.jpg",
+        "Marshall Johnston": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg",
+        "Mike Stuart": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg",
     }
+    # Display name overrides for email-based tenant names
+    tenant_display_names = {
+        "lori.beck@aldc.io": "Lori Beck",
+        "marshall.johnston@aldc.io": "Marshall Johnston",
+        "karen.prete@aldc.io": "Karen Prete",
+    }
+    # Tenants to hide (and all their descendants)
+    hidden_tenant_ids = {"33333333-3333-3333-3333-333333333333"}  # Former Employees
+    # Color palette for tenants by tier depth
+    tier_colors = ["#1a365d", "#805ad5", "#3182ce", "#38a169", "#e53e3e", "#d69e2e", "#718096"]
     # Source category logos
     source_logos = {
         "email": "https://cdn-icons-png.flaticon.com/512/732/732200.png",
         "slack": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png",
         "rss": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
         "api": "https://cdn-icons-png.flaticon.com/512/1493/1493169.png",
+        "documents": "https://cdn-icons-png.flaticon.com/512/2991/2991112.png",
     }
     source_colors = {
-        "email": "#63b3ed",
-        "slack": "#f6ad55",
-        "ms_graph": "#68d391",
-        "api": "#fc8181",
-        "web": "#b794f4",
-        "avoma": "#f687b3",
-        "rss": "#9ae6b4",
-        "arxiv": "#fbd38d",
+        "email": "#63b3ed", "slack": "#f6ad55", "ms_graph": "#68d391",
+        "api": "#fc8181", "web": "#b794f4", "avoma": "#f687b3",
+        "rss": "#9ae6b4", "arxiv": "#fbd38d", "j5": "#4299e1",
+        "nextcloud": "#0082c9", "cce": "#ed8936", "decision": "#9f7aea",
+        "claude": "#d4a574", "documentation": "#48bb78", "research": "#fbd38d",
     }
 
     def get_source_color(source):
@@ -808,72 +810,126 @@ async def get_tenant_graph():
             return 'rss'
         elif 'arxiv' in source_lower:
             return 'research'
-        elif 'api' in source_lower or 'claude' in source_lower:
+        elif 'api' in source_lower or 'claude' in source_lower or 'cce' in source_lower:
             return 'api'
         elif 'web' in source_lower:
             return 'web'
         elif 'nextcloud' in source_lower or 'j5' in source_lower:
             return 'documents'
+        elif 'decision' in source_lower:
+            return 'other'
         else:
             return 'other'
 
     try:
         conn = await asyncpg.connect(**db_config, timeout=30, command_timeout=30)
 
-        # Hardcode known tenant data for speed - avoid expensive COUNT queries
-        # This provides instant response with accurate-enough data
-        tenants = [
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "memory_count": 3284012},
-            {"tenant_name": "ALDC Management Team", "tenant_id": "11111111-1111-1111-1111-111111111111", "memory_count": 250805},
-            {"tenant_name": "System Default", "tenant_id": "00000000-0000-0000-0000-000000000001", "memory_count": 10500},
-            {"tenant_name": "Former Employees", "tenant_id": "33333333-3333-3333-3333-333333333333", "memory_count": 5200},
-            {"tenant_name": "J5:Customers", "tenant_id": "5a2d91f4-8b7e-4c3a-9f1a-6e8c2d3b5a7f", "memory_count": 3800},
-            {"tenant_name": "J5 Design", "tenant_id": "4b1eacc5-169a-41d8-8f11-727c0e4bc0b8", "memory_count": 2300},
-        ]
-        tenant_ids = [t["tenant_id"] for t in tenants]
+        # 1. Get all tenants with parent hierarchy
+        tenant_rows = await conn.fetch("""
+            SELECT t.tenant_id::text, t.name, t.parent_tenant_id::text, t.created_at
+            FROM zeus_core.tenants t
+            ORDER BY t.name
+        """)
 
-        # Hardcode top sources per tenant for instant response
-        sources = [
-            # JK tenant
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "ms_graph_email_production", "memory_count": 2236202},
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "slack_gap_fill", "memory_count": 377156},
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "slack_robust_ingestion", "memory_count": 340057},
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "email", "memory_count": 67099},
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "api", "memory_count": 30662},
-            {"tenant_name": "JK", "tenant_id": "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", "source": "rss_arxiv", "memory_count": 5200},
-            # ALDC Management Team
-            {"tenant_name": "ALDC Management Team", "tenant_id": "11111111-1111-1111-1111-111111111111", "source": "ms_graph_email", "memory_count": 180000},
-            {"tenant_name": "ALDC Management Team", "tenant_id": "11111111-1111-1111-1111-111111111111", "source": "slack", "memory_count": 50000},
-            {"tenant_name": "ALDC Management Team", "tenant_id": "11111111-1111-1111-1111-111111111111", "source": "api", "memory_count": 20000},
-            # System Default
-            {"tenant_name": "System Default", "tenant_id": "00000000-0000-0000-0000-000000000001", "source": "rss_tech_news", "memory_count": 5000},
-            {"tenant_name": "System Default", "tenant_id": "00000000-0000-0000-0000-000000000001", "source": "rss_arxiv", "memory_count": 3500},
-            {"tenant_name": "System Default", "tenant_id": "00000000-0000-0000-0000-000000000001", "source": "web_scraping", "memory_count": 2000},
-            # J5 Customers
-            {"tenant_name": "J5:Customers", "tenant_id": "5a2d91f4-8b7e-4c3a-9f1a-6e8c2d3b5a7f", "source": "covenant_portfolio", "memory_count": 2000},
-            {"tenant_name": "J5:Customers", "tenant_id": "5a2d91f4-8b7e-4c3a-9f1a-6e8c2d3b5a7f", "source": "covenant_journey_map", "memory_count": 1800},
-        ]
+        # 2. Get memory counts per tenant (uses index, fast)
+        mem_count_rows = await conn.fetch("""
+            SELECT tenant_id::text, COUNT(*) as memory_count
+            FROM zeus_core.memories
+            GROUP BY tenant_id
+        """)
+        mem_counts = {r["tenant_id"]: r["memory_count"] for r in mem_count_rows}
 
-        # Skip live memory query - too slow. Use hardcoded sample for demo
-        # Real memories would be loaded on-demand when drilling down
-        memories = []
+        # 3. Get top sources per tenant (top 8 by count)
+        source_rows = await conn.fetch("""
+            SELECT tenant_id::text, source, COUNT(*) as memory_count
+            FROM zeus_core.memories
+            WHERE tenant_id IS NOT NULL
+            GROUP BY tenant_id, source
+            ORDER BY tenant_id, COUNT(*) DESC
+        """)
 
-        # Skip semantic query for now - too slow with 3.5M rows
-        # TODO: Pre-compute semantic links in a background job
-        semantic_links = []
+        # 4. Get pipeline stats
+        ingestion_stats = await conn.fetchrow("""
+            SELECT COUNT(*) as total_runs,
+                   COALESCE(SUM(items_processed), 0) as total_processed,
+                   COALESCE(SUM(items_created), 0) as total_created
+            FROM zeus_core.ingestion_log
+        """)
+        embedding_stats = await conn.fetchrow("""
+            SELECT COUNT(*) as total_queued,
+                   COUNT(*) FILTER (WHERE status = 'completed') as total_completed
+            FROM zeus_core.embedding_queue
+        """)
 
         await conn.close()
 
-        # Build graph structure
+        # Build tenant lookup
+        tenant_lookup = {}
+        for r in tenant_rows:
+            tid = r["tenant_id"]
+            tenant_lookup[tid] = {
+                "tenant_id": tid,
+                "name": r["name"],
+                "parent_tenant_id": r["parent_tenant_id"],
+                "created_at": r["created_at"],
+                "memory_count": mem_counts.get(tid, 0),
+            }
+
+        # Determine which tenants to hide (hidden + all their descendants)
+        def get_descendants(tid):
+            desc = set()
+            for t in tenant_lookup.values():
+                if t["parent_tenant_id"] == tid:
+                    desc.add(t["tenant_id"])
+                    desc |= get_descendants(t["tenant_id"])
+            return desc
+
+        all_hidden = set(hidden_tenant_ids)
+        for hid in list(hidden_tenant_ids):
+            all_hidden |= get_descendants(hid)
+
+        # Filter tenants
+        visible_tenants = {tid: t for tid, t in tenant_lookup.items() if tid not in all_hidden}
+
+        # Compute tier (depth from root) for each tenant
+        def get_tier(tid, visited=None):
+            if visited is None:
+                visited = set()
+            if tid in visited:
+                return 1
+            visited.add(tid)
+            t = visible_tenants.get(tid)
+            if not t or not t["parent_tenant_id"]:
+                return 1  # Root tenants are tier 1
+            parent = t["parent_tenant_id"]
+            if parent not in visible_tenants:
+                return 1  # Parent hidden, treat as root
+            return get_tier(parent, visited) + 1
+
+        # Group sources by tenant (top 8 per tenant)
+        sources_by_tenant = {}
+        for r in source_rows:
+            tid = r["tenant_id"]
+            if tid not in visible_tenants:
+                continue
+            if tid not in sources_by_tenant:
+                sources_by_tenant[tid] = []
+            if len(sources_by_tenant[tid]) < 8:
+                sources_by_tenant[tid].append({
+                    "source": r["source"],
+                    "memory_count": r["memory_count"],
+                })
+
+        # Build graph
         nodes = []
         links = []
-        total_memories = sum(t["memory_count"] for t in tenants)
+        total_memories = sum(t["memory_count"] for t in visible_tenants.values())
 
         # Central hub
         nodes.append({
             "id": "zeus-hub",
             "name": "Zeus Memory",
-            "description": f"{total_memories:,} total memories across {len(tenants)} tenants",
+            "description": f"{total_memories:,} total memories across {len(visible_tenants)} tenants",
             "val": 100,
             "color": "#1a365d",
             "tier": 0,
@@ -883,155 +939,152 @@ async def get_tenant_graph():
             "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
         })
 
-        # Group sources by tenant
-        sources_by_tenant = {}
-        for s in sources:
-            tid = s["tenant_id"]
-            if tid not in sources_by_tenant:
-                sources_by_tenant[tid] = []
-            if len(sources_by_tenant[tid]) < 8:
-                sources_by_tenant[tid].append(s)
+        # Pipeline ring nodes: Sources -> Ingestion -> Embedding -> Zeus Hub
+        ingest_processed = ingestion_stats["total_processed"] if ingestion_stats else 0
+        ingest_runs = ingestion_stats["total_runs"] if ingestion_stats else 0
+        embed_completed = embedding_stats["total_completed"] if embedding_stats else 0
+        embed_queued = embedding_stats["total_queued"] if embedding_stats else 0
 
-        # Group actual memories by tenant+source
-        memories_by_key = {}
-        for m in memories:
-            key = f"{m['tenant_id']}_{m['source']}"
-            if key not in memories_by_key:
-                memories_by_key[key] = []
-            memories_by_key[key].append(m)
+        nodes.append({
+            "id": "pipeline-ingestion",
+            "name": "Ingestion Pipeline",
+            "description": f"{ingest_processed:,} items processed across {ingest_runs:,} runs. All source data flows through ingestion before entering Zeus Memory.",
+            "val": 70,
+            "color": "#ed8936",
+            "tier": 0,
+            "type": "pipeline",
+            "group": "pipeline",
+            "groupLabel": "Pipeline",
+        })
+        nodes.append({
+            "id": "pipeline-embedding",
+            "name": "Embedding Pipeline",
+            "description": f"{embed_completed:,} of {embed_queued:,} embeddings completed. Memories are vectorized for semantic search after ingestion.",
+            "val": 70,
+            "color": "#48bb78",
+            "tier": 0,
+            "type": "pipeline",
+            "group": "pipeline",
+            "groupLabel": "Pipeline",
+        })
+        # Ingestion -> Embedding -> Zeus Hub
+        links.append({
+            "source": "pipeline-ingestion",
+            "target": "pipeline-embedding",
+            "value": 6,
+            "type": "pipeline",
+            "color": "rgba(237, 137, 54, 0.5)"
+        })
+        links.append({
+            "source": "pipeline-embedding",
+            "target": "zeus-hub",
+            "value": 6,
+            "type": "pipeline",
+            "color": "rgba(72, 187, 120, 0.5)"
+        })
 
-        # Track source node IDs for semantic links
-        source_node_map = {}
-
-        # Level 1: Tenants
-        for i, tenant in enumerate(tenants):
-            tid = tenant["tenant_id"]
-            tname = tenant["tenant_name"]
-            tcount = tenant["memory_count"]
-
+        # Add tenant nodes
+        node_id_map = {}  # tenant_id -> graph node_id
+        for tid, t in visible_tenants.items():
+            tier = get_tier(tid)
+            display_name = tenant_display_names.get(t["name"], t["name"])
             node_id = f"tenant_{tid[:8]}"
+            node_id_map[tid] = node_id
+
+            color_idx = min(tier, len(tier_colors) - 1)
+            tcount = t["memory_count"]
+
             tenant_node = {
                 "id": node_id,
-                "name": tname,
+                "name": display_name,
                 "description": f"{tcount:,} memories",
-                "val": 30 + (tcount / total_memories) * 50,
-                "color": tenant_colors.get(tname, "#718096"),
-                "tier": 1,
+                "val": max(15, 30 + (tcount / max(total_memories, 1)) * 50),
+                "color": tier_colors[color_idx],
+                "tier": tier,
                 "type": "tenant",
                 "group": "tenant",
                 "groupLabel": "Tenants",
-                "memoryCount": tcount
+                "memoryCount": tcount,
+                "fullId": tid,
+                "createdAt": t["created_at"].isoformat() if t.get("created_at") else None,
             }
-            if tname in tenant_logos:
-                tenant_node["logo"] = tenant_logos[tname]
+            if display_name in tenant_logos:
+                tenant_node["logo"] = tenant_logos[display_name]
             nodes.append(tenant_node)
 
-            links.append({
-                "source": "zeus-hub",
-                "target": node_id,
-                "value": tcount / total_memories * 10,
-                "type": "hierarchy",
-                "color": "rgba(255,255,255,0.2)"
-            })
+        # Add tenant hierarchy links
+        for tid, t in visible_tenants.items():
+            node_id = node_id_map[tid]
+            parent_tid = t["parent_tenant_id"]
 
-            # Level 2: Sources
-            tenant_sources = sources_by_tenant.get(tid, [])
+            if parent_tid and parent_tid in node_id_map:
+                # Link to parent tenant
+                links.append({
+                    "source": node_id_map[parent_tid],
+                    "target": node_id,
+                    "value": max(1, t["memory_count"] / max(total_memories, 1) * 10),
+                    "type": "hierarchy",
+                    "color": "rgba(99, 179, 237, 0.3)"
+                })
+            else:
+                # Root tenant links to hub
+                links.append({
+                    "source": "zeus-hub",
+                    "target": node_id,
+                    "value": max(1, t["memory_count"] / max(total_memories, 1) * 10),
+                    "type": "hierarchy",
+                    "color": "rgba(99, 179, 237, 0.3)"
+                })
+
+        # Add source nodes per tenant
+        for tid, tenant_sources in sources_by_tenant.items():
+            if tid not in node_id_map:
+                continue
+            tenant_node_id = node_id_map[tid]
+            t = visible_tenants[tid]
+            display_name = tenant_display_names.get(t["name"], t["name"])
             tenant_total = sum(s["memory_count"] for s in tenant_sources)
+            tenant_tier = get_tier(tid)
 
-            for j, source in enumerate(tenant_sources):
-                source_id = f"source_{tid[:8]}_{source['source'][:20]}"
+            for source in tenant_sources:
+                source_name = source["source"]
                 source_count = source["memory_count"]
-                source_group = get_source_group(source["source"])
-
-                # Track for semantic links
-                source_node_map[f"{tid}_{source['source']}"] = source_id
+                source_group = get_source_group(source_name)
+                source_id = f"source_{tid[:8]}_{source_name[:20]}"
 
                 source_node = {
                     "id": source_id,
-                    "name": source["source"].replace("_", " ").title()[:25],
-                    "description": f"{source_count:,} memories from {source['source']}",
-                    "val": 10 + (source_count / max(tenant_total, 1)) * 20,
-                    "color": get_source_color(source["source"]),
-                    "tier": 2,
+                    "name": source_name.replace("_", " ").title()[:30],
+                    "description": f"{source_count:,} memories from {source_name}",
+                    "val": max(5, 10 + (source_count / max(tenant_total, 1)) * 20),
+                    "color": get_source_color(source_name),
+                    "tier": tenant_tier + 1,
                     "type": "source",
                     "group": source_group,
                     "groupLabel": source_group.title(),
                     "memoryCount": source_count,
-                    "parentTenant": tname,
-                    "tenantId": tid[:8]
+                    "parentTenant": display_name,
+                    "tenantId": tid[:8],
                 }
                 if source_group in source_logos:
                     source_node["logo"] = source_logos[source_group]
                 nodes.append(source_node)
 
+                # Source -> Tenant (ownership)
                 links.append({
-                    "source": node_id,
+                    "source": tenant_node_id,
                     "target": source_id,
-                    "value": source_count / max(tenant_total, 1) * 5,
+                    "value": max(0.5, source_count / max(tenant_total, 1) * 5),
                     "type": "hierarchy",
-                    "color": "rgba(255,255,255,0.15)"
+                    "color": "rgba(99, 179, 237, 0.2)"
                 })
-
-                # Level 3: Actual memories (up to 5 per source)
-                key = f"{tid}_{source['source']}"
-                source_memories = memories_by_key.get(key, [])
-
-                for k, mem in enumerate(source_memories[:5]):
-                    mem_id = f"mem_{mem['memory_id'][:8]}"
-
-                    # Use title if available, then content_summary, then content preview
-                    mem_name = mem.get("title") or mem.get("content_summary") or mem.get("content_preview", "")
-                    if not mem_name or mem_name.strip() == "":
-                        mem_name = "Memory"
-                    mem_name = mem_name[:80] + ("..." if len(mem_name) > 80 else "")
-
-                    # Description: content_summary or content_preview
-                    description = mem.get("content_summary") or mem.get("content_preview") or "No content"
-                    if len(description) > 300:
-                        description = description[:300] + "..."
-
-                    nodes.append({
-                        "id": mem_id,
-                        "name": mem_name,
-                        "description": description,
-                        "val": 5,
-                        "color": get_source_color(source["source"]),
-                        "tier": 3,
-                        "type": "memory",
-                        "group": "memory",
-                        "groupLabel": "Memories",
-                        "fullId": mem["memory_id"],
-                        "url": mem.get("url"),
-                        "createdAt": mem["created_at"].isoformat() if mem["created_at"] else None,
-                        "parentSource": source["source"],
-                        "parentTenant": tname
-                    })
-
-                    links.append({
-                        "source": source_id,
-                        "target": mem_id,
-                        "value": 1,
-                        "type": "hierarchy",
-                        "color": "rgba(255,255,255,0.1)"
-                    })
-
-        # Add semantic relationship links between sources
-        for sem_link in semantic_links:
-            source_key_a = f"{sem_link['tenant_a']}_{sem_link['source_a']}"
-            source_key_b = f"{sem_link['tenant_b']}_{sem_link['source_b']}"
-
-            node_a = source_node_map.get(source_key_a)
-            node_b = source_node_map.get(source_key_b)
-
-            if node_a and node_b:
+                # Source -> Ingestion Pipeline (data flow)
                 links.append({
-                    "source": node_a,
-                    "target": node_b,
-                    "value": sem_link["connection_count"] / 2,
-                    "type": "semantic",
-                    "similarity": float(sem_link["avg_similarity"]),
-                    "color": f"rgba(129, 90, 213, {min(0.8, sem_link['avg_similarity'])})",  # Purple for semantic
-                    "connectionCount": sem_link["connection_count"]
+                    "source": source_id,
+                    "target": "pipeline-ingestion",
+                    "value": max(0.3, source_count / max(total_memories, 1) * 3),
+                    "type": "pipeline",
+                    "color": "rgba(237, 137, 54, 0.15)"
                 })
 
         # Collect unique groups for filters
@@ -1053,7 +1106,7 @@ async def get_tenant_graph():
             "groups": list(groups.values()),
             "stats": {
                 "total_memories": total_memories,
-                "tenant_count": len(tenants),
+                "tenant_count": len(visible_tenants),
                 "source_count": len([n for n in nodes if n["type"] == "source"]),
                 "sample_count": len([n for n in nodes if n["type"] == "memory"]),
                 "semantic_links": len([l for l in links if l.get("type") == "semantic"])
