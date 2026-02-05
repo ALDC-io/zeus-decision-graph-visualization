@@ -150,7 +150,7 @@ INGESTION_SOURCES = {
         "label": "Email",
         "color": "#0078D4",  # Outlook blue
         "icon": "📧",
-        "logo": "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg",
+        "logo": "https://cdn-icons-png.flaticon.com/512/732/732200.png",  # Outlook icon
         "description": "Emails from Microsoft 365 / Outlook"
     },
     "web_docs": {
@@ -222,7 +222,7 @@ GROUPS = {
     "cce_research": {"color": "#3182ce", "label": "Research"},
     "cce_failed_approach": {"color": "#e53e3e", "label": "Failed Approaches"},
     "cce_success_log": {"color": "#38a169", "label": "Successes"},
-    "cce_system": {"color": "#805ad5", "label": "System Events"},
+    "cce_system": {"color": "#805ad5", "label": "Zeus Events"},
     "cce": {"color": "#d69e2e", "label": "CCE General"},
     "architecture": {"color": "#dd6b20", "label": "Architecture"},
     "contributor": {"color": "#718096", "label": "Contributors"},

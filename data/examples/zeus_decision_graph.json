@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-05 11:10",
-    "updated": "2026-02-05 11:10",
+    "created": "2026-02-05 11:16",
+    "updated": "2026-02-05 11:16",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -43,7 +43,7 @@
     },
     "cce_system": {
       "color": "#805ad5",
-      "label": "System Events"
+      "label": "Zeus Events"
     },
     "cce": {
       "color": "#d69e2e",
@@ -216,7 +216,7 @@
       "label": "Email",
       "color": "#0078D4",
       "icon": "\ud83d\udce7",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg",
+      "logo": "https://cdn-icons-png.flaticon.com/512/732/732200.png",
       "description": "Emails from Microsoft 365 / Outlook"
     },
     "web_docs": {
@@ -4873,15 +4873,15 @@
     {
       "id": "source_email",
       "label": "Email",
-      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,069\nPercentage: 72.1%",
+      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,070\nPercentage: 72.1%",
       "tier": 0,
       "group": "ingestion_source",
       "size": 70,
       "source_type": "email",
-      "memory_count": 2367069,
+      "memory_count": 2367070,
       "percentage": 72.1,
       "color": "#0078D4",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg"
+      "logo": "https://cdn-icons-png.flaticon.com/512/732/732200.png"
     },
     {
       "id": "source_web_docs",

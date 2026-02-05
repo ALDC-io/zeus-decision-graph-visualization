@@ -1584,10 +1584,6 @@ def generate_html(data: dict[str, Any], title: str) -> str:
         <div id="graph-wrapper">
             <div id="graph"></div>
             <div id="toolbar">
-                <div class="toolbar-section">
-                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
-                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
-                </div>
                 {view_mode_toggle_html}
             </div>
             <!-- Extended Toolbar (v2.0 Features) -->
