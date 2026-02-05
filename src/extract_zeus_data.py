@@ -919,8 +919,8 @@ def main():
     parser = argparse.ArgumentParser(description='Extract Zeus Memory data for visualization')
     parser.add_argument('--hours', type=int, default=0,
                        help='Filter to last N hours (0 = no filter, default)')
-    parser.add_argument('--contributors', action='store_true',
-                       help='Add contributor nodes and edges')
+    parser.add_argument('--no-contributors', action='store_true',
+                       help='Disable contributor nodes and edges (enabled by default)')
     parser.add_argument('--hierarchy', action='store_true',
                        help='Add Area/Project hierarchy nodes (Client vs R&D)')
     parser.add_argument('--output', type=str, default='data/examples/zeus_decisions.json',
@@ -928,9 +928,10 @@ def main():
     args = parser.parse_args()
 
     # Extract data with optional time filter
+    # Contributors enabled by default, use --no-contributors to disable
     nodes, edges = extract_data(
         hours_filter=args.hours,
-        include_contributors=args.contributors,
+        include_contributors=not args.no_contributors,
         include_hierarchy=args.hierarchy
     )
 
@@ -944,7 +945,7 @@ def main():
             "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "edge_methods": ["metadata", "temporal", "similarity", "hub", "contributor", "hierarchy"],
             "hours_filter": args.hours if args.hours > 0 else "all",
-            "contributors_enabled": args.contributors,
+            "contributors_enabled": not args.no_contributors,
             "hierarchy_enabled": args.hierarchy,
         },
         "groups": GROUPS,
@@ -964,7 +965,7 @@ def main():
     print(f"  Groups: {list(GROUPS.keys())}")
     if args.hours > 0:
         print(f"  Time filter: Last {args.hours} hours")
-    if args.contributors:
+    if not args.no_contributors:
         print(f"  Contributors: {list(CONTRIBUTORS.keys())}")
 
 

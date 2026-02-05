@@ -3,8 +3,8 @@
     "title": "Zeus Memory Knowledge Graph",
     "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
     "source": "zeus_core database",
-    "created": "2026-02-04 16:25",
-    "updated": "2026-02-04 16:25",
+    "created": "2026-02-04 16:51",
+    "updated": "2026-02-04 16:51",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -1096,9 +1096,9 @@
       "contributor": "system"
     },
     {
-      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "label": "Odin node successfully federated with Zeus Memo...",
-      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1120,21 +1120,9 @@
       "area": "rnd"
     },
     {
-      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "label": "All pre-migration checks passed. 59012 memories...",
-      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
-      "tier": 4,
-      "group": "cce_system",
-      "size": 10,
-      "created_at": null,
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "id": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "label": "Odin node successfully federated with Zeus Memo...",
+      "title": "Odin node successfully federated with Zeus Memory Hub. Full PostgreSQL access confirmed. Dual Tesla P100 GPUs available for federation compute tasks.",
       "tier": 4,
       "group": "cce_system",
       "size": 10,
@@ -1152,6 +1140,90 @@
       "size": 10,
       "created_at": null,
       "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "label": "All pre-migration checks passed. 59012 memories...",
+      "title": "All pre-migration checks passed. 59012 memories ready for migration. Backups created at 20250806_191448.",
+      "tier": 4,
+      "group": "cce_system",
+      "size": 10,
+      "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:21:49 From: John Moran Channel: #the-olds what are you, an uncle or something? terrible",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:21:49.720389",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:21:36 From: John Moran Channel: #the-olds you're too young for such jokes",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:21:36.722989",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "90b1995c-8726-46b3-a593-4b7bbe8eee27",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:21:23 From: Mike Stuart Channel: #the-olds ouch",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:21:23.346039",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "6ab52c83-6976-4ea7-9944-ed679533b5bb",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:21:09 From: Marshall Johnston Channel: #the-olds we gonna have a wild thyme",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:21:09.842209",
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "b7717751-93b0-4b33-8141-6871ae925c25",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:21:02 From: Marshall Johnston Channel: #the-olds yeehaw",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:21:02.675949",
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "label": "Slack Message - #the-olds Date: 2026-02-05 00:2...",
+      "title": "Slack Message - #the-olds Date: 2026-02-05 00:20:53 From: John Moran Channel: #the-olds yup",
+      "tier": 4,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T00:20:53.561939",
+      "contributor": "jk",
       "project": "",
       "area": "rnd"
     },
@@ -4624,81 +4696,9 @@
       "area": "rnd"
     },
     {
-      "id": "954b76b8-9f55-4231-b2b0-0a53f7c4db93",
-      "label": "Slack Message - #the-olds Date: 2026-01-22 00:3...",
-      "title": "Slack Message - #the-olds Date: 2026-01-22 00:37:34 From: John Moran Channel: #the-olds <https://claude.ai/share/fecc6519-5003-4738-8209-f98f5f677552>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-22T00:37:34.817069",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 23:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 23:40:40 From: Marshall Johnston Channel: #the-olds yAYYY!!!!!",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T23:40:40.105799",
-      "contributor": "marshall",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "f2f786b4-67f0-46ff-becf-0cd979b93858",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 18:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 18:51:49 From: John Moran Channel: #the-olds another fyi: <https://zeus-memory-slack.mangoflower-8e280eee.eastus.azurecontainerapps.io/>",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T18:51:49.797349",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 18:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 18:47:07 From: John Moran Channel: #the-olds hahahah",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T18:47:07.179889",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 18:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 18:47:02 From: Mike Stuart Channel: #the-olds Now you're getting picky",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T18:47:02.484769",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "label": "Slack Message - #the-olds Date: 2026-01-21 18:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-21 18:46:46 From: John Moran Channel: #the-olds hopefully it's even correct :wink:",
-      "tier": 4,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-21T18:46:46.103629",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 125",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 124",
       "tier": 0,
       "group": "management",
       "size": 100,
@@ -4720,10 +4720,10 @@
     {
       "id": "contributor_marshall",
       "label": "Marshall",
-      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 46",
+      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 47",
       "tier": 0,
       "group": "management",
-      "size": 96,
+      "size": 97,
       "contributor_id": "marshall",
       "is_management": true,
       "logo": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg"
@@ -4767,48 +4767,48 @@
       "type": "references"
     },
     {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "same_category"
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
       "type": "same_category"
     },
     {
@@ -5727,6 +5727,36 @@
       "type": "temporal_context"
     },
     {
+      "source": "ffc143d5-177d-49fa-9a86-6d2f4ea3bc46",
+      "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "type": "temporal_context"
+    },
+    {
+      "source": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "target": "b7717751-93b0-4b33-8141-6871ae925c25",
+      "type": "temporal_context"
+    },
+    {
+      "source": "b7717751-93b0-4b33-8141-6871ae925c25",
+      "target": "6ab52c83-6976-4ea7-9944-ed679533b5bb",
+      "type": "temporal_context"
+    },
+    {
+      "source": "6ab52c83-6976-4ea7-9944-ed679533b5bb",
+      "target": "90b1995c-8726-46b3-a593-4b7bbe8eee27",
+      "type": "temporal_context"
+    },
+    {
+      "source": "90b1995c-8726-46b3-a593-4b7bbe8eee27",
+      "target": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "type": "temporal_context"
+    },
+    {
+      "source": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "target": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
+      "type": "temporal_context"
+    },
+    {
       "source": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
       "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
       "type": "temporal_context"
@@ -6302,11 +6332,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "954b76b8-9f55-4231-b2b0-0a53f7c4db93",
-      "target": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
-      "type": "temporal_context"
-    },
-    {
       "source": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
       "target": "f9a648ce-2076-4019-b856-074c03a7f301",
       "type": "temporal_context"
@@ -6347,54 +6372,10 @@
       "type": "temporal_context"
     },
     {
-      "source": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "target": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
-      "type": "temporal_context"
-    },
-    {
-      "source": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
-      "target": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "type": "temporal_context"
-    },
-    {
-      "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "target": "f2f786b4-67f0-46ff-becf-0cd979b93858",
-      "type": "temporal_context"
-    },
-    {
-      "source": "f2f786b4-67f0-46ff-becf-0cd979b93858",
-      "target": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
-      "type": "temporal_context"
-    },
-    {
       "source": "176ce958-9218-4e70-9b28-ef51c612f840",
       "target": "232a55ab-ea14-4751-8bcf-c1d37204b8c5",
       "type": "highly_similar",
       "weight": 0.997
-    },
-    {
-      "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "type": "highly_similar",
-      "weight": 0.94
-    },
-    {
-      "source": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "target": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "type": "similar",
-      "weight": 0.893
-    },
-    {
-      "source": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "target": "c6f1a5db-ea03-4921-971a-121101c24526",
-      "type": "similar",
-      "weight": 0.892
-    },
-    {
-      "source": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
-      "target": "bdc96d71-6695-40f2-bcd4-7888b4bb055d",
-      "type": "similar",
-      "weight": 0.89
     },
     {
       "source": "41ed51f4-e8d2-496d-8fcd-a7d1be4b65ba",
@@ -6403,22 +6384,10 @@
       "weight": 0.887
     },
     {
-      "source": "33574549-a91c-4e19-82fa-1f6b483e6c93",
-      "target": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "type": "similar",
-      "weight": 0.884
-    },
-    {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "similar",
       "weight": 0.88
-    },
-    {
-      "source": "954b76b8-9f55-4231-b2b0-0a53f7c4db93",
-      "target": "b6de3d39-48eb-45d5-8882-dfa49cc79d11",
-      "type": "similar",
-      "weight": 0.871
     },
     {
       "source": "33574549-a91c-4e19-82fa-1f6b483e6c93",
@@ -7424,7 +7393,7 @@
     },
     {
       "source": "contributor_system",
-      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -7434,17 +7403,47 @@
     },
     {
       "source": "contributor_system",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_system",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "type": "created_by"
     },
     {
       "source": "contributor_system",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_system",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "08df03bb-2d87-4630-8930-d65bb1117540",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "90b1995c-8726-46b3-a593-4b7bbe8eee27",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "6ab52c83-6976-4ea7-9944-ed679533b5bb",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "b7717751-93b0-4b33-8141-6871ae925c25",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
       "type": "created_by"
     },
     {
@@ -8890,36 +8889,6 @@
     {
       "source": "contributor_jk",
       "target": "8f2cd9c5-ee35-436f-971b-9a97aa2bfd2f",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "954b76b8-9f55-4231-b2b0-0a53f7c4db93",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_marshall",
-      "target": "8f07ac1d-ad0f-4a84-a12f-8f25724cbe9b",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "f2f786b4-67f0-46ff-becf-0cd979b93858",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "65bc2cce-fb67-42cd-8764-f6e2b567e3bb",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "cd43f212-87e4-4caf-ab70-e88f4ffd7c66",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "c6f1a5db-ea03-4921-971a-121101c24526",
       "type": "created_by"
     }
   ]
