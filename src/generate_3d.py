@@ -2506,7 +2506,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
             // Special handling for management team: include all team members
             // Check if selected node is part of management team (has team_member edges)
-            const teamMemberConnections = connections.filter(c => c.type === 'team_member');
+            const teamMemberConnections = connections.filter(c => c.relationType === 'team_member');
             if (teamMemberConnections.length > 0) {{
                 // This is a team member - find ALL team members via team_member edges
                 const teamMemberIds = new Set([selectedNode.id]);
@@ -2520,7 +2520,7 @@ def generate_html(data: dict[str, Any], title: str) -> str:
 
                     const nodeConnections = linksByNode[currentId] || [];
                     nodeConnections.forEach(conn => {{
-                        if (conn.type === 'team_member' && !explored.has(conn.nodeId)) {{
+                        if (conn.relationType === 'team_member' && !explored.has(conn.nodeId)) {{
                             teamMemberIds.add(conn.nodeId);
                             toExplore.push(conn.nodeId);
                         }}
