@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Zeus Memory - Tenant Distribution</title>
+    <link rel="icon" href="data:,">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #3182ce, #805ad5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 18px;
+            color: #a0aec0;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 40px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #3182ce;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+        .main-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .chart-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+        #ring-chart {
+            width: 100%;
+            height: 100%;
+        }
+        .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+        .center-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .center-label {
+            font-size: 16px;
+            color: #a0aec0;
+        }
+        .legend-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            min-width: 350px;
+            max-width: 450px;
+        }
+        .legend-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 0 -12px;
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 6px;
+        }
+        .legend-item:last-child {
+            border-bottom: none;
+        }
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .legend-item.highlighted {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .legend-name {
+            flex: 1;
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+        .legend-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3182ce;
+            margin-right: 10px;
+        }
+        .legend-percent {
+            font-size: 12px;
+            color: #a0aec0;
+            width: 50px;
+            text-align: right;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(26, 32, 44, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .tooltip.visible {
+            opacity: 1;
+        }
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .tooltip-value {
+            color: #3182ce;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .tooltip-percent {
+            color: #a0aec0;
+            font-size: 13px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #718096;
+            font-size: 14px;
+        }
+        .last-updated {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 20px;
+            text-align: center;
+        }
+        /* Nested ring for hierarchy */
+        .hierarchy-note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Zeus Memory</h1>
+            <p class="subtitle">Tenant Memory Distribution</p>
+        </header>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value" id="total-memories">-</div>
+                <div class="stat-label">Total Memories</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="total-tenants">-</div>
+                <div class="stat-label">Active Tenants</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="primary-tenant">-</div>
+                <div class="stat-label">Primary Tenant</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chart-container">
+                <svg id="ring-chart"></svg>
+                <div class="center-text">
+                    <div class="center-value" id="center-value">-</div>
+                    <div class="center-label" id="center-label">memories</div>
+                </div>
+            </div>
+
+            <div class="legend-container">
+                <div class="legend-title">Tenants by Memory Count</div>
+                <div id="legend"></div>
+                <div class="hierarchy-note">
+                    Hover over segments to see details. Click legend items to highlight.
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated" id="last-updated"></div>
+
+        <footer>
+            <p>Powered by Zeus Memory | ALDC</p>
+        </footer>
+    </div>
+
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-value"></div>
+        <div class="tooltip-percent"></div>
+    </div>
+
+    <script>
+        // Fallback tenant data from Zeus Memory database (used if API unavailable)
+        const fallbackData = [
+            { name: "JK", tenant_id: "b513bc6e-ad51-4a11-bea3-e3b1a84d7b55", memory_count: 3283912, color: "#3182ce" },
+            { name: "ALDC Management Team", tenant_id: "11111111-1111-1111-1111-111111111111", memory_count: 267888, color: "#805ad5" },
+            { name: "System Default", tenant_id: "00000000-0000-0000-0000-000000000001", memory_count: 3137, color: "#38a169" },
+            { name: "Former Employees", tenant_id: "33333333-3333-3333-3333-333333333333", memory_count: 1216, color: "#e53e3e" },
+            { name: "J5:Customers", tenant_id: "5a2d91f4-8b7e-4c3a-9f1a-6e8c2d3b5a7f", memory_count: 148, color: "#dd6b20" },
+            { name: "lori.beck@aldc.io", tenant_id: "c8caf340-012c-4e70-8e44-db1b82ea87fd", memory_count: 14, color: "#d69e2e" },
+            { name: "marshall.johnston@aldc.io", tenant_id: "c1234567-0000-0000-0005-000000000001", memory_count: 11, color: "#319795" },
+            { name: "Mike Stuart", tenant_id: "c1234567-0000-0000-0007-000000000001", memory_count: 8, color: "#b794f4" },
+            { name: "J5 Design", tenant_id: "4b1eacc5-169a-41d8-8f11-727c0e4bc0b8", memory_count: 3, color: "#f687b3" },
+            { name: "Durham_College", tenant_id: "c1234567-0000-0000-0006-000000000001", memory_count: 1, color: "#68d391" }
+        ];
+
+        // Try to fetch live data from API
+        async function loadData() {
+            try {
+                const response = await fetch('/api/tenant-distribution');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.active_tenants_data && data.active_tenants_data.length > 0) {
+                        return data.active_tenants_data;
+                    }
+                }
+            } catch (e) {
+                console.log('API unavailable, using fallback data');
+            }
+            return fallbackData;
+        }
+
+        // Initialize chart with data
+        async function initChart() {
+            const tenantData = await loadData();
+
+        // Filter to only active tenants (those with memories)
+        const activeData = tenantData.filter(d => d.memory_count > 0);
+
+        // Calculate totals
+        const totalMemories = activeData.reduce((sum, d) => sum + d.memory_count, 0);
+        const activeTenants = activeData.length;
+        const primaryTenant = activeData[0].name;
+
+        // Update stats
+        document.getElementById('total-memories').textContent = totalMemories.toLocaleString();
+        document.getElementById('total-tenants').textContent = activeTenants;
+        document.getElementById('primary-tenant').textContent = primaryTenant;
+        document.getElementById('center-value').textContent = totalMemories.toLocaleString();
+        document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+
+        // Chart dimensions
+        const width = 600;
+        const height = 600;
+        const outerRadius = Math.min(width, height) / 2 - 20;
+        const innerRadius = outerRadius * 0.55;
+
+        // Create SVG
+        const svg = d3.select("#ring-chart")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+        // Create pie layout
+        const pie = d3.pie()
+            .value(d => d.memory_count)
+            .sort(null)
+            .padAngle(0.02);
+
+        // Create arc generator
+        const arc = d3.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius)
+            .cornerRadius(4);
+
+        // Arc for hover state
+        const arcHover = d3.arc()
+            .innerRadius(innerRadius - 5)
+            .outerRadius(outerRadius + 10)
+            .cornerRadius(4);
+
+        // Create arcs
+        const arcs = svg.selectAll("path")
+            .data(pie(activeData))
+            .enter()
+            .append("path")
+            .attr("d", arc)
+            .attr("fill", d => d.data.color)
+            .attr("stroke", "#0a0a1a")
+            .attr("stroke-width", 2)
+            .style("cursor", "pointer")
+            .on("mouseover", function(event, d) {
+                // Highlight arc
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("d", arcHover);
+
+                // Update center text
+                document.getElementById('center-value').textContent = d.data.memory_count.toLocaleString();
+                document.getElementById('center-label').textContent = d.data.name;
+
+                // Show tooltip
+                const tooltip = document.getElementById('tooltip');
+                const percent = ((d.data.memory_count / totalMemories) * 100).toFixed(2);
+                tooltip.querySelector('.tooltip-title').textContent = d.data.name;
+                tooltip.querySelector('.tooltip-value').textContent = d.data.memory_count.toLocaleString() + ' memories';
+                tooltip.querySelector('.tooltip-percent').textContent = percent + '% of total';
+                tooltip.classList.add('visible');
+
+                // Position tooltip
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+
+                // Highlight legend item
+                document.querySelectorAll('.legend-item').forEach((item, i) => {
+                    if (i === d.index) {
+                        item.classList.add('highlighted');
+                    } else {
+                        item.classList.remove('highlighted');
+                    }
+                });
+            })
+            .on("mousemove", function(event) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on("mouseout", function(event, d) {
+                // Reset arc
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("d", arc);
+
+                // Reset center text
+                document.getElementById('center-value').textContent = totalMemories.toLocaleString();
+                document.getElementById('center-label').textContent = 'memories';
+
+                // Hide tooltip
+                document.getElementById('tooltip').classList.remove('visible');
+
+                // Reset legend
+                document.querySelectorAll('.legend-item').forEach(item => {
+                    item.classList.remove('highlighted');
+                });
+            });
+
+        // Add percentage labels for larger segments
+        svg.selectAll("text.label")
+            .data(pie(activeData))
+            .enter()
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", d => {
+                const [x, y] = arc.centroid(d);
+                return `translate(${x}, ${y})`;
+            })
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.35em")
+            .attr("fill", "#fff")
+            .attr("font-size", d => {
+                const percent = (d.data.memory_count / totalMemories) * 100;
+                return percent > 5 ? "14px" : "0px";
+            })
+            .attr("font-weight", "600")
+            .text(d => {
+                const percent = (d.data.memory_count / totalMemories) * 100;
+                return percent > 5 ? percent.toFixed(1) + '%' : '';
+            });
+
+        // Build legend
+        const legend = document.getElementById('legend');
+        activeData.forEach((tenant, i) => {
+            const percent = ((tenant.memory_count / totalMemories) * 100).toFixed(2);
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            item.innerHTML = `
+                <div class="legend-color" style="background: ${tenant.color}"></div>
+                <div class="legend-name">${tenant.name}</div>
+                <div class="legend-count">${tenant.memory_count.toLocaleString()}</div>
+                <div class="legend-percent">${percent}%</div>
+            `;
+
+            // Hover interaction
+            item.addEventListener('mouseenter', () => {
+                arcs.filter((d, j) => j === i)
+                    .transition()
+                    .duration(200)
+                    .attr("d", arcHover);
+
+                document.getElementById('center-value').textContent = tenant.memory_count.toLocaleString();
+                document.getElementById('center-label').textContent = tenant.name;
+            });
+
+            item.addEventListener('mouseleave', () => {
+                arcs.filter((d, j) => j === i)
+                    .transition()
+                    .duration(200)
+                    .attr("d", arc);
+
+                document.getElementById('center-value').textContent = totalMemories.toLocaleString();
+                document.getElementById('center-label').textContent = 'memories';
+            });
+
+            legend.appendChild(item);
+        });
+
+        // Initial animation
+        arcs.attr("opacity", 0)
+            .transition()
+            .duration(800)
+            .delay((d, i) => i * 100)
+            .attr("opacity", 1);
+        }
+
+        // Initialize the chart
+        initChart();
+    </script>
+</body>
+</html>

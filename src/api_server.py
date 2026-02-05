@@ -154,6 +154,7 @@ async def root():
         {"name": "Ecosystem Navigator", "path": "/viz/navigator", "description": "Multi-scale semantic zoom with project/initiative overlays - drill from ecosystem to data elements", "featured": True},
         {"name": "ALDC Data Ecosystem", "path": "/viz/ecosystem", "description": "Complete data lineage from sources through transformations to AI/ML consumption"},
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
+        {"name": "Zeus Tenant Distribution", "path": "/viz/tenants", "description": "Ring chart showing memory distribution across tenants"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
         {"name": "Athena Data Flow", "path": "/viz/dataflow", "description": "End-to-end F92 DAX AI workflow: Account Management to Reporting with Eclipse as Data Foundation"},
         {"name": "Fusion92 Flightcheck", "path": "/viz/flightcheck", "description": "DAX AI data flow for media planning, activation, and flight management"},
@@ -284,6 +285,24 @@ async def viz_zeus():
     if html_file.exists():
         return FileResponse(html_file, media_type="text/html")
     raise HTTPException(status_code=404, detail="Zeus visualization not found")
+
+
+@app.get("/viz/tenants")
+async def viz_tenants():
+    """Serve the Zeus Tenant Distribution ring chart visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "zeus_tenant_ring.html"
+    if html_file.exists():
+        return FileResponse(
+            html_file,
+            media_type="text/html",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
+    raise HTTPException(status_code=404, detail="Zeus Tenant visualization not found")
 
 
 @app.get("/viz/fbc")
@@ -634,6 +653,88 @@ async def search_memories(
         "total_results": len(results),
         "results": results,
     }
+
+
+@app.get("/api/tenant-distribution")
+async def get_tenant_distribution():
+    """
+    Get Zeus Memory distribution by tenant.
+    Returns tenant names, memory counts, and percentages for visualization.
+    """
+    import asyncpg
+    import os
+
+    # Database connection from environment
+    db_config = {
+        "host": os.getenv("DB_HOST", "psql-zeus-memory-dev.postgres.database.azure.com"),
+        "database": os.getenv("DB_NAME", "zeus_core"),
+        "user": os.getenv("DB_USER", "zeus_admin"),
+        "password": os.getenv("DB_PASSWORD", "ZeusMemory2024Db"),
+    }
+
+    try:
+        conn = await asyncpg.connect(**db_config)
+
+        query = """
+            SELECT
+                t.name as tenant_name,
+                t.tenant_id::text,
+                COUNT(m.memory_id) as memory_count
+            FROM zeus_core.tenants t
+            LEFT JOIN zeus_core.memories m ON t.tenant_id = m.tenant_id
+            GROUP BY t.name, t.tenant_id
+            ORDER BY memory_count DESC
+        """
+
+        rows = await conn.fetch(query)
+        await conn.close()
+
+        # Assign colors to tenants
+        colors = [
+            "#3182ce", "#805ad5", "#38a169", "#e53e3e", "#dd6b20",
+            "#d69e2e", "#319795", "#b794f4", "#f687b3", "#68d391",
+            "#fc8181", "#63b3ed", "#9f7aea", "#48bb78"
+        ]
+
+        tenants = []
+        total_memories = 0
+
+        for i, row in enumerate(rows):
+            tenant = {
+                "name": row["tenant_name"],
+                "tenant_id": row["tenant_id"],
+                "memory_count": row["memory_count"],
+                "color": colors[i % len(colors)]
+            }
+            tenants.append(tenant)
+            total_memories += row["memory_count"]
+
+        # Calculate percentages
+        for tenant in tenants:
+            tenant["percentage"] = round((tenant["memory_count"] / total_memories * 100), 2) if total_memories > 0 else 0
+
+        # Filter active tenants for the chart (those with memories)
+        active_tenants = [t for t in tenants if t["memory_count"] > 0]
+
+        return {
+            "total_memories": total_memories,
+            "total_tenants": len(tenants),
+            "active_tenants": len(active_tenants),
+            "tenants": tenants,
+            "active_tenants_data": active_tenants,
+            "timestamp": __import__("datetime").datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        # Return fallback static data if DB unavailable
+        return {
+            "total_memories": 3556338,
+            "total_tenants": 16,
+            "active_tenants": 10,
+            "tenants": [],
+            "error": str(e),
+            "timestamp": __import__("datetime").datetime.now().isoformat()
+        }
 
 
 @app.get("/api/stats")

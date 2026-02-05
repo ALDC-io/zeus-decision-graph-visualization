@@ -1524,8 +1524,8 @@
             if (!linksByNode[sourceId]) linksByNode[sourceId] = [];
             if (!linksByNode[targetId]) linksByNode[targetId] = [];
 
-            linksByNode[sourceId].push({ nodeId: targetId, relationType: link.relationType });
-            linksByNode[targetId].push({ nodeId: sourceId, relationType: link.relationType });
+            linksByNode[sourceId].push({ nodeId: targetId, relationType: link.relationType, edgeType: link.edgeType });
+            linksByNode[targetId].push({ nodeId: sourceId, relationType: link.relationType, edgeType: link.edgeType });
         });
 
         // Graph data
@@ -2343,7 +2343,7 @@
 
             // Special handling for management team: include all team members
             // Check if selected node is part of management team (has team_member edges)
-            const teamMemberConnections = connections.filter(c => c.relationType === 'team_member');
+            const teamMemberConnections = connections.filter(c => c.edgeType === 'team_member');
             if (teamMemberConnections.length > 0) {
                 // This is a team member - find ALL team members via team_member edges
                 const teamMemberIds = new Set([selectedNode.id]);
@@ -2357,7 +2357,7 @@
 
                     const nodeConnections = linksByNode[currentId] || [];
                     nodeConnections.forEach(conn => {
-                        if (conn.relationType === 'team_member' && !explored.has(conn.nodeId)) {
+                        if (conn.edgeType === 'team_member' && !explored.has(conn.nodeId)) {
                             teamMemberIds.add(conn.nodeId);
                             toExplore.push(conn.nodeId);
                         }
