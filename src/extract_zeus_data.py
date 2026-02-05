@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""
-Extract Zeus Memory decisions and CCE memories for visualization.
-Generates JSON in network-ecosystem format.
-
-Edge Generation Methods:
-1. Metadata-based (category, source, agent_id, explicit references)
-2. Temporal clustering (same session/day)
-3. Vector similarity (pgvector embeddings)
-4. Hub connections (structural)
-5. Contributor connections (who created each learning)
-
-Features:
-- Contributor tracking (JK, Lori, Marshall, Mike, System)
-- Last 24 hours filter option
-- Human-centric view (center on contributor)
-"""
+"""Extract Zeus Memory knowledge for visualization."""
 
 import json
 import re
@@ -89,13 +74,6 @@ CONTRIBUTORS = {
         "description": "Mike Stuart - VP Engineering",
         "management": True,
         "image": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
-    },
-    "system": {
-        "label": "Zeus",
-        "color": "#805ad5",
-        "description": "Zeus Memory - Automated learnings and system events",
-        "management": False,
-        "image": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
     },
 }
 
@@ -201,6 +179,14 @@ INGESTION_SOURCES = {
         "logo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg",
         "description": "Claude Code Enhanced session learnings"
     },
+    "avoma": {
+        "patterns": ["avoma"],
+        "label": "Avoma",
+        "color": "#4B5EE4",  # Avoma blue
+        "icon": "🎙️",
+        "logo": "https://assets-global.website-files.com/6489710d58e1260dafa86553/648971ebe5c1b1d66b763a5d_favicon-avoma.png",
+        "description": "Meeting intelligence and transcription from Avoma"
+    },
 }
 
 def classify_ingestion_source(source_name):
@@ -218,12 +204,12 @@ def classify_ingestion_source(source_name):
 # Group definitions with colors
 GROUPS = {
     "decision": {"color": "#1a365d", "label": "Decisions"},
-    "cce_decision_log": {"color": "#2f855a", "label": "CCE Decisions"},
+    "cce_decision_log": {"color": "#2f855a", "label": "Decision Logs"},
     "cce_research": {"color": "#3182ce", "label": "Research"},
     "cce_failed_approach": {"color": "#e53e3e", "label": "Failed Approaches"},
     "cce_success_log": {"color": "#38a169", "label": "Successes"},
     "cce_system": {"color": "#805ad5", "label": "Zeus Events"},
-    "cce": {"color": "#d69e2e", "label": "CCE General"},
+    "cce": {"color": "#d69e2e", "label": "Learnings"},
     "architecture": {"color": "#dd6b20", "label": "Architecture"},
     "contributor": {"color": "#718096", "label": "Contributors"},
     "management": {"color": "#e53e3e", "label": "ALDC Management Team"},
@@ -233,7 +219,7 @@ GROUPS = {
     # Project groups (dynamically colored)
     "project": {"color": "#4a5568", "label": "Projects"},
     # Ingestion source groups
-    "ingestion_source": {"color": "#0EA5E9", "label": "Ingestion Sources"},
+    "ingestion_source": {"color": "#0EA5E9", "label": "Sources"},
     "web_domain": {"color": "#14B8A6", "label": "Web Domains"},
 }
 
@@ -270,7 +256,7 @@ EDGE_TYPES = {
 
     # Ingestion relationships
     "ingested_from": {"color": "#0EA5E9", "width": 2, "label": "Ingested From"},
-    "feeds_into": {"color": "#14B8A6", "width": 2, "label": "Feeds Into"},
+    "feeds_into": {"color": "#0EA5E9", "width": 2, "label": "Feeds Into"},
 }
 
 
@@ -399,7 +385,7 @@ def extract_nodes(cur, hours_filter=0):
             "id": node_id,
             "label": clean_text(action, 50),
             "title": full_content,  # Full content for modal display
-            "tier": 2,  # Core outputs tier
+            "tier": 4,  # Decide tier
             "group": "decision",
             "size": 25 + (int(confidence * 10) if confidence else 0),
             "created_at": created_at.isoformat() if created_at else None,
@@ -435,24 +421,25 @@ def extract_nodes(cur, hours_filter=0):
     memories = cur.fetchall()
     print(f"Found {len(memories)} CCE memories")
 
-    # Tier system for cylinder layout (data flow):
-    # Tier 0: Outermost - Data Sources (Ingestion) - set in generate_ingestion_source_nodes
-    # Tier 1: Hub + Team (center) - Zeus Memory, Management Team
-    # Tier 2: Core Outputs - Decisions, Decision Logs, Success Logs
-    # Tier 3: Supporting Data - Research, CCE Learnings, Failed Approaches
-    # Tier 4: Web Domains (sub-sources)
+    # Knowledge Path tiers for cylinder layout:
+    # Tier 0: Ingest - Data Sources (Ingestion) + Web Domains
+    # Tier 1: Curate - Zeus Hub + Management Team
+    # Tier 2: Organize - Projects (Client + R&D areas)
+    # Tier 3: Explore - Research, Learnings, CCE General
+    # Tier 4: Decide - Decisions, Decision Logs
+    # Tier 5: Outcome - Successes, Failed Approaches
     tier_map = {
-        'cce_decision_log': 2,  # Core output
-        'cce_research': 3,      # Supporting
-        'cce_failed_approach': 3,  # Supporting (learning from failures)
-        'cce_success_log': 2,   # Core output
-        'cce_system': 3,        # Supporting
-        'cce': 3,               # Supporting
-        'cce-learning': 3,      # Supporting
-        'cce-prototype': 3,     # Supporting
-        'cce_learn': 3,         # Supporting
-        'cce-session': 3,       # Supporting
-        'slack': 3,             # Supporting (messages)
+        'cce_decision_log': 4,  # Decisions
+        'cce_research': 3,      # Exploration
+        'cce_failed_approach': 5,  # Outcomes
+        'cce_success_log': 5,   # Outcomes
+        'cce_system': 3,        # Exploration (system learnings)
+        'cce': 3,               # Exploration
+        'cce-learning': 3,
+        'cce-prototype': 3,
+        'cce_learn': 3,
+        'cce-session': 3,
+        'slack': 3,             # Exploration (discussions)
     }
 
     size_map = {
@@ -518,7 +505,7 @@ def extract_nodes(cur, hours_filter=0):
         "id": hub_id,
         "label": "Zeus Memory",
         "title": "Zeus Memory Hub - Central knowledge store for ALDC",
-        "tier": 0,
+        "tier": 1,
         "group": "architecture",
         "size": 50,
         "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
@@ -764,7 +751,7 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
             "id": node_id,
             "label": contrib_info["label"],
             "title": contrib_info["description"],
-            "tier": 0,  # Top tier like hub
+            "tier": 1,  # Curate tier (with hub)
             "group": "management" if is_management else "contributor",
             "size": 50 if is_management else 40,
             "contributor_id": contrib_id,
@@ -794,10 +781,15 @@ def generate_contributor_nodes_and_edges(nodes, node_ids, node_metadata, edge_se
     print(f"Created ALDC Management Team ring: {' <-> '.join([c.upper() for c in ALDC_MANAGEMENT_TEAM])} <-> {ALDC_MANAGEMENT_TEAM[0].upper()} + Zeus Memory")
 
     # Connect learnings to contributors
+    hub_id = "zeus-memory-hub"
     for node_id, meta in node_metadata.items():
         if meta.get('type') == 'hub':
             continue
-        contrib_id = meta.get('contributor', 'system')
+        contrib_id = meta.get('contributor')
+        if not contrib_id or contrib_id == 'system':
+            # Route automated memories to hub node directly
+            add_edge(hub_id, node_id, "created_by")
+            continue
         contributor_counts[contrib_id] += 1
         contrib_node_id = f"contributor_{contrib_id}"
         if contrib_node_id in node_ids:
@@ -851,7 +843,7 @@ def generate_hierarchy_nodes_and_edges(nodes, node_ids, node_metadata, edge_set)
             "id": "area_client",
             "label": "Client Work",
             "title": "Client Projects and Engagements",
-            "tier": 0,
+            "tier": 2,
             "group": "area_client",
             "size": 60,
         },
@@ -859,7 +851,7 @@ def generate_hierarchy_nodes_and_edges(nodes, node_ids, node_metadata, edge_set)
             "id": "area_rnd",
             "label": "R&D",
             "title": "Research & Development / Internal Projects",
-            "tier": 0,
+            "tier": 2,
             "group": "area_rnd",
             "size": 60,
         }
@@ -917,7 +909,7 @@ def generate_hierarchy_nodes_and_edges(nodes, node_ids, node_metadata, edge_set)
                 "id": project_id,
                 "label": project_name[:30],
                 "title": f"{project_name}\n\nSuccesses: {counts['success']}\nFailures: {counts['failure']}\nDecisions: {counts['decision']}\nOther: {counts['other']}",
-                "tier": 1,
+                "tier": 2,
                 "group": "project",
                 "size": 30 + min(total * 2, 30),
                 "project_name": project_name,
@@ -1024,8 +1016,8 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
         ingestion_nodes.append(node_data)
         node_ids.add(node_id)
 
-        # Connect to hub
-        add_edge(hub_id, node_id, "feeds_into")
+        # Connect source to hub (source feeds into hub)
+        add_edge(node_id, hub_id, "feeds_into")
 
     # Create web domain nodes (top 15 by count)
     web_source_node = "source_web_docs"
@@ -1053,7 +1045,7 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
             "id": domain_id,
             "label": domain_label[:25],
             "title": f"Web Source: {domain_label}\n\nMemories: {count:,}",
-            "tier": 4,  # Sub-sources tier (furthest out)
+            "tier": 0,  # Ingest tier (with sources)
             "group": "web_domain",
             "size": 15 + min(int(count / 500), 25),
             "domain": domain_hint,
@@ -1180,7 +1172,7 @@ def main():
                        help='Add Area/Project hierarchy nodes (Client vs R&D)')
     parser.add_argument('--no-ingestion', action='store_true',
                        help='Disable ingestion source nodes (enabled by default)')
-    parser.add_argument('--output', type=str, default='data/examples/zeus_decisions.json',
+    parser.add_argument('--output', type=str, default='data/examples/zeus_knowledge_path.json',
                        help='Output file path')
     args = parser.parse_args()
 
@@ -1196,8 +1188,8 @@ def main():
     # Build visualization data
     data = {
         "metadata": {
-            "title": "Zeus Memory Knowledge Graph",
-            "description": "Knowledge graph of decisions, learnings, and relationships in Zeus Memory",
+            "title": "Zeus Knowledge Path",
+            "description": "Knowledge path showing how data flows from sources through exploration to decisions and outcomes",
             "source": "zeus_core database",
             "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
