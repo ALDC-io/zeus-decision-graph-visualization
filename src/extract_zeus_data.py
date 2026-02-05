@@ -144,7 +144,7 @@ INGESTION_SOURCES = {
         "label": "RSS Feeds",
         "color": "#F59E0B",  # Orange
         "icon": "📰",
-        "logo": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
+        "logo": "https://cdn-icons-png.flaticon.com/512/993/993723.png",
         "description": "News and blog feeds (TechCrunch, Medium, arXiv)"
     },
     "web_direct": {
@@ -176,7 +176,7 @@ INGESTION_SOURCES = {
         "label": "CCE",
         "color": "#EC4899",  # Pink (Anthropic-ish)
         "icon": "🧠",
-        "logo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg",
+        "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png",
         "description": "Claude Code Enhanced session learnings"
     },
     "avoma": {

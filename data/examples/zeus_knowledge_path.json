@@ -3,8 +3,8 @@
     "title": "Zeus Knowledge Path",
     "description": "Knowledge path showing how data flows from sources through exploration to decisions and outcomes",
     "source": "zeus_core database",
-    "created": "2026-02-05 13:07",
-    "updated": "2026-02-05 13:07",
+    "created": "2026-02-05 13:25",
+    "updated": "2026-02-05 13:25",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -18,7 +18,7 @@
     "contributors_enabled": true,
     "hierarchy_enabled": false,
     "ingestion_enabled": true,
-    "embedding_backlog": 103
+    "embedding_backlog": 0
   },
   "groups": {
     "decision": {
@@ -230,7 +230,7 @@
       "label": "RSS Feeds",
       "color": "#F59E0B",
       "icon": "\ud83d\udcf0",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
+      "logo": "https://cdn-icons-png.flaticon.com/512/993/993723.png",
       "description": "News and blog feeds (TechCrunch, Medium, arXiv)"
     },
     "web_direct": {
@@ -271,7 +271,7 @@
       "label": "CCE",
       "color": "#EC4899",
       "icon": "\ud83e\udde0",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg",
+      "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png",
       "description": "Claude Code Enhanced session learnings"
     },
     "avoma": {
@@ -4899,7 +4899,7 @@
       "memory_count": 15290,
       "percentage": 0.5,
       "color": "#F59E0B",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg"
+      "logo": "https://cdn-icons-png.flaticon.com/512/993/993723.png"
     },
     {
       "id": "source_web_direct",
@@ -4951,7 +4951,7 @@
       "memory_count": 544,
       "percentage": 0.0,
       "color": "#EC4899",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg"
+      "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png"
     },
     {
       "id": "source_avoma",
