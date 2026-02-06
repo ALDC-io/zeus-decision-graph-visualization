@@ -3,8 +3,8 @@
     "title": "Zeus Knowledge Path",
     "description": "Knowledge path showing how data flows from sources through exploration to decisions and outcomes",
     "source": "zeus_core database",
-    "created": "2026-02-06 09:35",
-    "updated": "2026-02-06 09:35",
+    "created": "2026-02-06 09:38",
+    "updated": "2026-02-06 09:38",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -18,7 +18,7 @@
     "contributors_enabled": true,
     "hierarchy_enabled": false,
     "ingestion_enabled": true,
-    "embedding_backlog": 3
+    "embedding_backlog": 8
   },
   "groups": {
     "decision": {
@@ -271,7 +271,7 @@
       "label": "CCE",
       "color": "#EC4899",
       "icon": "\ud83e\udde0",
-      "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png",
+      "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
       "description": "Claude Code Enhanced session learnings"
     },
     "avoma": {
@@ -4971,7 +4971,7 @@
       "memory_count": 552,
       "percentage": 0.0,
       "color": "#EC4899",
-      "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png"
+      "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
     },
     {
       "id": "source_avoma",

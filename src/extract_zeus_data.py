@@ -176,7 +176,7 @@ INGESTION_SOURCES = {
         "label": "CCE",
         "color": "#EC4899",  # Pink (Anthropic-ish)
         "icon": "🧠",
-        "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png",
+        "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
         "description": "Claude Code Enhanced session learnings"
     },
     "avoma": {
