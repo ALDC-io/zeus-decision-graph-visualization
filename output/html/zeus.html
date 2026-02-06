@@ -3374,40 +3374,49 @@
                     // Clear the logo area for transparent background
                     ctx.clearRect(0, 0, 256, 220);
 
-                    // Detect if image is too dark for dark background
-                    // Sample pixels to check average brightness of non-transparent areas
-                    const testCanvas = document.createElement('canvas');
-                    testCanvas.width = 64;
-                    testCanvas.height = 64;
-                    const testCtx = testCanvas.getContext('2d');
-                    testCtx.drawImage(img, 0, 0, 64, 64);
-                    const pixels = testCtx.getImageData(0, 0, 64, 64).data;
+                    // Draw image to temp canvas first to analyze and optionally invert
+                    const tmpCanvas = document.createElement('canvas');
+                    tmpCanvas.width = 192;
+                    tmpCanvas.height = 192;
+                    const tmpCtx = tmpCanvas.getContext('2d');
+                    tmpCtx.drawImage(img, 0, 0, 192, 192);
+
+                    // Sample pixel brightness of non-transparent areas
+                    const imgData = tmpCtx.getImageData(0, 0, 192, 192);
+                    const px = imgData.data;
                     let totalBrightness = 0;
-                    let opaquePixels = 0;
-                    for (let px = 0; px < pixels.length; px += 4) {
-                        if (pixels[px + 3] > 50) {  // Only count non-transparent pixels
-                            totalBrightness += (pixels[px] + pixels[px+1] + pixels[px+2]) / 3;
-                            opaquePixels++;
+                    let opaqueCount = 0;
+                    for (let i = 0; i < px.length; i += 16) {  // Sample every 4th pixel
+                        if (px[i + 3] > 50) {
+                            totalBrightness += (px[i] + px[i+1] + px[i+2]) / 3;
+                            opaqueCount++;
                         }
                     }
-                    const avgBrightness = opaquePixels > 0 ? totalBrightness / opaquePixels : 128;
-                    const isDark = avgBrightness < 80;
+                    const avgBright = opaqueCount > 0 ? totalBrightness / opaqueCount : 128;
 
-                    // Draw logo directly without background or border (fully transparent)
-                    // Scaled for 256x320 canvas
+                    // If dark icon, invert pixels to make them light grey
+                    if (avgBright < 80) {
+                        for (let i = 0; i < px.length; i += 4) {
+                            if (px[i + 3] > 0) {
+                                px[i]     = Math.min(255, 255 - px[i] + 40);     // R
+                                px[i + 1] = Math.min(255, 255 - px[i+1] + 40);   // G
+                                px[i + 2] = Math.min(255, 255 - px[i+2] + 40);   // B
+                            }
+                        }
+                        tmpCtx.putImageData(imgData, 0, 0);
+                        console.log('Brightened dark icon for:', name, 'avg:', Math.round(avgBright));
+                    }
+
+                    // Draw processed logo with circular clip
                     ctx.save();
                     ctx.beginPath();
                     ctx.arc(128, 120, 96, 0, Math.PI * 2);
                     ctx.clip();
-                    if (isDark) {
-                        // Brighten dark icons so they're visible on dark background
-                        ctx.filter = 'invert(0.85) brightness(1.5)';
-                    }
-                    ctx.drawImage(img, 32, 24, 192, 192);
+                    ctx.drawImage(tmpCanvas, 32, 24, 192, 192);
                     ctx.restore();
 
                     texture.needsUpdate = true;
-                    console.log('Logo loaded for:', name, isDark ? '(brightened)' : '');
+                    console.log('Logo loaded for:', name);
                 };
                 img.onerror = (e) => {
                     console.warn('Failed to load logo for', name, ':', proxiedUrl, e);
