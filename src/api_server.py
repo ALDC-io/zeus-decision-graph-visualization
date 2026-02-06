@@ -864,21 +864,34 @@ async def get_tenant_graph():
             ORDER BY tenant_id, COUNT(*) DESC
         """)
 
-        # 4. Get real pipeline stats from the memories table itself
-        # ingestion_log only tracks 3 automated crons; memories table is the real source of truth
-        pipeline_stats = await conn.fetchrow("""
+        # 4. Get real pipeline stats using fast indexed queries
+        # Split into targeted queries that hit indexes instead of one 60s full-table scan
+
+        # 4a. Approximate total from pg_class (instant, no table scan)
+        approx_total_row = await conn.fetchrow("""
+            SELECT reltuples::bigint as approx_total
+            FROM pg_class
+            WHERE relname = 'memories'
+              AND relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'zeus_core')
+        """)
+
+        # 4b. Memories missing embeddings (uses idx_memories_voyage_null, ~50ms)
+        missing_embed_row = await conn.fetchrow("""
+            SELECT COUNT(*) as no_embedding
+            FROM zeus_core.memories
+            WHERE embedding_voyage IS NULL
+        """)
+
+        # 4c. Recent ingestion throughput (uses idx_memories_created, ~7ms)
+        throughput_row = await conn.fetchrow("""
             SELECT
-                COUNT(*) as total_memories,
-                COUNT(DISTINCT source) as distinct_sources,
-                COUNT(embedding_voyage) as embedded_voyage,
-                COUNT(embedding_bge) as embedded_bge,
-                COUNT(*) FILTER (WHERE embedding_voyage IS NOT NULL OR embedding_bge IS NOT NULL) as has_any_embedding,
-                COUNT(*) FILTER (WHERE embedding_voyage IS NULL AND embedding_bge IS NULL) as no_embedding,
                 COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '24 hours') as ingested_24h,
                 COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '7 days') as ingested_7d
             FROM zeus_core.memories
+            WHERE created_at >= NOW() - INTERVAL '7 days'
         """)
-        # Get ingestion_log for active source pipeline tracking (automated crons)
+
+        # 4d. Active ingestion crons from ingestion_log (tiny table, instant)
         ingestion_crons = await conn.fetch("""
             SELECT source, COUNT(*) as runs,
                    SUM(items_processed) as total_processed,
@@ -887,6 +900,17 @@ async def get_tenant_graph():
             FROM zeus_core.ingestion_log
             GROUP BY source
             ORDER BY MAX(created_at) DESC
+        """)
+
+        # 4e. Distinct source count from ingestion_log + known source categories
+        distinct_src_row = await conn.fetchrow("""
+            SELECT COUNT(DISTINCT source) as cnt
+            FROM (
+                SELECT DISTINCT source FROM zeus_core.ingestion_log
+                UNION
+                SELECT DISTINCT source FROM zeus_core.memories
+                WHERE created_at >= NOW() - INTERVAL '30 days'
+            ) recent_sources
         """)
 
         await conn.close()
@@ -968,14 +992,12 @@ async def get_tenant_graph():
         })
 
         # Pipeline ring nodes: Sources -> Ingestion -> Embedding -> Zeus Hub
-        total_ingested = pipeline_stats["total_memories"] if pipeline_stats else 0
-        distinct_src = pipeline_stats["distinct_sources"] if pipeline_stats else 0
-        ingested_24h = pipeline_stats["ingested_24h"] if pipeline_stats else 0
-        ingested_7d = pipeline_stats["ingested_7d"] if pipeline_stats else 0
-        has_embedding = pipeline_stats["has_any_embedding"] if pipeline_stats else 0
-        no_embedding = pipeline_stats["no_embedding"] if pipeline_stats else 0
-        embed_voyage = pipeline_stats["embedded_voyage"] if pipeline_stats else 0
-        embed_bge = pipeline_stats["embedded_bge"] if pipeline_stats else 0
+        total_ingested = approx_total_row["approx_total"] if approx_total_row else 0
+        no_embedding = missing_embed_row["no_embedding"] if missing_embed_row else 0
+        has_embedding = total_ingested - no_embedding
+        ingested_24h = throughput_row["ingested_24h"] if throughput_row else 0
+        ingested_7d = throughput_row["ingested_7d"] if throughput_row else 0
+        distinct_src = distinct_src_row["cnt"] if distinct_src_row else 0
         embed_pct = round(has_embedding / max(total_ingested, 1) * 100, 1)
 
         # Active cron summary
@@ -1002,7 +1024,7 @@ async def get_tenant_graph():
             "name": "Embedding Pipeline",
             "description": (
                 f"{has_embedding:,} of {total_ingested:,} memories embedded ({embed_pct}%). "
-                f"Voyage: {embed_voyage:,}, BGE: {embed_bge:,}. "
+                f"Dual-model: Voyage AI + BGE. "
                 f"{no_embedding:,} awaiting embedding."
             ),
             "val": 70,
