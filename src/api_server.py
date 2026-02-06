@@ -782,11 +782,12 @@ async def get_tenant_graph():
     tier_colors = ["#63b3ed", "#b794f4", "#68d391", "#fc8181", "#f6ad55", "#fbd38d", "#a0aec0"]
     # Source category logos
     source_logos = {
-        "email": "https://cdn-icons-png.flaticon.com/512/732/732200.png",
+        "email": "https://img.icons8.com/fluency/192/new-post.png",
         "slack": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png",
-        "rss": "https://upload.wikimedia.org/wikipedia/commons/4/43/Feed-icon.svg",
-        "api": "https://cdn-icons-png.flaticon.com/512/1493/1493169.png",
-        "documents": "https://cdn-icons-png.flaticon.com/512/2991/2991112.png",
+        "rss": "https://img.icons8.com/fluency/192/rss.png",
+        "api": "https://img.icons8.com/fluency/192/api-settings.png",
+        "documents": "https://img.icons8.com/fluency/192/document.png",
+        "web": "https://img.icons8.com/fluency/192/domain.png",
     }
     source_colors = {
         "email": "#63b3ed", "slack": "#f6ad55", "ms_graph": "#68d391",
