@@ -15,6 +15,7 @@ Deployment:
 
 import json
 import os
+import time
 from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
@@ -22,6 +23,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+
+# TTL cache for expensive DB-backed endpoints
+_cache = {}  # key -> {"data": ..., "expires": timestamp}
+TENANT_GRAPH_CACHE_TTL = 300  # 5 minutes
 
 
 app = FastAPI(
@@ -748,8 +754,15 @@ async def get_tenant_distribution():
 async def get_tenant_graph():
     """
     Dynamic Zeus Memory tenant graph built from the database.
-    Queries tenants, parent hierarchy, and sources live.
+    Queries tenants, parent hierarchy, sources, and pipeline stats live.
+    Cached for 5 minutes to avoid hammering the DB on every page load.
     """
+    # Check cache first
+    cache_key = "tenant_graph"
+    cached = _cache.get(cache_key)
+    if cached and cached["expires"] > time.time():
+        return cached["data"]
+
     import asyncpg
     import os
 
@@ -851,17 +864,29 @@ async def get_tenant_graph():
             ORDER BY tenant_id, COUNT(*) DESC
         """)
 
-        # 4. Get pipeline stats
-        ingestion_stats = await conn.fetchrow("""
-            SELECT COUNT(*) as total_runs,
-                   COALESCE(SUM(items_processed), 0) as total_processed,
-                   COALESCE(SUM(items_created), 0) as total_created
-            FROM zeus_core.ingestion_log
+        # 4. Get real pipeline stats from the memories table itself
+        # ingestion_log only tracks 3 automated crons; memories table is the real source of truth
+        pipeline_stats = await conn.fetchrow("""
+            SELECT
+                COUNT(*) as total_memories,
+                COUNT(DISTINCT source) as distinct_sources,
+                COUNT(embedding_voyage) as embedded_voyage,
+                COUNT(embedding_bge) as embedded_bge,
+                COUNT(*) FILTER (WHERE embedding_voyage IS NOT NULL OR embedding_bge IS NOT NULL) as has_any_embedding,
+                COUNT(*) FILTER (WHERE embedding_voyage IS NULL AND embedding_bge IS NULL) as no_embedding,
+                COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '24 hours') as ingested_24h,
+                COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '7 days') as ingested_7d
+            FROM zeus_core.memories
         """)
-        embedding_stats = await conn.fetchrow("""
-            SELECT COUNT(*) as total_queued,
-                   COUNT(*) FILTER (WHERE status = 'completed') as total_completed
-            FROM zeus_core.embedding_queue
+        # Get ingestion_log for active source pipeline tracking (automated crons)
+        ingestion_crons = await conn.fetch("""
+            SELECT source, COUNT(*) as runs,
+                   SUM(items_processed) as total_processed,
+                   SUM(items_created) as total_created,
+                   MAX(created_at) as last_run
+            FROM zeus_core.ingestion_log
+            GROUP BY source
+            ORDER BY MAX(created_at) DESC
         """)
 
         await conn.close()
@@ -943,15 +968,28 @@ async def get_tenant_graph():
         })
 
         # Pipeline ring nodes: Sources -> Ingestion -> Embedding -> Zeus Hub
-        ingest_processed = ingestion_stats["total_processed"] if ingestion_stats else 0
-        ingest_runs = ingestion_stats["total_runs"] if ingestion_stats else 0
-        embed_completed = embedding_stats["total_completed"] if embedding_stats else 0
-        embed_queued = embedding_stats["total_queued"] if embedding_stats else 0
+        total_ingested = pipeline_stats["total_memories"] if pipeline_stats else 0
+        distinct_src = pipeline_stats["distinct_sources"] if pipeline_stats else 0
+        ingested_24h = pipeline_stats["ingested_24h"] if pipeline_stats else 0
+        ingested_7d = pipeline_stats["ingested_7d"] if pipeline_stats else 0
+        has_embedding = pipeline_stats["has_any_embedding"] if pipeline_stats else 0
+        no_embedding = pipeline_stats["no_embedding"] if pipeline_stats else 0
+        embed_voyage = pipeline_stats["embedded_voyage"] if pipeline_stats else 0
+        embed_bge = pipeline_stats["embedded_bge"] if pipeline_stats else 0
+        embed_pct = round(has_embedding / max(total_ingested, 1) * 100, 1)
+
+        # Active cron summary
+        active_crons = [f"{r['source']} ({r['runs']} runs)" for r in ingestion_crons] if ingestion_crons else []
+        cron_summary = ", ".join(active_crons) if active_crons else "none"
 
         nodes.append({
             "id": "pipeline-ingestion",
             "name": "Ingestion Pipeline",
-            "description": f"{ingest_processed:,} items processed across {ingest_runs:,} runs. All source data flows through ingestion before entering Zeus Memory.",
+            "description": (
+                f"{total_ingested:,} memories ingested from {distinct_src} sources. "
+                f"{ingested_24h:,} in last 24h, {ingested_7d:,} in last 7d. "
+                f"Active crons: {cron_summary}."
+            ),
             "val": 70,
             "color": "#ed8936",
             "tier": 0,
@@ -962,7 +1000,11 @@ async def get_tenant_graph():
         nodes.append({
             "id": "pipeline-embedding",
             "name": "Embedding Pipeline",
-            "description": f"{embed_completed:,} of {embed_queued:,} embeddings completed. Memories are vectorized for semantic search after ingestion.",
+            "description": (
+                f"{has_embedding:,} of {total_ingested:,} memories embedded ({embed_pct}%). "
+                f"Voyage: {embed_voyage:,}, BGE: {embed_bge:,}. "
+                f"{no_embedding:,} awaiting embedding."
+            ),
             "val": 70,
             "color": "#48bb78",
             "tier": 0,
@@ -1103,7 +1145,7 @@ async def get_tenant_graph():
                 }
             groups[g]["count"] += 1
 
-        return {
+        result = {
             "nodes": nodes,
             "links": links,
             "groups": list(groups.values()),
@@ -1112,10 +1154,29 @@ async def get_tenant_graph():
                 "tenant_count": len(visible_tenants),
                 "source_count": len([n for n in nodes if n["type"] == "source"]),
                 "sample_count": len([n for n in nodes if n["type"] == "memory"]),
-                "semantic_links": len([l for l in links if l.get("type") == "semantic"])
+                "semantic_links": len([l for l in links if l.get("type") == "semantic"]),
+                "pipeline": {
+                    "total_ingested": total_ingested,
+                    "distinct_sources": distinct_src,
+                    "ingested_24h": ingested_24h,
+                    "ingested_7d": ingested_7d,
+                    "embedded_total": has_embedding,
+                    "embedded_pct": embed_pct,
+                    "awaiting_embedding": no_embedding,
+                }
             },
+            "cached": False,
+            "cache_ttl_seconds": TENANT_GRAPH_CACHE_TTL,
             "timestamp": __import__("datetime").datetime.now().isoformat()
         }
+
+        # Store in cache
+        _cache[cache_key] = {
+            "data": {**result, "cached": True},
+            "expires": time.time() + TENANT_GRAPH_CACHE_TTL
+        }
+
+        return result
 
     except Exception as e:
         import traceback
