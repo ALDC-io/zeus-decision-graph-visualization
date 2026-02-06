@@ -3546,17 +3546,40 @@ def generate_html(data: dict[str, Any], title: str) -> str:
                     // Clear the logo area for transparent background
                     ctx.clearRect(0, 0, 256, 220);
 
+                    // Detect if image is too dark for dark background
+                    // Sample pixels to check average brightness of non-transparent areas
+                    const testCanvas = document.createElement('canvas');
+                    testCanvas.width = 64;
+                    testCanvas.height = 64;
+                    const testCtx = testCanvas.getContext('2d');
+                    testCtx.drawImage(img, 0, 0, 64, 64);
+                    const pixels = testCtx.getImageData(0, 0, 64, 64).data;
+                    let totalBrightness = 0;
+                    let opaquePixels = 0;
+                    for (let px = 0; px < pixels.length; px += 4) {{
+                        if (pixels[px + 3] > 50) {{  // Only count non-transparent pixels
+                            totalBrightness += (pixels[px] + pixels[px+1] + pixels[px+2]) / 3;
+                            opaquePixels++;
+                        }}
+                    }}
+                    const avgBrightness = opaquePixels > 0 ? totalBrightness / opaquePixels : 128;
+                    const isDark = avgBrightness < 80;
+
                     // Draw logo directly without background or border (fully transparent)
                     // Scaled for 256x320 canvas
                     ctx.save();
                     ctx.beginPath();
                     ctx.arc(128, 120, 96, 0, Math.PI * 2);
                     ctx.clip();
+                    if (isDark) {{
+                        // Brighten dark icons so they're visible on dark background
+                        ctx.filter = 'invert(0.85) brightness(1.5)';
+                    }}
                     ctx.drawImage(img, 32, 24, 192, 192);
                     ctx.restore();
 
                     texture.needsUpdate = true;
-                    console.log('Logo loaded for:', name);
+                    console.log('Logo loaded for:', name, isDark ? '(brightened)' : '');
                 }};
                 img.onerror = (e) => {{
                     console.warn('Failed to load logo for', name, ':', proxiedUrl, e);
