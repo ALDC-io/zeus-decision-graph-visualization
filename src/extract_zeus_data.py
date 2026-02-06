@@ -1024,6 +1024,22 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
     rss_source_node = "source_web_rss"
     direct_source_node = "source_web_direct"
 
+    # Known domain logos (pattern match against domain_hint)
+    DOMAIN_LOGOS = {
+        "anthropic": {
+            "label": "Anthropic",
+            "logo": "https://assets.anthropic.com/index/anthropic-logo-only-bf00d1e5.svg",
+        },
+        "langchain": {
+            "label": "LangChain",
+            "logo": "https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/65be1e1b6de5f7dbe498c264_favicon-32x32.png",
+        },
+        "arxiv": {
+            "label": "arXiv",
+            "logo": "https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        },
+    }
+
     sorted_domains = sorted(web_domain_counts.items(), key=lambda x: -x[1])[:15]
 
     for domain_hint, count in sorted_domains:
@@ -1033,6 +1049,14 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
         domain_id = f"domain_{domain_hint.replace(' ', '_').replace('-', '_')}"
         domain_label = domain_hint.replace('_', ' ').title()
 
+        # Check for known domain logo/label overrides
+        domain_logo = None
+        for pattern, info in DOMAIN_LOGOS.items():
+            if pattern in domain_hint.lower():
+                domain_label = info["label"]
+                domain_logo = info["logo"]
+                break
+
         # Determine parent source
         if 'docs' in domain_hint:
             parent_source = web_source_node
@@ -1041,7 +1065,7 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
         else:
             parent_source = direct_source_node
 
-        ingestion_nodes.append({
+        node_data = {
             "id": domain_id,
             "label": domain_label[:25],
             "title": f"Web Source: {domain_label}\n\nMemories: {count:,}",
@@ -1050,7 +1074,10 @@ def generate_ingestion_source_nodes_and_edges(cur, node_ids, node_metadata, edge
             "size": 15 + min(int(count / 500), 25),
             "domain": domain_hint,
             "memory_count": count,
-        })
+        }
+        if domain_logo:
+            node_data["logo"] = domain_logo
+        ingestion_nodes.append(node_data)
         node_ids.add(domain_id)
 
         # Connect to parent web source if it exists

@@ -3,8 +3,8 @@
     "title": "Zeus Knowledge Path",
     "description": "Knowledge path showing how data flows from sources through exploration to decisions and outcomes",
     "source": "zeus_core database",
-    "created": "2026-02-05 13:25",
-    "updated": "2026-02-05 13:25",
+    "created": "2026-02-06 09:35",
+    "updated": "2026-02-06 09:35",
     "edge_methods": [
       "metadata",
       "temporal",
@@ -18,7 +18,7 @@
     "contributors_enabled": true,
     "hierarchy_enabled": false,
     "ingestion_enabled": true,
-    "embedding_backlog": 0
+    "embedding_backlog": 3
   },
   "groups": {
     "decision": {
@@ -294,6 +294,26 @@
       "group": "architecture",
       "size": 50,
       "logo": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png"
+    },
+    {
+      "id": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
+      "label": "Analytics dashboard needs real timesheet integr...",
+      "title": "Analytics dashboard needs real timesheet integration\n\nReasoning: Current hours data is estimated from task priority (P1=10hrs, P10=1hr). User confirmed they have timesheet data and want to integrate it for accurate developer hour tracking. Next step is to identify where timesheets live (Excel, internal system, HRIS, etc.) and build integration.\n\nConfidence: 0.9000",
+      "tier": 4,
+      "group": "decision",
+      "size": 34,
+      "created_at": "2026-02-06T04:55:45.044686+00:00",
+      "contributor": "system"
+    },
+    {
+      "id": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
+      "label": "Use grid-column: 1 / -1 with max-width and marg...",
+      "title": "Use grid-column: 1 / -1 with max-width and margin auto for centering items in CSS Grid\n\nReasoning: When centering a single item in a CSS Grid, setting grid-column: 2 only places it in the second column but doesn't center it visually. The correct approach is to span all columns (1 / -1), constrain width with max-width, and use margin: 0 auto for horizontal centering.\n\nConfidence: 0.9500",
+      "tier": 4,
+      "group": "decision",
+      "size": 34,
+      "created_at": "2026-02-06T04:53:58.714456+00:00",
+      "contributor": "system"
     },
     {
       "id": "3fef9c85-6da2-4dcf-bd29-1617db201147",
@@ -1218,9 +1238,9 @@
       "area": "rnd"
     },
     {
-      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
-      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
+      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "label": "Prevention systems operational on Odin. Monitor...",
+      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
       "tier": 3,
       "group": "cce_system",
       "size": 10,
@@ -1242,9 +1262,9 @@
       "area": "rnd"
     },
     {
-      "id": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "label": "Prevention systems operational on Odin. Monitor...",
-      "title": "Prevention systems operational on Odin. Monitoring hallucinations, crash loops, log bombs, and config errors.",
+      "id": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "label": "Odin health check at Wed Aug 6 07:08:52 PM UTC ...",
+      "title": "Odin health check at Wed Aug 6 07:08:52 PM UTC 2025: HEALTHY. Zeus connection active, GPU available, dependencies validated.",
       "tier": 3,
       "group": "cce_system",
       "size": 10,
@@ -1261,6 +1281,138 @@
       "group": "cce_system",
       "size": 10,
       "created_at": null,
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "be716d84-85a7-4e30-8b15-55477a462b14",
+      "label": "Slack Message - #aldc-team Date: 2026-02-06 17:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-06 17:20:42 From: Mike Stuart Channel: #aldc-team Home that you feel better Steven!",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-06T17:20:42.129529",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "32e385fa-7b83-4cd5-b5c4-6c2ca9fa41be",
+      "label": "Slack Message - #the-olds Date: 2026-02-06 17:0...",
+      "title": "Slack Message - #the-olds Date: 2026-02-06 17:07:40 From: Mike Stuart Channel: #the-olds Did some research based upon our discussions yesterday. Excel is still out there in force for organizational reporting.",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-06T17:07:40.432449",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "52d5510c-8594-4cf2-a695-f8e1e1bdc29f",
+      "label": "Slack Message - #aldc-team Date: 2026-02-06 15:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-06 15:53:34 From: Marshall Johnston Channel: #aldc-team Take care of yourself brother",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-06T15:53:34.438889",
+      "contributor": "marshall",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "7038a892-7318-4789-910d-8f1f288a6cf5",
+      "label": "Slack Message - #aldc-team Date: 2026-02-06 15:...",
+      "title": "Slack Message - #aldc-team Date: 2026-02-06 15:47:55 From: Steven Deutekom Channel: #aldc-team While I have started to improve, I am still not feeling well. I am going to keep resting and expect to be back Monday.",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-06T15:47:55.739469",
+      "contributor": "mike",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "label": "**Success: Zeus MCP task update via JSON-RPC** ...",
+      "title": "**Success: Zeus MCP task update via JSON-RPC** Session: 2026-02-05 Context: Updating task status from Liquid App Working pattern for updating Zeus tasks: ```typescript const response = await fetch(`${ZEUS_API_URL}/mcp`, { method: \"POST\", headers: { \"X-API-Key\": ZEUS_API_KEY, \"Content-Type\": \"application/json\", }, body: JSON.stringify({ jsonrpc: \"2.0\", id: 1, method: \"tools/call\", params: { name: \"update_task\", arguments: { task_id: id, status: newStatus }, }, }), }); ``` This pattern works when direct REST endpoints aren't available.",
+      "tier": 5,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-02-06T04:55:37.931567",
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "label": "**Success: Dev Analytics Dashboard with NL Chat...",
+      "title": "**Success: Dev Analytics Dashboard with NL Chat** Session: 2026-02-05 Project: ~/liquid-apps/dev-analytics Built analytics dashboard showing: - Category breakdown (R&D vs Support vs Infra) - Weekly trend charts (stacked area) - Team activity with hours per person - Natural language chat interface Key implementation details: - Used Recharts for visualization (lighter than D3) - Keyword-based task categorization (no ML needed) - Hours estimated from priority (P1=10hrs, P10=1hr) - Chat uses intent detection without LLM API Limitation identified: Hours are estimated, not actual. User wants to integrate with real timesheet data for accuracy.",
+      "tier": 5,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-02-06T04:55:34.813027",
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "label": "**Success: Task Viewer Liquid App with full CRU...",
+      "title": "**Success: Task Viewer Liquid App with full CRUD** Session: 2026-02-05 Project: ~/liquid-apps/task-viewer Built a complete task management Liquid App: - View tasks from Zeus with filtering by status - Create new tasks via modal form - Update task status via detail modal - Real-time Zeus API integration Key files: - app/api/tasks/route.ts - GET/POST proxy to Zeus - app/api/tasks/[id]/route.ts - PATCH for status updates - components/TaskCreateModal.tsx - Task creation form - components/TaskDetailModal.tsx - Status change UI - hooks/useEclipseAppBridge.tsx - Eclipse communication Pattern: Server-side API routes proxy to Zeus, keeping API key secure. Client fetches from local /api/* routes.",
+      "tier": 5,
+      "group": "cce_success_log",
+      "size": 20,
+      "created_at": "2026-02-06T04:55:30.659957",
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "label": "**Failed Approach: App Bridge hook as .ts inste...",
+      "title": "**Failed Approach: App Bridge hook as .ts instead of .tsx** Session: 2026-02-05 task-viewer build Context: Copied app-bridge-hook.ts to new Next.js project What happened: - Build failed with \"Expected '>', got 'ident'\" error - The hook file contains JSX (EclipseAppBridgeProvider component) - TypeScript compiler couldn't parse JSX in .ts file Resolution: - Renamed to .tsx: `mv useEclipseAppBridge.ts useEclipseAppBridge.tsx` - Build succeeded after rename Lesson: The liquid-apps skill's app-bridge-hook.ts should be renamed to .tsx since it contains JSX, or the README should note to rename it when copying.",
+      "tier": 5,
+      "group": "cce_failed_approach",
+      "size": 15,
+      "created_at": "2026-02-06T04:55:21.748627",
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "label": "**Failed Approach: Azure deployment without Doc...",
+      "title": "**Failed Approach: Azure deployment without Docker installed** Session: 2026-02-05 dev-analytics build Context: Attempted to deploy Liquid App to Azure Container Apps What happened: - Tried `docker build` but Docker not installed on WSL - Tried `az acr login` but requires Docker daemon - Used `az login --use-device-code` but user's account had no subscriptions - Multiple device codes expired waiting for browser auth Resolution: - Created deploy.sh script for future use when Azure access is sorted - `az acr build` can build images in cloud without local Docker - User account needs subscription access or different tenant Lesson: Check `docker --version` and `az account show` before attempting Azure deployments. Offer alternative deployment methods (GitHub Actions, local testing) when cloud access isn't ready.",
+      "tier": 5,
+      "group": "cce_failed_approach",
+      "size": 15,
+      "created_at": "2026-02-06T04:55:17.255935",
+      "contributor": "system",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "label": "Slack Message - #aldc-eoc Date: 2026-02-06 00:5...",
+      "title": "Slack Message - #aldc-eoc Date: 2026-02-06 00:50:27 From: John Moran Channel: #aldc-eoc great, thanks!",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-06T00:50:27.386249",
+      "contributor": "jk",
+      "project": "",
+      "area": "rnd"
+    },
+    {
+      "id": "d2faddbd-4203-428e-84ed-f0a3ddf9e917",
+      "label": "Slack Message - #aldc-eoc Date: 2026-02-05 22:3...",
+      "title": "Slack Message - #aldc-eoc Date: 2026-02-05 22:32:04 From: Nick Moore Channel: #aldc-eoc Hi <@U01NZCSEWQ7> good news! You have a pending meeting with Damien Stevens (Founder &amp; CEO) from Servosity. Here\u2019s his LinkedIn to connect: <https://www.linkedin.com/in/dstevens/> I also sent you an email with the full thread. Please let me know if you have any questions or if you need anything from me. Thanks, and good luck!",
+      "tier": 3,
+      "group": "cce",
+      "size": 10,
+      "created_at": "2026-02-05T22:32:04.489769",
       "contributor": "system",
       "project": "",
       "area": "rnd"
@@ -4674,141 +4826,9 @@
       "area": "rnd"
     },
     {
-      "id": "ca0b2400-7917-4012-bf42-24f973c827c2",
-      "label": "Slack Message - #the-olds Date: 2026-01-28 20:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-28 20:48:22 From: John Moran Channel: #the-olds <https://miro.com/app/board/uXjVGJWLCe4=/>",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T20:48:22.549579",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "9e2b6bf7-c447-41b3-b116-e66d694febc5",
-      "label": "Slack Message - #the-olds Date: 2026-01-28 20:4...",
-      "title": "Slack Message - #the-olds Date: 2026-01-28 20:47:25 From: John Moran Channel: #the-olds ok kids... wow",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T20:47:25.234669",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "f6da3153-56ad-4b7d-9df0-954382221dc3",
-      "label": "Decision: ALDC Repository Architecture Strategy...",
-      "title": "Decision: ALDC Repository Architecture Strategy - 2026-01-28 DECIDED: Use Amazon/Netflix polyrepo pattern for ALDC Reasoning: - Small team (5 people) with clear service ownership - Services already separated (zeus-memory, eclipse, core_api) - Scales to 50+ people without major restructuring - Avoids Google-style monorepo tooling investment DECIDED: Don't create GitHub repos for time-bounded projects Reasoning: - Projects like \"wiki decommission\" don't need permanent repos - Use ADRs in the service repo they affect - Completed projects move to completed/ folder locally - Prevents repo sprawl DECIDED: 4-tier documentation architecture (Zeus\u2192GitHub\u2192Miro\u2192Nextcloud) Reasoning: - Tier 1 (Zeus Memory): Operational knowledge, decisions - semantic search - Tier 2 (GitHub): Code, architecture docs - version control - Tier 3 (Miro): Visual diagrams - linked from GitHub - Tier 4 (Nextcloud): Business docs, exports - file storage Confidence: High - based on industry research and ALDC current state",
-      "tier": 4,
-      "group": "cce_decision_log",
-      "size": 25,
-      "created_at": "2026-01-28T18:30:13.560049",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "label": "Repository Architecture Research - 2026-01-28 R...",
-      "title": "Repository Architecture Research - 2026-01-28 Researched how top companies manage repos and documentation: - Google: Monorepo (Piper) - 2B lines, requires custom tooling - Amazon: Polyrepo + Two-Pizza Teams - \"you build it, you run it\" - Spotify: Polyrepo + Backstage portal for discovery - Shopify: Modular Monolith with Development Handbook ALDC Recommendation (5 people now, scaling to 50+): - Phase 1 (now): Polyrepo for services, Zeus Memory for decisions - Phase 2 (10-15): Add CODEOWNERS, formalize RFC process - Phase 3 (25-50+): Consider Backstage portal, platform team Key insight: Don't create repos for time-bounded projects - use ADRs in service repos. Miro board created: https://miro.com/app/board/uXjVGJNw4Ag=",
-      "tier": 5,
-      "group": "cce_success_log",
-      "size": 20,
-      "created_at": "2026-01-28T18:30:13.362391",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
-      "label": "Miro-Zeus Integration Success - 2026-01-28 Impl...",
-      "title": "Miro-Zeus Integration Success - 2026-01-28 Implemented 4-layer dynamic integration between Miro boards and Zeus Memory: 1. Board Reference Layer: 9 boards stored as searchable Zeus memories with metadata 2. Content Sync Layer: Board text content pulled via API, stored for semantic search 3. Architecture-as-Code: Population scripts generate boards from source docs 4. Cross-Reference Layer: MIRO_BOARDS.md registry, DOCUMENTATION_STRATEGY.md updated Results: - 9/9 boards synced to Zeus Memory - Team notified via #the-olds Slack - Script: scripts/miro_zeus_integration.py (store-boards | sync-content | notify | all) - Refresh command: python3 scripts/miro_zeus_integration.py all",
-      "tier": 5,
-      "group": "cce_success_log",
-      "size": 20,
-      "created_at": "2026-01-28T18:30:13.168170",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "label": "Miro Board Layout Failures - 2026-01-28 1. Fram...",
-      "title": "Miro Board Layout Failures - 2026-01-28 1. Frame update returned 400 error - Root cause: Items positioned outside frame bounds prevent resize/move via API - Resolution: Delete frame entirely, then recreate with correct bounds calculated from content - Prevention: Always calculate actual content bounds BEFORE creating/updating frames 2. Frames blocking content (z-index issue) - Root cause: Miro REST API creates frames on top layer, no z-index control available - Resolution: Manual \"Send to back\" required in Miro UI - Prevention: Document this API limitation in skills; consider frameless layouts 3. Text overlapping in shapes - Root cause: Fixed shape sizes with too much text content - Resolution: Reduced font to 10-12px, abbreviated text, wider shapes - Prevention: Calculate shape height based on line count (~20px/line + padding) 4. Wrong email addresses (analyticlabs.ca) - Root cause: Used incorrect domain without verification - Resolution: Searched codebase, found correct @aldc.io emails - Prevention: Always grep codebase for team email patterns before using",
-      "tier": 5,
-      "group": "cce_failed_approach",
-      "size": 15,
-      "created_at": "2026-01-28T18:30:12.958970",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "40725e33-6f6b-4711-a668-a2be7eb500a2",
-      "label": "Slack Message - #aldc-eoc Date: 2026-01-28 16:4...",
-      "title": "Slack Message - #aldc-eoc Date: 2026-01-28 16:41:34 From: Gabi Channel: #aldc-eoc Perfecto, thank you! I'll stay tuned on the content.",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T16:41:34.823729",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "225c3bf2-2e37-44f6-9027-0bae1efefa0c",
-      "label": "Slack Message - #aldc-eoc Date: 2026-01-28 16:4...",
-      "title": "Slack Message - #aldc-eoc Date: 2026-01-28 16:40:51 From: John Moran Channel: #aldc-eoc Looks good, although VFX feels like a stretch. Not a terrible thing to stretch tho\u2026. Go for it. We are updating our strategy btw, will have some good content I can pass along when we finish.",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T16:40:51.600099",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "11ac34b3-bc8e-41ff-8811-7c75c86c2c77",
-      "label": "Slack Message - #aldc-eoc Date: 2026-01-28 16:3...",
-      "title": "Slack Message - #aldc-eoc Date: 2026-01-28 16:37:07 From: Gabi Channel: #aldc-eoc &gt; Hi <@U01NZCSEWQ7> the Claude LinkedIn follower list is ready. <https://www.loom.com/share/c35d54ab0b0b48fa94a62da02d67b7e2|Here's> the copy for review. Let me know if you have any edits; otherwise, we\u2019ll plan to launch today.",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T16:37:07.360049",
-      "contributor": "system",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "e448cab8-7a99-4b40-8e76-00a6816309fb",
-      "label": "Slack Message - #the-olds Date: 2026-01-28 04:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-28 04:53:24 From: John Moran Channel: #the-olds Yeah\u2026 c'mon Julie!!! lol",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T04:53:24.201839",
-      "contributor": "jk",
-      "project": "",
-      "area": "rnd"
-    },
-    {
-      "id": "367fe383-c5d4-4e74-9f21-11be0ad2f366",
-      "label": "Slack Message - #the-olds Date: 2026-01-28 04:5...",
-      "title": "Slack Message - #the-olds Date: 2026-01-28 04:53:00 From: Mike Stuart Channel: #the-olds Not sure if we need it now but we will at some point.",
-      "tier": 3,
-      "group": "cce",
-      "size": 10,
-      "created_at": "2026-01-28T04:53:00.981369",
-      "contributor": "mike",
-      "project": "",
-      "area": "rnd"
-    },
-    {
       "id": "contributor_jk",
       "label": "JK",
-      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 132",
+      "title": "John Moran - CEO & Technical Lead\n\nALDC Management Team\nLearnings: 129",
       "tier": 1,
       "group": "management",
       "size": 100,
@@ -4830,7 +4850,7 @@
     {
       "id": "contributor_marshall",
       "label": "Marshall",
-      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 51",
+      "title": "Marshall Johnston - CTO & Development\n\nALDC Management Team\nLearnings: 52",
       "tier": 1,
       "group": "management",
       "size": 100,
@@ -4841,10 +4861,10 @@
     {
       "id": "contributor_mike",
       "label": "Mike",
-      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 32",
+      "title": "Mike Stuart - VP Engineering\n\nALDC Management Team\nLearnings: 34",
       "tier": 1,
       "group": "management",
-      "size": 82,
+      "size": 84,
       "contributor_id": "mike",
       "is_management": true,
       "logo": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg"
@@ -4852,12 +4872,12 @@
     {
       "id": "source_slack",
       "label": "Slack",
-      "title": "Slack\n\nMessages and threads from Slack workspace\n\nMemories: 738,295\nPercentage: 22.5%",
+      "title": "Slack\n\nMessages and threads from Slack workspace\n\nMemories: 738,301\nPercentage: 22.5%",
       "tier": 0,
       "group": "ingestion_source",
       "size": 70,
       "source_type": "slack",
-      "memory_count": 738295,
+      "memory_count": 738301,
       "percentage": 22.5,
       "color": "#4A154B",
       "logo": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png"
@@ -4865,12 +4885,12 @@
     {
       "id": "source_email",
       "label": "Email",
-      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,085\nPercentage: 72.1%",
+      "title": "Email\n\nEmails from Microsoft 365 / Outlook\n\nMemories: 2,367,380\nPercentage: 72.1%",
       "tier": 0,
       "group": "ingestion_source",
       "size": 70,
       "source_type": "email",
-      "memory_count": 2367085,
+      "memory_count": 2367380,
       "percentage": 72.1,
       "color": "#0078D4",
       "logo": "https://cdn-icons-png.flaticon.com/512/732/732200.png"
@@ -4943,12 +4963,12 @@
     {
       "id": "source_cce",
       "label": "CCE",
-      "title": "CCE\n\nClaude Code Enhanced session learnings\n\nMemories: 544\nPercentage: 0.0%",
+      "title": "CCE\n\nClaude Code Enhanced session learnings\n\nMemories: 552\nPercentage: 0.0%",
       "tier": 0,
       "group": "ingestion_source",
       "size": 35,
       "source_type": "cce",
-      "memory_count": 544,
+      "memory_count": 552,
       "percentage": 0.0,
       "color": "#EC4899",
       "logo": "https://cdn-icons-png.flaticon.com/512/8637/8637099.png"
@@ -4956,12 +4976,12 @@
     {
       "id": "source_avoma",
       "label": "Avoma",
-      "title": "Avoma\n\nMeeting intelligence and transcription from Avoma\n\nMemories: 777\nPercentage: 0.0%",
+      "title": "Avoma\n\nMeeting intelligence and transcription from Avoma\n\nMemories: 788\nPercentage: 0.0%",
       "tier": 0,
       "group": "ingestion_source",
       "size": 35,
       "source_type": "avoma",
-      "memory_count": 777,
+      "memory_count": 788,
       "percentage": 0.0,
       "color": "#4B5EE4",
       "logo": "https://assets-global.website-files.com/6489710d58e1260dafa86553/648971ebe5c1b1d66b763a5d_favicon-avoma.png"
@@ -5008,13 +5028,14 @@
     },
     {
       "id": "domain_docs_anthropic",
-      "label": "Docs Anthropic",
-      "title": "Web Source: Docs Anthropic\n\nMemories: 3,198",
+      "label": "Anthropic",
+      "title": "Web Source: Anthropic\n\nMemories: 3,198",
       "tier": 0,
       "group": "web_domain",
       "size": 21,
       "domain": "docs_anthropic",
-      "memory_count": 3198
+      "memory_count": 3198,
+      "logo": "https://assets.anthropic.com/index/anthropic-logo-only-bf00d1e5.svg"
     },
     {
       "id": "domain_rss_ai",
@@ -5058,23 +5079,25 @@
     },
     {
       "id": "domain_rss_arxiv",
-      "label": "Rss Arxiv",
-      "title": "Web Source: Rss Arxiv\n\nMemories: 1,271",
+      "label": "arXiv",
+      "title": "Web Source: arXiv\n\nMemories: 1,271",
       "tier": 0,
       "group": "web_domain",
       "size": 17,
       "domain": "rss_arxiv",
-      "memory_count": 1271
+      "memory_count": 1271,
+      "logo": "https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
     },
     {
       "id": "domain_docs_langchain",
-      "label": "Docs Langchain",
-      "title": "Web Source: Docs Langchain\n\nMemories: 1,024",
+      "label": "LangChain",
+      "title": "Web Source: LangChain\n\nMemories: 1,024",
       "tier": 0,
       "group": "web_domain",
       "size": 17,
       "domain": "docs_langchain",
-      "memory_count": 1024
+      "memory_count": 1024,
+      "logo": "https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/65be1e1b6de5f7dbe498c264_favicon-32x32.png"
     },
     {
       "id": "domain_rss_thenewstack",
@@ -5135,46 +5158,46 @@
     },
     {
       "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "type": "same_category"
+    },
+    {
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "type": "same_category"
+    },
+    {
+      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
       "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "same_category"
     },
     {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "345d7d4e-a17b-4f99-8c8b-f27050e4fa00",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
-      "type": "same_category"
-    },
-    {
-      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
-      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
     {
       "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "type": "same_category"
+    },
+    {
+      "source": "17b2e425-6bb6-4484-83ae-9e4c18e36436",
+      "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "same_category"
+    },
+    {
+      "source": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
       "type": "same_category"
     },
@@ -5209,6 +5232,101 @@
       "type": "same_category"
     },
     {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
+      "type": "related"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
+      "type": "related"
+    },
+    {
+      "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "type": "related"
+    },
+    {
+      "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "related"
+    },
+    {
+      "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "type": "related"
+    },
+    {
       "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
       "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
       "type": "related"
@@ -5234,13 +5352,18 @@
       "type": "related"
     },
     {
-      "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
       "type": "related"
     },
     {
-      "source": "82bcf16a-c5f4-41a4-b15f-e6e857a7bc41",
-      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "related"
+    },
+    {
+      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
       "type": "related"
     },
     {
@@ -5269,13 +5392,18 @@
       "type": "related"
     },
     {
-      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
       "type": "related"
     },
     {
-      "source": "c2d082b3-c54a-4ce1-b2b2-036ee50ce9c0",
-      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "related"
+    },
+    {
+      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
       "type": "related"
     },
     {
@@ -5304,49 +5432,14 @@
       "type": "related"
     },
     {
-      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "type": "related"
+      "source": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
+      "type": "informs"
     },
     {
-      "source": "3235c2de-5748-4d13-84cc-306d9289c850",
-      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "4e4c7775-685f-4fb2-b794-4f977667bb35",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "fcbadb2d-3c4a-4260-8b53-95214d66dc32",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "422126dd-2714-4008-b993-545e4ee8cdfb",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "3aaec4da-8ceb-490b-9281-22489fd9af21",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "type": "related"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
-      "type": "related"
+      "source": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
+      "type": "informs"
     },
     {
       "source": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
@@ -5389,13 +5482,13 @@
       "type": "informs"
     },
     {
-      "source": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
-      "target": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
+      "source": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
       "type": "informs"
     },
     {
-      "source": "4f26d91d-da58-4b46-a5ef-2d698c6fdc09",
-      "target": "992eef00-4c3d-43e4-b834-4928b669648e",
+      "source": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
       "type": "informs"
     },
     {
@@ -5439,13 +5532,13 @@
       "type": "informs"
     },
     {
-      "source": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
-      "target": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
+      "source": "b231fb78-d82d-4856-8740-a14034e0de3d",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
       "type": "informs"
     },
     {
-      "source": "9c41d9c4-18f6-462f-8bdc-efe29b5c443a",
-      "target": "992eef00-4c3d-43e4-b834-4928b669648e",
+      "source": "b231fb78-d82d-4856-8740-a14034e0de3d",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
       "type": "informs"
     },
     {
@@ -5489,13 +5582,13 @@
       "type": "informs"
     },
     {
-      "source": "b231fb78-d82d-4856-8740-a14034e0de3d",
-      "target": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
+      "source": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
       "type": "informs"
     },
     {
-      "source": "b231fb78-d82d-4856-8740-a14034e0de3d",
-      "target": "992eef00-4c3d-43e4-b834-4928b669648e",
+      "source": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
       "type": "informs"
     },
     {
@@ -5539,14 +5632,44 @@
       "type": "informs"
     },
     {
-      "source": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
-      "target": "d765bb49-3ff2-4b79-8889-c02ce8f2553b",
-      "type": "informs"
+      "source": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
+      "type": "temporal_context"
     },
     {
-      "source": "f8435dd2-dc65-45e2-8ce8-4db00c3c67d2",
-      "target": "992eef00-4c3d-43e4-b834-4928b669648e",
-      "type": "informs"
+      "source": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "target": "7038a892-7318-4789-910d-8f1f288a6cf5",
+      "type": "temporal_context"
+    },
+    {
+      "source": "7038a892-7318-4789-910d-8f1f288a6cf5",
+      "target": "52d5510c-8594-4cf2-a695-f8e1e1bdc29f",
+      "type": "temporal_context"
+    },
+    {
+      "source": "52d5510c-8594-4cf2-a695-f8e1e1bdc29f",
+      "target": "32e385fa-7b83-4cd5-b5c4-6c2ca9fa41be",
+      "type": "temporal_context"
+    },
+    {
+      "source": "32e385fa-7b83-4cd5-b5c4-6c2ca9fa41be",
+      "target": "be716d84-85a7-4e30-8b15-55477a462b14",
+      "type": "temporal_context"
+    },
+    {
+      "source": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "temporal_context"
+    },
+    {
+      "source": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "type": "temporal_context"
+    },
+    {
+      "source": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "target": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "type": "temporal_context"
     },
     {
       "source": "6e516af0-8a60-4059-a279-bc2173b05c7e",
@@ -6079,56 +6202,6 @@
       "type": "temporal_context"
     },
     {
-      "source": "f6da3153-56ad-4b7d-9df0-954382221dc3",
-      "target": "26b1bdd7-4804-4786-90c6-8844d9e8ec41",
-      "type": "temporal_context"
-    },
-    {
-      "source": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "type": "temporal_context"
-    },
-    {
-      "source": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "target": "e761df6c-0629-4557-8200-11e6804c0e08",
-      "type": "temporal_context"
-    },
-    {
-      "source": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "target": "3235c2de-5748-4d13-84cc-306d9289c850",
-      "type": "temporal_context"
-    },
-    {
-      "source": "367fe383-c5d4-4e74-9f21-11be0ad2f366",
-      "target": "e448cab8-7a99-4b40-8e76-00a6816309fb",
-      "type": "temporal_context"
-    },
-    {
-      "source": "e448cab8-7a99-4b40-8e76-00a6816309fb",
-      "target": "11ac34b3-bc8e-41ff-8811-7c75c86c2c77",
-      "type": "temporal_context"
-    },
-    {
-      "source": "11ac34b3-bc8e-41ff-8811-7c75c86c2c77",
-      "target": "225c3bf2-2e37-44f6-9027-0bae1efefa0c",
-      "type": "temporal_context"
-    },
-    {
-      "source": "225c3bf2-2e37-44f6-9027-0bae1efefa0c",
-      "target": "40725e33-6f6b-4711-a668-a2be7eb500a2",
-      "type": "temporal_context"
-    },
-    {
-      "source": "40725e33-6f6b-4711-a668-a2be7eb500a2",
-      "target": "9e2b6bf7-c447-41b3-b116-e66d694febc5",
-      "type": "temporal_context"
-    },
-    {
-      "source": "9e2b6bf7-c447-41b3-b116-e66d694febc5",
-      "target": "ca0b2400-7917-4012-bf42-24f973c827c2",
-      "type": "temporal_context"
-    },
-    {
       "source": "02e0d29e-ef65-4e57-b1a9-814e10542012",
       "target": "f41ca426-0f2b-41ba-8ef5-ae7f75d8902f",
       "type": "highly_similar",
@@ -6217,6 +6290,12 @@
       "target": "c0469852-32d2-490f-a775-7ad8c38be5d9",
       "type": "highly_similar",
       "weight": 0.945
+    },
+    {
+      "source": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "target": "f891b2a4-2062-487e-8248-85b39dfbef76",
+      "type": "highly_similar",
+      "weight": 0.942
     },
     {
       "source": "4f34ed79-646b-4faf-b44b-a43ffae43b1c",
@@ -6633,6 +6712,12 @@
       "weight": 0.892
     },
     {
+      "source": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "target": "51e7f084-1682-4377-b37c-23e75d939b95",
+      "type": "similar",
+      "weight": 0.892
+    },
+    {
       "source": "50da6048-3933-424a-ae24-477a20a2e38a",
       "target": "ff293eb9-65e2-4d45-9cc7-9e632447dfc3",
       "type": "similar",
@@ -6663,6 +6748,12 @@
       "weight": 0.89
     },
     {
+      "source": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "target": "99654e94-2ced-490a-a0e9-49812970de29",
+      "type": "similar",
+      "weight": 0.889
+    },
+    {
       "source": "2e8cd946-2e44-4d29-99e3-e9856521aab3",
       "target": "4dc22af0-ff5a-4335-879a-b511a1155d57",
       "type": "similar",
@@ -6691,6 +6782,12 @@
       "target": "6ad70eed-4e54-4885-95b9-c6d0be49c80d",
       "type": "similar",
       "weight": 0.888
+    },
+    {
+      "source": "7038a892-7318-4789-910d-8f1f288a6cf5",
+      "target": "74424745-e2a0-48e5-946c-0a4ccaf4e2c3",
+      "type": "similar",
+      "weight": 0.887
     },
     {
       "source": "4dc22af0-ff5a-4335-879a-b511a1155d57",
@@ -6903,6 +7000,12 @@
       "weight": 0.877
     },
     {
+      "source": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "target": "87afa830-5d8f-4ba3-9eb8-435cd7a9ded1",
+      "type": "similar",
+      "weight": 0.877
+    },
+    {
       "source": "06b189ec-3f94-4dfe-9a6d-3c0173b06167",
       "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
       "type": "similar",
@@ -7019,6 +7122,12 @@
     {
       "source": "08df03bb-2d87-4630-8930-d65bb1117540",
       "target": "8b45ec5e-b472-4d30-8662-394cb3de590e",
+      "type": "similar",
+      "weight": 0.872
+    },
+    {
+      "source": "52d5510c-8594-4cf2-a695-f8e1e1bdc29f",
+      "target": "bd3d36fb-bd8e-45e0-8643-937d1d1b8253",
       "type": "similar",
       "weight": 0.872
     },
@@ -7293,40 +7402,14 @@
       "weight": 0.863
     },
     {
-      "source": "3b5d33b4-5864-4511-9111-d42c01ad5a52",
-      "target": "4f34ed79-646b-4faf-b44b-a43ffae43b1c",
-      "type": "similar",
-      "weight": 0.863
+      "source": "zeus-memory-hub",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
+      "type": "informs"
     },
     {
-      "source": "4dc22af0-ff5a-4335-879a-b511a1155d57",
-      "target": "ff293eb9-65e2-4d45-9cc7-9e632447dfc3",
-      "type": "similar",
-      "weight": 0.863
-    },
-    {
-      "source": "6bb076cb-a4ea-4611-80bc-b9eda38f5d6e",
-      "target": "b036e7a9-da3b-4a43-a40f-b30219a134ee",
-      "type": "similar",
-      "weight": 0.863
-    },
-    {
-      "source": "3e42e7cf-2c2f-4950-8e9f-7f671031db38",
-      "target": "c0469852-32d2-490f-a775-7ad8c38be5d9",
-      "type": "similar",
-      "weight": 0.862
-    },
-    {
-      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
-      "target": "b2b4c29b-2cd3-48f6-b205-14dd67281431",
-      "type": "similar",
-      "weight": 0.862
-    },
-    {
-      "source": "0b58c9ad-8f4e-4bfd-80f6-e94c2445eff3",
-      "target": "74517db2-4217-46d7-b3c3-e3e59d88fe0f",
-      "type": "similar",
-      "weight": 0.862
+      "source": "zeus-memory-hub",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
+      "type": "informs"
     },
     {
       "source": "zeus-memory-hub",
@@ -7799,11 +7882,6 @@
       "type": "informs"
     },
     {
-      "source": "zeus-memory-hub",
-      "target": "f6da3153-56ad-4b7d-9df0-954382221dc3",
-      "type": "informs"
-    },
-    {
       "source": "contributor_jk",
       "target": "contributor_lori",
       "type": "team_member"
@@ -7842,6 +7920,16 @@
       "source": "zeus-memory-hub",
       "target": "contributor_mike",
       "type": "team_member"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "aaebd9b2-a9b9-487c-a8ab-4b657edf6f5f",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "934d57b8-1c08-4eaf-9f18-c5cac83b2d2f",
+      "type": "created_by"
     },
     {
       "source": "zeus-memory-hub",
@@ -8305,7 +8393,7 @@
     },
     {
       "source": "zeus-memory-hub",
-      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
+      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
       "type": "created_by"
     },
     {
@@ -8315,12 +8403,67 @@
     },
     {
       "source": "zeus-memory-hub",
-      "target": "1ff30e7a-1d32-4d58-9dd0-a72e21dbd508",
+      "target": "3d305bdb-821d-4e8e-a783-61d4edcf9d97",
       "type": "created_by"
     },
     {
       "source": "zeus-memory-hub",
       "target": "a59ecd91-47a8-4be7-b6d9-2bdf01a726e1",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "be716d84-85a7-4e30-8b15-55477a462b14",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "32e385fa-7b83-4cd5-b5c4-6c2ca9fa41be",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_marshall",
+      "target": "52d5510c-8594-4cf2-a695-f8e1e1bdc29f",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_mike",
+      "target": "7038a892-7318-4789-910d-8f1f288a6cf5",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "7453fe5d-c5a4-4b3d-abc3-69e38085ac79",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "154878a1-427e-4963-9cad-9af5cd87731e",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "863f420d-7f5e-470e-95f9-fbf58a21d582",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "e1f6cc23-f0aa-49cb-b5ca-b826fd423824",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "0205f2eb-d7ed-49a8-9167-b7aedcb36624",
+      "type": "created_by"
+    },
+    {
+      "source": "contributor_jk",
+      "target": "47a61158-c2f6-4366-a1b0-174594d7a288",
+      "type": "created_by"
+    },
+    {
+      "source": "zeus-memory-hub",
+      "target": "d2faddbd-4203-428e-84ed-f0a3ddf9e917",
       "type": "created_by"
     },
     {
@@ -9741,61 +9884,6 @@
     {
       "source": "zeus-memory-hub",
       "target": "3235c2de-5748-4d13-84cc-306d9289c850",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "ca0b2400-7917-4012-bf42-24f973c827c2",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "9e2b6bf7-c447-41b3-b116-e66d694febc5",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "f6da3153-56ad-4b7d-9df0-954382221dc3",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "75ab4aa7-0e97-426e-b63e-d76c6a27e08c",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "1074f8ed-d931-4437-bb2d-eb99c2e59edd",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "2f6cb653-977e-4194-bde7-597bbe2b02a9",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "40725e33-6f6b-4711-a668-a2be7eb500a2",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "225c3bf2-2e37-44f6-9027-0bae1efefa0c",
-      "type": "created_by"
-    },
-    {
-      "source": "zeus-memory-hub",
-      "target": "11ac34b3-bc8e-41ff-8811-7c75c86c2c77",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_jk",
-      "target": "e448cab8-7a99-4b40-8e76-00a6816309fb",
-      "type": "created_by"
-    },
-    {
-      "source": "contributor_mike",
-      "target": "367fe383-c5d4-4e74-9f21-11be0ad2f366",
       "type": "created_by"
     },
     {
