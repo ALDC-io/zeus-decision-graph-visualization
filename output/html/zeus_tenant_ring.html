@@ -1282,9 +1282,8 @@
             // Start with fully transparent background
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw label below
+            // Draw label below with shadow for readability
             ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
-            ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
 
@@ -1293,13 +1292,36 @@
             while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
                 displayText = displayText.slice(0, -4) + '...';
             }
+            // Text shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillText(displayText, 129, 241);
+            ctx.fillStyle = '#ffffff';
             ctx.fillText(displayText, 128, 240);
+
+            // Lighten the color for dark backgrounds
+            const fillColor = color || '#a0aec0';
+
+            // Outer glow ring
+            ctx.beginPath();
+            ctx.arc(128, 120, 100, 0, Math.PI * 2);
+            ctx.strokeStyle = fillColor;
+            ctx.lineWidth = 3;
+            ctx.globalAlpha = 0.5;
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
 
             // Draw colored circle background
             ctx.beginPath();
             ctx.arc(128, 120, 96, 0, Math.PI * 2);
-            ctx.fillStyle = color || '#718096';
+            ctx.fillStyle = fillColor;
             ctx.fill();
+
+            // Bright border ring
+            ctx.beginPath();
+            ctx.arc(128, 120, 96, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
 
             // Draw type icon/initials
             const initials = name.split(/[\s\-\/]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
@@ -1311,8 +1333,8 @@
 
             // Small type badge at bottom of circle
             if (nodeType) {
-                const badgeColors = { hub: '#1a365d', pipeline: '#ed8936', tenant: '#3182ce', source: '#38a169', memory: '#805ad5' };
-                const badgeColor = badgeColors[nodeType] || '#718096';
+                const badgeColors = { hub: '#63b3ed', pipeline: '#ed8936', tenant: '#b794f4', source: '#68d391', memory: '#fc8181' };
+                const badgeColor = badgeColors[nodeType] || '#a0aec0';
                 ctx.beginPath();
                 ctx.arc(128, 200, 24, 0, Math.PI * 2);
                 ctx.fillStyle = badgeColor;

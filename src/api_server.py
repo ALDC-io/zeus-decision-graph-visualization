@@ -760,13 +760,15 @@ async def get_tenant_graph():
         "password": os.getenv("DB_PASSWORD", "ZeusMemory2024Db"),
     }
 
-    # Slack profile pictures for known people
+    # Slack profile pictures and logos for known people/orgs
     tenant_logos = {
         "JK": "https://avatars.slack-edge.com/2021-03-01/1792355334455_edeaf5f115f48e271cf1_192.jpg",
         "ALDC Management Team": "https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png",
         "Lori Beck": "https://avatars.slack-edge.com/2026-02-04/10442097229670_74526c6689d7559860d8_192.jpg",
         "Marshall Johnston": "https://avatars.slack-edge.com/2024-12-04/8125572494050_11d2f7ce5515e06c2e5a_192.jpg",
         "Mike Stuart": "https://avatars.slack-edge.com/2026-01-19/10313768312455_181e1011878ed971ea12_192.jpg",
+        "J5 Design": "https://images.squarespace-cdn.com/content/v1/6327d5e454e8bd04d14f1a98/bc7342c7-b8d3-4d30-8753-f9d2522d1af3/J5_ICON_RED.png",
+        "J5:Customers": "https://images.squarespace-cdn.com/content/v1/6327d5e454e8bd04d14f1a98/bc7342c7-b8d3-4d30-8753-f9d2522d1af3/J5_ICON_RED.png",
     }
     # Display name overrides for email-based tenant names
     tenant_display_names = {
@@ -776,8 +778,8 @@ async def get_tenant_graph():
     }
     # Tenants to hide (and all their descendants)
     hidden_tenant_ids = {"33333333-3333-3333-3333-333333333333"}  # Former Employees
-    # Color palette for tenants by tier depth
-    tier_colors = ["#1a365d", "#805ad5", "#3182ce", "#38a169", "#e53e3e", "#d69e2e", "#718096"]
+    # Color palette for tenants by tier depth (bright enough for dark backgrounds)
+    tier_colors = ["#63b3ed", "#b794f4", "#68d391", "#fc8181", "#f6ad55", "#fbd38d", "#a0aec0"]
     # Source category logos
     source_logos = {
         "email": "https://cdn-icons-png.flaticon.com/512/732/732200.png",
