@@ -1449,11 +1449,12 @@
             const img = new Image();
             img.crossOrigin = 'anonymous';
             let proxiedUrl = logoUrl;
-            if (!logoUrl.startsWith('data:') && !logoUrl.includes('google.com/s2/favicons')) {
+            if (!logoUrl.startsWith('data:')) {
+                // Route all external URLs through weserv proxy for CORS support
                 try {
                     const urlObj = new URL(logoUrl);
-                    const urlNoProto = urlObj.host + urlObj.pathname + urlObj.search;
-                    proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlNoProto);
+                    const urlWithoutProtocol = urlObj.host + urlObj.pathname + urlObj.search;
+                    proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlWithoutProtocol);
                 } catch (e) {}
             }
             img.onload = () => {
