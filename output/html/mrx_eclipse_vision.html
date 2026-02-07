@@ -1248,71 +1248,83 @@
         if (!nodes.length) return;
         const scene = graph.scene();
 
-        // Define process flow stages (left to right)
-        // Stage positions map node IDs to X positions
+        // Process Flow: Left-to-right matching real DSP coordination workflow
+        // Stage 1: Data Sources → Stage 2: Identity → Stage 3: DAX/Audience →
+        // Stage 4: Pre-flight/ID Translation → Stage 5: Activation → Stage 6: DSPs →
+        // Stage 7: Feedback (curves below and back to Stage 3)
+        // Eclipse API sits on a connecting rail below the main flow
+
         const STAGE_X = {
             // Stage 1: Data Sources (far left)
-            'experian': -400,
-            'internal-data': -400,
-            'identity-graph': -250,
+            'experian': -520,
+            'internal-data': -520,
 
-            // Stage 2: DAX Core (center-left)
-            'dax-engine': -50,
+            // Stage 2: Identity Resolution
+            'identity-graph': -340,
 
-            // Stage 3: Processing (center)
-            'audience-engine': 50,
-            'flightcheck': 100,
-            'id-mapping': 150,
+            // Stage 3: DAX Core + Audience Building
+            'dax-engine': -160,
+            'audience-engine': -30,
 
-            // Stage 4: Eclipse Layer (center - slightly below as connecting layer)
-            'eclipse-api': 0,
+            // Stage 4: Pre-flight + ID Translation
+            'flightcheck': 110,
+            'id-mapping': 230,
 
-            // Stage 5: Activation band-aid path (center-right, above)
-            'cloud-storage': 250,
-            'media-ops': 300,
+            // Stage 5: Activation (current manual path vs future automated)
+            'cloud-storage': 340,        // current: band-aid detour
+            'media-ops': 430,            // current: manual upload
+            'unified-activation': 380,   // future: automated API push
 
-            // Stage 5: Activation future path
-            'unified-activation': 250,
+            // Stage 6: DSP Endpoints (right side, stacked)
+            'meta': 560,
+            'viant-dsp': 560,
+            'trade-desk': 560,
+            'other-dsps': 560,
 
-            // Stage 6: DSP Endpoints (right)
-            'meta': 400,
-            'viant-dsp': 400,
-            'trade-desk': 400,
-            'other-dsps': 400,
+            // Stage 7: Feedback loop (below, curves back left)
+            'exhaust-data': 460,
+            'perf-analytics': 220,
+            'optimization-engine': -30,
+            'reporting': 340,
 
-            // Stage 7: Feedback (far right, curves back)
-            'exhaust-data': 350,
-            'perf-analytics': 200,
-            'optimization-engine': 50,
-            'reporting': 300,
+            // Eclipse: Connecting rail below main flow
+            'eclipse-api': 50,
         };
 
         const STAGE_Y = {
-            'experian': 80,
-            'internal-data': -80,
+            // Main flow runs along Y=0 centerline
+            'experian': 60,
+            'internal-data': -60,
+
             'identity-graph': 0,
 
             'dax-engine': 0,
+            'audience-engine': 0,
 
-            'audience-engine': 80,
             'flightcheck': 0,
-            'id-mapping': -80,
+            'id-mapping': 0,
 
-            'eclipse-api': -180,
+            // Current manual path (slightly above)
+            'cloud-storage': 70,
+            'media-ops': 70,
 
-            'cloud-storage': 80,
-            'media-ops': 40,
+            // Future automated path (on centerline)
             'unified-activation': 0,
 
-            'meta': 120,
-            'viant-dsp': 40,
-            'trade-desk': -40,
-            'other-dsps': -120,
+            // DSPs fanned out vertically
+            'meta': 100,
+            'viant-dsp': 35,
+            'trade-desk': -35,
+            'other-dsps': -100,
 
-            'exhaust-data': -200,
-            'perf-analytics': -200,
-            'optimization-engine': -200,
-            'reporting': -200,
+            // Feedback loop runs below main flow
+            'exhaust-data': -170,
+            'perf-analytics': -170,
+            'optimization-engine': -170,
+            'reporting': -170,
+
+            // Eclipse rail
+            'eclipse-api': -260,
         };
 
         nodes.forEach(node => {
@@ -1321,14 +1333,16 @@
             node.fz = 0;
         });
 
-        // Add stage labels
+        // Add stage labels and visual guides
         if (ringsEnabled) {
+            // Stage labels above the main flow
             const stages = [
-                { label: 'Data Sources', x: -350, color: '#38a169' },
-                { label: 'DAX Core', x: -50, color: '#dd6b20' },
-                { label: 'Processing', x: 100, color: '#3182ce' },
-                { label: 'Activation', x: 320, color: '#9f7aea' },
-                { label: 'Feedback Loop', x: 200, color: '#ed64a6' },
+                { label: '1. Data Sources', x: -520, color: '#38a169' },
+                { label: '2. Identity', x: -340, color: '#38a169' },
+                { label: '3. Audience', x: -95, color: '#dd6b20' },
+                { label: '4. Pre-Flight & ID', x: 170, color: '#3182ce' },
+                { label: '5. Activation', x: 380, color: '#9f7aea' },
+                { label: '6. DSP Execution', x: 560, color: '#9f7aea' },
             ];
 
             stages.forEach(stage => {
@@ -1336,7 +1350,7 @@
                 const lx = lc.getContext('2d');
                 lc.width = 512;
                 lc.height = 64;
-                lx.font = 'bold 26px -apple-system, sans-serif';
+                lx.font = 'bold 24px -apple-system, sans-serif';
                 lx.textAlign = 'center';
                 lx.fillStyle = 'rgba(0,0,0,0.4)';
                 lx.fillText(stage.label, 257, 41);
@@ -1345,43 +1359,85 @@
                 const tex = new THREE.CanvasTexture(lc);
                 const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
                 const spr = new THREE.Sprite(mat);
-                spr.scale.set(120, 15, 1);
-                spr.position.set(stage.x, 170, 0);
+                spr.scale.set(130, 14, 1);
+                spr.position.set(stage.x, 160, 0);
                 scene.add(spr);
                 tierPlatforms.push(spr);
             });
 
-            // Eclipse layer label
+            // Feedback loop label (below main flow)
+            const fbLabel = '7. Feedback & Optimization Loop';
+            const fc = document.createElement('canvas');
+            const fx = fc.getContext('2d');
+            fc.width = 512;
+            fc.height = 64;
+            fx.font = 'bold 24px -apple-system, sans-serif';
+            fx.textAlign = 'center';
+            fx.fillStyle = 'rgba(0,0,0,0.4)';
+            fx.fillText(fbLabel, 257, 41);
+            fx.fillStyle = '#ed64a6';
+            fx.fillText(fbLabel, 256, 40);
+            const fbtex = new THREE.CanvasTexture(fc);
+            const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false });
+            const fbspr = new THREE.Sprite(fbmat);
+            fbspr.scale.set(180, 14, 1);
+            fbspr.position.set(200, -240, 0);
+            scene.add(fbspr);
+            tierPlatforms.push(fbspr);
+
+            // Eclipse connecting rail
             const ec = document.createElement('canvas');
             const ex = ec.getContext('2d');
             ec.width = 512;
             ec.height = 64;
             ex.font = 'bold 22px -apple-system, sans-serif';
             ex.textAlign = 'center';
-            ex.fillStyle = 'rgba(49,130,206,0.6)';
-            ex.fillText('Eclipse Connecting Layer', 256, 40);
+            ex.fillStyle = 'rgba(49,130,206,0.7)';
+            ex.fillText('Eclipse Platform (API + Data Layer)', 256, 40);
             const etex = new THREE.CanvasTexture(ec);
             const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false });
             const espr = new THREE.Sprite(emat);
-            espr.scale.set(150, 15, 1);
-            espr.position.set(0, -230, 0);
+            espr.scale.set(180, 14, 1);
+            espr.position.set(50, -310, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
 
-            // Draw a subtle horizontal line for the Eclipse layer
+            // Subtle horizontal line for Eclipse rail
             const lineGeo = new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(-450, -180, 0),
-                new THREE.Vector3(450, -180, 0),
+                new THREE.Vector3(-200, -260, 0),
+                new THREE.Vector3(500, -260, 0),
             ]);
-            const lineMat = new THREE.LineBasicMaterial({ color: 0x3182ce, transparent: true, opacity: 0.3 });
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x3182ce, transparent: true, opacity: 0.25 });
             const line = new THREE.Line(lineGeo, lineMat);
             scene.add(line);
             tierPlatforms.push(line);
+
+            // Subtle arrow indicators: main flow direction (left to right)
+            const arrowPoints = [
+                new THREE.Vector3(-480, 0, 0),
+                new THREE.Vector3(530, 0, 0),
+            ];
+            const arrowGeo = new THREE.BufferGeometry().setFromPoints(arrowPoints);
+            const arrowMat = new THREE.LineBasicMaterial({ color: 0x4a5568, transparent: true, opacity: 0.15 });
+            const arrowLine = new THREE.Line(arrowGeo, arrowMat);
+            scene.add(arrowLine);
+            tierPlatforms.push(arrowLine);
+
+            // Feedback return arrow (below, right to left)
+            const fbArrowPoints = [
+                new THREE.Vector3(500, -170, 0),
+                new THREE.Vector3(-80, -170, 0),
+            ];
+            const fbArrowGeo = new THREE.BufferGeometry().setFromPoints(fbArrowPoints);
+            const fbArrowMat = new THREE.LineBasicMaterial({ color: 0xed64a6, transparent: true, opacity: 0.15 });
+            const fbArrowLine = new THREE.Line(fbArrowGeo, fbArrowMat);
+            scene.add(fbArrowLine);
+            tierPlatforms.push(fbArrowLine);
         }
 
         graph.d3ReheatSimulation();
         setTimeout(() => {
-            graph.cameraPosition({ x: 0, y: 0, z: 700 }, { x: 0, y: -20, z: 0 }, 1000);
+            graph.cameraPosition({ x: 50, y: -40, z: 800 }, { x: 50, y: -40, z: 0 }, 1000);
         }, 100);
     }
 
@@ -1480,37 +1536,57 @@
     // NODE RENDERING
     // =========================================================================
 
+    function wrapText(ctx, text, maxWidth) {
+        const words = text.split(' ');
+        const lines = [];
+        let currentLine = words[0];
+        for (let i = 1; i < words.length; i++) {
+            const testLine = currentLine + ' ' + words[i];
+            if (ctx.measureText(testLine).width > maxWidth) {
+                lines.push(currentLine);
+                currentLine = words[i];
+            } else {
+                currentLine = testLine;
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
     function createLogoLabelSprite(node) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 256;
-        canvas.height = 320;
+        canvas.height = 360;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const fillColor = node.color || '#a0aec0';
         const nodeOpacity = node.opacity !== undefined ? node.opacity : 1;
 
-        // Label below
-        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+        // Label below - word wrap instead of truncate
+        ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        let displayText = node.name;
-        while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
-            displayText = displayText.slice(0, -4) + '...';
-        }
         ctx.globalAlpha = nodeOpacity;
-        ctx.fillStyle = 'rgba(0,0,0,0.7)';
-        ctx.fillText(displayText, 129, 241);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(displayText, 128, 240);
+        const labelLines = wrapText(ctx, node.name, 230);
+        const lineHeight = 26;
+        const labelStartY = 238;
+        for (let i = 0; i < labelLines.length; i++) {
+            const y = labelStartY + i * lineHeight;
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillText(labelLines[i], 129, y + 1);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(labelLines[i], 128, y);
+        }
 
-        // Status label
+        // Status label - positioned below wrapped label
+        const statusY = labelStartY + labelLines.length * lineHeight + 4;
         if (node.statusLabel) {
             ctx.font = 'bold 16px -apple-system, sans-serif';
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillText(node.statusLabel, 129, 271);
+            ctx.fillText(node.statusLabel, 129, statusY + 1);
             ctx.fillStyle = fillColor;
-            ctx.fillText(node.statusLabel, 128, 270);
+            ctx.fillText(node.statusLabel, 128, statusY);
         }
 
         // Outer glow ring
@@ -1565,7 +1641,7 @@
         });
         const sprite = new THREE.Sprite(spriteMat);
         const size = Math.max((node.val || 10) / 5, 3) * 2;
-        sprite.scale.set(size * 3, size * 3.75, 1);
+        sprite.scale.set(size * 3, size * 4.22, 1);
         sprite.renderOrder = 1000;
 
         // Load favicon or logo
