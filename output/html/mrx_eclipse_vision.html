@@ -1256,45 +1256,45 @@
 
         const STAGE_X = {
             // Stage 1: Data Sources (far left)
-            'experian': -520,
-            'internal-data': -520,
+            'experian': -310,
+            'internal-data': -310,
 
             // Stage 2: Identity Resolution
-            'identity-graph': -340,
+            'identity-graph': -200,
 
             // Stage 3: DAX Core + Audience Building
-            'dax-engine': -160,
-            'audience-engine': -30,
+            'dax-engine': -95,
+            'audience-engine': -15,
 
             // Stage 4: Pre-flight + ID Translation
-            'flightcheck': 110,
-            'id-mapping': 230,
+            'flightcheck': 70,
+            'id-mapping': 145,
 
             // Stage 5: Activation (current manual path vs future automated)
-            'cloud-storage': 340,        // current: band-aid detour
-            'media-ops': 430,            // current: manual upload
-            'unified-activation': 380,   // future: automated API push
+            'cloud-storage': 215,        // current: band-aid detour
+            'media-ops': 270,            // current: manual upload
+            'unified-activation': 240,   // future: automated API push
 
             // Stage 6: DSP Endpoints (right side, stacked)
-            'meta': 560,
-            'viant-dsp': 560,
-            'trade-desk': 560,
-            'other-dsps': 560,
+            'meta': 350,
+            'viant-dsp': 350,
+            'trade-desk': 350,
+            'other-dsps': 350,
 
             // Stage 7: Feedback loop (below, curves back left)
-            'exhaust-data': 460,
-            'perf-analytics': 220,
-            'optimization-engine': -30,
-            'reporting': 340,
+            'exhaust-data': 290,
+            'perf-analytics': 140,
+            'optimization-engine': -15,
+            'reporting': 215,
 
             // Eclipse: Connecting rail below main flow
-            'eclipse-api': 50,
+            'eclipse-api': 30,
         };
 
         const STAGE_Y = {
             // Main flow runs along Y=0 centerline
-            'experian': 60,
-            'internal-data': -60,
+            'experian': 45,
+            'internal-data': -45,
 
             'identity-graph': 0,
 
@@ -1305,26 +1305,26 @@
             'id-mapping': 0,
 
             // Current manual path (slightly above)
-            'cloud-storage': 70,
-            'media-ops': 70,
+            'cloud-storage': 50,
+            'media-ops': 50,
 
             // Future automated path (on centerline)
             'unified-activation': 0,
 
             // DSPs fanned out vertically
-            'meta': 100,
-            'viant-dsp': 35,
-            'trade-desk': -35,
-            'other-dsps': -100,
+            'meta': 70,
+            'viant-dsp': 25,
+            'trade-desk': -25,
+            'other-dsps': -70,
 
             // Feedback loop runs below main flow
-            'exhaust-data': -170,
-            'perf-analytics': -170,
-            'optimization-engine': -170,
-            'reporting': -170,
+            'exhaust-data': -115,
+            'perf-analytics': -115,
+            'optimization-engine': -115,
+            'reporting': -115,
 
             // Eclipse rail
-            'eclipse-api': -260,
+            'eclipse-api': -175,
         };
 
         nodes.forEach(node => {
@@ -1337,12 +1337,12 @@
         if (ringsEnabled) {
             // Stage labels above the main flow
             const stages = [
-                { label: '1. Data Sources', x: -520, color: '#38a169' },
-                { label: '2. Identity', x: -340, color: '#38a169' },
-                { label: '3. Audience', x: -95, color: '#dd6b20' },
-                { label: '4. Pre-Flight & ID', x: 170, color: '#3182ce' },
-                { label: '5. Activation', x: 380, color: '#9f7aea' },
-                { label: '6. DSP Execution', x: 560, color: '#9f7aea' },
+                { label: '1. Data Sources', x: -310, color: '#38a169' },
+                { label: '2. Identity', x: -200, color: '#38a169' },
+                { label: '3. Audience', x: -55, color: '#dd6b20' },
+                { label: '4. Pre-Flight & ID', x: 107, color: '#3182ce' },
+                { label: '5. Activation', x: 240, color: '#9f7aea' },
+                { label: '6. DSP Execution', x: 350, color: '#9f7aea' },
             ];
 
             stages.forEach(stage => {
@@ -1350,7 +1350,7 @@
                 const lx = lc.getContext('2d');
                 lc.width = 512;
                 lc.height = 64;
-                lx.font = 'bold 24px -apple-system, sans-serif';
+                lx.font = 'bold 28px -apple-system, sans-serif';
                 lx.textAlign = 'center';
                 lx.fillStyle = 'rgba(0,0,0,0.4)';
                 lx.fillText(stage.label, 257, 41);
@@ -1359,8 +1359,8 @@
                 const tex = new THREE.CanvasTexture(lc);
                 const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
                 const spr = new THREE.Sprite(mat);
-                spr.scale.set(130, 14, 1);
-                spr.position.set(stage.x, 160, 0);
+                spr.scale.set(100, 12, 1);
+                spr.position.set(stage.x, 110, 0);
                 scene.add(spr);
                 tierPlatforms.push(spr);
             });
@@ -1371,7 +1371,7 @@
             const fx = fc.getContext('2d');
             fc.width = 512;
             fc.height = 64;
-            fx.font = 'bold 24px -apple-system, sans-serif';
+            fx.font = 'bold 28px -apple-system, sans-serif';
             fx.textAlign = 'center';
             fx.fillStyle = 'rgba(0,0,0,0.4)';
             fx.fillText(fbLabel, 257, 41);
@@ -1380,8 +1380,8 @@
             const fbtex = new THREE.CanvasTexture(fc);
             const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false });
             const fbspr = new THREE.Sprite(fbmat);
-            fbspr.scale.set(180, 14, 1);
-            fbspr.position.set(200, -240, 0);
+            fbspr.scale.set(130, 12, 1);
+            fbspr.position.set(130, -160, 0);
             scene.add(fbspr);
             tierPlatforms.push(fbspr);
 
@@ -1390,22 +1390,22 @@
             const ex = ec.getContext('2d');
             ec.width = 512;
             ec.height = 64;
-            ex.font = 'bold 22px -apple-system, sans-serif';
+            ex.font = 'bold 26px -apple-system, sans-serif';
             ex.textAlign = 'center';
             ex.fillStyle = 'rgba(49,130,206,0.7)';
             ex.fillText('Eclipse Platform (API + Data Layer)', 256, 40);
             const etex = new THREE.CanvasTexture(ec);
             const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false });
             const espr = new THREE.Sprite(emat);
-            espr.scale.set(180, 14, 1);
-            espr.position.set(50, -310, 0);
+            espr.scale.set(130, 12, 1);
+            espr.position.set(30, -210, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
 
             // Subtle horizontal line for Eclipse rail
             const lineGeo = new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(-200, -260, 0),
-                new THREE.Vector3(500, -260, 0),
+                new THREE.Vector3(-120, -175, 0),
+                new THREE.Vector3(320, -175, 0),
             ]);
             const lineMat = new THREE.LineBasicMaterial({ color: 0x3182ce, transparent: true, opacity: 0.25 });
             const line = new THREE.Line(lineGeo, lineMat);
@@ -1414,8 +1414,8 @@
 
             // Subtle arrow indicators: main flow direction (left to right)
             const arrowPoints = [
-                new THREE.Vector3(-480, 0, 0),
-                new THREE.Vector3(530, 0, 0),
+                new THREE.Vector3(-290, 0, 0),
+                new THREE.Vector3(330, 0, 0),
             ];
             const arrowGeo = new THREE.BufferGeometry().setFromPoints(arrowPoints);
             const arrowMat = new THREE.LineBasicMaterial({ color: 0x4a5568, transparent: true, opacity: 0.15 });
@@ -1425,8 +1425,8 @@
 
             // Feedback return arrow (below, right to left)
             const fbArrowPoints = [
-                new THREE.Vector3(500, -170, 0),
-                new THREE.Vector3(-80, -170, 0),
+                new THREE.Vector3(320, -115, 0),
+                new THREE.Vector3(-50, -115, 0),
             ];
             const fbArrowGeo = new THREE.BufferGeometry().setFromPoints(fbArrowPoints);
             const fbArrowMat = new THREE.LineBasicMaterial({ color: 0xed64a6, transparent: true, opacity: 0.15 });
@@ -1437,7 +1437,7 @@
 
         graph.d3ReheatSimulation();
         setTimeout(() => {
-            graph.cameraPosition({ x: 50, y: -40, z: 800 }, { x: 50, y: -40, z: 0 }, 1000);
+            graph.cameraPosition({ x: 30, y: -30, z: 500 }, { x: 30, y: -30, z: 0 }, 1000);
         }, 100);
     }
 
@@ -1556,42 +1556,42 @@
     function createLogoLabelSprite(node) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 256;
-        canvas.height = 360;
+        canvas.width = 320;
+        canvas.height = 420;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const fillColor = node.color || '#a0aec0';
         const nodeOpacity = node.opacity !== undefined ? node.opacity : 1;
 
-        // Label below - word wrap instead of truncate
-        ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, sans-serif';
+        // Label below - word wrap, large font
+        ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.globalAlpha = nodeOpacity;
-        const labelLines = wrapText(ctx, node.name, 230);
-        const lineHeight = 26;
-        const labelStartY = 238;
+        const labelLines = wrapText(ctx, node.name, 300);
+        const lineHeight = 32;
+        const labelStartY = 275;
         for (let i = 0; i < labelLines.length; i++) {
             const y = labelStartY + i * lineHeight;
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            ctx.fillText(labelLines[i], 129, y + 1);
+            ctx.fillText(labelLines[i], 161, y + 1);
             ctx.fillStyle = '#ffffff';
-            ctx.fillText(labelLines[i], 128, y);
+            ctx.fillText(labelLines[i], 160, y);
         }
 
         // Status label - positioned below wrapped label
-        const statusY = labelStartY + labelLines.length * lineHeight + 4;
+        const statusY = labelStartY + labelLines.length * lineHeight + 6;
         if (node.statusLabel) {
-            ctx.font = 'bold 16px -apple-system, sans-serif';
+            ctx.font = 'bold 20px -apple-system, sans-serif';
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillText(node.statusLabel, 129, statusY + 1);
+            ctx.fillText(node.statusLabel, 161, statusY + 1);
             ctx.fillStyle = fillColor;
-            ctx.fillText(node.statusLabel, 128, statusY);
+            ctx.fillText(node.statusLabel, 160, statusY);
         }
 
         // Outer glow ring
         ctx.beginPath();
-        ctx.arc(128, 110, 100, 0, Math.PI * 2);
+        ctx.arc(160, 125, 115, 0, Math.PI * 2);
         ctx.strokeStyle = fillColor;
         ctx.lineWidth = 3;
         ctx.globalAlpha = nodeOpacity * 0.5;
@@ -1600,36 +1600,36 @@
 
         // Colored circle
         ctx.beginPath();
-        ctx.arc(128, 110, 96, 0, Math.PI * 2);
+        ctx.arc(160, 125, 110, 0, Math.PI * 2);
         ctx.fillStyle = fillColor;
         ctx.fill();
 
         // Border
         ctx.beginPath();
-        ctx.arc(128, 110, 96, 0, Math.PI * 2);
+        ctx.arc(160, 125, 110, 0, Math.PI * 2);
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.lineWidth = 3;
         ctx.stroke();
 
         // Initials
         const initials = node.name.split(/[\s\-\/()]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
-        ctx.font = 'bold 56px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(initials, 128, 110);
+        ctx.fillText(initials, 160, 125);
 
         // Tier badge
         ctx.beginPath();
-        ctx.arc(128, 195, 20, 0, Math.PI * 2);
+        ctx.arc(160, 225, 22, 0, Math.PI * 2);
         ctx.fillStyle = node.ringColor || '#718096';
         ctx.fill();
         ctx.strokeStyle = 'rgba(255,255,255,0.8)';
         ctx.lineWidth = 2;
         ctx.stroke();
-        ctx.font = 'bold 16px -apple-system, sans-serif';
+        ctx.font = 'bold 18px -apple-system, sans-serif';
         ctx.fillStyle = '#ffffff';
-        ctx.fillText('T' + node.tier, 128, 196);
+        ctx.fillText('T' + node.tier, 160, 226);
 
         const texture = new THREE.CanvasTexture(canvas);
         const spriteMat = new THREE.SpriteMaterial({
@@ -1641,7 +1641,7 @@
         });
         const sprite = new THREE.Sprite(spriteMat);
         const size = Math.max((node.val || 10) / 5, 3) * 2;
-        sprite.scale.set(size * 3, size * 4.22, 1);
+        sprite.scale.set(size * 3, size * 3.94, 1);
         sprite.renderOrder = 1000;
 
         // Load favicon or logo
@@ -1662,12 +1662,12 @@
                 ctx.globalAlpha = nodeOpacity;
                 ctx.save();
                 ctx.beginPath();
-                ctx.arc(128, 110, 90, 0, Math.PI * 2);
+                ctx.arc(160, 125, 104, 0, Math.PI * 2);
                 ctx.clip();
                 // White bg for favicon visibility
                 ctx.fillStyle = '#ffffff';
-                ctx.fillRect(32, 14, 192, 192);
-                ctx.drawImage(img, 48, 30, 160, 160);
+                ctx.fillRect(48, 13, 224, 224);
+                ctx.drawImage(img, 68, 33, 184, 184);
                 ctx.restore();
                 texture.needsUpdate = true;
             };
