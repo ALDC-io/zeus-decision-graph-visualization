@@ -438,8 +438,8 @@
                     <span style="font-size:10px;color:#666;margin-right:4px;">Layout:</span>
                     <select id="layout-select" class="layout-select" onchange="changeLayout()">
                         <option value="cylinder" selected>Cylinder Rings</option>
+                        <option value="flow">Process Flow</option>
                         <option value="force">Force-Directed</option>
-                        <option value="layered">Layered 3D</option>
                     </select>
                 </div>
                 <div class="toolbar-divider"></div>
@@ -672,13 +672,6 @@
             future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Full Platform API' },
         },
         {
-            id: 'snowflake', name: 'Snowflake', tier: 2, group: 'processing',
-            description: 'Cloud data warehouse powering Eclipse. Stores all campaign data, audience segments, performance metrics, and historical analysis data.',
-            favicon: 'snowflake.com',
-            current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Working' },
-            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'Optimized' },
-        },
-        {
             id: 'cloud-storage', name: 'Cloud Storage (Detour)', tier: 2, group: 'processing',
             description: 'CURRENT BAND-AID: Audience files are manually dropped to cloud storage buckets because direct API push to DSPs is not yet built. This detour adds latency and manual steps.',
             favicon: 'cloud.google.com',
@@ -752,11 +745,11 @@
             future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'AI-Powered' },
         },
         {
-            id: 'dashboard', name: 'Dashboard / Reporting', tier: 4, group: 'feedback',
-            description: 'Client-facing and internal reporting dashboards showing campaign performance, spend tracking, audience reach, and ROI metrics.',
+            id: 'reporting', name: 'Reporting', tier: 4, group: 'feedback',
+            description: 'Current state: basic dashboard reporting with manual data pulls and limited real-time visibility. Future state: F92 Native Reporting powered by Eclipse, with real-time campaign metrics, automated insights, and client self-serve dashboards.',
             favicon: 'fusion92.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Basic Reporting' },
-            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Real-Time Dashboards' },
+            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Basic Dashboards' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'F92 Native (Eclipse)' },
         },
     ];
 
@@ -784,8 +777,9 @@
         { source: 'audience-engine', target: 'eclipse-api', type: 'data_flow',
           current: { color: 'rgba(49,130,206,0.4)', width: 1.5, opacity: 1 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'eclipse-api', target: 'snowflake', type: 'data_flow',
-          current: { color: 'rgba(56,161,105,0.5)', width: 2, opacity: 1 },
+        // Eclipse connects to reporting in future
+        { source: 'eclipse-api', target: 'reporting', type: 'automated',
+          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
 
         // CURRENT: Manual detour chain
@@ -847,12 +841,26 @@
         { source: 'optimization-engine', target: 'audience-engine', type: 'feedback',
           current: { color: 'rgba(229,62,62,0.1)', width: 0.5, opacity: 0.2 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'perf-analytics', target: 'dashboard', type: 'data_flow',
+        { source: 'perf-analytics', target: 'reporting', type: 'data_flow',
           current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 0.8 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
         { source: 'exhaust-data', target: 'eclipse-api', type: 'feedback',
           current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+
+        // Eclipse as connecting layer - ties all systems together
+        { source: 'dax-engine', target: 'eclipse-api', type: 'data_flow',
+          current: { color: 'rgba(49,130,206,0.3)', width: 1.5, opacity: 0.6 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'eclipse-api', target: 'id-mapping', type: 'automated',
+          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'eclipse-api', target: 'flightcheck', type: 'automated',
+          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'identity-graph', target: 'eclipse-api', type: 'data_flow',
+          current: { color: 'rgba(49,130,206,0.2)', width: 1, opacity: 0.4 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
     ];
 
     // =========================================================================
@@ -1021,21 +1029,15 @@
 
     function applyParticles() {
         if (particlesEnabled) {
-            graph.linkDirectionalParticles(link => {
-                if (link.opacity < 0.1) return 0;
-                if (link.type === 'feedback') return 3;
-                if (link.type === 'automated') return 4;
-                return 2;
-            })
-            .linkDirectionalParticleSpeed(0.005)
-            .linkDirectionalParticleWidth(link => link.type === 'automated' ? 3 : 2)
-            .linkDirectionalParticleColor(link => {
-                const t = stateSliderValue / 100;
-                if (link.type === 'feedback') return lerpColor('#e53e3e', '#ed64a6', t);
-                if (link.type === 'automated') return '#38a169';
-                if (link.type === 'manual_process') return '#d69e2e';
-                return lerpColor('#dd6b20', '#38a169', t);
-            });
+            graph.linkDirectionalParticles(2)
+                .linkDirectionalParticleSpeed(0.006)
+                .linkDirectionalParticleWidth(2.5)
+                .linkDirectionalParticleColor(link => {
+                    if (link.type === 'feedback') return '#ed64a6';
+                    if (link.type === 'automated') return '#48bb78';
+                    if (link.type === 'manual_process') return '#f6ad55';
+                    return '#63b3ed';
+                });
         } else {
             graph.linkDirectionalParticles(0);
         }
@@ -1161,9 +1163,11 @@
         // Rebuild graph with interpolated state
         applyFilters();
 
-        // Re-layout if cylinder
+        // Re-layout for fixed-position layouts
         if (currentLayout === 'cylinder') {
             applyFixedPositions();
+        } else if (currentLayout === 'flow') {
+            applyFlowLayout();
         }
 
         // Refresh particles
@@ -1226,8 +1230,8 @@
         clearTierPlatforms();
         switch(currentLayout) {
             case 'cylinder': applyCylinderLayout(); break;
+            case 'flow': applyFlowLayout(); break;
             case 'force': applyForceLayout(); break;
-            case 'layered': applyLayeredLayout(); break;
         }
     }
 
@@ -1237,27 +1241,148 @@
         graph.d3ReheatSimulation();
     }
 
-    function applyLayeredLayout() {
+    // Process Flow layout: left-to-right flow with Eclipse as central connecting layer
+    // X-axis = process stage, Y-axis = spread within stage, Z = 0 (flat)
+    function applyFlowLayout() {
         const nodes = graph.graphData().nodes;
         if (!nodes.length) return;
-        const tierSpacing = 120;
-        const tierCounts = {};
+        const scene = graph.scene();
+
+        // Define process flow stages (left to right)
+        // Stage positions map node IDs to X positions
+        const STAGE_X = {
+            // Stage 1: Data Sources (far left)
+            'experian': -400,
+            'internal-data': -400,
+            'identity-graph': -250,
+
+            // Stage 2: DAX Core (center-left)
+            'dax-engine': -50,
+
+            // Stage 3: Processing (center)
+            'audience-engine': 50,
+            'flightcheck': 100,
+            'id-mapping': 150,
+
+            // Stage 4: Eclipse Layer (center - slightly below as connecting layer)
+            'eclipse-api': 0,
+
+            // Stage 5: Activation band-aid path (center-right, above)
+            'cloud-storage': 250,
+            'media-ops': 300,
+
+            // Stage 5: Activation future path
+            'unified-activation': 250,
+
+            // Stage 6: DSP Endpoints (right)
+            'meta': 400,
+            'viant-dsp': 400,
+            'trade-desk': 400,
+            'other-dsps': 400,
+
+            // Stage 7: Feedback (far right, curves back)
+            'exhaust-data': 350,
+            'perf-analytics': 200,
+            'optimization-engine': 50,
+            'reporting': 300,
+        };
+
+        const STAGE_Y = {
+            'experian': 80,
+            'internal-data': -80,
+            'identity-graph': 0,
+
+            'dax-engine': 0,
+
+            'audience-engine': 80,
+            'flightcheck': 0,
+            'id-mapping': -80,
+
+            'eclipse-api': -180,
+
+            'cloud-storage': 80,
+            'media-ops': 40,
+            'unified-activation': 0,
+
+            'meta': 120,
+            'viant-dsp': 40,
+            'trade-desk': -40,
+            'other-dsps': -120,
+
+            'exhaust-data': -200,
+            'perf-analytics': -200,
+            'optimization-engine': -200,
+            'reporting': -200,
+        };
+
         nodes.forEach(node => {
-            const tier = node.tier || 0;
-            if (!tierCounts[tier]) tierCounts[tier] = { count: 0, total: 0 };
-            tierCounts[tier].total++;
+            node.fx = STAGE_X[node.id] !== undefined ? STAGE_X[node.id] : 0;
+            node.fy = STAGE_Y[node.id] !== undefined ? STAGE_Y[node.id] : 0;
+            node.fz = 0;
         });
-        nodes.forEach(node => {
-            const tier = node.tier || 0;
-            const angle = (tierCounts[tier].count / tierCounts[tier].total) * Math.PI * 2;
-            const radius = 30 + tier * 100;
-            node.fx = Math.cos(angle) * radius;
-            node.fy = Math.sin(angle) * radius;
-            node.fz = tier * tierSpacing;
-            tierCounts[tier].count++;
-        });
+
+        // Add stage labels
+        if (ringsEnabled) {
+            const stages = [
+                { label: 'Data Sources', x: -350, color: '#38a169' },
+                { label: 'DAX Core', x: -50, color: '#dd6b20' },
+                { label: 'Processing', x: 100, color: '#3182ce' },
+                { label: 'Activation', x: 320, color: '#9f7aea' },
+                { label: 'Feedback Loop', x: 200, color: '#ed64a6' },
+            ];
+
+            stages.forEach(stage => {
+                const lc = document.createElement('canvas');
+                const lx = lc.getContext('2d');
+                lc.width = 512;
+                lc.height = 64;
+                lx.font = 'bold 26px -apple-system, sans-serif';
+                lx.textAlign = 'center';
+                lx.fillStyle = 'rgba(0,0,0,0.4)';
+                lx.fillText(stage.label, 257, 41);
+                lx.fillStyle = stage.color;
+                lx.fillText(stage.label, 256, 40);
+                const tex = new THREE.CanvasTexture(lc);
+                const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+                const spr = new THREE.Sprite(mat);
+                spr.scale.set(120, 15, 1);
+                spr.position.set(stage.x, 170, 0);
+                scene.add(spr);
+                tierPlatforms.push(spr);
+            });
+
+            // Eclipse layer label
+            const ec = document.createElement('canvas');
+            const ex = ec.getContext('2d');
+            ec.width = 512;
+            ec.height = 64;
+            ex.font = 'bold 22px -apple-system, sans-serif';
+            ex.textAlign = 'center';
+            ex.fillStyle = 'rgba(49,130,206,0.6)';
+            ex.fillText('Eclipse Connecting Layer', 256, 40);
+            const etex = new THREE.CanvasTexture(ec);
+            const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false });
+            const espr = new THREE.Sprite(emat);
+            espr.scale.set(150, 15, 1);
+            espr.position.set(0, -230, 0);
+            scene.add(espr);
+            tierPlatforms.push(espr);
+
+            // Draw a subtle horizontal line for the Eclipse layer
+            const lineGeo = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-450, -180, 0),
+                new THREE.Vector3(450, -180, 0),
+            ]);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x3182ce, transparent: true, opacity: 0.3 });
+            const line = new THREE.Line(lineGeo, lineMat);
+            scene.add(line);
+            tierPlatforms.push(line);
+        }
+
         graph.d3ReheatSimulation();
-        setTimeout(() => graph.zoomToFit(500), 100);
+        setTimeout(() => {
+            graph.cameraPosition({ x: 0, y: 0, z: 700 }, { x: 0, y: -20, z: 0 }, 1000);
+        }, 100);
     }
 
     function clearTierPlatforms() {
@@ -1639,21 +1764,16 @@
             .nodeOpacity(0.9)
             .linkColor(link => link.color || 'rgba(99,179,237,0.35)')
             .linkWidth(link => link.width || 1)
-            .linkOpacity(link => link.opacity || 0.7)
-            .linkCurvature(link => link.type === 'feedback' ? 0.2 : 0)
-            .linkDirectionalParticles(link => {
-                if (link.opacity < 0.1) return 0;
-                if (link.type === 'feedback') return 3;
-                if (link.type === 'automated') return 4;
-                return 2;
-            })
-            .linkDirectionalParticleWidth(link => link.type === 'automated' ? 3 : 2)
-            .linkDirectionalParticleSpeed(0.005)
+            .linkOpacity(0.8)
+            .linkCurvature(link => link.type === 'feedback' ? 0.15 : 0)
+            .linkDirectionalParticles(2)
+            .linkDirectionalParticleWidth(2.5)
+            .linkDirectionalParticleSpeed(0.006)
             .linkDirectionalParticleColor(link => {
                 if (link.type === 'feedback') return '#ed64a6';
-                if (link.type === 'automated') return '#38a169';
-                if (link.type === 'manual_process') return '#d69e2e';
-                return '#dd6b20';
+                if (link.type === 'automated') return '#48bb78';
+                if (link.type === 'manual_process') return '#f6ad55';
+                return '#63b3ed';
             })
             .onNodeHover(node => { container.style.cursor = node ? 'pointer' : 'default'; })
             .onNodeClick(node => handleNodeClick(node));
