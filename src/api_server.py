@@ -162,6 +162,7 @@ async def root():
         {"name": "Zeus Decision Graph", "path": "/viz/zeus", "description": "Knowledge graph of Zeus Memory decisions and learnings"},
         {"name": "Zeus Tenant Distribution", "path": "/viz/tenants", "description": "Ring chart showing memory distribution across tenants"},
         {"name": "Food Banks Canada Ecosystem", "path": "/viz/fbc", "description": "Partner ecosystem for Food Banks Canada supply chain initiative"},
+        {"name": "MRX Eclipse Vision", "path": "/viz/mrx-eclipse", "description": "Fusion92 DAX platform vision: current state to future unified omnichannel activation with identity graph", "featured": True},
         {"name": "Athena Data Flow", "path": "/viz/dataflow", "description": "End-to-end F92 DAX AI workflow: Account Management to Reporting with Eclipse as Data Foundation"},
         {"name": "Fusion92 Flightcheck", "path": "/viz/flightcheck", "description": "DAX AI data flow for media planning, activation, and flight management"},
         {"name": "Fusion92 Schema", "path": "/viz/f92", "description": "Data schema for Fusion92 Activation Model"},
@@ -387,6 +388,16 @@ async def viz_dataflow():
     if html_file.exists():
         return FileResponse(html_file, media_type="text/html")
     raise HTTPException(status_code=404, detail="Athena Data Flow visualization not found")
+
+
+@app.get("/viz/mrx-eclipse")
+async def viz_mrx_eclipse():
+    """Serve the MRX Eclipse Vision visualization."""
+    static_dir = get_static_dir()
+    html_file = static_dir / "mrx_eclipse_vision.html"
+    if html_file.exists():
+        return FileResponse(html_file, media_type="text/html")
+    raise HTTPException(status_code=404, detail="MRX Eclipse Vision not found")
 
 
 @app.get("/api")

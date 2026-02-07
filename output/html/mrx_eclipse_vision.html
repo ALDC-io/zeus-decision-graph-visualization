@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>MRX Eclipse Vision - DAX Platform Roadmap</title>
+    <link rel="icon" href="data:,">
+    <script src="//unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="//unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a1a;
+            overflow: hidden;
+        }
+        .container { display: flex; height: 100vh; width: 100vw; }
+        #graph-wrapper {
+            flex: 1;
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+        #graph { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        #graph canvas { width: 100% !important; height: 100% !important; }
+
+        /* Sidebar */
+        #sidebar {
+            width: 380px;
+            min-width: 380px;
+            background: #ffffff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        #sidebar.hidden { transform: translateX(100%); }
+        #sidebar-toggle {
+            position: fixed;
+            right: 380px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 60px;
+            background: #1a365d;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            color: white;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: right 0.3s ease;
+        }
+        #sidebar-toggle.sidebar-hidden { right: 0; }
+        #sidebar-toggle:hover { background: #2d4a7c; }
+
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #dd6b20 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 18px; font-weight: 600; margin-bottom: 5px; }
+        .header p { font-size: 12px; opacity: 0.8; }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 12px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .stat-box {
+            background: white;
+            border-radius: 6px;
+            padding: 10px 8px;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .stat-value { font-size: 18px; font-weight: 700; color: #1a365d; }
+        .stat-label { font-size: 9px; color: #718096; text-transform: uppercase; letter-spacing: 0.3px; }
+
+        /* State indicator */
+        .state-indicator {
+            padding: 10px 15px;
+            background: linear-gradient(90deg, #e53e3e, #38a169);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            position: relative;
+        }
+        .state-indicator .state-marker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.15);
+            transition: width 0.3s ease;
+        }
+        .state-indicator .state-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Filters */
+        .filters-section {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .filter-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1a365d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .filter-section-title button {
+            font-size: 9px;
+            padding: 2px 8px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #666;
+        }
+        .filter-section-title button:hover { background: #f0f0f0; }
+        .filter-section-title .section-arrow {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        .filter-section-title .section-arrow.collapsed { transform: rotate(-90deg); }
+        .filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .filter-chips.collapsed { display: none; }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 15px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            transition: all 0.15s;
+        }
+        .filter-chip:hover { background: #e0e0e0; }
+        .filter-chip.active { background: #1a365d; color: white; border-color: #1a365d; }
+        .filter-chip .chip-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .filter-chip.active .chip-color { border: 1px solid rgba(255,255,255,0.5); }
+
+        /* Info Panel */
+        #info-panel { padding: 15px; flex: 1; overflow-y: auto; }
+        .info-placeholder { color: #666; text-align: center; padding: 30px 15px; }
+        .info-placeholder p { margin-bottom: 8px; font-size: 12px; }
+        .node-info { display: none; }
+        .node-info.active { display: block; }
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .node-color-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+        .node-header-text { flex: 1; }
+        .node-title { font-size: 15px; font-weight: 600; color: #1a365d; margin-bottom: 4px; }
+        .node-tier {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+        .tier-core { background: #dd6b20; }
+        .tier-data-sources { background: #38a169; }
+        .tier-processing { background: #3182ce; }
+        .tier-activation { background: #9f7aea; }
+        .tier-feedback { background: #ed64a6; }
+        .node-description {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 12px;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .node-meta {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .node-meta span { display: block; margin-bottom: 4px; }
+        .node-meta .label { color: #888; font-weight: 500; }
+        .connections-header {
+            font-size: 11px;
+            font-weight: 600;
+            color: #718096;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .connection-list { list-style: none; }
+        .connection-item {
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-left: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .connection-item:hover {
+            background: #e8f4fd;
+            border-left-color: #3182ce;
+            transform: translateX(3px);
+        }
+        .connection-item .conn-color { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+        .connection-item .conn-info { flex: 1; min-width: 0; }
+        .connection-item .name {
+            font-weight: 500;
+            color: #1a365d;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .connection-item .relation { font-size: 10px; color: #718096; }
+
+        /* Toolbar */
+        #toolbar {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toolbar-section { display: flex; align-items: center; gap: 4px; }
+        .toolbar-divider { width: 1px; height: 24px; background: #ddd; }
+        .view-btn {
+            padding: 6px 14px;
+            border: 1px solid #1a365d;
+            background: white;
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .view-btn.active { background: #1a365d; color: white; }
+        .view-btn:hover:not(.active) { background: #e8f4fd; }
+        .layout-select {
+            font-size: 11px;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        .effects-toggle { display: flex; align-items: center; gap: 4px; }
+        .toggle-switch {
+            position: relative;
+            width: 28px;
+            height: 16px;
+            background: #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle-switch.active { background: #3182ce; }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.2s;
+        }
+        .toggle-switch.active::after { left: 14px; }
+        .toggle-label { font-size: 9px; color: #666; }
+
+        /* Extended toolbar */
+        .toolbar-extended {
+            position: absolute;
+            top: 50px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* State slider */
+        .state-slider-container { display: flex; align-items: center; gap: 6px; }
+        #state-slider {
+            width: 200px;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #e53e3e, #d69e2e, #38a169);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #state-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 3px solid #3182ce;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        .state-display { font-size: 11px; color: #333; font-weight: 600; min-width: 100px; }
+        .play-btn {
+            font-size: 14px;
+            padding: 4px 10px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .play-btn:hover { background: #f0f0f0; }
+        .play-btn.playing { background: #dd6b20; color: white; border-color: #dd6b20; }
+
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        .legend-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .legend-items { display: flex; gap: 14px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .legend-line { width: 20px; height: 2px; border-radius: 1px; }
+
+        /* Loading */
+        .loading-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+        }
+        .loading-overlay.hidden { display: none; }
+        .loading-spinner {
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #dd6b20;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .loading-text { color: #a0aec0; margin-top: 16px; font-size: 14px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .footer {
+            padding: 12px 15px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 10px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="graph-wrapper">
+            <div id="graph"></div>
+
+            <!-- Main Toolbar -->
+            <div id="toolbar">
+                <div class="toolbar-section">
+                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
+                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <span style="font-size:10px;color:#666;margin-right:4px;">Layout:</span>
+                    <select id="layout-select" class="layout-select" onchange="changeLayout()">
+                        <option value="cylinder" selected>Cylinder Rings</option>
+                        <option value="force">Force-Directed</option>
+                        <option value="layered">Layered 3D</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-section">
+                    <button class="view-btn" onclick="resetCamera()">Reset</button>
+                    <button class="view-btn" onclick="zoomToFit()">Fit</button>
+                </div>
+            </div>
+
+            <!-- Extended Toolbar -->
+            <div id="toolbar-extended" class="toolbar-extended">
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Particles</span>
+                    <div id="particles-toggle" class="toggle-switch active" onclick="toggleParticles()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Rings</span>
+                    <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
+                </div>
+                <div class="toolbar-section effects-toggle">
+                    <span class="toggle-label">Logos</span>
+                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
+                </div>
+            </div>
+
+            <!-- State Transition Slider -->
+            <div id="state-toolbar" class="toolbar-extended" style="top: 88px;">
+                <div class="toolbar-section state-slider-container">
+                    <span style="font-size:11px;color:#333;font-weight:600;">Vision:</span>
+                    <button id="play-btn" class="play-btn" onclick="toggleStatePlay()">&#9654;</button>
+                    <input type="range" id="state-slider" min="0" max="100" value="0" oninput="updateStateSlider()">
+                    <span id="state-display" class="state-display">Current State</span>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-title">Ring Tiers</div>
+                <div class="legend-items">
+                    <div class="legend-item"><div class="legend-dot" style="background:#dd6b20"></div>DAX Core</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Data Sources</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>Processing</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#9f7aea"></div>Activation</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#ed64a6"></div>Feedback</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#38a169"></div>Automated</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#e53e3e;border-top:1px dashed #e53e3e;height:0"></div>Manual</div>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading MRX Eclipse Vision...</div>
+            </div>
+        </div>
+
+        <button id="sidebar-toggle" onclick="toggleSidebar()">&#9664;</button>
+        <div id="sidebar">
+            <div class="header">
+                <h1>MRX Eclipse Vision</h1>
+                <p>Fusion92 DAX Platform: Current State &rarr; Future Vision</p>
+            </div>
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-nodes">-</div>
+                    <div class="stat-label">Components</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-automated">-</div>
+                    <div class="stat-label">Automated</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-manual">-</div>
+                    <div class="stat-label">Manual</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-broken">-</div>
+                    <div class="stat-label">Broken</div>
+                </div>
+            </div>
+
+            <!-- State indicator bar -->
+            <div class="state-indicator" id="state-bar">
+                <div class="state-marker" id="state-marker" style="width:0%"></div>
+                <span class="state-text" id="state-bar-text">Current State - Manual Processes Dominate</span>
+            </div>
+
+            <!-- Ring Filters -->
+            <div class="filters-section">
+                <div class="filter-section-title" onclick="toggleFilterSection('ring-filters')">
+                    Ring Tiers
+                    <span class="section-arrow" id="arrow-ring-filters">&#9660;</span>
+                    <button onclick="event.stopPropagation(); toggleAllRingFilters()">Toggle All</button>
+                </div>
+                <div class="filter-chips" id="ring-filters">
+                    <span class="filter-chip active" data-ring="0"><span class="chip-color" style="background:#dd6b20"></span>DAX Core</span>
+                    <span class="filter-chip active" data-ring="1"><span class="chip-color" style="background:#38a169"></span>Data Sources</span>
+                    <span class="filter-chip active" data-ring="2"><span class="chip-color" style="background:#3182ce"></span>Processing</span>
+                    <span class="filter-chip active" data-ring="3"><span class="chip-color" style="background:#9f7aea"></span>Activation</span>
+                    <span class="filter-chip active" data-ring="4"><span class="chip-color" style="background:#ed64a6"></span>Feedback</span>
+                </div>
+            </div>
+
+            <!-- Link Type Filters -->
+            <div class="filters-section">
+                <div class="filter-section-title" onclick="toggleFilterSection('link-filters')">
+                    Link Types
+                    <span class="section-arrow" id="arrow-link-filters">&#9660;</span>
+                </div>
+                <div class="filter-chips" id="link-filters">
+                    <span class="filter-chip active" data-link="data_flow"><span class="chip-color" style="background:#38a169"></span>Data Flow</span>
+                    <span class="filter-chip active" data-link="manual_process"><span class="chip-color" style="background:#d69e2e"></span>Manual</span>
+                    <span class="filter-chip active" data-link="automated"><span class="chip-color" style="background:#48bb78"></span>Automated</span>
+                    <span class="filter-chip active" data-link="feedback"><span class="chip-color" style="background:#ed64a6"></span>Feedback</span>
+                </div>
+            </div>
+
+            <div id="info-panel">
+                <div class="info-placeholder" id="placeholder">
+                    <p><strong>Click a node</strong> to explore component details</p>
+                    <p>Drag to rotate &bull; Scroll to zoom &bull; Right-drag to pan</p>
+                    <p style="margin-top:10px;font-size:10px;color:#888;">
+                        Use the <strong>Vision slider</strong> to transition from<br>
+                        Current State &rarr; Future Vision
+                    </p>
+                    <p style="margin-top:15px;font-size:10px;color:#888;">
+                        <strong style="color:#38a169;">Green</strong> = Automated &bull;
+                        <strong style="color:#d69e2e;">Yellow</strong> = Manual &bull;
+                        <strong style="color:#dd6b20;">Orange</strong> = Band-Aid &bull;
+                        <strong style="color:#e53e3e;">Red</strong> = Broken
+                    </p>
+                </div>
+                <div class="node-info" id="node-info">
+                    <div class="node-header">
+                        <div class="node-color-dot" id="node-color"></div>
+                        <div class="node-header-text">
+                            <div class="node-title" id="node-title">-</div>
+                            <span class="node-tier" id="node-tier">-</span>
+                        </div>
+                    </div>
+                    <div class="node-description" id="node-description">-</div>
+                    <div class="node-meta" id="node-meta"></div>
+                    <div id="connections-section">
+                        <div class="connections-header">Connections</div>
+                        <ul class="connection-list" id="connections-list"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">MRX Eclipse Vision | Fusion92 DAX Platform | ALDC</div>
+        </div>
+    </div>
+
+    <script>
+    // =========================================================================
+    // MRX ECLIPSE VISION DATA
+    // =========================================================================
+
+    const RING_NAMES = ['DAX Core', 'Data Sources', 'Processing & Governance', 'Activation Platforms', 'Feedback & Optimization'];
+    const RING_COLORS = ['#dd6b20', '#38a169', '#3182ce', '#9f7aea', '#ed64a6'];
+    const TIER_CLASSES = ['core', 'data-sources', 'processing', 'activation', 'feedback'];
+
+    // Status colors
+    const STATUS = {
+        AUTOMATED: '#38a169',   // green
+        MANUAL: '#d69e2e',      // yellow
+        BANDAID: '#dd6b20',     // orange
+        BROKEN: '#e53e3e',      // red
+    };
+
+    // Node definitions with current and future states
+    const NODE_DEFS = [
+        // Tier 0: DAX Core
+        {
+            id: 'dax-engine', name: 'DAX Engine', tier: 0, group: 'core',
+            description: 'Central DAX processing engine - the heart of Fusion92\'s data activation platform. Orchestrates data flows between sources, processing, and activation.',
+            logo: 'https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png',
+            current: { color: '#dd6b20', opacity: 1.0, size: 35, statusLabel: 'Core Hub' },
+            future:  { color: '#38a169', opacity: 1.0, size: 40, statusLabel: 'Fully Automated Hub' },
+        },
+
+        // Tier 1: Data Sources
+        {
+            id: 'experian', name: 'Experian', tier: 1, group: 'data-sources',
+            description: 'Third-party identity and demographic data provider. Supplies consumer identity resolution, credit data attributes, and audience segments for targeting.',
+            favicon: 'experian.com',
+            current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Automated Feed' },
+            future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Automated Feed' },
+        },
+        {
+            id: 'internal-data', name: 'Internal Customer Data', tier: 1, group: 'data-sources',
+            description: 'First-party customer data from CRM systems, website analytics, transaction history, and client-provided data files.',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Upload' },
+            future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Auto-Ingested' },
+        },
+        {
+            id: 'identity-graph', name: 'Identity Graph', tier: 1, group: 'data-sources',
+            description: 'Unified identity resolution layer mapping cookies, device IDs, emails, and MAIDs to a single consumer identity across touchpoints.',
+            current: { color: '#dd6b20', opacity: 1.0, size: 22, statusLabel: 'Partial Coverage' },
+            future:  { color: '#38a169', opacity: 1.0, size: 28, statusLabel: 'Full Graph' },
+        },
+
+        // Tier 2: Processing & Governance
+        {
+            id: 'flightcheck', name: 'Flightcheck', tier: 2, group: 'processing',
+            description: 'Pre-flight validation system that checks audience definitions, data quality, and campaign parameters before activation. Acts as a quality gate.',
+            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Semi-Automated' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Fully Automated QA' },
+        },
+        {
+            id: 'audience-engine', name: 'Audience Definition Engine', tier: 2, group: 'processing',
+            description: 'Builds and manages audience segments from identity graph data. Defines targeting criteria, suppression lists, and lookalike models.',
+            current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Working' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'AI-Enhanced' },
+        },
+        {
+            id: 'id-mapping', name: 'Identifier Mapping', tier: 2, group: 'processing',
+            description: 'Maps consumer identities across platforms: cookies to MAIDs, email hashes to device IDs. Critical for cross-platform audience matching.',
+            current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Workaround Path' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Direct Integration' },
+        },
+        {
+            id: 'eclipse-api', name: 'Eclipse API', tier: 2, group: 'processing',
+            description: 'The Eclipse data platform API - serves as the data foundation for all activation and reporting. Connects to Snowflake and manages dataset orchestration.',
+            favicon: 'aldc.io',
+            current: { color: '#dd6b20', opacity: 1.0, size: 24, statusLabel: 'Partial Build' },
+            future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Full Platform API' },
+        },
+        {
+            id: 'snowflake', name: 'Snowflake', tier: 2, group: 'processing',
+            description: 'Cloud data warehouse powering Eclipse. Stores all campaign data, audience segments, performance metrics, and historical analysis data.',
+            favicon: 'snowflake.com',
+            current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Working' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'Optimized' },
+        },
+        {
+            id: 'cloud-storage', name: 'Cloud Storage (Detour)', tier: 2, group: 'processing',
+            description: 'CURRENT BAND-AID: Audience files are manually dropped to cloud storage buckets because direct API push to DSPs is not yet built. This detour adds latency and manual steps.',
+            current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Band-Aid Detour' },
+            future:  { color: '#dd6b20', opacity: 0.0, size: 0, statusLabel: 'Removed' },
+        },
+
+        // Tier 3: Activation Platforms
+        {
+            id: 'meta', name: 'Meta', tier: 3, group: 'activation',
+            description: 'Meta Ads (Facebook/Instagram) activation endpoint. Currently receives audiences via manual file upload; future state enables direct API push.',
+            favicon: 'meta.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'viant-dsp', name: 'Viant DSP', tier: 3, group: 'activation',
+            description: 'Viant\'s Adelphic DSP for programmatic media buying. Primary DSP partner with deal ID support and cross-device targeting capabilities.',
+            favicon: 'viantinc.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'trade-desk', name: 'The Trade Desk', tier: 3, group: 'activation',
+            description: 'The Trade Desk DSP - second largest programmatic platform. Used for CTV, display, and audio activation with UID2 identity support.',
+            favicon: 'thetradedesk.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'other-dsps', name: 'Other DSPs', tier: 3, group: 'activation',
+            description: 'Additional demand-side platforms (DV360, Amazon DSP, etc.) used for specialized inventory access and client-specific requirements.',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'media-ops', name: 'Media Ops (Manual)', tier: 3, group: 'activation',
+            description: 'CURRENT STATE: Media operations team manually downloads audience files from cloud storage and uploads them to each DSP. This is the primary bottleneck.',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Bottleneck' },
+            future:  { color: '#d69e2e', opacity: 0.3, size: 12, statusLabel: 'Verification Only' },
+        },
+        {
+            id: 'unified-activation', name: 'Unified Omnichannel Activation', tier: 3, group: 'activation',
+            description: 'FUTURE STATE: Single API-driven activation layer that pushes audiences to all DSPs simultaneously with consistent identity, frequency capping, and measurement.',
+            current: { color: '#38a169', opacity: 0.0, size: 0, statusLabel: 'Not Yet Built' },
+            future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Unified Platform' },
+        },
+
+        // Tier 4: Feedback & Optimization
+        {
+            id: 'exhaust-data', name: 'Exhaust Data Ingestion', tier: 4, group: 'feedback',
+            description: 'Captures campaign performance data (impressions, clicks, conversions) from DSPs and ad servers. Currently piecemeal with significant data gaps.',
+            current: { color: '#e53e3e', opacity: 1.0, size: 20, statusLabel: 'Piecemeal/Manual' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Unified Ingestion' },
+        },
+        {
+            id: 'perf-analytics', name: 'Performance Analytics', tier: 4, group: 'feedback',
+            description: 'Analyzes campaign performance data to derive insights on audience quality, creative effectiveness, channel mix, and attribution.',
+            current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Partial Data' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Full Attribution' },
+        },
+        {
+            id: 'optimization-engine', name: 'Optimization Engine', tier: 4, group: 'feedback',
+            description: 'Uses performance data to recommend audience refinements, budget reallocation, and creative optimizations. Feeds back into Audience Definition.',
+            current: { color: '#e53e3e', opacity: 1.0, size: 18, statusLabel: 'Not Implemented' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'AI-Powered' },
+        },
+        {
+            id: 'dashboard', name: 'Dashboard / Reporting', tier: 4, group: 'feedback',
+            description: 'Client-facing and internal reporting dashboards showing campaign performance, spend tracking, audience reach, and ROI metrics.',
+            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Basic Reporting' },
+            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Real-Time Dashboards' },
+        },
+    ];
+
+    // Link definitions with current and future states
+    const LINK_DEFS = [
+        // Core data flow
+        { source: 'experian', target: 'identity-graph', type: 'data_flow',
+          current: { color: 'rgba(56,161,105,0.6)', width: 2, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'internal-data', target: 'identity-graph', type: 'data_flow',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'identity-graph', target: 'dax-engine', type: 'data_flow',
+          current: { color: 'rgba(221,107,32,0.5)', width: 2, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'dax-engine', target: 'audience-engine', type: 'data_flow',
+          current: { color: 'rgba(221,107,32,0.5)', width: 2, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'audience-engine', target: 'flightcheck', type: 'data_flow',
+          current: { color: 'rgba(56,161,105,0.5)', width: 1.5, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 2.5, opacity: 1 } },
+        { source: 'flightcheck', target: 'id-mapping', type: 'data_flow',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 2.5, opacity: 1 } },
+        { source: 'audience-engine', target: 'eclipse-api', type: 'data_flow',
+          current: { color: 'rgba(49,130,206,0.4)', width: 1.5, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'eclipse-api', target: 'snowflake', type: 'data_flow',
+          current: { color: 'rgba(56,161,105,0.5)', width: 2, opacity: 1 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+
+        // CURRENT: Manual detour chain
+        { source: 'id-mapping', target: 'cloud-storage', type: 'manual_process',
+          current: { color: 'rgba(221,107,32,0.6)', width: 2, opacity: 1, dashed: true },
+          future:  { color: 'rgba(221,107,32,0.2)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'cloud-storage', target: 'media-ops', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.6)', width: 2, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.2)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'meta', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'viant-dsp', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'trade-desk', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'other-dsps', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+
+        // FUTURE: Direct automated activation
+        { source: 'eclipse-api', target: 'unified-activation', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'unified-activation', target: 'meta', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'unified-activation', target: 'viant-dsp', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'unified-activation', target: 'trade-desk', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'unified-activation', target: 'other-dsps', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+
+        // Feedback loops - broken in current, complete in future
+        { source: 'meta', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        { source: 'viant-dsp', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        { source: 'trade-desk', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        { source: 'other-dsps', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        { source: 'exhaust-data', target: 'perf-analytics', type: 'feedback',
+          current: { color: 'rgba(221,107,32,0.4)', width: 1, opacity: 0.7 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'perf-analytics', target: 'optimization-engine', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'optimization-engine', target: 'audience-engine', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.1)', width: 0.5, opacity: 0.2 },
+          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+        { source: 'perf-analytics', target: 'dashboard', type: 'data_flow',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 0.8 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'exhaust-data', target: 'eclipse-api', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+    ];
+
+    // =========================================================================
+    // GRAPH STATE
+    // =========================================================================
+
+    let graph;
+    let graphData = { nodes: [], links: [] };
+    let selectedNode = null;
+    let sidebarVisible = true;
+    let stateSliderValue = 0;
+    let statePlayInterval = null;
+    let particlesEnabled = true;
+    let ringsEnabled = true;
+    let logoLabelsEnabled = true;
+    let currentLayout = 'cylinder';
+    let tierPlatforms = [];
+    const nodeMap = {};
+
+    // Filter state
+    const activeRings = new Set([0, 1, 2, 3, 4]);
+    const activeLinkTypes = new Set(['data_flow', 'manual_process', 'automated', 'feedback']);
+
+    // =========================================================================
+    // INTERPOLATION HELPERS
+    // =========================================================================
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function lerpColor(colorA, colorB, t) {
+        // Parse rgba strings
+        const parseRgba = (str) => {
+            const m = str.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+            if (m) return { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 };
+            // hex
+            const h = str.match(/^#([0-9a-f]{6})$/i);
+            if (h) {
+                const hex = h[1];
+                return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16), a: 1 };
+            }
+            return { r: 128, g: 128, b: 128, a: 1 };
+        };
+        const a = parseRgba(colorA);
+        const b = parseRgba(colorB);
+        const r = Math.round(lerp(a.r, b.r, t));
+        const g = Math.round(lerp(a.g, b.g, t));
+        const bl = Math.round(lerp(a.b, b.b, t));
+        const al = lerp(a.a, b.a, t);
+        return `rgba(${r},${g},${bl},${al.toFixed(2)})`;
+    }
+
+    function hexToRgba(hex, alpha) {
+        let r = 0, g = 0, b = 0;
+        if (hex && hex.length === 4) {
+            r = parseInt(hex[1] + hex[1], 16); g = parseInt(hex[2] + hex[2], 16); b = parseInt(hex[3] + hex[3], 16);
+        } else if (hex && hex.length === 7) {
+            r = parseInt(hex.slice(1,3),16); g = parseInt(hex.slice(3,5),16); b = parseInt(hex.slice(5,7),16);
+        }
+        return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    // =========================================================================
+    // STATE INTERPOLATION
+    // =========================================================================
+
+    function getNodeState(def, t) {
+        const c = def.current;
+        const f = def.future;
+        return {
+            color: lerpColor(c.color, f.color, t),
+            opacity: lerp(c.opacity, f.opacity, t),
+            size: lerp(c.size, f.size, t),
+            statusLabel: t < 0.5 ? c.statusLabel : f.statusLabel,
+        };
+    }
+
+    function getLinkState(def, t) {
+        const c = def.current;
+        const f = def.future;
+        return {
+            color: lerpColor(c.color, f.color, t),
+            width: lerp(c.width, f.width, t),
+            opacity: lerp(c.opacity, f.opacity, t),
+            dashed: t < 0.5 ? (c.dashed || false) : (f.dashed || false),
+        };
+    }
+
+    function buildGraphData(t) {
+        const nodes = [];
+        const links = [];
+
+        NODE_DEFS.forEach(def => {
+            const state = getNodeState(def, t);
+            if (state.opacity < 0.05 && state.size < 1) return; // Skip invisible nodes
+
+            nodes.push({
+                id: def.id,
+                name: def.name,
+                tier: def.tier,
+                group: def.group,
+                description: def.description,
+                logo: def.logo || null,
+                favicon: def.favicon || null,
+                color: state.color,
+                val: Math.max(state.size, 3),
+                opacity: state.opacity,
+                statusLabel: state.statusLabel,
+                ringName: RING_NAMES[def.tier],
+                ringColor: RING_COLORS[def.tier],
+            });
+        });
+
+        const nodeIds = new Set(nodes.map(n => n.id));
+
+        LINK_DEFS.forEach(def => {
+            if (!nodeIds.has(def.source) || !nodeIds.has(def.target)) return;
+            const state = getLinkState(def, t);
+            if (state.opacity < 0.05) return;
+
+            links.push({
+                source: def.source,
+                target: def.target,
+                type: def.type,
+                color: state.color,
+                width: state.width,
+                opacity: state.opacity,
+                dashed: state.dashed,
+            });
+        });
+
+        return { nodes, links };
+    }
+
+    // =========================================================================
+    // UI CONTROLS
+    // =========================================================================
+
+    function toggleSidebar() {
+        sidebarVisible = !sidebarVisible;
+        document.getElementById('sidebar').classList.toggle('hidden', !sidebarVisible);
+        document.getElementById('sidebar-toggle').classList.toggle('sidebar-hidden', !sidebarVisible);
+        document.getElementById('sidebar-toggle').innerHTML = sidebarVisible ? '&#9664;' : '&#9654;';
+    }
+
+    function setView(mode) {
+        document.getElementById('btn-3d').classList.toggle('active', mode === '3d');
+        document.getElementById('btn-2d').classList.toggle('active', mode === '2d');
+        if (mode === '2d') {
+            graph.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1000);
+        } else {
+            graph.cameraPosition({ x: 300, y: 250, z: 400 }, { x: 0, y: 150, z: 0 }, 1000);
+        }
+    }
+
+    function resetCamera() {
+        graph.cameraPosition({ x: 300, y: 250, z: 400 }, { x: 0, y: 150, z: 0 }, 1500);
+    }
+
+    function zoomToFit() { graph.zoomToFit(500, 50); }
+
+    function toggleParticles() {
+        particlesEnabled = !particlesEnabled;
+        document.getElementById('particles-toggle').classList.toggle('active', particlesEnabled);
+        applyParticles();
+    }
+
+    function applyParticles() {
+        if (particlesEnabled) {
+            graph.linkDirectionalParticles(link => {
+                if (link.opacity < 0.1) return 0;
+                if (link.type === 'feedback') return 3;
+                if (link.type === 'automated') return 4;
+                return 2;
+            })
+            .linkDirectionalParticleSpeed(0.005)
+            .linkDirectionalParticleWidth(link => link.type === 'automated' ? 3 : 2)
+            .linkDirectionalParticleColor(link => {
+                const t = stateSliderValue / 100;
+                if (link.type === 'feedback') return lerpColor('#e53e3e', '#ed64a6', t);
+                if (link.type === 'automated') return '#38a169';
+                if (link.type === 'manual_process') return '#d69e2e';
+                return lerpColor('#dd6b20', '#38a169', t);
+            });
+        } else {
+            graph.linkDirectionalParticles(0);
+        }
+    }
+
+    function toggleRings() {
+        ringsEnabled = !ringsEnabled;
+        document.getElementById('rings-toggle').classList.toggle('active', ringsEnabled);
+        if (currentLayout === 'cylinder') {
+            clearTierPlatforms();
+            if (ringsEnabled) applyCylinderLayout();
+        }
+    }
+
+    function toggleLogoLabels() {
+        logoLabelsEnabled = !logoLabelsEnabled;
+        document.getElementById('logo-labels-toggle').classList.toggle('active', logoLabelsEnabled);
+        rebuildNodeRendering();
+    }
+
+    // =========================================================================
+    // FILTER SECTION
+    // =========================================================================
+
+    function toggleFilterSection(sectionId) {
+        const chips = document.getElementById(sectionId);
+        const arrow = document.getElementById('arrow-' + sectionId);
+        chips.classList.toggle('collapsed');
+        if (arrow) arrow.classList.toggle('collapsed');
+    }
+
+    function toggleAllRingFilters() {
+        const chips = document.querySelectorAll('#ring-filters .filter-chip');
+        const allActive = activeRings.size === 5;
+        if (allActive) {
+            activeRings.clear();
+            chips.forEach(c => c.classList.remove('active'));
+        } else {
+            [0,1,2,3,4].forEach(r => activeRings.add(r));
+            chips.forEach(c => c.classList.add('active'));
+        }
+        applyFilters();
+    }
+
+    function setupFilterHandlers() {
+        document.querySelectorAll('#ring-filters .filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const ring = parseInt(chip.dataset.ring);
+                if (activeRings.has(ring)) {
+                    activeRings.delete(ring);
+                    chip.classList.remove('active');
+                } else {
+                    activeRings.add(ring);
+                    chip.classList.add('active');
+                }
+                applyFilters();
+            });
+        });
+        document.querySelectorAll('#link-filters .filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const lt = chip.dataset.link;
+                if (activeLinkTypes.has(lt)) {
+                    activeLinkTypes.delete(lt);
+                    chip.classList.remove('active');
+                } else {
+                    activeLinkTypes.add(lt);
+                    chip.classList.add('active');
+                }
+                applyFilters();
+            });
+        });
+    }
+
+    function applyFilters() {
+        const t = stateSliderValue / 100;
+        const fullData = buildGraphData(t);
+
+        const filteredNodes = fullData.nodes.filter(n => activeRings.has(n.tier));
+        const nodeIds = new Set(filteredNodes.map(n => n.id));
+        const filteredLinks = fullData.links.filter(l => {
+            const sId = typeof l.source === 'object' ? l.source.id : l.source;
+            const tId = typeof l.target === 'object' ? l.target.id : l.target;
+            return nodeIds.has(sId) && nodeIds.has(tId) && activeLinkTypes.has(l.type);
+        });
+
+        graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+        // Rebuild node map
+        filteredNodes.forEach(n => { nodeMap[n.id] = n; });
+    }
+
+    // =========================================================================
+    // STATE SLIDER
+    // =========================================================================
+
+    function updateStateSlider() {
+        stateSliderValue = parseInt(document.getElementById('state-slider').value);
+        const t = stateSliderValue / 100;
+
+        // Update label
+        let label;
+        if (t === 0) label = 'Current State';
+        else if (t < 0.25) label = 'Near-Term Fixes';
+        else if (t < 0.5) label = 'Mid-Term Build';
+        else if (t < 0.75) label = 'Integration Phase';
+        else if (t < 1) label = 'Almost There...';
+        else label = 'Future Vision';
+        document.getElementById('state-display').textContent = label;
+
+        // Update state bar
+        document.getElementById('state-marker').style.width = (t * 100) + '%';
+        const barTexts = [
+            'Current State - Manual Processes Dominate',
+            'Phase 1 - Eliminating Cloud Storage Detour',
+            'Phase 2 - Building Eclipse API Integration',
+            'Phase 3 - Connecting Feedback Loops',
+            'Future Vision - Fully Automated Platform',
+        ];
+        document.getElementById('state-bar-text').textContent = barTexts[Math.min(Math.floor(t * 5), 4)];
+
+        // Update stats
+        updateStateStats(t);
+
+        // Rebuild graph with interpolated state
+        applyFilters();
+
+        // Re-layout if cylinder
+        if (currentLayout === 'cylinder') {
+            applyFixedPositions();
+        }
+
+        // Refresh particles
+        applyParticles();
+    }
+
+    function updateStateStats(t) {
+        const visibleNodes = NODE_DEFS.filter(d => {
+            const s = getNodeState(d, t);
+            return s.opacity > 0.05 && s.size > 1;
+        });
+
+        let automated = 0, manual = 0, broken = 0;
+        visibleNodes.forEach(d => {
+            const s = getNodeState(d, t);
+            const hex = s.color.includes('#') ? s.color : '';
+            // Classify by interpolated color proximity
+            if (hex === '#38a169' || s.statusLabel.toLowerCase().includes('automat') || s.statusLabel.toLowerCase().includes('working') || s.statusLabel.toLowerCase().includes('full') || s.statusLabel.toLowerCase().includes('unified') || s.statusLabel.toLowerCase().includes('ai')) automated++;
+            else if (hex === '#e53e3e' || s.statusLabel.toLowerCase().includes('broken') || s.statusLabel.toLowerCase().includes('not impl')) broken++;
+            else manual++;
+        });
+
+        document.getElementById('stat-nodes').textContent = visibleNodes.length;
+        document.getElementById('stat-automated').textContent = automated;
+        document.getElementById('stat-manual').textContent = manual;
+        document.getElementById('stat-broken').textContent = broken;
+    }
+
+    function toggleStatePlay() {
+        const btn = document.getElementById('play-btn');
+        if (statePlayInterval) {
+            clearInterval(statePlayInterval);
+            statePlayInterval = null;
+            btn.innerHTML = '&#9654;';
+            btn.classList.remove('playing');
+        } else {
+            if (stateSliderValue >= 100) {
+                document.getElementById('state-slider').value = 0;
+                stateSliderValue = 0;
+            }
+            btn.innerHTML = '&#9646;&#9646;';
+            btn.classList.add('playing');
+            statePlayInterval = setInterval(() => {
+                stateSliderValue += 1;
+                document.getElementById('state-slider').value = stateSliderValue;
+                updateStateSlider();
+                if (stateSliderValue >= 100) {
+                    toggleStatePlay();
+                }
+            }, 80);
+        }
+    }
+
+    // =========================================================================
+    // LAYOUTS
+    // =========================================================================
+
+    function changeLayout() {
+        currentLayout = document.getElementById('layout-select').value;
+        clearTierPlatforms();
+        switch(currentLayout) {
+            case 'cylinder': applyCylinderLayout(); break;
+            case 'force': applyForceLayout(); break;
+            case 'layered': applyLayeredLayout(); break;
+        }
+    }
+
+    function applyForceLayout() {
+        const nodes = graph.graphData().nodes;
+        nodes.forEach(node => { node.fx = undefined; node.fy = undefined; node.fz = undefined; });
+        graph.d3ReheatSimulation();
+    }
+
+    function applyLayeredLayout() {
+        const nodes = graph.graphData().nodes;
+        if (!nodes.length) return;
+        const tierSpacing = 120;
+        const tierCounts = {};
+        nodes.forEach(node => {
+            const tier = node.tier || 0;
+            if (!tierCounts[tier]) tierCounts[tier] = { count: 0, total: 0 };
+            tierCounts[tier].total++;
+        });
+        nodes.forEach(node => {
+            const tier = node.tier || 0;
+            const angle = (tierCounts[tier].count / tierCounts[tier].total) * Math.PI * 2;
+            const radius = 30 + tier * 100;
+            node.fx = Math.cos(angle) * radius;
+            node.fy = Math.sin(angle) * radius;
+            node.fz = tier * tierSpacing;
+            tierCounts[tier].count++;
+        });
+        graph.d3ReheatSimulation();
+        setTimeout(() => graph.zoomToFit(500), 100);
+    }
+
+    function clearTierPlatforms() {
+        const scene = graph.scene();
+        tierPlatforms.forEach(mesh => {
+            scene.remove(mesh);
+            if (mesh.geometry) mesh.geometry.dispose();
+            if (mesh.material) mesh.material.dispose();
+        });
+        tierPlatforms = [];
+    }
+
+    function applyCylinderLayout() {
+        clearTierPlatforms();
+        const scene = graph.scene();
+        const baseRadius = 80;
+        const tierRadiusStep = 80;
+        const tierSpacing = 100;
+
+        // Create ring platforms with tier labels
+        if (ringsEnabled) {
+            for (let tier = 0; tier <= 4; tier++) {
+                const radius = baseRadius + tier * tierRadiusStep;
+                const ringGeometry = new THREE.TorusGeometry(radius, 2.5, 8, 64);
+                const ringMaterial = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(RING_COLORS[tier]),
+                    transparent: true,
+                    opacity: 0.4
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.y = tier * tierSpacing;
+                scene.add(ring);
+                tierPlatforms.push(ring);
+
+                // Ring label sprite
+                const labelCanvas = document.createElement('canvas');
+                const lctx = labelCanvas.getContext('2d');
+                labelCanvas.width = 512;
+                labelCanvas.height = 64;
+                lctx.font = 'bold 28px -apple-system, sans-serif';
+                lctx.textAlign = 'center';
+                lctx.fillStyle = 'rgba(0,0,0,0.5)';
+                lctx.fillText(RING_NAMES[tier], 257, 41);
+                lctx.fillStyle = RING_COLORS[tier];
+                lctx.fillText(RING_NAMES[tier], 256, 40);
+                const labelTexture = new THREE.CanvasTexture(labelCanvas);
+                const labelSpriteMat = new THREE.SpriteMaterial({ map: labelTexture, transparent: true, depthTest: false });
+                const labelSprite = new THREE.Sprite(labelSpriteMat);
+                labelSprite.scale.set(radius * 0.8, radius * 0.1, 1);
+                labelSprite.position.set(0, tier * tierSpacing + 30, -radius - 20);
+                scene.add(labelSprite);
+                tierPlatforms.push(labelSprite);
+            }
+        }
+
+        applyFixedPositions();
+
+        graph.d3ReheatSimulation();
+        setTimeout(() => {
+            graph.cameraPosition({ x: 300, y: 250, z: 400 }, { x: 0, y: 150, z: 0 }, 1000);
+        }, 100);
+    }
+
+    function applyFixedPositions() {
+        const nodes = graph.graphData().nodes;
+        if (!nodes.length) return;
+        const baseRadius = 80;
+        const tierRadiusStep = 80;
+        const tierSpacing = 100;
+
+        // Group nodes by tier
+        const tierGroups = {};
+        nodes.forEach(node => {
+            const tier = node.tier || 0;
+            if (!tierGroups[tier]) tierGroups[tier] = [];
+            tierGroups[tier].push(node);
+        });
+
+        Object.entries(tierGroups).forEach(([tier, tierNodes]) => {
+            const t = parseInt(tier);
+            const radius = baseRadius + t * tierRadiusStep;
+            const y = t * tierSpacing;
+
+            tierNodes.forEach((node, i) => {
+                const angle = (i / tierNodes.length) * Math.PI * 2 - Math.PI / 2;
+                node.fx = Math.cos(angle) * radius;
+                node.fy = y;
+                node.fz = Math.sin(angle) * radius;
+            });
+        });
+    }
+
+    // =========================================================================
+    // NODE RENDERING
+    // =========================================================================
+
+    function createLogoLabelSprite(node) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 256;
+        canvas.height = 320;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const fillColor = node.color || '#a0aec0';
+        const nodeOpacity = node.opacity !== undefined ? node.opacity : 1;
+
+        // Label below
+        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        let displayText = node.name;
+        while (ctx.measureText(displayText).width > 240 && displayText.length > 3) {
+            displayText = displayText.slice(0, -4) + '...';
+        }
+        ctx.globalAlpha = nodeOpacity;
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillText(displayText, 129, 241);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(displayText, 128, 240);
+
+        // Status label
+        if (node.statusLabel) {
+            ctx.font = 'bold 16px -apple-system, sans-serif';
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillText(node.statusLabel, 129, 271);
+            ctx.fillStyle = fillColor;
+            ctx.fillText(node.statusLabel, 128, 270);
+        }
+
+        // Outer glow ring
+        ctx.beginPath();
+        ctx.arc(128, 110, 100, 0, Math.PI * 2);
+        ctx.strokeStyle = fillColor;
+        ctx.lineWidth = 3;
+        ctx.globalAlpha = nodeOpacity * 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = nodeOpacity;
+
+        // Colored circle
+        ctx.beginPath();
+        ctx.arc(128, 110, 96, 0, Math.PI * 2);
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+
+        // Border
+        ctx.beginPath();
+        ctx.arc(128, 110, 96, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Initials
+        const initials = node.name.split(/[\s\-\/()]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        ctx.font = 'bold 56px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(initials, 128, 110);
+
+        // Tier badge
+        ctx.beginPath();
+        ctx.arc(128, 195, 20, 0, Math.PI * 2);
+        ctx.fillStyle = node.ringColor || '#718096';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.font = 'bold 16px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('T' + node.tier, 128, 196);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMat = new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            opacity: nodeOpacity,
+            depthTest: false,
+            depthWrite: false
+        });
+        const sprite = new THREE.Sprite(spriteMat);
+        const size = Math.max((node.val || 10) / 5, 3) * 2;
+        sprite.scale.set(size * 3, size * 3.75, 1);
+        sprite.renderOrder = 1000;
+
+        // Load favicon or logo
+        const logoUrl = node.logo || (node.favicon ? `https://www.google.com/s2/favicons?domain=${node.favicon}&sz=128` : null);
+        if (logoUrl) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            let proxiedUrl = logoUrl;
+            if (!logoUrl.startsWith('data:') && !logoUrl.includes('google.com/s2/favicons')) {
+                try {
+                    const urlObj = new URL(logoUrl);
+                    const urlNoProto = urlObj.host + urlObj.pathname + urlObj.search;
+                    proxiedUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(urlNoProto);
+                } catch (e) {}
+            }
+            img.onload = () => {
+                ctx.globalAlpha = nodeOpacity;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(128, 110, 90, 0, Math.PI * 2);
+                ctx.clip();
+                // White bg for favicon visibility
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(32, 14, 192, 192);
+                ctx.drawImage(img, 48, 30, 160, 160);
+                ctx.restore();
+                texture.needsUpdate = true;
+            };
+            img.onerror = () => { texture.needsUpdate = true; };
+            img.src = proxiedUrl;
+        }
+
+        return sprite;
+    }
+
+    function rebuildNodeRendering() {
+        if (logoLabelsEnabled) {
+            graph.nodeThreeObject(node => createLogoLabelSprite(node));
+            graph.nodeThreeObjectExtend(false);
+        } else {
+            graph.nodeThreeObjectExtend(true);
+            graph.nodeThreeObject(node => {
+                const group = new THREE.Group();
+                const size = (node.val || 10) / 6;
+                const geometry = node.tier === 0 ?
+                    new THREE.IcosahedronGeometry(size * 1.5) :
+                    new THREE.SphereGeometry(size * 0.8, 16, 16);
+                const material = new THREE.MeshPhongMaterial({
+                    color: node.color || '#718096',
+                    transparent: true,
+                    opacity: node.opacity || 0.9,
+                    shininess: 80
+                });
+                group.add(new THREE.Mesh(geometry, material));
+
+                // Glow
+                const glowGeometry = new THREE.SphereGeometry(size * 2, 16, 16);
+                const glowMaterial = new THREE.MeshBasicMaterial({
+                    color: node.color || '#718096',
+                    transparent: true,
+                    opacity: 0.12
+                });
+                group.add(new THREE.Mesh(glowGeometry, glowMaterial));
+
+                // Label
+                const lcanvas = document.createElement('canvas');
+                const lctx = lcanvas.getContext('2d');
+                lcanvas.width = 256;
+                lcanvas.height = 64;
+                lctx.font = 'bold 18px Arial';
+                lctx.textAlign = 'center';
+                lctx.fillStyle = 'white';
+                lctx.fillText(node.name.substring(0, 28), 128, 40);
+                const tex = new THREE.CanvasTexture(lcanvas);
+                const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+                const spr = new THREE.Sprite(spriteMat);
+                spr.scale.set(40, 10, 1);
+                spr.position.y = size * 2 + 8;
+                group.add(spr);
+
+                return group;
+            });
+        }
+    }
+
+    // =========================================================================
+    // NODE INFO PANEL
+    // =========================================================================
+
+    function showNodeInfo(node) {
+        selectedNode = node;
+        document.getElementById('placeholder').style.display = 'none';
+        document.getElementById('node-info').classList.add('active');
+
+        document.getElementById('node-color').style.background = node.color;
+        document.getElementById('node-title').textContent = node.name;
+
+        const tierEl = document.getElementById('node-tier');
+        tierEl.textContent = node.ringName || RING_NAMES[node.tier] || 'Unknown';
+        tierEl.className = 'node-tier tier-' + TIER_CLASSES[node.tier];
+
+        document.getElementById('node-description').textContent = node.description || '';
+
+        let metaHtml = '';
+        metaHtml += '<span><span class="label">Ring:</span> ' + (node.ringName || RING_NAMES[node.tier]) + ' (Tier ' + node.tier + ')</span>';
+        metaHtml += '<span><span class="label">Status:</span> ' + (node.statusLabel || 'Unknown') + '</span>';
+        const t = stateSliderValue / 100;
+        metaHtml += '<span><span class="label">Vision Progress:</span> ' + Math.round(t * 100) + '%</span>';
+        document.getElementById('node-meta').innerHTML = metaHtml;
+
+        // Connections
+        const connections = [];
+        const currentLinks = graph.graphData().links;
+        currentLinks.forEach(link => {
+            const sId = typeof link.source === 'object' ? link.source.id : link.source;
+            const tId = typeof link.target === 'object' ? link.target.id : link.target;
+            if (sId === node.id) {
+                const target = nodeMap[tId];
+                if (target) connections.push({ node: target, relation: 'outgoing', link });
+            } else if (tId === node.id) {
+                const source = nodeMap[sId];
+                if (source) connections.push({ node: source, relation: 'incoming', link });
+            }
+        });
+
+        const listEl = document.getElementById('connections-list');
+        if (connections.length > 0) {
+            document.getElementById('connections-section').style.display = 'block';
+            listEl.innerHTML = connections.map(conn => {
+                const typeLabel = conn.link.type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                const arrow = conn.relation === 'outgoing' ? '&darr;' : '&uarr;';
+                return '<li class="connection-item" onclick="focusNode(\'' + conn.node.id + '\')">' +
+                    '<div class="conn-color" style="background:' + conn.node.color + '"></div>' +
+                    '<div class="conn-info">' +
+                    '<div class="name">' + conn.node.name + '</div>' +
+                    '<div class="relation">' + arrow + ' ' + typeLabel + '</div>' +
+                    '</div></li>';
+            }).join('');
+        } else {
+            document.getElementById('connections-section').style.display = 'none';
+        }
+    }
+
+    function focusNode(nodeId) {
+        const node = nodeMap[nodeId];
+        if (node && node.x !== undefined) {
+            const distance = 150;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z || 1);
+            graph.cameraPosition(
+                { x: node.x * distRatio, y: node.y * distRatio, z: (node.z || 0) * distRatio },
+                node, 1500
+            );
+            showNodeInfo(node);
+        }
+    }
+
+    function handleNodeClick(node) {
+        if (node) {
+            showNodeInfo(node);
+            const distance = 150;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z || 1);
+            graph.cameraPosition(
+                { x: node.x * distRatio, y: node.y * distRatio, z: (node.z || 0) * distRatio },
+                node, 1500
+            );
+        }
+    }
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
+
+    function init() {
+        // Build initial graph at current state (t=0)
+        graphData = buildGraphData(0);
+
+        // Build node lookup
+        graphData.nodes.forEach(n => { nodeMap[n.id] = n; });
+
+        // Update initial stats
+        updateStateStats(0);
+
+        // Setup filter handlers
+        setupFilterHandlers();
+
+        // Initialize graph
+        const container = document.getElementById('graph');
+
+        graph = ForceGraph3D()(container)
+            .backgroundColor('#0a0a1a')
+            .graphData(graphData)
+            .nodeLabel('')
+            .nodeVal(node => node.val || 10)
+            .nodeColor(node => node.color || '#718096')
+            .nodeOpacity(0.9)
+            .linkColor(link => link.color || 'rgba(99,179,237,0.35)')
+            .linkWidth(link => link.width || 1)
+            .linkOpacity(link => link.opacity || 0.7)
+            .linkCurvature(link => link.type === 'feedback' ? 0.2 : 0)
+            .linkLineDash(link => link.dashed ? [4, 4] : null)
+            .linkDirectionalParticles(link => {
+                if (link.opacity < 0.1) return 0;
+                if (link.type === 'feedback') return 3;
+                if (link.type === 'automated') return 4;
+                return 2;
+            })
+            .linkDirectionalParticleWidth(link => link.type === 'automated' ? 3 : 2)
+            .linkDirectionalParticleSpeed(0.005)
+            .linkDirectionalParticleColor(link => {
+                if (link.type === 'feedback') return '#ed64a6';
+                if (link.type === 'automated') return '#38a169';
+                if (link.type === 'manual_process') return '#d69e2e';
+                return '#dd6b20';
+            })
+            .onNodeHover(node => { container.style.cursor = node ? 'pointer' : 'default'; })
+            .onNodeClick(node => handleNodeClick(node));
+
+        // Node rendering
+        rebuildNodeRendering();
+
+        // Lighting
+        const scene = graph.scene();
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(100, 200, 100);
+        scene.add(dirLight);
+
+        // Default to cylinder layout
+        setTimeout(() => {
+            applyCylinderLayout();
+        }, 500);
+
+        document.getElementById('loading').classList.add('hidden');
+    }
+
+    // Start
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    </script>
+</body>
+</html>
