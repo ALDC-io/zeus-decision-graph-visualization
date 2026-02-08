@@ -633,11 +633,11 @@
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Direct Integration' },
         },
         {
-            id: 'eclipse-api', name: 'Eclipse API', tier: 2, group: 'processing',
-            description: 'The Eclipse data platform API - serves as the data foundation for all activation and reporting. Connects to Snowflake and manages dataset orchestration.',
+            id: 'eclipse-api', name: 'Eclipse', tier: 2, group: 'processing',
+            description: 'The Eclipse data platform - serves as the data foundation for all activation and reporting. Manages dataset orchestration and platform integrations.',
             logo: 'https://raw.githubusercontent.com/ALDC-io/zeus-decision-graph-visualization/main/output/static/aldc_icon_purple.png',
             current: { color: '#dd6b20', opacity: 1.0, size: 24, statusLabel: 'Partial Build' },
-            future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Full Platform API' },
+            future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Full Platform' },
         },
         {
             id: 'cloud-storage', name: 'Cloud Storage (Detour)', tier: 2, group: 'processing',
@@ -650,21 +650,21 @@
         // Tier 3: Demand-Side Platforms
         {
             id: 'viant-dsp', name: 'Viant', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
-            description: 'Viant\'s Adelphic DSP. Data ingestion automated via direct Eclipse connector (viant_dsp_reporting_v1). Audience push still manual.',
+            description: 'Viant\'s Adelphic DSP. Data ingestion automated via direct Eclipse connector. Audience push still manual.',
             favicon: 'viantinc.com',
             current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Fully Automated' },
         },
         {
             id: 'trade-desk', name: 'The Trade Desk', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
-            description: 'The Trade Desk DSP. Data ingestion automated via direct Eclipse connector (trade_desk_my_reports_v1). Audience push still manual.',
+            description: 'The Trade Desk DSP. Data ingestion automated via direct Eclipse connector. Audience push still manual.',
             favicon: 'thetradedesk.com',
             current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Fully Automated' },
         },
         {
             id: 'other-dsps', name: 'Other DSPs', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
-            description: 'Additional demand-side platforms (DV360, Amazon DSP, etc.) used for specialized inventory access and client-specific requirements.',
+            description: 'Additional demand-side platforms (DV360, etc.) used for specialized inventory access and client-specific requirements.',
             current: { color: '#dd6b20', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
             future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
         },
@@ -672,49 +672,49 @@
         // Tier 3: Digital Media Platforms
         {
             id: 'meta', name: 'Meta Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'Meta Ads (Facebook/Instagram). Data ingestion automated via Windsor AI (facebook_business_v1). Audience push still manual.',
+            description: 'Meta Ads (Facebook/Instagram). Data ingestion automated via Eclipse. Audience push still manual.',
             favicon: 'meta.com',
             current: { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Fully Automated' },
         },
         {
             id: 'google-ads', name: 'Google Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'Google Ads (Search, Display, YouTube, Performance Max). Data ingestion automated via Windsor AI (windsorai_v1). Audience push still manual.',
+            description: 'Google Ads (Search, Display, YouTube, Performance Max). Data ingestion automated via Eclipse. Audience push still manual.',
             favicon: 'ads.google.com',
             current: { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Fully Automated' },
         },
         {
             id: 'bing-ads', name: 'Bing Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'Microsoft Advertising (Bing Ads). Data ingestion automated via direct Eclipse connector (microsoft_bing_ads_v1).',
+            description: 'Microsoft Advertising (Bing Ads). Data ingestion automated via direct Eclipse connector.',
             favicon: 'ads.microsoft.com',
             current: { color: '#38a169', opacity: 1.0, size: 18, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Fully Automated' },
         },
         {
             id: 'tiktok-ads', name: 'TikTok Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'TikTok For Business - short-form video advertising. No Eclipse connector configured per clients repo.',
+            description: 'TikTok For Business - short-form video advertising. Not yet connected to Eclipse.',
             favicon: 'tiktok.com',
             current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
         },
         {
             id: 'linkedin-ads', name: 'LinkedIn Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'LinkedIn Marketing Solutions. Data ingestion automated via Windsor AI (windsorai_v1).',
+            description: 'LinkedIn Marketing Solutions. Data ingestion automated via Eclipse.',
             favicon: 'linkedin.com',
             current: { color: '#38a169', opacity: 1.0, size: 18, statusLabel: 'Automated (Ingestion)' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Fully Automated' },
         },
         {
             id: 'pinterest-ads', name: 'Pinterest Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'Pinterest Advertising. No Eclipse connector configured per clients repo.',
+            description: 'Pinterest Advertising. Not yet connected to Eclipse.',
             favicon: 'pinterest.com',
             current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
         },
         {
             id: 'snapchat-ads', name: 'Snapchat Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
-            description: 'Snapchat Ads Manager. No Eclipse connector configured per clients repo.',
+            description: 'Snapchat Ads Manager. Not yet connected to Eclipse.',
             favicon: 'snapchat.com',
             current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
@@ -760,58 +760,12 @@
         },
         {
             id: 'reporting', name: 'Reporting', tier: 4, group: 'feedback',
-            description: 'Current state: basic dashboard reporting with manual data pulls and limited real-time visibility. Future state: F92 Native Reporting powered by Eclipse, with real-time campaign metrics, automated insights, and client self-serve dashboards.',
+            description: 'Current state: basic dashboard reporting with manual data pulls and limited real-time visibility. Future state: native reporting powered by Eclipse, with real-time campaign metrics, automated insights, and client self-serve dashboards.',
             favicon: 'fusion92.com',
             current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Basic Dashboards' },
-            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'F92 Native (Eclipse)' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'Native (Eclipse)' },
         },
 
-        // === NEW NODES (from clients repo audit) ===
-
-        // Tier 3: Amazon DSP (demand-side platform)
-        {
-            id: 'amazon-dsp', name: 'Amazon DSP', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
-            description: 'Amazon Demand-Side Platform for programmatic display, video, and audio ads across Amazon properties and third-party sites. Automated data ingestion via Eclipse.',
-            favicon: 'amazon.com',
-            current: { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Automated (Ingestion)' },
-            future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Fully Automated' },
-        },
-
-        // Tier 2: Snowflake (data warehouse)
-        {
-            id: 'snowflake', name: 'Snowflake', tier: 2, group: 'processing',
-            description: 'Cloud data warehouse storing all normalized platform data, spend data, and flight metrics. Central data store for Eclipse platform operations.',
-            favicon: 'snowflake.com',
-            current: { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Automated' },
-            future:  { color: '#38a169', opacity: 1.0, size: 28, statusLabel: 'Automated' },
-        },
-
-        // Tier 2: Windsor AI (data aggregation)
-        {
-            id: 'windsor-ai', name: 'Windsor AI', tier: 2, group: 'processing',
-            description: 'Data aggregation platform that normalizes advertising data from Meta, Google Ads, LinkedIn, and other platforms into a unified schema for Eclipse ingestion.',
-            favicon: 'windsor.ai',
-            current: { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Automated' },
-            future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Automated' },
-        },
-
-        // Tier 1: Smartsheet (data source)
-        {
-            id: 'smartsheet', name: 'Smartsheet', tier: 1, group: 'data-sources',
-            description: 'Budget and spend tracking sheets used for campaign financial data. Connected to Eclipse for spend data ingestion, but requires manual updates.',
-            favicon: 'smartsheet.com',
-            current: { color: '#dd6b20', opacity: 1.0, size: 18, statusLabel: 'Manual Input' },
-            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Auto-Synced' },
-        },
-
-        // Tier 2: Firebase (flight check data)
-        {
-            id: 'firebase', name: 'Firebase', tier: 2, group: 'processing',
-            description: 'Google Firebase used for flight check data storage and real-time monitoring of campaign flight parameters.',
-            favicon: 'firebase.google.com',
-            current: { color: '#38a169', opacity: 1.0, size: 18, statusLabel: 'Automated' },
-            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Automated' },
-        },
     ];
 
     // Link definitions with current and future states
@@ -997,55 +951,6 @@
           current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
-        // === NEW LINKS (from clients repo audit — Systems Logic connections) ===
-        // Eclipse API → Snowflake (data storage)
-        { source: 'eclipse-api', target: 'snowflake', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Windsor AI → Snowflake (data normalization)
-        { source: 'windsor-ai', target: 'snowflake', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Meta → Windsor AI (data pull via Windsor)
-        { source: 'meta', target: 'windsor-ai', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Google Ads → Windsor AI (data pull)
-        { source: 'google-ads', target: 'windsor-ai', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // LinkedIn Ads → Windsor AI (data pull)
-        { source: 'linkedin-ads', target: 'windsor-ai', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Bing Ads → Eclipse API (direct connector)
-        { source: 'bing-ads', target: 'eclipse-api', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Viant DSP → Eclipse API (direct connector)
-        { source: 'viant-dsp', target: 'eclipse-api', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Trade Desk → Eclipse API (direct connector)
-        { source: 'trade-desk', target: 'eclipse-api', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Amazon DSP → Eclipse API (direct connector)
-        { source: 'amazon-dsp', target: 'eclipse-api', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Firebase → Snowflake (flight check data)
-        { source: 'firebase', target: 'snowflake', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Smartsheet → Eclipse API (manual budget/spend data)
-        { source: 'smartsheet', target: 'eclipse-api', type: 'manual_process',
-          current: { color: ORANGE, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Snowflake → Reporting (warehouse to dashboards)
-        { source: 'snowflake', target: 'reporting', type: 'automated',
-          current: { color: GREEN, width: W, opacity: 1 },
-          future:  { color: GREEN, width: W, opacity: 1 } },
     ];
 
     // =========================================================================
@@ -1337,7 +1242,7 @@
         const barTexts = [
             'Current State - Manual Processes Dominate',
             'Phase 1 - Eliminating Cloud Storage Detour',
-            'Phase 2 - Building Eclipse API Integration',
+            'Phase 2 - Building Eclipse Integration',
             'Phase 3 - Connecting Feedback Loops',
             'Future Vision - Fully Automated Platform',
         ];
@@ -1441,7 +1346,7 @@
         // Stage 1: Data Sources → Stage 2: Identity → Stage 3: DAX/Audience →
         // Stage 4: Pre-flight/ID Translation → Stage 5: Activation → Stage 6: DSPs →
         // Stage 7: Feedback (curves below and back to Stage 3)
-        // Eclipse API sits on a connecting rail below the main flow
+        // Eclipse sits on a connecting rail below the main flow
 
         const STAGE_X = {
             // Stage 1: Data Sources (far left) — split into two sub-columns
@@ -1486,13 +1391,6 @@
 
             // Eclipse: Connecting rail below main flow
             'eclipse-api': 10,
-
-            // New nodes (from clients repo)
-            'amazon-dsp': 390,
-            'snowflake': 220,
-            'windsor-ai': -210,
-            'smartsheet': -320,
-            'firebase': 40,
         };
 
         const STAGE_Y = {
@@ -1537,13 +1435,6 @@
 
             // Eclipse rail
             'eclipse-api': -260,
-
-            // New nodes (from clients repo)
-            'amazon-dsp': -120,
-            'snowflake': -140,
-            'windsor-ai': -120,
-            'smartsheet': 0,
-            'firebase': -80,
         };
 
         nodes.forEach(node => {
@@ -1618,40 +1509,33 @@
         if (!nodes.length) return;
         const scene = graph.scene();
 
-        // Systems Logic positions — Eclipse API at center
+        // Systems Logic positions — Eclipse at center hub
         // Left: external platforms (data flows IN)
-        // Center-left: aggregation (Windsor AI)
-        // Center: Eclipse API (hub)
-        // Center-right: Snowflake (warehouse)
+        // Center: Eclipse (hub)
         // Right: outputs (reporting)
         // Below: DAX/Identity/Audience pipeline
         // Above: DSPs & media platforms
 
         const SL_X = {
-            // Left column: platforms that send data IN via Windsor
-            'meta': -350,
-            'google-ads': -350,
-            'linkedin-ads': -350,
+            // Left column: external platforms
+            'meta': -300,
+            'google-ads': -300,
+            'linkedin-ads': -300,
+            'bing-ads': -300,
+            'tiktok-ads': -300,
+            'pinterest-ads': -300,
+            'snapchat-ads': -300,
 
-            // Center-left: aggregation
-            'windsor-ai': -150,
-
-            // Platforms that connect directly to Eclipse
-            'bing-ads': -150,
+            // DSPs
             'viant-dsp': -150,
             'trade-desk': -150,
-            'amazon-dsp': -150,
-            'smartsheet': -150,
+            'other-dsps': -150,
 
-            // Center: Eclipse API
+            // Center: Eclipse
             'eclipse-api': 0,
 
-            // Center-right: Snowflake
-            'snowflake': 150,
-            'firebase': 150,
-
             // Right: outputs
-            'reporting': 320,
+            'reporting': 250,
 
             // Below center: DAX pipeline
             'dax-engine': 0,
@@ -1666,51 +1550,32 @@
             'unified-activation': 60,
 
             // Feedback loop
-            'exhaust-data': 240,
-            'perf-analytics': 240,
+            'exhaust-data': 200,
+            'perf-analytics': 200,
             'optimization-engine': 120,
 
             // Data sources
-            'marketing-leads': -250,
-            'experian': -250,
-
-            // Not connected platforms (far right, dimmed)
-            'tiktok-ads': -350,
-            'pinterest-ads': -350,
-            'snapchat-ads': -350,
-
-            // Other DSPs
-            'other-dsps': -150,
+            'marketing-leads': -200,
+            'experian': -200,
         };
 
         const SL_Y = {
-            // Windsor-path platforms (left column, spread vertically)
-            'meta': 80,
-            'google-ads': 0,
-            'linkedin-ads': -80,
-
-            // Not connected platforms
+            // External platforms (left column, spread vertically)
+            'meta': 160,
+            'google-ads': 80,
+            'linkedin-ads': 0,
+            'bing-ads': -80,
             'tiktok-ads': -160,
             'pinterest-ads': -240,
-            'snapchat-ads': 160,
+            'snapchat-ads': 240,
 
-            // Windsor aggregation
-            'windsor-ai': 0,
-
-            // Direct Eclipse connectors (spread on center-left)
-            'bing-ads': 120,
+            // DSPs (spread vertically)
             'viant-dsp': 200,
             'trade-desk': 280,
-            'amazon-dsp': 360,
-            'smartsheet': -120,
-            'other-dsps': -200,
+            'other-dsps': 120,
 
             // Eclipse hub
             'eclipse-api': 0,
-
-            // Snowflake + Firebase
-            'snowflake': 0,
-            'firebase': 100,
 
             // Outputs
             'reporting': 0,
@@ -1746,11 +1611,10 @@
         // Stage labels for Systems Logic view
         if (ringsEnabled) {
             const slStages = [
-                { label: 'External Platforms', x: -350, color: '#9f7aea' },
-                { label: 'Aggregation & Connectors', x: -150, color: '#3182ce' },
+                { label: 'External Platforms', x: -300, color: '#9f7aea' },
+                { label: 'DSPs', x: -150, color: '#3182ce' },
                 { label: 'Eclipse', x: 0, color: '#dd6b20' },
-                { label: 'Data Warehouse', x: 150, color: '#38a169' },
-                { label: 'Outputs', x: 320, color: '#ed64a6' },
+                { label: 'Outputs', x: 250, color: '#ed64a6' },
             ];
 
             slStages.forEach(stage => {
