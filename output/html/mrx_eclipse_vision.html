@@ -477,12 +477,12 @@
 
             <!-- Legend -->
             <div class="legend">
-                <div class="legend-title">Ring Tiers</div>
+                <div class="legend-title">Legend</div>
                 <div class="legend-items">
                     <div class="legend-item"><div class="legend-dot" style="background:#dd6b20"></div>DAX Core</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Data Sources</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>Processing</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#9f7aea"></div>Activation</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#9f7aea"></div>Activation & Distribution</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#ed64a6"></div>Feedback</div>
                     <div class="legend-item"><div class="legend-line" style="background:#38a169"></div>Automated</div>
                     <div class="legend-item"><div class="legend-line" style="background:#e53e3e;border-top:1px dashed #e53e3e;height:0"></div>Manual</div>
@@ -537,7 +537,7 @@
                     <span class="filter-chip active" data-ring="0"><span class="chip-color" style="background:#dd6b20"></span>DAX Core</span>
                     <span class="filter-chip active" data-ring="1"><span class="chip-color" style="background:#38a169"></span>Data Sources</span>
                     <span class="filter-chip active" data-ring="2"><span class="chip-color" style="background:#3182ce"></span>Processing</span>
-                    <span class="filter-chip active" data-ring="3"><span class="chip-color" style="background:#9f7aea"></span>Activation</span>
+                    <span class="filter-chip active" data-ring="3"><span class="chip-color" style="background:#9f7aea"></span>Activation & Distribution</span>
                     <span class="filter-chip active" data-ring="4"><span class="chip-color" style="background:#ed64a6"></span>Feedback</span>
                 </div>
             </div>
@@ -596,9 +596,18 @@
     // MRX ECLIPSE VISION DATA
     // =========================================================================
 
-    const RING_NAMES = ['DAX Core', 'Data Sources', 'Processing & Governance', 'Activation Platforms', 'Feedback & Optimization'];
+    const RING_NAMES = ['DAX Core', 'Data Sources', 'Processing & Governance', 'Activation & Distribution', 'Feedback & Optimization'];
     const RING_COLORS = ['#dd6b20', '#38a169', '#3182ce', '#9f7aea', '#ed64a6'];
     const TIER_CLASSES = ['core', 'data-sources', 'processing', 'activation', 'feedback'];
+
+    // Sub-group labels for display
+    const SUBGROUP_LABELS = {
+        'customer-data-sources': 'Customer Data Sources',
+        'customer-data-systems': 'Customer Data Systems',
+        'activation-tracking': 'Activation Tracking',
+        'demand-side-platforms': 'Demand-Side Platforms',
+        'digital-media-platforms': 'Digital Media Platforms',
+    };
 
     // Status colors
     const STATUS = {
@@ -619,21 +628,25 @@
             future:  { color: '#38a169', opacity: 1.0, size: 40, statusLabel: 'Fully Automated Hub' },
         },
 
-        // Tier 1: Data Sources
+        // Tier 1: Data Sources — Customer Data Sources
         {
-            id: 'experian', name: 'Experian', tier: 1, group: 'data-sources',
+            id: 'marketing-leads', name: 'Marketing Leads', tier: 1, group: 'customer-data-sources', subgroup: 'customer-data-sources',
+            description: 'First-party customer data from CRM systems, website analytics, marketing automation platforms, transaction history, and client-provided data files.',
+            favicon: 'fusion92.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Upload' },
+            future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Auto-Ingested' },
+        },
+
+        // Tier 1: Data Sources — Customer Data Systems
+        {
+            id: 'experian', name: 'Experian', tier: 1, group: 'customer-data-systems', subgroup: 'customer-data-systems',
             description: 'Third-party identity and demographic data provider. Supplies consumer identity resolution, credit data attributes, and audience segments for targeting.',
             favicon: 'experian.com',
             current: { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'Automated Feed' },
             future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Automated Feed' },
         },
-        {
-            id: 'internal-data', name: 'Internal Customer Data', tier: 1, group: 'data-sources',
-            description: 'First-party customer data from CRM systems, website analytics, transaction history, and client-provided data files.',
-            favicon: 'fusion92.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Upload' },
-            future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Auto-Ingested' },
-        },
+
+        // Tier 1: Identity (shared)
         {
             id: 'identity-graph', name: 'Identity Graph', tier: 1, group: 'data-sources',
             description: 'Unified identity resolution layer mapping cookies, device IDs, emails, and MAIDs to a single consumer identity across touchpoints.',
@@ -679,44 +692,99 @@
             future:  { color: '#dd6b20', opacity: 0.0, size: 0, statusLabel: 'Removed' },
         },
 
-        // Tier 3: Activation Platforms
+        // Tier 3: Activation Tracking
         {
-            id: 'meta', name: 'Meta', tier: 3, group: 'activation',
-            description: 'Meta Ads (Facebook/Instagram) activation endpoint. Currently receives audiences via manual file upload; future state enables direct API push.',
-            favicon: 'meta.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
-            future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
+            id: 'gcm', name: 'Google Campaign Manager', tier: 3, group: 'activation-tracking', subgroup: 'activation-tracking',
+            description: 'Google Campaign Manager 360 (formerly DCM/DFA) - centralized ad serving, tracking, and verification platform. Provides floodlight tags, cross-channel measurement, and attribution across all activation channels.',
+            favicon: 'google.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Tag Setup' },
+            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'Automated Tracking' },
         },
+
+        // Tier 3: Demand-Side Platforms
         {
-            id: 'viant-dsp', name: 'Viant DSP', tier: 3, group: 'activation',
+            id: 'viant-dsp', name: 'Viant', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
             description: 'Viant\'s Adelphic DSP for programmatic media buying. Primary DSP partner with deal ID support and cross-device targeting capabilities.',
             favicon: 'viantinc.com',
             current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
         },
         {
-            id: 'trade-desk', name: 'The Trade Desk', tier: 3, group: 'activation',
+            id: 'trade-desk', name: 'The Trade Desk', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
             description: 'The Trade Desk DSP - second largest programmatic platform. Used for CTV, display, and audio activation with UID2 identity support.',
             favicon: 'thetradedesk.com',
             current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Push' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'API Automated' },
         },
         {
-            id: 'other-dsps', name: 'Other DSPs', tier: 3, group: 'activation',
+            id: 'other-dsps', name: 'Other DSPs', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
             description: 'Additional demand-side platforms (DV360, Amazon DSP, etc.) used for specialized inventory access and client-specific requirements.',
             current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
             future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
         },
+
+        // Tier 3: Digital Media Platforms
+        {
+            id: 'meta', name: 'Meta Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'Meta Ads (Facebook/Instagram) activation endpoint. Currently receives audiences via manual file upload; future state enables direct API push.',
+            favicon: 'meta.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'google-ads', name: 'Google Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'Google Ads (Search, Display, YouTube, Performance Max) - primary search and display activation platform with Customer Match audience integration.',
+            favicon: 'ads.google.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'bing-ads', name: 'Bing Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'Microsoft Advertising (Bing Ads) - search and native advertising platform with audience targeting across Microsoft properties including Bing, MSN, and Outlook.',
+            favicon: 'ads.microsoft.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'tiktok-ads', name: 'TikTok Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'TikTok For Business - short-form video advertising platform with custom audience uploads and lookalike targeting capabilities.',
+            favicon: 'tiktok.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'linkedin-ads', name: 'LinkedIn Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'LinkedIn Marketing Solutions - B2B advertising platform with Matched Audiences for account-based marketing and professional targeting.',
+            favicon: 'linkedin.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'pinterest-ads', name: 'Pinterest Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'Pinterest Advertising - visual discovery and shopping platform with customer list targeting and interest-based audience activation.',
+            favicon: 'pinterest.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
+        },
+        {
+            id: 'snapchat-ads', name: 'Snapchat Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
+            description: 'Snapchat Ads Manager - mobile-first advertising platform with Snap Audience Match for custom audience activation and AR lens campaigns.',
+            favicon: 'snapchat.com',
+            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
+        },
+
+        // Tier 3: Operational nodes
         {
             id: 'media-ops', name: 'Media Ops (Manual)', tier: 3, group: 'activation',
-            description: 'CURRENT STATE: Media operations team manually downloads audience files from cloud storage and uploads them to each DSP. This is the primary bottleneck.',
+            description: 'CURRENT STATE: Media operations team manually downloads audience files from cloud storage and uploads them to each DSP and media platform. This is the primary bottleneck.',
             favicon: 'fusion92.com',
             current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Bottleneck' },
             future:  { color: '#d69e2e', opacity: 0.3, size: 12, statusLabel: 'Verification Only' },
         },
         {
             id: 'unified-activation', name: 'Unified Omnichannel Activation', tier: 3, group: 'activation',
-            description: 'FUTURE STATE: Single API-driven activation layer that pushes audiences to all DSPs simultaneously with consistent identity, frequency capping, and measurement.',
+            description: 'FUTURE STATE: Single API-driven activation layer that pushes audiences to all DSPs and digital media platforms simultaneously with consistent identity, frequency capping, and measurement.',
             favicon: 'fusion92.com',
             current: { color: '#38a169', opacity: 0.0, size: 0, statusLabel: 'Not Yet Built' },
             future:  { color: '#38a169', opacity: 1.0, size: 30, statusLabel: 'Unified Platform' },
@@ -725,7 +793,7 @@
         // Tier 4: Feedback & Optimization
         {
             id: 'exhaust-data', name: 'Exhaust Data Ingestion', tier: 4, group: 'feedback',
-            description: 'Captures campaign performance data (impressions, clicks, conversions) from DSPs and ad servers. Currently piecemeal with significant data gaps.',
+            description: 'Captures campaign performance data (impressions, clicks, conversions) from DSPs, media platforms, and ad servers. Currently piecemeal with significant data gaps.',
             favicon: 'fusion92.com',
             current: { color: '#e53e3e', opacity: 1.0, size: 20, statusLabel: 'Piecemeal/Manual' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Unified Ingestion' },
@@ -755,11 +823,11 @@
 
     // Link definitions with current and future states
     const LINK_DEFS = [
-        // Core data flow
+        // Core data flow - Data Sources to Identity
         { source: 'experian', target: 'identity-graph', type: 'data_flow',
           current: { color: 'rgba(56,161,105,0.6)', width: 2, opacity: 1 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'internal-data', target: 'identity-graph', type: 'data_flow',
+        { source: 'marketing-leads', target: 'identity-graph', type: 'data_flow',
           current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
         { source: 'identity-graph', target: 'dax-engine', type: 'data_flow',
@@ -789,9 +857,7 @@
         { source: 'cloud-storage', target: 'media-ops', type: 'manual_process',
           current: { color: 'rgba(214,158,46,0.6)', width: 2, opacity: 1, dashed: true },
           future:  { color: 'rgba(214,158,46,0.2)', width: 0.5, opacity: 0, dashed: true } },
-        { source: 'media-ops', target: 'meta', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        // Media Ops manual push to DSPs
         { source: 'media-ops', target: 'viant-dsp', type: 'manual_process',
           current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
           future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
@@ -801,14 +867,38 @@
         { source: 'media-ops', target: 'other-dsps', type: 'manual_process',
           current: { color: 'rgba(214,158,46,0.5)', width: 1, opacity: 1, dashed: true },
           future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        // Media Ops manual push to Digital Media Platforms
+        { source: 'media-ops', target: 'meta', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'google-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'bing-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'tiktok-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'linkedin-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'pinterest-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        { source: 'media-ops', target: 'snapchat-ads', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+        // Media Ops manual to GCM tracking
+        { source: 'media-ops', target: 'gcm', type: 'manual_process',
+          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
+          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
 
-        // FUTURE: Direct automated activation
+        // FUTURE: Direct automated activation via Unified Activation
         { source: 'eclipse-api', target: 'unified-activation', type: 'automated',
           current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'unified-activation', target: 'meta', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        // Unified Activation to DSPs
         { source: 'unified-activation', target: 'viant-dsp', type: 'automated',
           current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
@@ -818,11 +908,34 @@
         { source: 'unified-activation', target: 'other-dsps', type: 'automated',
           current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        // Unified Activation to Digital Media Platforms
+        { source: 'unified-activation', target: 'meta', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'unified-activation', target: 'google-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+        { source: 'unified-activation', target: 'bing-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        { source: 'unified-activation', target: 'tiktok-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        { source: 'unified-activation', target: 'linkedin-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        { source: 'unified-activation', target: 'pinterest-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        { source: 'unified-activation', target: 'snapchat-ads', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+        // Unified Activation to GCM tracking
+        { source: 'unified-activation', target: 'gcm', type: 'automated',
+          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
+          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
 
-        // Feedback loops - broken in current, complete in future
-        { source: 'meta', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        // Feedback loops - DSPs to exhaust data
         { source: 'viant-dsp', target: 'exhaust-data', type: 'feedback',
           current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
           future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
@@ -832,6 +945,33 @@
         { source: 'other-dsps', target: 'exhaust-data', type: 'feedback',
           current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
           future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        // Feedback - Digital Media Platforms to exhaust data
+        { source: 'meta', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        { source: 'google-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        { source: 'bing-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        { source: 'tiktok-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        { source: 'linkedin-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        { source: 'pinterest-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        { source: 'snapchat-ads', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+        // GCM tracking feeds back to analytics
+        { source: 'gcm', target: 'exhaust-data', type: 'feedback',
+          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
+          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+        // Internal feedback chain
         { source: 'exhaust-data', target: 'perf-analytics', type: 'feedback',
           current: { color: 'rgba(221,107,32,0.4)', width: 1, opacity: 0.7 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
@@ -848,7 +988,7 @@
           current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
           future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
 
-        // Eclipse as connecting layer - ties all systems together
+        // Eclipse as connecting layer
         { source: 'dax-engine', target: 'eclipse-api', type: 'data_flow',
           current: { color: 'rgba(49,130,206,0.3)', width: 1.5, opacity: 0.6 },
           future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
@@ -961,6 +1101,8 @@
                 name: def.name,
                 tier: def.tier,
                 group: def.group,
+                subgroup: def.subgroup || null,
+                subgroupLabel: def.subgroup ? (SUBGROUP_LABELS[def.subgroup] || null) : null,
                 description: def.description,
                 logo: def.logo || null,
                 favicon: def.favicon || null,
@@ -1255,46 +1397,57 @@
         // Eclipse API sits on a connecting rail below the main flow
 
         const STAGE_X = {
-            // Stage 1: Data Sources (far left)
-            'experian': -190,
-            'internal-data': -190,
+            // Stage 1: Data Sources (far left) — split into two sub-columns
+            'marketing-leads': -240,     // Customer Data Sources
+            'experian': -240,            // Customer Data Systems
 
             // Stage 2: Identity Resolution
-            'identity-graph': -120,
+            'identity-graph': -160,
 
             // Stage 3: DAX Core + Audience Building
-            'dax-engine': -55,
-            'audience-engine': -5,
+            'dax-engine': -90,
+            'audience-engine': -35,
 
             // Stage 4: Pre-flight + ID Translation
-            'flightcheck': 48,
-            'id-mapping': 95,
+            'flightcheck': 25,
+            'id-mapping': 80,
 
             // Stage 5: Activation (current manual path vs future automated)
-            'cloud-storage': 138,        // current: band-aid detour
-            'media-ops': 172,            // current: manual upload
-            'unified-activation': 152,   // future: automated API push
+            'cloud-storage': 125,        // current: band-aid detour
+            'media-ops': 160,            // current: manual upload
+            'unified-activation': 140,   // future: automated API push
 
-            // Stage 6: DSP Endpoints (right side, stacked)
-            'meta': 215,
-            'viant-dsp': 215,
-            'trade-desk': 215,
-            'other-dsps': 215,
+            // Stage 6a: Activation Tracking
+            'gcm': 220,
+
+            // Stage 6b: Demand-Side Platforms (DSPs)
+            'viant-dsp': 280,
+            'trade-desk': 280,
+            'other-dsps': 280,
+
+            // Stage 6c: Digital Media Platforms
+            'meta': 340,
+            'google-ads': 340,
+            'bing-ads': 340,
+            'tiktok-ads': 340,
+            'linkedin-ads': 340,
+            'pinterest-ads': 340,
+            'snapchat-ads': 340,
 
             // Stage 7: Feedback loop (below, curves back left)
-            'exhaust-data': 180,
-            'perf-analytics': 90,
-            'optimization-engine': -5,
-            'reporting': 138,
+            'exhaust-data': 240,
+            'perf-analytics': 100,
+            'optimization-engine': -35,
+            'reporting': 160,
 
             // Eclipse: Connecting rail below main flow
-            'eclipse-api': 20,
+            'eclipse-api': 0,
         };
 
         const STAGE_Y = {
             // Main flow runs along Y=0 centerline
-            'experian': 28,
-            'internal-data': -28,
+            'marketing-leads': 28,       // Customer Data Sources (above)
+            'experian': -28,             // Customer Data Systems (below)
 
             'identity-graph': 0,
 
@@ -1305,26 +1458,37 @@
             'id-mapping': 0,
 
             // Current manual path (slightly above)
-            'cloud-storage': 32,
-            'media-ops': 32,
+            'cloud-storage': 38,
+            'media-ops': 38,
 
             // Future automated path (on centerline)
             'unified-activation': 0,
 
+            // Activation Tracking (centered on main flow)
+            'gcm': 0,
+
             // DSPs fanned out vertically
-            'meta': 44,
-            'viant-dsp': 16,
-            'trade-desk': -16,
-            'other-dsps': -44,
+            'viant-dsp': 24,
+            'trade-desk': 0,
+            'other-dsps': -24,
+
+            // Digital Media Platforms fanned out vertically
+            'meta': 78,
+            'google-ads': 52,
+            'bing-ads': 26,
+            'tiktok-ads': 0,
+            'linkedin-ads': -26,
+            'pinterest-ads': -52,
+            'snapchat-ads': -78,
 
             // Feedback loop runs below main flow
-            'exhaust-data': -72,
-            'perf-analytics': -72,
-            'optimization-engine': -72,
-            'reporting': -72,
+            'exhaust-data': -100,
+            'perf-analytics': -100,
+            'optimization-engine': -100,
+            'reporting': -100,
 
             // Eclipse rail
-            'eclipse-api': -105,
+            'eclipse-api': -135,
         };
 
         nodes.forEach(node => {
@@ -1337,12 +1501,14 @@
         if (ringsEnabled) {
             // Stage labels above the main flow
             const stages = [
-                { label: '1. Data Sources', x: -190, color: '#38a169' },
-                { label: '2. Identity', x: -120, color: '#38a169' },
-                { label: '3. Audience', x: -30, color: '#dd6b20' },
-                { label: '4. Pre-Flight & ID', x: 70, color: '#3182ce' },
-                { label: '5. Activation', x: 152, color: '#9f7aea' },
-                { label: '6. DSPs', x: 215, color: '#9f7aea' },
+                { label: '1. Data Sources', x: -240, color: '#38a169' },
+                { label: '2. Identity', x: -160, color: '#38a169' },
+                { label: '3. Audience', x: -62, color: '#dd6b20' },
+                { label: '4. Pre-Flight & ID', x: 52, color: '#3182ce' },
+                { label: '5. Activation', x: 140, color: '#9f7aea' },
+                { label: '6a. Tracking', x: 220, color: '#9f7aea' },
+                { label: '6b. DSPs', x: 280, color: '#9f7aea' },
+                { label: '6c. Media Platforms', x: 340, color: '#9f7aea' },
             ];
 
             stages.forEach(stage => {
@@ -1381,7 +1547,7 @@
             const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false });
             const fbspr = new THREE.Sprite(fbmat);
             fbspr.scale.set(85, 8, 1);
-            fbspr.position.set(80, -98, 0);
+            fbspr.position.set(100, -128, 0);
             scene.add(fbspr);
             tierPlatforms.push(fbspr);
 
@@ -1398,15 +1564,42 @@
             const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false });
             const espr = new THREE.Sprite(emat);
             espr.scale.set(85, 8, 1);
-            espr.position.set(20, -128, 0);
+            espr.position.set(0, -158, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
+
+            // Sub-group labels for Data Sources
+            const dsLabels = [
+                { label: 'Customer Data Sources', x: -240, y: 52, color: '#38a169' },
+                { label: 'Customer Data Systems', x: -240, y: -52, color: '#38a169' },
+                { label: 'Activation Tracking', x: 220, y: 24, color: '#c084fc' },
+                { label: 'Demand-Side Platforms', x: 280, y: 48, color: '#c084fc' },
+                { label: 'Digital Media Platforms', x: 340, y: 100, color: '#c084fc' },
+            ];
+            dsLabels.forEach(dl => {
+                const dc = document.createElement('canvas');
+                const dx = dc.getContext('2d');
+                dc.width = 512;
+                dc.height = 48;
+                dx.font = 'italic 22px -apple-system, sans-serif';
+                dx.textAlign = 'center';
+                dx.fillStyle = dl.color;
+                dx.globalAlpha = 0.7;
+                dx.fillText(dl.label, 256, 30);
+                const dtex = new THREE.CanvasTexture(dc);
+                const dmat = new THREE.SpriteMaterial({ map: dtex, transparent: true, depthTest: false });
+                const dspr = new THREE.Sprite(dmat);
+                dspr.scale.set(60, 5, 1);
+                dspr.position.set(dl.x, dl.y, 0);
+                scene.add(dspr);
+                tierPlatforms.push(dspr);
+            });
 
         }
 
         graph.d3ReheatSimulation();
         setTimeout(() => {
-            graph.cameraPosition({ x: 15, y: -18, z: 340 }, { x: 15, y: -18, z: 0 }, 1000);
+            graph.cameraPosition({ x: 50, y: -18, z: 480 }, { x: 50, y: -18, z: 0 }, 1000);
         }, 100);
     }
 
@@ -1717,6 +1910,9 @@
 
         let metaHtml = '';
         metaHtml += '<span><span class="label">Ring:</span> ' + (node.ringName || RING_NAMES[node.tier]) + ' (Tier ' + node.tier + ')</span>';
+        if (node.subgroupLabel) {
+            metaHtml += '<span><span class="label">Group:</span> ' + node.subgroupLabel + '</span>';
+        }
         metaHtml += '<span><span class="label">Status:</span> ' + (node.statusLabel || 'Unknown') + '</span>';
         const t = stateSliderValue / 100;
         metaHtml += '<span><span class="label">Vision Progress:</span> ' + Math.round(t * 100) + '%</span>';
