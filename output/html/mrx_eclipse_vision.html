@@ -92,7 +92,7 @@
         /* State indicator */
         .state-indicator {
             padding: 10px 15px;
-            background: linear-gradient(90deg, #e53e3e, #38a169);
+            background: linear-gradient(90deg, #dd6b20, #38a169);
             text-align: center;
             font-size: 12px;
             font-weight: 600;
@@ -340,7 +340,7 @@
             width: 200px;
             height: 6px;
             -webkit-appearance: none;
-            background: linear-gradient(90deg, #e53e3e, #d69e2e, #38a169);
+            background: linear-gradient(90deg, #dd6b20, #d69e2e, #38a169);
             border-radius: 3px;
             cursor: pointer;
         }
@@ -450,11 +450,9 @@
             <div class="legend">
                 <div class="legend-title">Legend</div>
                 <div class="legend-items">
-                    <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Manual Process</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#dd6b20"></div>Manual Process</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Automated</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#63b3ed"></div>Not Connected</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#718096"></div>Inactive</div>
-                    <div class="legend-item"><div class="legend-line" style="background:#63b3ed;border-top:2px dashed #63b3ed;height:0"></div>Not Yet Implemented</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Not Connected</div>
                 </div>
             </div>
 
@@ -513,7 +511,7 @@
                 </div>
                 <div class="filter-chips" id="link-filters">
                     <span class="filter-chip active" data-link="data_flow"><span class="chip-color" style="background:#38a169"></span>Data Flow</span>
-                    <span class="filter-chip active" data-link="manual_process"><span class="chip-color" style="background:#d69e2e"></span>Manual</span>
+                    <span class="filter-chip active" data-link="manual_process"><span class="chip-color" style="background:#dd6b20"></span>Manual</span>
                     <span class="filter-chip active" data-link="automated"><span class="chip-color" style="background:#48bb78"></span>Automated</span>
                     <span class="filter-chip active" data-link="feedback"><span class="chip-color" style="background:#ed64a6"></span>Feedback</span>
                 </div>
@@ -569,11 +567,9 @@
     // Status colors
     const STATUS = {
         AUTOMATED: '#38a169',   // green
-        MANUAL: '#d69e2e',      // yellow
-        BANDAID: '#dd6b20',     // orange
-        BROKEN: '#e53e3e',      // red
-        NOT_CONNECTED: '#63b3ed', // light blue - not yet connected
-        INACTIVE: '#718096',    // gray - deactivated/ended
+        MANUAL: '#dd6b20',      // orange - manual process
+        BANDAID: '#d69e2e',     // yellow - workaround
+        NOT_CONNECTED: '#e53e3e', // red - not connected
     };
 
     // Node definitions with current and future states
@@ -592,7 +588,7 @@
             id: 'marketing-leads', name: 'Marketing Leads', tier: 1, group: 'customer-data-sources', subgroup: 'customer-data-sources',
             description: 'First-party customer data from CRM systems, website analytics, marketing automation platforms, transaction history, and client-provided data files.',
             favicon: 'fusion92.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Upload' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 22, statusLabel: 'Manual Upload' },
             future:  { color: '#38a169', opacity: 1.0, size: 25, statusLabel: 'Auto-Ingested' },
         },
 
@@ -619,7 +615,7 @@
             id: 'flightcheck', name: 'Flightcheck', tier: 2, group: 'processing',
             description: 'Pre-flight validation system that checks audience definitions, data quality, and campaign parameters before activation. Acts as a quality gate.',
             favicon: 'fusion92.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Semi-Automated' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Semi-Automated' },
             future:  { color: '#38a169', opacity: 1.0, size: 24, statusLabel: 'Fully Automated QA' },
         },
         {
@@ -651,15 +647,6 @@
             future:  { color: '#dd6b20', opacity: 0.0, size: 0, statusLabel: 'Removed' },
         },
 
-        // Tier 3: Activation Tracking
-        {
-            id: 'gcm', name: 'Google Campaign Manager', tier: 3, group: 'activation-tracking', subgroup: 'activation-tracking',
-            description: 'Google Campaign Manager 360 (formerly DCM/DFA) - centralized ad serving, tracking, and verification platform. NOTE: Connection ended 2025-07-19 per clients repo. May be reactivated in future.',
-            favicon: 'google.com',
-            current: { color: '#718096', opacity: 0.6, size: 18, statusLabel: 'Inactive (Ended)' },
-            future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'Automated Tracking' },
-        },
-
         // Tier 3: Demand-Side Platforms
         {
             id: 'viant-dsp', name: 'Viant', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
@@ -678,7 +665,7 @@
         {
             id: 'other-dsps', name: 'Other DSPs', tier: 3, group: 'demand-side-platforms', subgroup: 'demand-side-platforms',
             description: 'Additional demand-side platforms (DV360, Amazon DSP, etc.) used for specialized inventory access and client-specific requirements.',
-            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 18, statusLabel: 'Manual Push' },
             future:  { color: '#38a169', opacity: 1.0, size: 22, statusLabel: 'API Automated' },
         },
 
@@ -708,7 +695,7 @@
             id: 'tiktok-ads', name: 'TikTok Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
             description: 'TikTok For Business - short-form video advertising. No Eclipse connector configured per clients repo.',
             favicon: 'tiktok.com',
-            current: { color: '#63b3ed', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
+            current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
         },
         {
@@ -722,14 +709,14 @@
             id: 'pinterest-ads', name: 'Pinterest Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
             description: 'Pinterest Advertising. No Eclipse connector configured per clients repo.',
             favicon: 'pinterest.com',
-            current: { color: '#63b3ed', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
+            current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
         },
         {
             id: 'snapchat-ads', name: 'Snapchat Ads', tier: 3, group: 'digital-media-platforms', subgroup: 'digital-media-platforms',
             description: 'Snapchat Ads Manager. No Eclipse connector configured per clients repo.',
             favicon: 'snapchat.com',
-            current: { color: '#63b3ed', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
+            current: { color: '#e53e3e', opacity: 0.7, size: 16, statusLabel: 'Not Connected' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'API Automated' },
         },
 
@@ -738,8 +725,8 @@
             id: 'media-ops', name: 'Media Ops (Manual)', tier: 3, group: 'activation',
             description: 'CURRENT STATE: Media operations team manually downloads audience files from cloud storage and uploads them to each DSP and media platform. This is the primary bottleneck.',
             favicon: 'nextcloud.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 22, statusLabel: 'Manual Bottleneck' },
-            future:  { color: '#d69e2e', opacity: 0.3, size: 12, statusLabel: 'Verification Only' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 22, statusLabel: 'Manual Bottleneck' },
+            future:  { color: '#dd6b20', opacity: 0.3, size: 12, statusLabel: 'Verification Only' },
         },
         {
             id: 'unified-activation', name: 'Unified Omnichannel Activation', tier: 3, group: 'activation',
@@ -775,7 +762,7 @@
             id: 'reporting', name: 'Reporting', tier: 4, group: 'feedback',
             description: 'Current state: basic dashboard reporting with manual data pulls and limited real-time visibility. Future state: F92 Native Reporting powered by Eclipse, with real-time campaign metrics, automated insights, and client self-serve dashboards.',
             favicon: 'fusion92.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 20, statusLabel: 'Basic Dashboards' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 20, statusLabel: 'Basic Dashboards' },
             future:  { color: '#38a169', opacity: 1.0, size: 26, statusLabel: 'F92 Native (Eclipse)' },
         },
 
@@ -813,7 +800,7 @@
             id: 'smartsheet', name: 'Smartsheet', tier: 1, group: 'data-sources',
             description: 'Budget and spend tracking sheets used for campaign financial data. Connected to Eclipse for spend data ingestion, but requires manual updates.',
             favicon: 'smartsheet.com',
-            current: { color: '#d69e2e', opacity: 1.0, size: 18, statusLabel: 'Manual Input' },
+            current: { color: '#dd6b20', opacity: 1.0, size: 18, statusLabel: 'Manual Input' },
             future:  { color: '#38a169', opacity: 1.0, size: 20, statusLabel: 'Auto-Synced' },
         },
 
@@ -833,8 +820,8 @@
     // All widths standardized to 2
     const W = 2; // standard line width
     const GREEN = 'rgba(56,161,105,0.7)';
-    const RED = 'rgba(229,62,62,0.7)';
-    const BLUE_DASHED = 'rgba(99,179,237,0.6)';  // light blue for not yet implemented
+    const ORANGE = 'rgba(221,107,32,0.7)';   // orange for manual process
+    const RED = 'rgba(229,62,62,0.7)';           // red for not connected
 
     const LINK_DEFS = [
         // === AUTOMATED (solid green) — working today ===
@@ -846,179 +833,168 @@
           current: { color: GREEN, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
-        // === MANUAL PROCESS (solid red) — working but manual ===
+        // === MANUAL PROCESS (solid orange) — working but manual ===
         { source: 'marketing-leads', target: 'identity-graph', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'identity-graph', target: 'dax-engine', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'dax-engine', target: 'audience-engine', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'flightcheck', target: 'id-mapping', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'audience-engine', target: 'eclipse-api', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
-        // Manual detour chain (solid red)
+        // Manual detour chain (solid orange)
         { source: 'id-mapping', target: 'cloud-storage', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'cloud-storage', target: 'media-ops', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         // Media Ops manual push to DSPs
         { source: 'media-ops', target: 'viant-dsp', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'trade-desk', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'other-dsps', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         // Media Ops manual push to Digital Media Platforms
         { source: 'media-ops', target: 'meta', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'google-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'bing-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'tiktok-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'linkedin-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'pinterest-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'snapchat-ads', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
-        { source: 'media-ops', target: 'gcm', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
-          future:  { color: RED, width: W, opacity: 0 } },
-
+          current: { color: ORANGE, width: W, opacity: 1 },
+          future:  { color: ORANGE, width: W, opacity: 0 } },
         // Eclipse connecting layer (manual/partial today)
         { source: 'dax-engine', target: 'eclipse-api', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'identity-graph', target: 'eclipse-api', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
-        // Feedback - partial/broken today (solid red)
+        // Feedback - partial/broken today (solid orange)
         { source: 'exhaust-data', target: 'perf-analytics', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'perf-analytics', target: 'reporting', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
         // === NOT YET IMPLEMENTED (dashed green) — future automated ===
         // Eclipse to Reporting
         { source: 'eclipse-api', target: 'reporting', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Eclipse direct integrations
         { source: 'eclipse-api', target: 'id-mapping', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'eclipse-api', target: 'flightcheck', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation hub
         { source: 'eclipse-api', target: 'unified-activation', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to DSPs
         { source: 'unified-activation', target: 'viant-dsp', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'trade-desk', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'other-dsps', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to Digital Media Platforms
         { source: 'unified-activation', target: 'meta', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'google-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'bing-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'tiktok-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'linkedin-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'pinterest-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'snapchat-ads', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
-        { source: 'unified-activation', target: 'gcm', type: 'automated',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-
-        // === NOT YET IMPLEMENTED (dashed red) — feedback loops not built ===
+        // === NOT CONNECTED (dashed red) — feedback loops not built ===
         // DSPs to exhaust data
         { source: 'viant-dsp', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'trade-desk', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'other-dsps', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Digital Media Platforms to exhaust data
         { source: 'meta', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'google-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'bing-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'tiktok-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'linkedin-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'pinterest-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'snapchat-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
-        { source: 'gcm', target: 'exhaust-data', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
-          future:  { color: GREEN, width: W, opacity: 1 } },
-        // Optimization loop (not implemented)
+        // Optimization loop (not connected)
         { source: 'perf-analytics', target: 'optimization-engine', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'optimization-engine', target: 'audience-engine', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'exhaust-data', target: 'eclipse-api', type: 'feedback',
-          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: RED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
         // === NEW LINKS (from clients repo audit — Systems Logic connections) ===
@@ -1064,7 +1040,7 @@
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Smartsheet → Eclipse API (manual budget/spend data)
         { source: 'smartsheet', target: 'eclipse-api', type: 'manual_process',
-          current: { color: RED, width: W, opacity: 1 },
+          current: { color: ORANGE, width: W, opacity: 1 },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Snowflake → Reporting (warehouse to dashboards)
         { source: 'snowflake', target: 'reporting', type: 'automated',
@@ -1244,8 +1220,8 @@
                 .linkDirectionalParticleSpeed(0.006)
                 .linkDirectionalParticleWidth(2.5)
                 .linkDirectionalParticleColor(link => {
-                    if (link.dashed) return '#63b3ed';
-                    if (link.type === 'manual_process') return '#e53e3e';
+                    if (link.dashed) return '#e53e3e';
+                    if (link.type === 'manual_process') return '#dd6b20';
                     return '#38a169';
                 });
         } else {
@@ -1488,9 +1464,6 @@
             'media-ops': 220,            // current: manual upload
             'unified-activation': 195,   // future: automated API push
 
-            // Activation Tracking
-            'gcm': 305,
-
             // Demand-Side Platforms (DSPs)
             'viant-dsp': 390,
             'trade-desk': 390,
@@ -1516,10 +1489,10 @@
 
             // New nodes (from clients repo)
             'amazon-dsp': 390,
-            'snowflake': 80,
-            'windsor-ai': -40,
+            'snowflake': 220,
+            'windsor-ai': -210,
             'smartsheet': -320,
-            'firebase': 80,
+            'firebase': 40,
         };
 
         const STAGE_Y = {
@@ -1541,9 +1514,6 @@
 
             // Future automated path (on centerline)
             'unified-activation': 0,
-
-            // Activation Tracking (centered on main flow)
-            'gcm': 0,
 
             // DSPs fanned out vertically (60 unit spacing)
             'viant-dsp': 60,
@@ -1570,10 +1540,10 @@
 
             // New nodes (from clients repo)
             'amazon-dsp': -120,
-            'snowflake': -260,
-            'windsor-ai': -260,
-            'smartsheet': -120,
-            'firebase': -200,
+            'snowflake': -140,
+            'windsor-ai': -120,
+            'smartsheet': 0,
+            'firebase': -80,
         };
 
         nodes.forEach(node => {
@@ -1591,7 +1561,6 @@
                 { label: 'Audience', x: -82, color: '#dd6b20' },
                 { label: 'Pre-Flight & ID', x: 77, color: '#3182ce' },
                 { label: 'Activation', x: 195, color: '#9f7aea' },
-                { label: 'Activation Tracking', x: 305, color: '#9f7aea' },
                 { label: 'Demand-Side Platforms', x: 390, color: '#9f7aea' },
                 { label: 'Digital Media Platforms', x: 480, color: '#9f7aea' },
             ];
@@ -1634,25 +1603,6 @@
                 scene.add(spr);
                 tierPlatforms.push(spr);
             });
-
-            // Eclipse connecting rail
-            const ec = document.createElement('canvas');
-            const ex = ec.getContext('2d');
-            ec.width = 512;
-            ec.height = 64;
-            ex.font = 'bold 42px -apple-system, sans-serif';
-            ex.textAlign = 'center';
-            ex.fillStyle = 'rgba(49,130,206,0.7)';
-            ex.fillText('Eclipse Platform (API + Data Layer)', 256, 44);
-            const etex = new THREE.CanvasTexture(ec);
-            const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false, depthWrite: false });
-            const espr = new THREE.Sprite(emat);
-            espr.renderOrder = 999;
-            espr.scale.set(100, 10, 1);
-            espr.position.set(10, -295, 0);
-            scene.add(espr);
-            tierPlatforms.push(espr);
-
 
         }
 
@@ -1724,9 +1674,6 @@
             'marketing-leads': -250,
             'experian': -250,
 
-            // GCM
-            'gcm': 320,
-
             // Not connected platforms (far right, dimmed)
             'tiktok-ads': -350,
             'pinterest-ads': -350,
@@ -1767,7 +1714,6 @@
 
             // Outputs
             'reporting': 0,
-            'gcm': -120,
 
             // DAX pipeline (below)
             'dax-engine': -280,
