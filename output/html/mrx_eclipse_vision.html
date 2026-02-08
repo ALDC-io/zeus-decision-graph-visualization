@@ -1445,14 +1445,14 @@
             'trade-desk': 0,
             'other-dsps': -24,
 
-            // Digital Media Platforms fanned out vertically
-            'meta': 78,
-            'google-ads': 52,
-            'bing-ads': 26,
-            'tiktok-ads': 0,
-            'linkedin-ads': -26,
-            'pinterest-ads': -52,
-            'snapchat-ads': -78,
+            // Digital Media Platforms fanned out below 6c label
+            'meta': 44,
+            'google-ads': 22,
+            'bing-ads': 0,
+            'tiktok-ads': -22,
+            'linkedin-ads': -44,
+            'pinterest-ads': -66,
+            'snapchat-ads': -88,
 
             // Feedback loop runs below main flow
             'exhaust-data': -100,
@@ -1496,8 +1496,9 @@
                 lx.fillStyle = stage.color;
                 lx.fillText(stage.label, 256, 40);
                 const tex = new THREE.CanvasTexture(lc);
-                const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+                const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false });
                 const spr = new THREE.Sprite(mat);
+                spr.renderOrder = 999;
                 spr.scale.set(65, 8, 1);
                 spr.position.set(stage.x, 65, 0);
                 scene.add(spr);
@@ -1517,8 +1518,9 @@
             fx.fillStyle = '#ed64a6';
             fx.fillText(fbLabel, 256, 40);
             const fbtex = new THREE.CanvasTexture(fc);
-            const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false });
+            const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false, depthWrite: false });
             const fbspr = new THREE.Sprite(fbmat);
+            fbspr.renderOrder = 999;
             fbspr.scale.set(85, 8, 1);
             fbspr.position.set(100, -128, 0);
             scene.add(fbspr);
@@ -1534,8 +1536,9 @@
             ex.fillStyle = 'rgba(49,130,206,0.7)';
             ex.fillText('Eclipse Platform (API + Data Layer)', 256, 40);
             const etex = new THREE.CanvasTexture(ec);
-            const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false });
+            const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false, depthWrite: false });
             const espr = new THREE.Sprite(emat);
+            espr.renderOrder = 999;
             espr.scale.set(85, 8, 1);
             espr.position.set(0, -158, 0);
             scene.add(espr);
@@ -1547,7 +1550,7 @@
                 { label: 'Customer Data Systems', x: -240, y: -52, color: '#38a169' },
                 { label: 'Activation Tracking', x: 220, y: 24, color: '#c084fc' },
                 { label: 'Demand-Side Platforms', x: 280, y: 48, color: '#c084fc' },
-                { label: 'Digital Media Platforms', x: 340, y: 100, color: '#c084fc' },
+                { label: 'Digital Media Platforms', x: 340, y: 64, color: '#c084fc' },
             ];
             dsLabels.forEach(dl => {
                 const dc = document.createElement('canvas');
@@ -1560,8 +1563,9 @@
                 dx.globalAlpha = 0.7;
                 dx.fillText(dl.label, 256, 30);
                 const dtex = new THREE.CanvasTexture(dc);
-                const dmat = new THREE.SpriteMaterial({ map: dtex, transparent: true, depthTest: false });
+                const dmat = new THREE.SpriteMaterial({ map: dtex, transparent: true, depthTest: false, depthWrite: false });
                 const dspr = new THREE.Sprite(dmat);
+                dspr.renderOrder = 999;
                 dspr.scale.set(60, 5, 1);
                 dspr.position.set(dl.x, dl.y, 0);
                 scene.add(dspr);
@@ -1621,8 +1625,9 @@
                 lctx.fillStyle = RING_COLORS[tier];
                 lctx.fillText(RING_NAMES[tier], 256, 40);
                 const labelTexture = new THREE.CanvasTexture(labelCanvas);
-                const labelSpriteMat = new THREE.SpriteMaterial({ map: labelTexture, transparent: true, depthTest: false });
+                const labelSpriteMat = new THREE.SpriteMaterial({ map: labelTexture, transparent: true, depthTest: false, depthWrite: false });
                 const labelSprite = new THREE.Sprite(labelSpriteMat);
+                labelSprite.renderOrder = 999;
                 labelSprite.scale.set(radius * 0.8, radius * 0.1, 1);
                 labelSprite.position.set(0, tier * tierSpacing + 30, -radius - 20);
                 scene.add(labelSprite);
