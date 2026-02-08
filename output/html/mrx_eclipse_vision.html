@@ -437,8 +437,8 @@
                 <div class="toolbar-section">
                     <span style="font-size:10px;color:#666;margin-right:4px;">Layout:</span>
                     <select id="layout-select" class="layout-select" onchange="changeLayout()">
-                        <option value="cylinder" selected>Cylinder Rings</option>
-                        <option value="flow">Process Flow</option>
+                        <option value="cylinder">Cylinder Rings</option>
+                        <option value="flow" selected>Process Flow</option>
                         <option value="force">Force-Directed</option>
                     </select>
                 </div>
@@ -876,7 +876,7 @@
     let particlesEnabled = true;
     let ringsEnabled = true;
     let logoLabelsEnabled = true;
-    let currentLayout = 'cylinder';
+    let currentLayout = 'flow';
     let tierPlatforms = [];
     const nodeMap = {};
 
@@ -1864,9 +1864,9 @@
         dirLight.position.set(100, 200, 100);
         scene.add(dirLight);
 
-        // Default to cylinder layout
+        // Default to process flow layout
         setTimeout(() => {
-            applyCylinderLayout();
+            applyFlowLayout();
         }, 500);
 
         document.getElementById('loading').classList.add('hidden');
