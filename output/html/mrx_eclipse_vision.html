@@ -451,7 +451,7 @@
                 <div class="legend-items">
                     <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Manual Process</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Automated</div>
-                    <div class="legend-item"><div class="legend-line" style="background:#38a169;border-top:2px dashed #38a169;height:0"></div>Not Yet Implemented</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#63b3ed;border-top:2px dashed #63b3ed;height:0"></div>Not Yet Implemented</div>
                 </div>
             </div>
 
@@ -782,8 +782,7 @@
     const W = 2; // standard line width
     const GREEN = 'rgba(56,161,105,0.7)';
     const RED = 'rgba(229,62,62,0.7)';
-    const GREEN_DASHED = 'rgba(56,161,105,0.4)';
-    const RED_DASHED = 'rgba(229,62,62,0.4)';
+    const BLUE_DASHED = 'rgba(99,179,237,0.6)';  // light blue for not yet implemented
 
     const LINK_DEFS = [
         // === AUTOMATED (solid green) — working today ===
@@ -874,100 +873,100 @@
         // === NOT YET IMPLEMENTED (dashed green) — future automated ===
         // Eclipse to Reporting
         { source: 'eclipse-api', target: 'reporting', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Eclipse direct integrations
         { source: 'eclipse-api', target: 'id-mapping', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'eclipse-api', target: 'flightcheck', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation hub
         { source: 'eclipse-api', target: 'unified-activation', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to DSPs
         { source: 'unified-activation', target: 'viant-dsp', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'trade-desk', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'other-dsps', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to Digital Media Platforms
         { source: 'unified-activation', target: 'meta', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'google-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'bing-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'tiktok-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'linkedin-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'pinterest-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'snapchat-ads', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'gcm', type: 'automated',
-          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
 
         // === NOT YET IMPLEMENTED (dashed red) — feedback loops not built ===
         // DSPs to exhaust data
         { source: 'viant-dsp', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'trade-desk', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'other-dsps', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Digital Media Platforms to exhaust data
         { source: 'meta', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'google-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'bing-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'tiktok-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'linkedin-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'pinterest-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'snapchat-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'gcm', target: 'exhaust-data', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         // Optimization loop (not implemented)
         { source: 'perf-analytics', target: 'optimization-engine', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'optimization-engine', target: 'audience-engine', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'exhaust-data', target: 'eclipse-api', type: 'feedback',
-          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          current: { color: BLUE_DASHED, width: W, opacity: 0.6, dashed: true },
           future:  { color: GREEN, width: W, opacity: 1 } },
     ];
 
@@ -1143,6 +1142,7 @@
                 .linkDirectionalParticleSpeed(0.006)
                 .linkDirectionalParticleWidth(2.5)
                 .linkDirectionalParticleColor(link => {
+                    if (link.dashed) return '#63b3ed';
                     if (link.type === 'manual_process') return '#e53e3e';
                     return '#38a169';
                 });
@@ -1412,8 +1412,8 @@
 
         const STAGE_Y = {
             // Main flow runs along Y=0 centerline
-            'marketing-leads': 40,       // Customer Data Sources (above)
-            'experian': -40,             // Customer Data Systems (below)
+            'marketing-leads': 60,       // Customer Data Sources (above)
+            'experian': -60,             // Customer Data Systems (below)
 
             'identity-graph': 0,
 
@@ -1423,9 +1423,9 @@
             'flightcheck': 0,
             'id-mapping': 0,
 
-            // Current manual path (slightly above)
-            'cloud-storage': 50,
-            'media-ops': 50,
+            // Current manual path (above centerline)
+            'cloud-storage': 70,
+            'media-ops': 70,
 
             // Future automated path (on centerline)
             'unified-activation': 0,
@@ -1433,28 +1433,28 @@
             // Activation Tracking (centered on main flow)
             'gcm': 0,
 
-            // DSPs fanned out vertically
-            'viant-dsp': 35,
+            // DSPs fanned out vertically (60 unit spacing)
+            'viant-dsp': 60,
             'trade-desk': 0,
-            'other-dsps': -35,
+            'other-dsps': -60,
 
-            // Digital Media Platforms fanned out
-            'meta': 55,
-            'google-ads': 30,
-            'bing-ads': 5,
-            'tiktok-ads': -20,
-            'linkedin-ads': -45,
-            'pinterest-ads': -70,
-            'snapchat-ads': -95,
+            // Digital Media Platforms fanned out (60 unit spacing)
+            'meta': 120,
+            'google-ads': 60,
+            'bing-ads': 0,
+            'tiktok-ads': -60,
+            'linkedin-ads': -120,
+            'pinterest-ads': -180,
+            'snapchat-ads': -240,
 
             // Feedback loop runs below main flow
-            'exhaust-data': -130,
-            'perf-analytics': -130,
-            'optimization-engine': -130,
-            'reporting': -130,
+            'exhaust-data': -200,
+            'perf-analytics': -200,
+            'optimization-engine': -200,
+            'reporting': -200,
 
             // Eclipse rail
-            'eclipse-api': -170,
+            'eclipse-api': -260,
         };
 
         nodes.forEach(node => {
@@ -1480,20 +1480,38 @@
             stages.forEach(stage => {
                 const lc = document.createElement('canvas');
                 const lx = lc.getContext('2d');
-                lc.width = 512;
-                lc.height = 64;
+                lc.width = 600;
+                lc.height = 120;
                 lx.font = 'bold 42px -apple-system, sans-serif';
                 lx.textAlign = 'center';
-                lx.fillStyle = 'rgba(0,0,0,0.4)';
-                lx.fillText(stage.label, 257, 45);
-                lx.fillStyle = stage.color;
-                lx.fillText(stage.label, 256, 44);
+                // Word wrap for long labels
+                const words = stage.label.split(' ');
+                const lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    const test = currentLine + ' ' + words[i];
+                    if (lx.measureText(test).width > 560) {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    } else {
+                        currentLine = test;
+                    }
+                }
+                lines.push(currentLine);
+                const lineH = 48;
+                const startY = lines.length > 1 ? 40 : 60;
+                lines.forEach((line, li) => {
+                    lx.fillStyle = 'rgba(0,0,0,0.4)';
+                    lx.fillText(line, 301, startY + li * lineH + 1);
+                    lx.fillStyle = stage.color;
+                    lx.fillText(line, 300, startY + li * lineH);
+                });
                 const tex = new THREE.CanvasTexture(lc);
                 const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false });
                 const spr = new THREE.Sprite(mat);
                 spr.renderOrder = 999;
-                spr.scale.set(80, 10, 1);
-                spr.position.set(stage.x, 65, 0);
+                spr.scale.set(85, lines.length > 1 ? 16 : 10, 1);
+                spr.position.set(stage.x, 90, 0);
                 scene.add(spr);
                 tierPlatforms.push(spr);
             });
@@ -1515,7 +1533,7 @@
             const fbspr = new THREE.Sprite(fbmat);
             fbspr.renderOrder = 999;
             fbspr.scale.set(100, 10, 1);
-            fbspr.position.set(140, -160, 0);
+            fbspr.position.set(140, -235, 0);
             scene.add(fbspr);
             tierPlatforms.push(fbspr);
 
@@ -1533,7 +1551,7 @@
             const espr = new THREE.Sprite(emat);
             espr.renderOrder = 999;
             espr.scale.set(100, 10, 1);
-            espr.position.set(10, -195, 0);
+            espr.position.set(10, -295, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
 
@@ -1542,7 +1560,7 @@
 
         graph.d3ReheatSimulation();
         setTimeout(() => {
-            graph.cameraPosition({ x: 80, y: -30, z: 650 }, { x: 80, y: -30, z: 0 }, 1000);
+            graph.cameraPosition({ x: 80, y: -60, z: 800 }, { x: 80, y: -60, z: 0 }, 1000);
         }, 100);
     }
 
@@ -1949,6 +1967,7 @@
             .linkDirectionalParticleWidth(2.5)
             .linkDirectionalParticleSpeed(0.006)
             .linkDirectionalParticleColor(link => {
+                if (link.dashed) return '#63b3ed';
                 if (link.type === 'manual_process') return '#e53e3e';
                 return '#38a169';
             })
