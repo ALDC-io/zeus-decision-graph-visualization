@@ -1474,14 +1474,14 @@
         if (ringsEnabled) {
             // Stage labels above the main flow
             const stages = [
-                { label: '1. Data Sources', x: -240, color: '#38a169' },
-                { label: '2. Identity', x: -160, color: '#38a169' },
-                { label: '3. Audience', x: -62, color: '#dd6b20' },
-                { label: '4. Pre-Flight & ID', x: 52, color: '#3182ce' },
-                { label: '5. Activation', x: 140, color: '#9f7aea' },
-                { label: '6a. Tracking', x: 220, color: '#9f7aea' },
-                { label: '6b. DSPs', x: 280, color: '#9f7aea' },
-                { label: '6c. Media Platforms', x: 340, color: '#9f7aea' },
+                { label: 'Data Sources', x: -240, color: '#38a169' },
+                { label: 'Identity', x: -160, color: '#38a169' },
+                { label: 'Audience', x: -62, color: '#dd6b20' },
+                { label: 'Pre-Flight & ID', x: 52, color: '#3182ce' },
+                { label: 'Activation', x: 140, color: '#9f7aea' },
+                { label: 'Activation Tracking', x: 220, color: '#9f7aea' },
+                { label: 'Demand-Side Platforms', x: 280, color: '#9f7aea' },
+                { label: 'Digital Media Platforms', x: 340, color: '#9f7aea' },
             ];
 
             stages.forEach(stage => {
@@ -1506,7 +1506,7 @@
             });
 
             // Feedback loop label (below main flow)
-            const fbLabel = '7. Feedback & Optimization Loop';
+            const fbLabel = 'Feedback & Optimization Loop';
             const fc = document.createElement('canvas');
             const fx = fc.getContext('2d');
             fc.width = 512;
@@ -1548,9 +1548,6 @@
             const dsLabels = [
                 { label: 'Customer Data Sources', x: -240, y: 52, color: '#38a169' },
                 { label: 'Customer Data Systems', x: -240, y: -52, color: '#38a169' },
-                { label: 'Activation Tracking', x: 220, y: 24, color: '#c084fc' },
-                { label: 'Demand-Side Platforms', x: 280, y: 48, color: '#c084fc' },
-                { label: 'Digital Media Platforms', x: 340, y: 64, color: '#c084fc' },
             ];
             dsLabels.forEach(dl => {
                 const dc = document.createElement('canvas');
