@@ -430,11 +430,6 @@
             <!-- Main Toolbar -->
             <div id="toolbar">
                 <div class="toolbar-section">
-                    <button class="view-btn active" id="btn-3d" onclick="setView('3d')">3D</button>
-                    <button class="view-btn" id="btn-2d" onclick="setView('2d')">2D</button>
-                </div>
-                <div class="toolbar-divider"></div>
-                <div class="toolbar-section">
                     <span style="font-size:10px;color:#666;margin-right:4px;">Layout:</span>
                     <select id="layout-select" class="layout-select" onchange="changeLayout()">
                         <option value="cylinder">Cylinder Rings</option>
@@ -444,24 +439,9 @@
                 </div>
                 <div class="toolbar-divider"></div>
                 <div class="toolbar-section">
+                    <button class="view-btn" onclick="resetCamera()">Set</button>
                     <button class="view-btn" onclick="resetCamera()">Reset</button>
                     <button class="view-btn" onclick="zoomToFit()">Fit</button>
-                </div>
-            </div>
-
-            <!-- Extended Toolbar -->
-            <div id="toolbar-extended" class="toolbar-extended">
-                <div class="toolbar-section effects-toggle">
-                    <span class="toggle-label">Particles</span>
-                    <div id="particles-toggle" class="toggle-switch active" onclick="toggleParticles()"></div>
-                </div>
-                <div class="toolbar-section effects-toggle">
-                    <span class="toggle-label">Rings</span>
-                    <div id="rings-toggle" class="toggle-switch active" onclick="toggleRings()"></div>
-                </div>
-                <div class="toolbar-section effects-toggle">
-                    <span class="toggle-label">Logos</span>
-                    <div id="logo-labels-toggle" class="toggle-switch active" onclick="toggleLogoLabels()"></div>
                 </div>
             </div>
 
@@ -1148,10 +1128,8 @@
                 .linkDirectionalParticleSpeed(0.006)
                 .linkDirectionalParticleWidth(2.5)
                 .linkDirectionalParticleColor(link => {
-                    if (link.type === 'feedback') return '#ed64a6';
-                    if (link.type === 'automated') return '#48bb78';
-                    if (link.type === 'manual_process') return '#f6ad55';
-                    return '#63b3ed';
+                    if (link.type === 'manual_process') return '#e53e3e';
+                    return '#38a169';
                 });
         } else {
             graph.linkDirectionalParticles(0);
@@ -1986,10 +1964,8 @@
             .linkDirectionalParticleWidth(2.5)
             .linkDirectionalParticleSpeed(0.006)
             .linkDirectionalParticleColor(link => {
-                if (link.type === 'feedback') return '#ed64a6';
-                if (link.type === 'automated') return '#48bb78';
-                if (link.type === 'manual_process') return '#f6ad55';
-                return '#63b3ed';
+                if (link.type === 'manual_process') return '#e53e3e';
+                return '#38a169';
             })
             .onNodeHover(node => { container.style.cursor = node ? 'pointer' : 'default'; })
             .onNodeClick(node => handleNodeClick(node));
