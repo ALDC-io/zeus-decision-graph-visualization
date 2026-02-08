@@ -1537,30 +1537,6 @@
             scene.add(espr);
             tierPlatforms.push(espr);
 
-            // Sub-group labels for Data Sources
-            const dsLabels = [
-                { label: 'Customer Data Sources', x: -320, y: 65, color: '#38a169' },
-                { label: 'Customer Data Systems', x: -320, y: -65, color: '#38a169' },
-            ];
-            dsLabels.forEach(dl => {
-                const dc = document.createElement('canvas');
-                const dx = dc.getContext('2d');
-                dc.width = 512;
-                dc.height = 48;
-                dx.font = 'italic 32px -apple-system, sans-serif';
-                dx.textAlign = 'center';
-                dx.fillStyle = dl.color;
-                dx.globalAlpha = 0.7;
-                dx.fillText(dl.label, 256, 36);
-                const dtex = new THREE.CanvasTexture(dc);
-                const dmat = new THREE.SpriteMaterial({ map: dtex, transparent: true, depthTest: false, depthWrite: false });
-                const dspr = new THREE.Sprite(dmat);
-                dspr.renderOrder = 999;
-                dspr.scale.set(75, 7, 1);
-                dspr.position.set(dl.x, dl.y, 0);
-                scene.add(dspr);
-                tierPlatforms.push(dspr);
-            });
 
         }
 
