@@ -465,27 +465,12 @@
                 </div>
             </div>
 
-            <!-- State Transition Slider -->
-            <div id="state-toolbar" class="toolbar-extended" style="top: 88px;">
-                <div class="toolbar-section state-slider-container">
-                    <span style="font-size:11px;color:#333;font-weight:600;">Vision:</span>
-                    <button id="play-btn" class="play-btn" onclick="toggleStatePlay()">&#9654;</button>
-                    <input type="range" id="state-slider" min="0" max="100" value="0" oninput="updateStateSlider()">
-                    <span id="state-display" class="state-display">Current State</span>
-                </div>
-            </div>
-
             <!-- Legend -->
             <div class="legend">
                 <div class="legend-title">Legend</div>
                 <div class="legend-items">
-                    <div class="legend-item"><div class="legend-dot" style="background:#dd6b20"></div>DAX Core</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Data Sources</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>Processing</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#9f7aea"></div>Activation & Distribution</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#ed64a6"></div>Feedback</div>
-                    <div class="legend-item"><div class="legend-line" style="background:#38a169"></div>Automated</div>
-                    <div class="legend-item"><div class="legend-line" style="background:#e53e3e;border-top:1px dashed #e53e3e;height:0"></div>Manual</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Manual Process</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Automated</div>
                 </div>
             </div>
 
@@ -518,12 +503,6 @@
                     <div class="stat-value" id="stat-broken">-</div>
                     <div class="stat-label">Broken</div>
                 </div>
-            </div>
-
-            <!-- State indicator bar -->
-            <div class="state-indicator" id="state-bar">
-                <div class="state-marker" id="state-marker" style="width:0%"></div>
-                <span class="state-text" id="state-bar-text">Current State - Manual Processes Dominate</span>
             </div>
 
             <!-- Ring Filters -->
@@ -560,15 +539,9 @@
                 <div class="info-placeholder" id="placeholder">
                     <p><strong>Click a node</strong> to explore component details</p>
                     <p>Drag to rotate &bull; Scroll to zoom &bull; Right-drag to pan</p>
-                    <p style="margin-top:10px;font-size:10px;color:#888;">
-                        Use the <strong>Vision slider</strong> to transition from<br>
-                        Current State &rarr; Future Vision
-                    </p>
                     <p style="margin-top:15px;font-size:10px;color:#888;">
                         <strong style="color:#38a169;">Green</strong> = Automated &bull;
-                        <strong style="color:#d69e2e;">Yellow</strong> = Manual &bull;
-                        <strong style="color:#dd6b20;">Orange</strong> = Band-Aid &bull;
-                        <strong style="color:#e53e3e;">Red</strong> = Broken
+                        <strong style="color:#e53e3e;">Red</strong> = Manual Process
                     </p>
                 </div>
                 <div class="node-info" id="node-info">
