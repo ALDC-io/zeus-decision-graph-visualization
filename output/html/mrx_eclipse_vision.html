@@ -1402,37 +1402,6 @@
             scene.add(espr);
             tierPlatforms.push(espr);
 
-            // Subtle horizontal line for Eclipse rail
-            const lineGeo = new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(-70, -105, 0),
-                new THREE.Vector3(200, -105, 0),
-            ]);
-            const lineMat = new THREE.LineBasicMaterial({ color: 0x3182ce, transparent: true, opacity: 0.25 });
-            const line = new THREE.Line(lineGeo, lineMat);
-            scene.add(line);
-            tierPlatforms.push(line);
-
-            // Subtle arrow indicators: main flow direction (left to right)
-            const arrowPoints = [
-                new THREE.Vector3(-175, 0, 0),
-                new THREE.Vector3(205, 0, 0),
-            ];
-            const arrowGeo = new THREE.BufferGeometry().setFromPoints(arrowPoints);
-            const arrowMat = new THREE.LineBasicMaterial({ color: 0x4a5568, transparent: true, opacity: 0.15 });
-            const arrowLine = new THREE.Line(arrowGeo, arrowMat);
-            scene.add(arrowLine);
-            tierPlatforms.push(arrowLine);
-
-            // Feedback return arrow (below, right to left)
-            const fbArrowPoints = [
-                new THREE.Vector3(200, -72, 0),
-                new THREE.Vector3(-30, -72, 0),
-            ];
-            const fbArrowGeo = new THREE.BufferGeometry().setFromPoints(fbArrowPoints);
-            const fbArrowMat = new THREE.LineBasicMaterial({ color: 0xed64a6, transparent: true, opacity: 0.15 });
-            const fbArrowLine = new THREE.Line(fbArrowGeo, fbArrowMat);
-            scene.add(fbArrowLine);
-            tierPlatforms.push(fbArrowLine);
         }
 
         graph.d3ReheatSimulation();
