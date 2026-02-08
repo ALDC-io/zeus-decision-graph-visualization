@@ -451,6 +451,7 @@
                 <div class="legend-items">
                     <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Manual Process</div>
                     <div class="legend-item"><div class="legend-dot" style="background:#38a169"></div>Automated</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#38a169;border-top:2px dashed #38a169;height:0"></div>Not Yet Implemented</div>
                 </div>
             </div>
 
@@ -775,185 +776,199 @@
     ];
 
     // Link definitions with current and future states
-    const LINK_DEFS = [
-        // Core data flow - Data Sources to Identity
-        { source: 'experian', target: 'identity-graph', type: 'data_flow',
-          current: { color: 'rgba(56,161,105,0.6)', width: 2, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'marketing-leads', target: 'identity-graph', type: 'data_flow',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'identity-graph', target: 'dax-engine', type: 'data_flow',
-          current: { color: 'rgba(221,107,32,0.5)', width: 2, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'dax-engine', target: 'audience-engine', type: 'data_flow',
-          current: { color: 'rgba(221,107,32,0.5)', width: 2, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'audience-engine', target: 'flightcheck', type: 'data_flow',
-          current: { color: 'rgba(56,161,105,0.5)', width: 1.5, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 2.5, opacity: 1 } },
-        { source: 'flightcheck', target: 'id-mapping', type: 'data_flow',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 2.5, opacity: 1 } },
-        { source: 'audience-engine', target: 'eclipse-api', type: 'data_flow',
-          current: { color: 'rgba(49,130,206,0.4)', width: 1.5, opacity: 1 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        // Eclipse connects to reporting in future
-        { source: 'eclipse-api', target: 'reporting', type: 'automated',
-          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+    // Colors: green = automated, red = manual process
+    // Dashed = not yet implemented
+    // All widths standardized to 2
+    const W = 2; // standard line width
+    const GREEN = 'rgba(56,161,105,0.7)';
+    const RED = 'rgba(229,62,62,0.7)';
+    const GREEN_DASHED = 'rgba(56,161,105,0.4)';
+    const RED_DASHED = 'rgba(229,62,62,0.4)';
 
-        // CURRENT: Manual detour chain
+    const LINK_DEFS = [
+        // === AUTOMATED (solid green) — working today ===
+        // Data Sources to Identity
+        { source: 'experian', target: 'identity-graph', type: 'automated',
+          current: { color: GREEN, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'audience-engine', target: 'flightcheck', type: 'automated',
+          current: { color: GREEN, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+
+        // === MANUAL PROCESS (solid red) — working but manual ===
+        { source: 'marketing-leads', target: 'identity-graph', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'identity-graph', target: 'dax-engine', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'dax-engine', target: 'audience-engine', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'flightcheck', target: 'id-mapping', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'audience-engine', target: 'eclipse-api', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+
+        // Manual detour chain (solid red)
         { source: 'id-mapping', target: 'cloud-storage', type: 'manual_process',
-          current: { color: 'rgba(221,107,32,0.6)', width: 2, opacity: 1, dashed: true },
-          future:  { color: 'rgba(221,107,32,0.2)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'cloud-storage', target: 'media-ops', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.6)', width: 2, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.2)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         // Media Ops manual push to DSPs
         { source: 'media-ops', target: 'viant-dsp', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'trade-desk', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'other-dsps', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         // Media Ops manual push to Digital Media Platforms
         { source: 'media-ops', target: 'meta', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'google-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'bing-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'tiktok-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'linkedin-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'pinterest-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'snapchat-ads', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
-        // Media Ops manual to GCM tracking
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
         { source: 'media-ops', target: 'gcm', type: 'manual_process',
-          current: { color: 'rgba(214,158,46,0.5)', width: 1.5, opacity: 1, dashed: true },
-          future:  { color: 'rgba(214,158,46,0.1)', width: 0.5, opacity: 0, dashed: true } },
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: RED, width: W, opacity: 0 } },
 
-        // FUTURE: Direct automated activation via Unified Activation
+        // Eclipse connecting layer (manual/partial today)
+        { source: 'dax-engine', target: 'eclipse-api', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'identity-graph', target: 'eclipse-api', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+
+        // Feedback - partial/broken today (solid red)
+        { source: 'exhaust-data', target: 'perf-analytics', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'perf-analytics', target: 'reporting', type: 'manual_process',
+          current: { color: RED, width: W, opacity: 1 },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+
+        // === NOT YET IMPLEMENTED (dashed green) — future automated ===
+        // Eclipse to Reporting
+        { source: 'eclipse-api', target: 'reporting', type: 'automated',
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        // Eclipse direct integrations
+        { source: 'eclipse-api', target: 'id-mapping', type: 'automated',
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        { source: 'eclipse-api', target: 'flightcheck', type: 'automated',
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        // Unified Activation hub
         { source: 'eclipse-api', target: 'unified-activation', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to DSPs
         { source: 'unified-activation', target: 'viant-dsp', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'trade-desk', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'other-dsps', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         // Unified Activation to Digital Media Platforms
         { source: 'unified-activation', target: 'meta', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'google-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'bing-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'tiktok-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'linkedin-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'pinterest-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'snapchat-ads', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
-        // Unified Activation to GCM tracking
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'unified-activation', target: 'gcm', type: 'automated',
-          current: { color: 'rgba(56,161,105,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: GREEN_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
 
-        // Feedback loops - DSPs to exhaust data
+        // === NOT YET IMPLEMENTED (dashed red) — feedback loops not built ===
+        // DSPs to exhaust data
         { source: 'viant-dsp', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'trade-desk', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'other-dsps', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
-        // Feedback - Digital Media Platforms to exhaust data
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        // Digital Media Platforms to exhaust data
         { source: 'meta', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'google-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'bing-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'tiktok-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'linkedin-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'pinterest-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'snapchat-ads', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.6)', width: 1.5, opacity: 1 } },
-        // GCM tracking feeds back to analytics
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'gcm', target: 'exhaust-data', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.3)', width: 1, opacity: 0.5, dashed: true },
-          future:  { color: 'rgba(237,100,166,0.7)', width: 2, opacity: 1 } },
-        // Internal feedback chain
-        { source: 'exhaust-data', target: 'perf-analytics', type: 'feedback',
-          current: { color: 'rgba(221,107,32,0.4)', width: 1, opacity: 0.7 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
+        // Optimization loop (not implemented)
         { source: 'perf-analytics', target: 'optimization-engine', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'optimization-engine', target: 'audience-engine', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.1)', width: 0.5, opacity: 0.2 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'perf-analytics', target: 'reporting', type: 'data_flow',
-          current: { color: 'rgba(214,158,46,0.4)', width: 1, opacity: 0.8 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
         { source: 'exhaust-data', target: 'eclipse-api', type: 'feedback',
-          current: { color: 'rgba(229,62,62,0.2)', width: 0.5, opacity: 0.3 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2, opacity: 1 } },
-
-        // Eclipse as connecting layer
-        { source: 'dax-engine', target: 'eclipse-api', type: 'data_flow',
-          current: { color: 'rgba(49,130,206,0.3)', width: 1.5, opacity: 0.6 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
-        { source: 'eclipse-api', target: 'id-mapping', type: 'automated',
-          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
-        { source: 'eclipse-api', target: 'flightcheck', type: 'automated',
-          current: { color: 'rgba(49,130,206,0.1)', width: 0.5, opacity: 0 },
-          future:  { color: 'rgba(56,161,105,0.7)', width: 2.5, opacity: 1 } },
-        { source: 'identity-graph', target: 'eclipse-api', type: 'data_flow',
-          current: { color: 'rgba(49,130,206,0.2)', width: 1, opacity: 0.4 },
-          future:  { color: 'rgba(56,161,105,0.8)', width: 3, opacity: 1 } },
+          current: { color: RED_DASHED, width: W, opacity: 0.6, dashed: true },
+          future:  { color: GREEN, width: W, opacity: 1 } },
     ];
 
     // =========================================================================
@@ -1349,56 +1364,56 @@
 
         const STAGE_X = {
             // Stage 1: Data Sources (far left) — split into two sub-columns
-            'marketing-leads': -240,     // Customer Data Sources
-            'experian': -240,            // Customer Data Systems
+            'marketing-leads': -320,     // Customer Data Sources
+            'experian': -320,            // Customer Data Systems
 
             // Stage 2: Identity Resolution
-            'identity-graph': -160,
+            'identity-graph': -210,
 
             // Stage 3: DAX Core + Audience Building
-            'dax-engine': -90,
-            'audience-engine': -35,
+            'dax-engine': -120,
+            'audience-engine': -45,
 
             // Stage 4: Pre-flight + ID Translation
-            'flightcheck': 25,
-            'id-mapping': 80,
+            'flightcheck': 40,
+            'id-mapping': 115,
 
             // Stage 5: Activation (current manual path vs future automated)
-            'cloud-storage': 125,        // current: band-aid detour
-            'media-ops': 160,            // current: manual upload
-            'unified-activation': 140,   // future: automated API push
+            'cloud-storage': 175,        // current: band-aid detour
+            'media-ops': 220,            // current: manual upload
+            'unified-activation': 195,   // future: automated API push
 
-            // Stage 6a: Activation Tracking
-            'gcm': 220,
+            // Activation Tracking
+            'gcm': 305,
 
-            // Stage 6b: Demand-Side Platforms (DSPs)
-            'viant-dsp': 280,
-            'trade-desk': 280,
-            'other-dsps': 280,
+            // Demand-Side Platforms (DSPs)
+            'viant-dsp': 390,
+            'trade-desk': 390,
+            'other-dsps': 390,
 
-            // Stage 6c: Digital Media Platforms
-            'meta': 340,
-            'google-ads': 340,
-            'bing-ads': 340,
-            'tiktok-ads': 340,
-            'linkedin-ads': 340,
-            'pinterest-ads': 340,
-            'snapchat-ads': 340,
+            // Digital Media Platforms
+            'meta': 480,
+            'google-ads': 480,
+            'bing-ads': 480,
+            'tiktok-ads': 480,
+            'linkedin-ads': 480,
+            'pinterest-ads': 480,
+            'snapchat-ads': 480,
 
-            // Stage 7: Feedback loop (below, curves back left)
-            'exhaust-data': 240,
-            'perf-analytics': 100,
-            'optimization-engine': -35,
-            'reporting': 160,
+            // Feedback loop (below, curves back left)
+            'exhaust-data': 340,
+            'perf-analytics': 140,
+            'optimization-engine': -45,
+            'reporting': 220,
 
             // Eclipse: Connecting rail below main flow
-            'eclipse-api': 0,
+            'eclipse-api': 10,
         };
 
         const STAGE_Y = {
             // Main flow runs along Y=0 centerline
-            'marketing-leads': 28,       // Customer Data Sources (above)
-            'experian': -28,             // Customer Data Systems (below)
+            'marketing-leads': 40,       // Customer Data Sources (above)
+            'experian': -40,             // Customer Data Systems (below)
 
             'identity-graph': 0,
 
@@ -1409,8 +1424,8 @@
             'id-mapping': 0,
 
             // Current manual path (slightly above)
-            'cloud-storage': 38,
-            'media-ops': 38,
+            'cloud-storage': 50,
+            'media-ops': 50,
 
             // Future automated path (on centerline)
             'unified-activation': 0,
@@ -1419,27 +1434,27 @@
             'gcm': 0,
 
             // DSPs fanned out vertically
-            'viant-dsp': 24,
+            'viant-dsp': 35,
             'trade-desk': 0,
-            'other-dsps': -24,
+            'other-dsps': -35,
 
-            // Digital Media Platforms fanned out below 6c label
-            'meta': 44,
-            'google-ads': 22,
-            'bing-ads': 0,
-            'tiktok-ads': -22,
-            'linkedin-ads': -44,
-            'pinterest-ads': -66,
-            'snapchat-ads': -88,
+            // Digital Media Platforms fanned out
+            'meta': 55,
+            'google-ads': 30,
+            'bing-ads': 5,
+            'tiktok-ads': -20,
+            'linkedin-ads': -45,
+            'pinterest-ads': -70,
+            'snapchat-ads': -95,
 
             // Feedback loop runs below main flow
-            'exhaust-data': -100,
-            'perf-analytics': -100,
-            'optimization-engine': -100,
-            'reporting': -100,
+            'exhaust-data': -130,
+            'perf-analytics': -130,
+            'optimization-engine': -130,
+            'reporting': -130,
 
             // Eclipse rail
-            'eclipse-api': -135,
+            'eclipse-api': -170,
         };
 
         nodes.forEach(node => {
@@ -1452,14 +1467,14 @@
         if (ringsEnabled) {
             // Stage labels above the main flow
             const stages = [
-                { label: 'Data Sources', x: -240, color: '#38a169' },
-                { label: 'Identity', x: -160, color: '#38a169' },
-                { label: 'Audience', x: -62, color: '#dd6b20' },
-                { label: 'Pre-Flight & ID', x: 52, color: '#3182ce' },
-                { label: 'Activation', x: 140, color: '#9f7aea' },
-                { label: 'Activation Tracking', x: 220, color: '#9f7aea' },
-                { label: 'Demand-Side Platforms', x: 280, color: '#9f7aea' },
-                { label: 'Digital Media Platforms', x: 340, color: '#9f7aea' },
+                { label: 'Data Sources', x: -320, color: '#38a169' },
+                { label: 'Identity', x: -210, color: '#38a169' },
+                { label: 'Audience', x: -82, color: '#dd6b20' },
+                { label: 'Pre-Flight & ID', x: 77, color: '#3182ce' },
+                { label: 'Activation', x: 195, color: '#9f7aea' },
+                { label: 'Activation Tracking', x: 305, color: '#9f7aea' },
+                { label: 'Demand-Side Platforms', x: 390, color: '#9f7aea' },
+                { label: 'Digital Media Platforms', x: 480, color: '#9f7aea' },
             ];
 
             stages.forEach(stage => {
@@ -1500,7 +1515,7 @@
             const fbspr = new THREE.Sprite(fbmat);
             fbspr.renderOrder = 999;
             fbspr.scale.set(100, 10, 1);
-            fbspr.position.set(100, -128, 0);
+            fbspr.position.set(140, -160, 0);
             scene.add(fbspr);
             tierPlatforms.push(fbspr);
 
@@ -1518,14 +1533,14 @@
             const espr = new THREE.Sprite(emat);
             espr.renderOrder = 999;
             espr.scale.set(100, 10, 1);
-            espr.position.set(0, -158, 0);
+            espr.position.set(10, -195, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
 
             // Sub-group labels for Data Sources
             const dsLabels = [
-                { label: 'Customer Data Sources', x: -240, y: 52, color: '#38a169' },
-                { label: 'Customer Data Systems', x: -240, y: -52, color: '#38a169' },
+                { label: 'Customer Data Sources', x: -320, y: 65, color: '#38a169' },
+                { label: 'Customer Data Systems', x: -320, y: -65, color: '#38a169' },
             ];
             dsLabels.forEach(dl => {
                 const dc = document.createElement('canvas');
@@ -1551,7 +1566,7 @@
 
         graph.d3ReheatSimulation();
         setTimeout(() => {
-            graph.cameraPosition({ x: 50, y: -18, z: 480 }, { x: 50, y: -18, z: 0 }, 1000);
+            graph.cameraPosition({ x: 80, y: -30, z: 650 }, { x: 80, y: -30, z: 0 }, 1000);
         }, 100);
     }
 
