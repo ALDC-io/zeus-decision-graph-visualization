@@ -1467,17 +1467,17 @@
                 const lx = lc.getContext('2d');
                 lc.width = 512;
                 lc.height = 64;
-                lx.font = 'bold 32px -apple-system, sans-serif';
+                lx.font = 'bold 42px -apple-system, sans-serif';
                 lx.textAlign = 'center';
                 lx.fillStyle = 'rgba(0,0,0,0.4)';
-                lx.fillText(stage.label, 257, 41);
+                lx.fillText(stage.label, 257, 45);
                 lx.fillStyle = stage.color;
-                lx.fillText(stage.label, 256, 40);
+                lx.fillText(stage.label, 256, 44);
                 const tex = new THREE.CanvasTexture(lc);
                 const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false });
                 const spr = new THREE.Sprite(mat);
                 spr.renderOrder = 999;
-                spr.scale.set(65, 8, 1);
+                spr.scale.set(80, 10, 1);
                 spr.position.set(stage.x, 65, 0);
                 scene.add(spr);
                 tierPlatforms.push(spr);
@@ -1489,17 +1489,17 @@
             const fx = fc.getContext('2d');
             fc.width = 512;
             fc.height = 64;
-            fx.font = 'bold 32px -apple-system, sans-serif';
+            fx.font = 'bold 42px -apple-system, sans-serif';
             fx.textAlign = 'center';
             fx.fillStyle = 'rgba(0,0,0,0.4)';
-            fx.fillText(fbLabel, 257, 41);
+            fx.fillText(fbLabel, 257, 45);
             fx.fillStyle = '#ed64a6';
-            fx.fillText(fbLabel, 256, 40);
+            fx.fillText(fbLabel, 256, 44);
             const fbtex = new THREE.CanvasTexture(fc);
             const fbmat = new THREE.SpriteMaterial({ map: fbtex, transparent: true, depthTest: false, depthWrite: false });
             const fbspr = new THREE.Sprite(fbmat);
             fbspr.renderOrder = 999;
-            fbspr.scale.set(85, 8, 1);
+            fbspr.scale.set(100, 10, 1);
             fbspr.position.set(100, -128, 0);
             scene.add(fbspr);
             tierPlatforms.push(fbspr);
@@ -1509,15 +1509,15 @@
             const ex = ec.getContext('2d');
             ec.width = 512;
             ec.height = 64;
-            ex.font = 'bold 30px -apple-system, sans-serif';
+            ex.font = 'bold 40px -apple-system, sans-serif';
             ex.textAlign = 'center';
             ex.fillStyle = 'rgba(49,130,206,0.7)';
-            ex.fillText('Eclipse Platform (API + Data Layer)', 256, 40);
+            ex.fillText('Eclipse Platform (API + Data Layer)', 256, 44);
             const etex = new THREE.CanvasTexture(ec);
             const emat = new THREE.SpriteMaterial({ map: etex, transparent: true, depthTest: false, depthWrite: false });
             const espr = new THREE.Sprite(emat);
             espr.renderOrder = 999;
-            espr.scale.set(85, 8, 1);
+            espr.scale.set(100, 10, 1);
             espr.position.set(0, -158, 0);
             scene.add(espr);
             tierPlatforms.push(espr);
@@ -1532,16 +1532,16 @@
                 const dx = dc.getContext('2d');
                 dc.width = 512;
                 dc.height = 48;
-                dx.font = 'italic 22px -apple-system, sans-serif';
+                dx.font = 'italic 32px -apple-system, sans-serif';
                 dx.textAlign = 'center';
                 dx.fillStyle = dl.color;
                 dx.globalAlpha = 0.7;
-                dx.fillText(dl.label, 256, 30);
+                dx.fillText(dl.label, 256, 36);
                 const dtex = new THREE.CanvasTexture(dc);
                 const dmat = new THREE.SpriteMaterial({ map: dtex, transparent: true, depthTest: false, depthWrite: false });
                 const dspr = new THREE.Sprite(dmat);
                 dspr.renderOrder = 999;
-                dspr.scale.set(60, 5, 1);
+                dspr.scale.set(75, 7, 1);
                 dspr.position.set(dl.x, dl.y, 0);
                 scene.add(dspr);
                 tierPlatforms.push(dspr);
@@ -1755,7 +1755,7 @@
             depthWrite: false
         });
         const sprite = new THREE.Sprite(spriteMat);
-        const size = Math.max((node.val || 10) / 5, 3) * 2;
+        const size = 16;
         sprite.scale.set(size * 3, size * 3.75, 1);
         sprite.renderOrder = 1000;
 
@@ -1920,12 +1920,6 @@
     function handleNodeClick(node) {
         if (node) {
             showNodeInfo(node);
-            const distance = 150;
-            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z || 1);
-            graph.cameraPosition(
-                { x: node.x * distRatio, y: node.y * distRatio, z: (node.z || 0) * distRatio },
-                node, 1500
-            );
         }
     }
 
